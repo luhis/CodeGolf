@@ -32,12 +32,12 @@ namespace CodeGolf
             var fun = type.GetMethod(FunctionName);
             if (fun == null)
             {
-                throw new Exception($"Function {FunctionName} missing");
+                throw new Exception($"Function '{FunctionName}' missing");
             }
 
             if (fun.GetParameters().Length != parameterCount)
             {
-                throw new Exception("Incorrect parameter count");
+                throw new Exception($"Incorrect parameter count on function '{FunctionName}' expected {parameterCount}");
             }
         }
 

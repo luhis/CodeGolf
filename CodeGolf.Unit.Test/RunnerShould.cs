@@ -33,14 +33,14 @@ namespace CodeGolf.Unit.Test
         public void FailCleanlyWhenFunctionMisnamed()
         {
             Action a = () => this.runner.Execute<string>("public string WriteXXX(string s){ return \"not \" + s;}", new[] { "Hello world" });
-            a.Should().Throw<Exception>().WithMessage("Function Write missing");
+            a.Should().Throw<Exception>().WithMessage("Function 'Write' missing");
         }
 
         [Fact]
         public void FailWhenWrongNumberOfParameters()
         {
             Action a = () => this.runner.Execute<string>("public string Write(string s){ return \"not \" + s;}", new object[] { "Hello world", 1 });
-            a.Should().Throw<Exception>().WithMessage("Incorrect parameter count");
+            a.Should().Throw<Exception>().WithMessage("Incorrect parameter count on function 'Write' expected 2");
         }
     }
 }
