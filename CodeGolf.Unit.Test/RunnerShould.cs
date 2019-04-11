@@ -9,22 +9,38 @@ namespace CodeGolf.Unit.Test
         private readonly Runner runner = new Runner();
 
         [Fact]
-        public void ShouldFail()
+        public void ReturnHelloWorld()
         {
-            this.runner.IsCorrect("throw new Exception();", _ => false).Should().BeFalse();
+            var r = this.runner.Execute<string>("public string Write(string s){ return s;}", new []{"Hello world"});
+            r.Should().BeEquivalentTo("Hello world");
         }
 
         [Fact]
-        public void ShouldPass()
+        public void ReturnNotHelloWorld()
         {
-            this.runner.IsCorrect("throw new Exception();", _ => true).Should().BeTrue();
+            var r = this.runner.Execute<string>("public string Write(string s){ return \"not \" + s;}", new[] { "Hello world" });
+            r.Should().BeEquivalentTo("not Hello world");
         }
 
         [Fact]
-        public void ShouldFailToCompileInvalidApplication()
+        public void FailToCompileInvalidApplication()
         {
-            Action a = () => this.runner.IsCorrect("abc", _ => true);
-            a.Should().Throw<Exception>();
+            Action a = () => this.runner.Execute<string>("abc", new[] { "Hello world" });
+            a.Should().Throw<Exception>().WithMessage("(1,67): error CS1519: Invalid token '}' in class, struct, or interface member declaration");
+        }
+
+        [Fact]
+        public void FailCleanlyWhenFunctionMisnamed()
+        {
+            Action a = () => this.runner.Execute<string>("public string WriteXXX(string s){ return \"not \" + s;}", new[] { "Hello world" });
+            a.Should().Throw<Exception>().WithMessage("Function Write missing");
+        }
+
+        [Fact]
+        public void FailWhenWrongNumberOfParameters()
+        {
+            Action a = () => this.runner.Execute<string>("public string Write(string s){ return \"not \" + s;}", new object[] { "Hello world", 1 });
+            a.Should().Throw<Exception>().WithMessage("Incorrect parameter count");
         }
     }
 }
