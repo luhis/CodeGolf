@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -18,18 +19,18 @@ namespace CodeGolf
             var assembly = Compile(code);
 
             var type = assembly.GetType($"{CodeNamespace}.{ClassName}");
-            ValidateCompiledFunction(type, args.Length);
+            var fun = type.GetMethod(FunctionName);
+            ValidateCompiledFunction(fun, args.Length, typeof(T));
             var obj = Activator.CreateInstance(type);
-            return (T) type.InvokeMember(FunctionName,
+            return (T) fun.Invoke(obj,
                 BindingFlags.Default | BindingFlags.InvokeMethod,
                 null,
-                obj,
-                args);
+                args, 
+                CultureInfo.InvariantCulture);
         }
 
-        private static void ValidateCompiledFunction(Type type, int parameterCount)
+        private static void ValidateCompiledFunction(MethodInfo fun, int parameterCount, Type expectedReturn)
         {
-            var fun = type.GetMethod(FunctionName);
             if (fun == null)
             {
                 throw new Exception($"Function '{FunctionName}' missing");
@@ -38,6 +39,11 @@ namespace CodeGolf
             if (fun.GetParameters().Length != parameterCount)
             {
                 throw new Exception($"Incorrect parameter count on function '{FunctionName}' expected {parameterCount}");
+            }
+
+            if (expectedReturn != fun.ReturnType)
+            {
+                throw new Exception("Return type incorrect");
             }
         }
 
