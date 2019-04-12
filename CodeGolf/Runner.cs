@@ -30,10 +30,7 @@ namespace CodeGolf
                 CultureInfo.InvariantCulture);
         }
 
-        private static IEnumerable<Type> GetParamTypes(IEnumerable<object> ps)
-        {
-            return ps.Select(a => a.GetType());
-        }
+        private static IEnumerable<Type> GetParamTypes(IEnumerable<object> ps) => ps.Select(a => a.GetType());
 
         private static void ValidateCompiledFunction(MethodInfo fun, int parameterCount, Type expectedReturn, IEnumerable<Type> paramTypes)
         {
@@ -72,7 +69,7 @@ namespace CodeGolf
             }";
         }
 
-        public static Assembly Compile(string function)
+        private static Assembly Compile(string function)
         {
             var syntaxTree = CSharpSyntaxTree.ParseText(WrapInNamespace(function));
 
