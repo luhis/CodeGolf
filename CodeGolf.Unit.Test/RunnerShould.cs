@@ -40,14 +40,21 @@ namespace CodeGolf.Unit.Test
         public void FailWhenWrongNumberOfParameters()
         {
             Action a = () => this.runner.Execute<string>("public string Write(string s){ return \"not \" + s;}", new object[] { "Hello world", 1 });
-            a.Should().Throw<Exception>().WithMessage("Incorrect parameter count on function 'Write' expected 2");
+            a.Should().Throw<Exception>().WithMessage("Incorrect parameter count expected 2");
         }
 
         [Fact]
         public void FailWhenReturnTypeIsUnexpected()
         {
             Action a = () => this.runner.Execute<string>("public int Write(string s){ return 42;}", new object[] { "Hello world" });
-            a.Should().Throw<Exception>().WithMessage("Return type incorrect");
+            a.Should().Throw<Exception>().WithMessage("Return type incorrect expected System.String");
+        }
+
+        [Fact]
+        public void FailWhenParametersHaveWrongType()
+        {
+            Action a = () => this.runner.Execute<string>("public string Write(int i){ return \"not \";}", new object[] { "Hello world" });
+            a.Should().Throw<Exception>().WithMessage("Parameter type mismatch");
         }
     }
 }

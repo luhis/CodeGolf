@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -20,16 +21,21 @@ namespace CodeGolf
 
             var type = assembly.GetType($"{CodeNamespace}.{ClassName}");
             var fun = type.GetMethod(FunctionName);
-            ValidateCompiledFunction(fun, args.Length, typeof(T));
+            ValidateCompiledFunction(fun, args.Length, typeof(T), GetParamTypes(args));
             var obj = Activator.CreateInstance(type);
             return (T) fun.Invoke(obj,
                 BindingFlags.Default | BindingFlags.InvokeMethod,
                 null,
-                args, 
+                args,
                 CultureInfo.InvariantCulture);
         }
 
-        private static void ValidateCompiledFunction(MethodInfo fun, int parameterCount, Type expectedReturn)
+        private static IEnumerable<Type> GetParamTypes(IEnumerable<object> ps)
+        {
+            return ps.Select(a => a.GetType());
+        }
+
+        private static void ValidateCompiledFunction(MethodInfo fun, int parameterCount, Type expectedReturn, IEnumerable<Type> paramTypes)
         {
             if (fun == null)
             {
@@ -38,12 +44,18 @@ namespace CodeGolf
 
             if (fun.GetParameters().Length != parameterCount)
             {
-                throw new Exception($"Incorrect parameter count on function '{FunctionName}' expected {parameterCount}");
+                throw new Exception($"Incorrect parameter count expected {parameterCount}");
             }
 
             if (expectedReturn != fun.ReturnType)
             {
-                throw new Exception("Return type incorrect");
+                throw new Exception($"Return type incorrect expected {expectedReturn}");
+            }
+
+            var missMatches = fun.GetParameters().Select(a => a.ParameterType).Zip(paramTypes, (typeA, typeB) => (typeA, typeB)).Where(a => a.typeA != a.typeB);
+            if (missMatches.Any())
+            {
+                throw new Exception("Parameter type mismatch");
             }
         }
 
