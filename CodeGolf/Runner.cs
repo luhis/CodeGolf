@@ -11,17 +11,16 @@ namespace CodeGolf
 {
     public class Runner
     {
-        private const string CodeNamespace = "RoslynCompileSample";
-        private const string ClassName = "Writer";
-        private const string FunctionName = "Write";
+        private const string ClassName = "CodeGolf";
+        private const string FunctionName = "Main";
 
         public T Execute<T>(string code, object[] args)
         {
             var assembly = Compile(code);
 
-            var type = assembly.GetType($"{CodeNamespace}.{ClassName}");
+            var type = assembly.GetType($"{ClassName}");
             var fun = type.GetMethod(FunctionName);
-            ValidateCompiledFunction(fun, args.Length, typeof(T), GetParamTypes(args));
+            ValidateCompiledFunction(fun, typeof(T), GetParamTypes(args));
             var obj = Activator.CreateInstance(type);
             return (T) fun.Invoke(obj,
                 BindingFlags.Default | BindingFlags.InvokeMethod,
@@ -32,16 +31,16 @@ namespace CodeGolf
 
         private static IEnumerable<Type> GetParamTypes(IEnumerable<object> ps) => ps.Select(a => a.GetType());
 
-        private static void ValidateCompiledFunction(MethodInfo fun, int parameterCount, Type expectedReturn, IEnumerable<Type> paramTypes)
+        private static void ValidateCompiledFunction(MethodInfo fun, Type expectedReturn, IEnumerable<Type> paramTypes)
         {
             if (fun == null)
             {
                 throw new Exception($"Function '{FunctionName}' missing");
             }
 
-            if (fun.GetParameters().Length != parameterCount)
+            if (fun.GetParameters().Length != paramTypes.Count())
             {
-                throw new Exception($"Incorrect parameter count expected {parameterCount}");
+                throw new Exception($"Incorrect parameter count expected {paramTypes.Count()}");
             }
 
             if (expectedReturn != fun.ReturnType)
@@ -56,22 +55,18 @@ namespace CodeGolf
             }
         }
 
-        private static string WrapInNamespace(string function)
+        private static string WrapInClass(string function)
         {
-            return @"using System;" +
-
-            $"namespace {CodeNamespace}"
-            + @"{"
+            return @"using System;" 
                  + $"public class {ClassName}"
                  + "{" 
-                   + function +
-                @"}
-            }";
+                   + function
+                 + "}";
         }
 
         private static Assembly Compile(string function)
         {
-            var syntaxTree = CSharpSyntaxTree.ParseText(WrapInNamespace(function));
+            var syntaxTree = CSharpSyntaxTree.ParseText(WrapInClass(function));
 
             var assemblyName = Path.GetRandomFileName();
             var references = new MetadataReference[]
