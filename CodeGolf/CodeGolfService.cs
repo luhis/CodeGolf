@@ -12,18 +12,22 @@ namespace CodeGolf
 
         public OneOf<int, IReadOnlyList<string>> Score<T>(string code, Challenge<T> challenge)
         {
-            var result = this.runner.Compile<T>(code)(challenge.Args);
-            return result.Match(success =>
+            var compileResult = this.runner.Compile<T>(code);
+            return compileResult.Match(compiled =>
             {
-                if (!challenge.Validator(success))
+                var result = compiled(challenge.Args);
+                return result.Match(success =>
                 {
-                    return (OneOf<int, IReadOnlyList<string>>) new List<string>() {"Return value incorrect"};
-                }
-                else
-                {
-                    return this.scorer.Score(code);
-                }
+                    if (!challenge.Validator(success))
+                    {
+                        return (OneOf<int, IReadOnlyList<string>>) new List<string>() {"Return value incorrect"};
+                    }
+                    else
+                    {
+                        return this.scorer.Score(code);
+                    }
 
+                }, a => a.ToList());
             }, a => a.ToList());
         }
     }

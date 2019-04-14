@@ -15,28 +15,34 @@ namespace CodeGolf
         private const string ClassName = "CodeGolf";
         private const string FunctionName = "Main";
 
-        public Func<object[], OneOf<T, IReadOnlyList<string>>> Compile<T>(string function)
+        public OneOf<Func<object[], OneOf<T, IReadOnlyList<string>>>, IReadOnlyList<string>> Compile<T>(string function)
         {
             var assembly = Compile(function);
 
-            var type = assembly.GetType($"{ClassName}");
-            var fun = type.GetMethod(FunctionName);
-
-            return args =>
+            return assembly.Match<OneOf<Func<object[], OneOf<T, IReadOnlyList<string>>>, IReadOnlyList<string>>>(success =>
             {
-                var validationFailures = ValidateCompiledFunction(fun, typeof(T), GetParamTypes(args).ToList());
-                if (validationFailures.Any())
-                {
-                    return validationFailures.ToList();
-                }
+                var type = success.GetType($"{ClassName}");
+                var fun = type.GetMethod(FunctionName);
 
-                var obj = Activator.CreateInstance(type);
-                return (T) fun.Invoke(obj,
-                    BindingFlags.Default | BindingFlags.InvokeMethod,
-                    null,
-                    args,
-                    CultureInfo.InvariantCulture);
-            };
+                Func<object[], OneOf<T, IReadOnlyList<string>>> a = args =>
+                {
+                    var validationFailures = ValidateCompiledFunction(fun, typeof(T), GetParamTypes(args).ToList());
+                    if (validationFailures.Any())
+                    {
+                        return validationFailures.ToList();
+                    }
+
+                    var obj = Activator.CreateInstance(type);
+                    return (T)fun.Invoke(obj,
+                        BindingFlags.Default | BindingFlags.InvokeMethod,
+                        null,
+                        args,
+                        CultureInfo.InvariantCulture);
+                };
+
+                return a;
+
+            }, a => a.ToList());
         }
 
         private static IEnumerable<Type> GetParamTypes(IEnumerable<object> ps) => ps.Select(a => a.GetType());
@@ -89,11 +95,11 @@ namespace CodeGolf
             return res;
         }
 
-        private static Assembly Compile(string function)
+        private static OneOf<Assembly, IReadOnlyList<string>> Compile(string function)
         {
             var syntaxTree = CSharpSyntaxTree.ParseText(WrapInClass(function));
 
-            return UseTempFile(Path.GetRandomFileName, assemblyName =>
+            return UseTempFile<OneOf<Assembly, IReadOnlyList<string>>>(Path.GetRandomFileName, assemblyName =>
             {
                 var references = new MetadataReference[]
                 {
@@ -115,9 +121,9 @@ namespace CodeGolf
                     {
                         var failures = result.Diagnostics.Where(diagnostic =>
                             diagnostic.IsWarningAsError ||
-                            diagnostic.Severity == DiagnosticSeverity.Error);
+                            diagnostic.Severity == DiagnosticSeverity.Error).Select(a => a.ToString());
 
-                        throw new Exception(string.Join(",\n", failures));
+                        return failures.ToList();
                     }
                     else
                     {
