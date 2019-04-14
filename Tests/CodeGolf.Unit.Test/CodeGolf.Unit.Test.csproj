@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CodeGolf\CodeGolf.csproj" />
+    <ProjectReference Include="..\..\CodeGolf\CodeGolf.csproj" />
   </ItemGroup>
 
 </Project>
