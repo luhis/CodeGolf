@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using CodeGolf.Dtos;
+using OneOf;
 
 namespace CodeGolf
 {
     public interface ICodeGolfService
     {
-        OneOf.OneOf<int, IReadOnlyList<string>> Score<T>(string code, Func<T, bool> validator);
+        OneOf<int, IReadOnlyList<string>> Score<T>(string code, Challenge<T> challenge);
     }
 }

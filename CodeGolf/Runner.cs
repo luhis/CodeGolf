@@ -26,6 +26,7 @@ namespace CodeGolf
             {
                 return validationFailures.ToList();
             }
+
             var obj = Activator.CreateInstance(type);
             return (T) fun.Invoke(obj,
                 BindingFlags.Default | BindingFlags.InvokeMethod,
@@ -36,27 +37,29 @@ namespace CodeGolf
 
         private static IEnumerable<Type> GetParamTypes(IEnumerable<object> ps) => ps.Select(a => a.GetType());
 
-        private static IReadOnlyList<string> ValidateCompiledFunction(MethodInfo fun, Type expectedReturn, IReadOnlyCollection<Type> paramTypes)
+        private static IReadOnlyList<string> ValidateCompiledFunction(MethodInfo fun, Type expectedReturn,
+            IReadOnlyCollection<Type> paramTypes)
         {
             if (fun == null)
             {
-                return new [] {$"Function '{FunctionName}' missing"};
+                return new[] {$"Function '{FunctionName}' missing"};
             }
 
             if (fun.GetParameters().Length != paramTypes.Count)
             {
-                return new[] { $"Incorrect parameter count expected {paramTypes.Count}"};
+                return new[] {$"Incorrect parameter count expected {paramTypes.Count}"};
             }
 
             if (expectedReturn != fun.ReturnType)
             {
-                return new[] { $"Return type incorrect expected {expectedReturn}"};
+                return new[] {$"Return type incorrect expected {expectedReturn}"};
             }
 
-            var missMatches = fun.GetParameters().Select(a => a.ParameterType).Zip(paramTypes, (typeA, typeB) => (typeA, typeB)).Where(a => a.typeA != a.typeB);
+            var missMatches = fun.GetParameters().Select(a => a.ParameterType)
+                .Zip(paramTypes, (typeA, typeB) => (typeA, typeB)).Where(a => a.typeA != a.typeB);
             if (missMatches.Any())
             {
-                return new[] { "Parameter type mismatch"};
+                return new[] {"Parameter type mismatch"};
             }
 
             return new string[] { };
@@ -64,11 +67,11 @@ namespace CodeGolf
 
         private static string WrapInClass(string function)
         {
-            return @"using System;" 
-                 + $"public class {ClassName}"
-                 + "{" 
+            return @"using System;"
+                   + $"public class {ClassName}"
+                   + "{"
                    + function
-                 + "}";
+                   + "}";
         }
 
         private static T UseTempFile<T>(Func<string> gen, Func<string, T> process)
@@ -76,7 +79,7 @@ namespace CodeGolf
             var fileName = gen();
 
             var res = process(fileName);
-            
+
             File.Delete(fileName);
 
             return res;

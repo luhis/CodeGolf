@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using CodeGolf.Dtos;
 using OneOf;
 
 namespace CodeGolf
@@ -10,12 +10,12 @@ namespace CodeGolf
         private readonly Runner runner = new Runner();
         private readonly Scorer scorer = new Scorer();
 
-        public OneOf<int, IReadOnlyList<string>> Score<T>(string code, Func<T, bool> validator)
+        public OneOf<int, IReadOnlyList<string>> Score<T>(string code, Challenge<T> challenge)
         {
-            var result = this.runner.Execute<T>(code, new object[] { });
+            var result = this.runner.Execute<T>(code, challenge.Args);
             return result.Match(success =>
             {
-                if (!validator(success))
+                if (!challenge.Validator(success))
                 {
                     return (OneOf<int, IReadOnlyList<string>>) new List<string>() {"Return value incorrect"};
                 }
