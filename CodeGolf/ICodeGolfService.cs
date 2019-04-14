@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using CodeGolf.Dtos;
-using OneOf;
+using Optional;
 
 namespace CodeGolf
 {
     public interface ICodeGolfService
     {
-        OneOf<int, IReadOnlyList<string>> Score<T>(string code, Challenge<T> challenge);
+        Option<int, IReadOnlyList<string>> Score<T>(string code, Challenge<T> challenge);
     }
 }

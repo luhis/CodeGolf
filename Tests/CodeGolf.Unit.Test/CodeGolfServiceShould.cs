@@ -1,6 +1,5 @@
 using CodeGolf.Dtos;
 using FluentAssertions;
-using FluentAssertions.OneOf;
 using Xunit;
 
 namespace CodeGolf.Unit.Test
@@ -12,8 +11,8 @@ namespace CodeGolf.Unit.Test
         [Fact]
         public void ReturnCorrectResultForHelloWorld()
         {
-            var r = this.codeGolfService.Score<string>("public string Main() => \"Hello World\";", new Challenge<string>(new object[0], a => a == "Hello World"));
-            r.Should().Be<int>().And.Should().Be(38);
+            var r = this.codeGolfService.Score("public string Main() => \"Hello World\";", new Challenge<string>(new object[0], a => a == "Hello World"));
+            r.ExtractSuccess().Should().Be(38);
         }
     }
 }

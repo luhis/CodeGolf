@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using CodeGolf.Dtos;
-using OneOf;
+using Optional;
 
 namespace CodeGolf
 {
@@ -10,25 +9,25 @@ namespace CodeGolf
         private readonly Runner runner = new Runner();
         private readonly Scorer scorer = new Scorer();
 
-        public OneOf<int, IReadOnlyList<string>> Score<T>(string code, Challenge<T> challenge)
+        public Option<int, IReadOnlyList<string>> Score<T>(string code, Challenge<T> challenge)
         {
             var compileResult = this.runner.Compile<T>(code);
-            return compileResult.Match(compiled =>
+            return compileResult.FlatMap(compiled =>
             {
                 var result = compiled(challenge.Args);
-                return result.Match(success =>
+                return result.FlatMap(success =>
                 {
                     if (!challenge.Validator(success))
                     {
-                        return (OneOf<int, IReadOnlyList<string>>) new List<string>() {"Return value incorrect"};
+                        return Option.None<int, IReadOnlyList<string>>(new List<string>() {"Return value incorrect"});
                     }
                     else
                     {
-                        return this.scorer.Score(code);
+                        return Option.Some<int, IReadOnlyList<string>>(this.scorer.Score(code));
                     }
 
-                }, a => a.ToList());
-            }, a => a.ToList());
+                });
+            });
         }
     }
 }

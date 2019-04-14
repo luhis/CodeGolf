@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using OneOf;
+using Optional;
 
 namespace CodeGolf
 {
@@ -15,34 +15,30 @@ namespace CodeGolf
         private const string ClassName = "CodeGolf";
         private const string FunctionName = "Main";
 
-        public OneOf<Func<object[], OneOf<T, IReadOnlyList<string>>>, IReadOnlyList<string>> Compile<T>(string function)
+        public Option<Func<object[], Option<T, IReadOnlyList<string>>>, IReadOnlyList<string>> Compile<T>(string function)
         {
             var assembly = Compile(function);
 
-            return assembly.Match<OneOf<Func<object[], OneOf<T, IReadOnlyList<string>>>, IReadOnlyList<string>>>(success =>
+            return assembly.Map(success =>
             {
                 var type = success.GetType($"{ClassName}");
                 var fun = type.GetMethod(FunctionName);
 
-                Func<object[], OneOf<T, IReadOnlyList<string>>> a = args =>
+                Option<T, IReadOnlyList<string>> Func(object[] args)
                 {
                     var validationFailures = ValidateCompiledFunction(fun, typeof(T), GetParamTypes(args).ToList());
                     if (validationFailures.Any())
                     {
-                        return validationFailures.ToList();
+                        return Option.None<T, IReadOnlyList<string>>(validationFailures);
                     }
 
                     var obj = Activator.CreateInstance(type);
-                    return (T)fun.Invoke(obj,
-                        BindingFlags.Default | BindingFlags.InvokeMethod,
-                        null,
-                        args,
-                        CultureInfo.InvariantCulture);
-                };
+                    return Option.Some<T, IReadOnlyList<string>>((T) fun.Invoke(obj, BindingFlags.Default | BindingFlags.InvokeMethod, null, args, CultureInfo.InvariantCulture));
+                }
 
-                return a;
+                return (Func<object[], Option<T, IReadOnlyList<string>>>) Func;
 
-            }, a => a.ToList());
+            });
         }
 
         private static IEnumerable<Type> GetParamTypes(IEnumerable<object> ps) => ps.Select(a => a.GetType());
@@ -95,11 +91,11 @@ namespace CodeGolf
             return res;
         }
 
-        private static OneOf<Assembly, IReadOnlyList<string>> Compile(string function)
+        private static Option<Assembly, IReadOnlyList<string>> Compile(string function)
         {
             var syntaxTree = CSharpSyntaxTree.ParseText(WrapInClass(function));
 
-            return UseTempFile<OneOf<Assembly, IReadOnlyList<string>>>(Path.GetRandomFileName, assemblyName =>
+            return UseTempFile(Path.GetRandomFileName, assemblyName =>
             {
                 var references = new MetadataReference[]
                 {
@@ -123,12 +119,12 @@ namespace CodeGolf
                             diagnostic.IsWarningAsError ||
                             diagnostic.Severity == DiagnosticSeverity.Error).Select(a => a.ToString());
 
-                        return failures.ToList();
+                        return Option.None<Assembly, IReadOnlyList<string>>(failures.ToList());
                     }
                     else
                     {
                         ms.Seek(0, SeekOrigin.Begin);
-                        return Assembly.Load(ms.ToArray());
+                        return Option.Some<Assembly, IReadOnlyList<string>>(Assembly.Load(ms.ToArray()));
                     }
                 }
             });
