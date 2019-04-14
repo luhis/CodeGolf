@@ -1,5 +1,4 @@
 using FluentAssertions;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Xunit;
 
 namespace CodeGolf.Unit.Test

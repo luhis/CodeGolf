@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using OneOf;
 
 namespace CodeGolf
 {
@@ -14,13 +15,17 @@ namespace CodeGolf
         private const string ClassName = "CodeGolf";
         private const string FunctionName = "Main";
 
-        public T Execute<T>(string code, object[] args)
+        public OneOf<T, IReadOnlyList<string>> Execute<T>(string function, object[] args)
         {
-            var assembly = Compile(code);
+            var assembly = Compile(function);
 
             var type = assembly.GetType($"{ClassName}");
             var fun = type.GetMethod(FunctionName);
-            ValidateCompiledFunction(fun, typeof(T), GetParamTypes(args));
+            var validationFailures = ValidateCompiledFunction(fun, typeof(T), GetParamTypes(args).ToList());
+            if (validationFailures.Any())
+            {
+                return validationFailures.ToList();
+            }
             var obj = Activator.CreateInstance(type);
             return (T) fun.Invoke(obj,
                 BindingFlags.Default | BindingFlags.InvokeMethod,
@@ -31,28 +36,30 @@ namespace CodeGolf
 
         private static IEnumerable<Type> GetParamTypes(IEnumerable<object> ps) => ps.Select(a => a.GetType());
 
-        private static void ValidateCompiledFunction(MethodInfo fun, Type expectedReturn, IEnumerable<Type> paramTypes)
+        private static IReadOnlyList<string> ValidateCompiledFunction(MethodInfo fun, Type expectedReturn, IReadOnlyCollection<Type> paramTypes)
         {
             if (fun == null)
             {
-                throw new Exception($"Function '{FunctionName}' missing");
+                return new [] {$"Function '{FunctionName}' missing"};
             }
 
-            if (fun.GetParameters().Length != paramTypes.Count())
+            if (fun.GetParameters().Length != paramTypes.Count)
             {
-                throw new Exception($"Incorrect parameter count expected {paramTypes.Count()}");
+                return new[] { $"Incorrect parameter count expected {paramTypes.Count}"};
             }
 
             if (expectedReturn != fun.ReturnType)
             {
-                throw new Exception($"Return type incorrect expected {expectedReturn}");
+                return new[] { $"Return type incorrect expected {expectedReturn}"};
             }
 
             var missMatches = fun.GetParameters().Select(a => a.ParameterType).Zip(paramTypes, (typeA, typeB) => (typeA, typeB)).Where(a => a.typeA != a.typeB);
             if (missMatches.Any())
             {
-                throw new Exception("Parameter type mismatch");
+                return new[] { "Parameter type mismatch"};
             }
+
+            return new string[] { };
         }
 
         private static string WrapInClass(string function)

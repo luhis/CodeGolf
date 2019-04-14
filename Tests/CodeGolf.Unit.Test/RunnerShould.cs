@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using FluentAssertions;
+using FluentAssertions.OneOf;
 using Xunit;
 
 namespace CodeGolf.Unit.Test
@@ -12,14 +14,14 @@ namespace CodeGolf.Unit.Test
         public void ReturnHelloWorld()
         {
             var r = this.runner.Execute<string>("public string Main(string s){ return s;}", new []{"Hello world"});
-            r.Should().BeEquivalentTo("Hello world");
+            r.Should().Be<string>().And.Should().BeEquivalentTo("Hello world");
         }
 
         [Fact]
         public void ReturnNotHelloWorld()
         {
             var r = this.runner.Execute<string>("public string Main(string s){ return \"not \" + s;}", new[] { "Hello world" });
-            r.Should().BeEquivalentTo("not Hello world");
+            r.Should().Be<string>().And.Should().BeEquivalentTo("not Hello world");
         }
 
         [Fact]
@@ -32,29 +34,39 @@ namespace CodeGolf.Unit.Test
         [Fact]
         public void FailCleanlyWhenFunctionMisnamed()
         {
-            Action a = () => this.runner.Execute<string>("public string MainXXX(string s){ return \"not \" + s;}", new[] { "Hello world" });
-            a.Should().Throw<Exception>().WithMessage("Function 'Main' missing");
+            var r = this.runner.Execute<string>("public string MainXXX(string s){ return \"not \" + s;}", new[] { "Hello world" });
+            r.Should().Be<IReadOnlyList<string>>().And.Should().BeEquivalentTo("Function 'Main' missing");
         }
 
         [Fact]
         public void FailWhenWrongNumberOfParameters()
         {
-            Action a = () => this.runner.Execute<string>("public string Main(string s){ return \"not \" + s;}", new object[] { "Hello world", 1 });
-            a.Should().Throw<Exception>().WithMessage("Incorrect parameter count expected 2");
+            var r = this.runner.Execute<string>("public string Main(string s){ return \"not \" + s;}", new object[] { "Hello world", 1 });
+            r.Should().Be<IReadOnlyList<string>>().And.Should().BeEquivalentTo("Incorrect parameter count expected 2");
         }
 
         [Fact]
         public void FailWhenReturnTypeIsUnexpected()
         {
-            Action a = () => this.runner.Execute<string>("public int Main(string s){ return 42;}", new object[] { "Hello world" });
-            a.Should().Throw<Exception>().WithMessage("Return type incorrect expected System.String");
+            var r = this.runner.Execute<string>("public int Main(string s){ return 42;}", new object[] { "Hello world" });
+            r.Should().Be<IReadOnlyList<string>>().And.Should().BeEquivalentTo("Return type incorrect expected System.String");
         }
 
         [Fact]
         public void FailWhenParametersHaveWrongType()
         {
-            Action a = () => this.runner.Execute<string>("public string Main(int i){ return \"not \";}", new object[] { "Hello world" });
-            a.Should().Throw<Exception>().WithMessage("Parameter type mismatch");
+            var r = this.runner.Execute<string>("public string Main(int i){ return \"not \";}", new object[] { "Hello world" });
+            r.Should().Be<IReadOnlyList<string>>().And.Should().BeEquivalentTo("Parameter type mismatch");
+        }
+
+        [Fact]
+        public void SupportPrivateFunctionCalls()
+        {
+            var code = @"
+private int X() => 42;
+public string Main(string s){ return s + X();}";
+            var r = this.runner.Execute<string>(code, new[] { "Hello world" });
+            r.Should().Be<string>().And.Should().BeEquivalentTo("Hello world42");
         }
     }
 }

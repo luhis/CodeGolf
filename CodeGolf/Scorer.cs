@@ -2,9 +2,11 @@
 {
     public class Scorer
     {
+        private static string CleanSource(string s) => s.Replace("\n", "");
+
         public int Score(string code)
         {
-            return code.Replace("\n", "").Length;
+            return CleanSource(code).Length;
         }
     }
 }
