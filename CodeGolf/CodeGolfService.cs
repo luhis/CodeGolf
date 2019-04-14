@@ -12,7 +12,7 @@ namespace CodeGolf
 
         public OneOf<int, IReadOnlyList<string>> Score<T>(string code, Challenge<T> challenge)
         {
-            var result = this.runner.Execute<T>(code, challenge.Args);
+            var result = this.runner.Compile<T>(code)(challenge.Args);
             return result.Match(success =>
             {
                 if (!challenge.Validator(success))

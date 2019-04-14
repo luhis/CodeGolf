@@ -15,24 +15,28 @@ namespace CodeGolf
         private const string ClassName = "CodeGolf";
         private const string FunctionName = "Main";
 
-        public OneOf<T, IReadOnlyList<string>> Execute<T>(string function, object[] args)
+        public Func<object[], OneOf<T, IReadOnlyList<string>>> Compile<T>(string function)
         {
             var assembly = Compile(function);
 
             var type = assembly.GetType($"{ClassName}");
             var fun = type.GetMethod(FunctionName);
-            var validationFailures = ValidateCompiledFunction(fun, typeof(T), GetParamTypes(args).ToList());
-            if (validationFailures.Any())
-            {
-                return validationFailures.ToList();
-            }
 
-            var obj = Activator.CreateInstance(type);
-            return (T) fun.Invoke(obj,
-                BindingFlags.Default | BindingFlags.InvokeMethod,
-                null,
-                args,
-                CultureInfo.InvariantCulture);
+            return args =>
+            {
+                var validationFailures = ValidateCompiledFunction(fun, typeof(T), GetParamTypes(args).ToList());
+                if (validationFailures.Any())
+                {
+                    return validationFailures.ToList();
+                }
+
+                var obj = Activator.CreateInstance(type);
+                return (T) fun.Invoke(obj,
+                    BindingFlags.Default | BindingFlags.InvokeMethod,
+                    null,
+                    args,
+                    CultureInfo.InvariantCulture);
+            };
         }
 
         private static IEnumerable<Type> GetParamTypes(IEnumerable<object> ps) => ps.Select(a => a.GetType());
