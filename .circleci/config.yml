@@ -1,0 +1,14 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: microsoft/dotnet:sdk
+    working_directory: /build/
+    steps:
+      - checkout
+      - run:
+          name: Run result
+          command: |
+            pushd ./Tests/CodeGolf.Unit.Test/
+            dotnet test
+            popd

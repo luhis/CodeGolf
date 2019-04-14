@@ -1,0 +1,18 @@
+using FluentAssertions;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Xunit;
+
+namespace CodeGolf.Unit.Test
+{
+    public class ScorerShould
+    {
+        private readonly Scorer scorer = new Scorer();
+
+        [Fact]
+        public void ReturnCorrectScore()
+        {
+            var r = this.scorer.Score("public string Main(string s){ return s;}");
+            r.Should().Be(40);
+        }
+    }
+}
