@@ -1,0 +1,23 @@
+﻿@page
+@model CodeGolf.Web.Pages.DemoModel
+@{
+    ViewData["Title"] = "Demo";
+}
+
+<h1>Demo</h1>
+
+Implement the hello world function.
+
+<form method="post">
+    <div>
+        <textarea asp-for="Code"></textarea>
+    </div>
+    <button type="submit">Submit</button>
+</form>
+
+<div>
+    Score: @Model.Score
+</div>
+<div>
+    Errors: @string.Join(", ", Model.Errors)
+</div>
