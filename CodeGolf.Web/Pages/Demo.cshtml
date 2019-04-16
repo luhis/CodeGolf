@@ -9,8 +9,11 @@
 Implement the hello world function.
 
 <form method="post">
-    <div>
-        <textarea asp-for="Code"></textarea>
+    <div class="field">
+        <label class="label">Code</label>
+        <div class="control">
+            <textarea asp-for="Code" rows="10" cols="50"></textarea>
+        </div>
     </div>
     <button type="submit">Submit</button>
 </form>
