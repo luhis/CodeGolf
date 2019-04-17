@@ -2,11 +2,13 @@
 @model CodeGolf.Web.Pages.DemoModel
 @{
     ViewData["Title"] = "Demo";
+    var challenge = Challenges.HelloWorld;
 }
 
 <h1>Demo</h1>
 
 Implement the hello world function.
+<div>@($"({string.Join(", ", challenge.Args)}) => {challenge.ExpectedResult} ")</div>
 
 <form method="post">
     <div class="field">

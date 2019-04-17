@@ -1,4 +1,5 @@
 ﻿using System;
+using EnsureThat;
 
 namespace CodeGolf.Dtos
 {
@@ -6,7 +7,7 @@ namespace CodeGolf.Dtos
     {
         public Challenge(object[] args, T expectedResult)
         {
-            this.Args = args;
+            this.Args = EnsureArg.IsNotNull(args, nameof(args));
             this.ExpectedResult = expectedResult;
         }
 

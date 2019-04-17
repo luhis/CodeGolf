@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using CodeGolf.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -25,7 +24,7 @@ namespace CodeGolf.Web.Pages
 
         public void OnPost()
         {
-            var challenge = new Challenge<string>(new object[0], "Hello World");
+            var challenge = Challenges.HelloWorld;
             var res = this.codeGolfService.Score(this.Code, challenge);
             res.Match(a => this.Score = a, err => this.Errors = err);
         }

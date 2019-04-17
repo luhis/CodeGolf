@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using EnsureThat;
 
 namespace CodeGolf.Dtos
 {
@@ -6,7 +7,7 @@ namespace CodeGolf.Dtos
     {
         public ChallengeSet(IReadOnlyList<Challenge<T>> challenges)
         {
-            this.Challenges = challenges;
+            this.Challenges = EnsureArg.IsNotNull(challenges, nameof(challenges));
         }
 
         public IReadOnlyList<Challenge<T>> Challenges { get; }
