@@ -13,7 +13,7 @@ namespace CodeGolf.Unit.Test
 
         public static T ExtractSuccess<T>(this Option<T, IReadOnlyList<string>> input)
         {
-            return input.Match(a => a, _ => throw new Exception("Option contains error"));
+            return input.Match(a => a, errors => throw new Exception($"Option contains error: {string.Join(", ", errors)}"));
         }
     }
 }

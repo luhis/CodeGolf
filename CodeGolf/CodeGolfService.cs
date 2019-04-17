@@ -17,9 +17,9 @@ namespace CodeGolf
                 var result = compiled(challenge.Args);
                 return result.FlatMap(success =>
                 {
-                    if (!challenge.Validator(success))
+                    if (!challenge.ExpectedResult.Equals(success))
                     {
-                        return Option.None<int, IReadOnlyList<string>>(new List<string>() {"Return value incorrect"});
+                        return Option.None<int, IReadOnlyList<string>>(new List<string>() {$"Return value incorrect. Expected {challenge.ExpectedResult}"});
                     }
                     else
                     {

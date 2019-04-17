@@ -4,14 +4,14 @@ namespace CodeGolf.Dtos
 {
     public class Challenge<T>
     {
-        public Challenge(object[] args, Func<T, bool> validator)
+        public Challenge(object[] args, T expectedResult)
         {
             this.Args = args;
-            this.Validator = validator;
+            this.ExpectedResult = expectedResult;
         }
 
         public object[] Args { get; }
 
-        public Func<T, bool> Validator { get; }
+        public T ExpectedResult { get; }
     }
 }
