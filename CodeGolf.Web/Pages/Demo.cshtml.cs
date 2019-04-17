@@ -25,7 +25,7 @@ namespace CodeGolf.Web.Pages
 
         public void OnPost()
         {
-            var challenge = new Challenge<string>(new object[0], a => a == "Hello World");
+            var challenge = new Challenge<string>(new object[0], "Hello World");
             var res = this.codeGolfService.Score(this.Code, challenge);
             res.Match(a => this.Score = a, err => this.Errors = err);
         }
