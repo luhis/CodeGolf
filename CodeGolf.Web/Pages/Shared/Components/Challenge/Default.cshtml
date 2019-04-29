@@ -1,0 +1,3 @@
+﻿@model Dtos.Challenge<string>;
+
+<div>@($"({string.Join(", ", Model.Args)}) => {Model.ExpectedResult} ")</div>
