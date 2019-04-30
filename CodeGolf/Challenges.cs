@@ -1,6 +1,6 @@
 using CodeGolf.Dtos;
 
-namespace CodeGolf.Web
+namespace CodeGolf
 {
     public static class Challenges
     {

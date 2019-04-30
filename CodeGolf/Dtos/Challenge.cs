@@ -1,5 +1,4 @@
-﻿using System;
-using EnsureThat;
+﻿using EnsureThat;
 
 namespace CodeGolf.Dtos
 {
