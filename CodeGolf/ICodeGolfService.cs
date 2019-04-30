@@ -6,6 +6,6 @@ namespace CodeGolf
 {
     public interface ICodeGolfService
     {
-        Option<int, IReadOnlyList<string>> Score<T>(string code, Challenge<T> challenge);
+        Option<int, IReadOnlyList<string>> Score<T>(string code, ChallengeSet<T> challenge);
     }
 }

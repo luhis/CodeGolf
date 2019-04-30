@@ -5,7 +5,7 @@ namespace CodeGolf.Unit.Test
 {
     public class ScorerShould
     {
-        private readonly Scorer scorer = new Scorer();
+        private readonly IScorer scorer = new Scorer();
 
         [Fact]
         public void ReturnCorrectScore()

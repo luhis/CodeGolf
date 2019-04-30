@@ -1,10 +1,10 @@
 ﻿namespace CodeGolf
 {
-    public class Scorer
+    public class Scorer : IScorer
     {
         private static string CleanSource(string s) => s.Replace("\n", "");
 
-        public int Score(string code)
+        int IScorer.Score(string code)
         {
             return CleanSource(code).Length;
         }

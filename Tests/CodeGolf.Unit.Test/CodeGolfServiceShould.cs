@@ -1,3 +1,4 @@
+using System;
 using CodeGolf.Dtos;
 using FluentAssertions;
 using Xunit;
@@ -11,7 +12,12 @@ namespace CodeGolf.Unit.Test
         [Fact]
         public void ReturnCorrectResultForHelloWorld()
         {
-            var r = this.codeGolfService.Score("public string Main() => \"Hello World\";", new Challenge<string>(new object[0], "Hello World"));
+            var r = this.codeGolfService.Score(
+                "public string Main() => \"Hello World\";",
+                new ChallengeSet<string>("a", "b", new Type[] { }, new[]
+                {
+                    new Challenge<string>(new object[0], "Hello World")
+                }));
             r.ExtractSuccess().Should().Be(38);
         }
     }

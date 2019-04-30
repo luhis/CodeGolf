@@ -10,12 +10,12 @@ using Optional;
 
 namespace CodeGolf
 {
-    public class Runner
+    public class Runner : IRunner
     {
         private const string ClassName = "CodeGolf";
         private const string FunctionName = "Main";
 
-        public Option<Func<object[], Option<T, IReadOnlyList<string>>>, IReadOnlyList<string>> Compile<T>(string function)
+        Option<Func<object[], Option<T, IReadOnlyList<string>>>, IReadOnlyList<string>> IRunner.Compile<T>(string function, IReadOnlyList<Type> paramTypes)
         {
             var assembly = Compile(function);
 
@@ -23,10 +23,11 @@ namespace CodeGolf
             {
                 var type = success.GetType($"{ClassName}");
                 var fun = type.GetMethod(FunctionName);
+                var validationFailures = ValidateCompiledFunction(fun, typeof(T), paramTypes);
+                
 
                 Option<T, IReadOnlyList<string>> Func(object[] args)
                 {
-                    var validationFailures = ValidateCompiledFunction(fun, typeof(T), GetParamTypes(args).ToList());
                     if (validationFailures.Any())
                     {
                         return Option.None<T, IReadOnlyList<string>>(validationFailures);
@@ -37,11 +38,8 @@ namespace CodeGolf
                 }
 
                 return (Func<object[], Option<T, IReadOnlyList<string>>>) Func;
-
             });
         }
-
-        private static IEnumerable<Type> GetParamTypes(IEnumerable<object> ps) => ps.Select(a => a.GetType());
 
         private static IReadOnlyList<string> ValidateCompiledFunction(MethodInfo fun, Type expectedReturn,
             IReadOnlyCollection<Type> paramTypes)
