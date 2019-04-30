@@ -15,29 +15,36 @@ namespace CodeGolf
         private const string ClassName = "CodeGolf";
         private const string FunctionName = "Main";
 
-        Option<Func<object[], Option<T, IReadOnlyList<string>>>, IReadOnlyList<string>> IRunner.Compile<T>(string function, IReadOnlyList<Type> paramTypes)
+        Option<Func<object[], Option<T, IReadOnlyList<string>>>, IReadOnlyList<string>> IRunner.Compile<T>(
+            string function, IReadOnlyList<Type> paramTypes)
         {
             var assembly = Compile(function);
 
-            return assembly.Map(success =>
+            return assembly.FlatMap(success =>
             {
                 var type = success.GetType($"{ClassName}");
                 var fun = type.GetMethod(FunctionName);
                 var validationFailures = ValidateCompiledFunction(fun, typeof(T), paramTypes);
-                
+                if (validationFailures.Any())
+                {
+                    return Option.None<Func<object[], Option<T, IReadOnlyList<string>>>, IReadOnlyList<string>>(validationFailures);
+                }
+
 
                 Option<T, IReadOnlyList<string>> Func(object[] args)
                 {
-                    if (validationFailures.Any())
-                    {
-                        return Option.None<T, IReadOnlyList<string>>(validationFailures);
-                    }
-
                     var obj = Activator.CreateInstance(type);
-                    return Option.Some<T, IReadOnlyList<string>>((T) fun.Invoke(obj, BindingFlags.Default | BindingFlags.InvokeMethod, null, args, CultureInfo.InvariantCulture));
+                    try
+                    {
+                        return Option.Some<T, IReadOnlyList<string>>((T)fun.Invoke(obj, BindingFlags.Default | BindingFlags.InvokeMethod, null, args, CultureInfo.InvariantCulture));
+                    }
+                    catch (Exception e)
+                    {
+                        return Option.None<T, IReadOnlyList<string>>(new []{e.Message});
+                    }
                 }
 
-                return (Func<object[], Option<T, IReadOnlyList<string>>>) Func;
+                return Option.Some<Func<object[], Option<T, IReadOnlyList<string>>>, IReadOnlyList<string>>(Func);
             });
         }
 

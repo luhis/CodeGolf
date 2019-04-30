@@ -26,7 +26,6 @@ namespace CodeGolf
                 {
                     return Option.Some<int, IReadOnlyList<string>>(this.scorer.Score(code));
                 }
-
             });
         }
     }
