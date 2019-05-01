@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using CodeGolf.Dtos;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Optional;
@@ -15,7 +16,7 @@ namespace CodeGolf
         private const string ClassName = "CodeGolf";
         private const string FunctionName = "Main";
 
-        Option<Func<object[], Option<T, IReadOnlyList<string>>>, IReadOnlyList<string>> IRunner.Compile<T>(
+        Option<Func<object[], Option<T, ErrorSet>>, ErrorSet> IRunner.Compile<T>(
             string function, IReadOnlyList<Type> paramTypes)
         {
             var assembly = Compile(function);
@@ -25,54 +26,54 @@ namespace CodeGolf
                 var type = success.GetType($"{ClassName}");
                 var fun = type.GetMethod(FunctionName);
                 var validationFailures = ValidateCompiledFunction(fun, typeof(T), paramTypes);
-                if (validationFailures.Any())
+                if (validationFailures.Errors.Any())
                 {
-                    return Option.None<Func<object[], Option<T, IReadOnlyList<string>>>, IReadOnlyList<string>>(validationFailures);
+                    return Option.None<Func<object[], Option<T, ErrorSet>>, ErrorSet>(validationFailures);
                 }
 
-                Option<T, IReadOnlyList<string>> Func(object[] args)
+                Option<T, ErrorSet> Func(object[] args)
                 {
                     var obj = Activator.CreateInstance(type);
                     try
                     {
-                        return Option.Some<T, IReadOnlyList<string>>((T)fun.Invoke(obj, BindingFlags.Default | BindingFlags.InvokeMethod, null, args, CultureInfo.InvariantCulture));
+                        return Option.Some<T, ErrorSet>((T)fun.Invoke(obj, BindingFlags.Default | BindingFlags.InvokeMethod, null, args, CultureInfo.InvariantCulture));
                     }
                     catch (Exception e)
                     {
-                        return Option.None<T, IReadOnlyList<string>>(new []{e.Message});
+                        return Option.None<T, ErrorSet>(new ErrorSet (e.Message));
                     }
                 }
 
-                return Option.Some<Func<object[], Option<T, IReadOnlyList<string>>>, IReadOnlyList<string>>(Func);
+                return Option.Some<Func<object[], Option<T, ErrorSet>>, ErrorSet>(Func);
             });
         }
 
-        private static IReadOnlyList<string> ValidateCompiledFunction(MethodInfo fun, Type expectedReturn,
+        private static ErrorSet ValidateCompiledFunction(MethodInfo fun, Type expectedReturn,
             IReadOnlyCollection<Type> paramTypes)
         {
             if (fun == null)
             {
-                return new[] {$"Function '{FunctionName}' missing"};
+                return new ErrorSet($"Function '{FunctionName}' missing");
             }
 
             if (fun.GetParameters().Length != paramTypes.Count)
             {
-                return new[] {$"Incorrect parameter count expected {paramTypes.Count}"};
+                return new ErrorSet($"Incorrect parameter count expected {paramTypes.Count}");
             }
 
             if (expectedReturn != fun.ReturnType)
             {
-                return new[] {$"Return type incorrect expected {expectedReturn}"};
+                return new ErrorSet($"Return type incorrect expected {expectedReturn}");
             }
 
             var missMatches = fun.GetParameters().Select(a => a.ParameterType)
                 .Zip(paramTypes, (typeA, typeB) => (typeA, typeB)).Where(a => a.typeA != a.typeB);
             if (missMatches.Any())
             {
-                return new[] {"Parameter type mismatch"};
+                return new ErrorSet("Parameter type mismatch");
             }
 
-            return new string[] { };
+            return new ErrorSet();
         }
 
         private static string WrapInClass(string function)
@@ -95,7 +96,7 @@ namespace CodeGolf
             return res;
         }
 
-        private static Option<Assembly, IReadOnlyList<string>> Compile(string function)
+        private static Option<Assembly, ErrorSet> Compile(string function)
         {
             var syntaxTree = CSharpSyntaxTree.ParseText(WrapInClass(function));
 
@@ -123,12 +124,12 @@ namespace CodeGolf
                             diagnostic.IsWarningAsError ||
                             diagnostic.Severity == DiagnosticSeverity.Error).Select(a => a.ToString());
 
-                        return Option.None<Assembly, IReadOnlyList<string>>(failures.ToList());
+                        return Option.None<Assembly, ErrorSet>( new ErrorSet(failures.ToList()));
                     }
                     else
                     {
                         ms.Seek(0, SeekOrigin.Begin);
-                        return Option.Some<Assembly, IReadOnlyList<string>>(Assembly.Load(ms.ToArray()));
+                        return Option.Some<Assembly, ErrorSet>(Assembly.Load(ms.ToArray()));
                     }
                 }
             });

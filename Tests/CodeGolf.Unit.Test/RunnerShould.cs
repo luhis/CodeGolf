@@ -73,5 +73,18 @@ namespace CodeGolf.Unit.Test
         }";
             this.runner.Compile<string>(code, new[] { typeof(string) }).ExtractSuccess()(new object[] { "Hello world" }).ExtractErrors().Should().BeEquivalentTo("Exception has been thrown by the target of an invocation.");
         }
+
+        [Fact(Skip = "This test fails")]
+        public void DealWithInfiniteLoops()
+        {
+            var code = @"
+        public string Main(string s){ 
+            while(true)
+            {
+            }
+            return s;
+        }";
+            this.runner.Compile<string>(code, new[] { typeof(string) }).ExtractSuccess()(new object[] { "Hello world" }).ExtractErrors().Should().BeEquivalentTo("Exception has been thrown by the target of an invocation.");
+        }
     }
 }

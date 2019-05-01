@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -27,7 +26,7 @@ namespace CodeGolf.Web.Pages
         {
             var challenge = Challenges.HelloWorld;
             var res = this.codeGolfService.Score(this.Code, challenge);
-            res.Match(a => this.Score = a, err => this.Errors = err);
+            res.Match(a => this.Score = a, err => this.Errors = err.Errors);
         }
 
         public IReadOnlyList<string> Errors { get; private set; } = new List<string>();
