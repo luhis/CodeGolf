@@ -20,5 +20,29 @@ namespace CodeGolf.Unit.Test
                 }));
             r.ExtractSuccess().Should().Be(38);
         }
+
+        [Fact]
+        public void ReturnACompileFailure()
+        {
+            var r = this.codeGolfService.Score(
+                "public string Main() => \"Hello World\";;",
+                new ChallengeSet<string>("a", "b", new Type[] { }, new[]
+                {
+                    new Challenge<string>(new object[0], "Hello World")
+                }));
+            r.ExtractErrors().Should().BeEquivalentTo("(1,74): error CS1519: Invalid token ';' in class, struct, or interface member declaration");
+        }
+
+        [Fact]
+        public void ReturnAResultFailure()
+        {
+            var r = this.codeGolfService.Score(
+                "public string Main() => \"Hello X World\";",
+                new ChallengeSet<string>("a", "b", new Type[] { }, new[]
+                {
+                    new Challenge<string>(new object[0], "Hello World")
+                }));
+            r.ExtractErrors().Should().BeEquivalentTo("Return value incorrect. Expected Expected: Hello World, Found: Hello X World");
+        }
     }
 }

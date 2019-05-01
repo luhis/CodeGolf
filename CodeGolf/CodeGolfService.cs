@@ -15,12 +15,12 @@ namespace CodeGolf
             var compileResult = this.runner.Compile<T>(code, challenge.Params);
             return compileResult.FlatMap(compiled =>
             {
-                var fails = challenge.Challenges.Where(a => compiled(a.Args).Match(success => !success.Equals(a.ExpectedResult), _ => false));
+                var fails = challenge.Challenges.Select(a => (challenge: a, result: compiled(a.Args))).Where(a => a.result.Match(success => !success.Equals(a.challenge.ExpectedResult), _ => false));
                 if (fails.Any())
                 {
-                    // todo deal with multiple failures
+                    var failStrings = fails.Select(a => $"Expected: {a.challenge.ExpectedResult}, Found: {MapToString(a.result)}");
                     return Option.None<int, IReadOnlyList<string>>(new List<string>()
-                        {$"Return value incorrect. Expected {fails.First().ExpectedResult}"});
+                        {$"Return value incorrect. Expected {string.Join(", ", failStrings)}"});
                 }
                 else
                 {
@@ -28,5 +28,8 @@ namespace CodeGolf
                 }
             });
         }
+
+        private static string MapToString<T>(Option<T, IReadOnlyList<string>> o) =>
+            o.Match(some => some.ToString(), error => string.Join("", error));
     }
 }

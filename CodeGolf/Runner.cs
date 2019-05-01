@@ -30,7 +30,6 @@ namespace CodeGolf
                     return Option.None<Func<object[], Option<T, IReadOnlyList<string>>>, IReadOnlyList<string>>(validationFailures);
                 }
 
-
                 Option<T, IReadOnlyList<string>> Func(object[] args)
                 {
                     var obj = Activator.CreateInstance(type);
