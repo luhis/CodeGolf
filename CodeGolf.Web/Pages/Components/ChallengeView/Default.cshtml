@@ -1,3 +1,10 @@
-﻿@model Dtos.Challenge<string>;
+﻿@model Dtos.ChallengeSet<string>;
 
-<div>@($"({string.Join(", ", Model.Args)}) => {Model.ExpectedResult} ")</div>
+@Model.Title
+
+@Model.Description
+
+@foreach (var a in Model.Challenges)
+{
+    <div>@($"({string.Join(", ", a.Args)}) => {a.ExpectedResult}")</div>
+}
