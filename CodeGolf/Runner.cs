@@ -4,6 +4,8 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 using CodeGolf.Dtos;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -16,7 +18,7 @@ namespace CodeGolf
         private const string ClassName = "CodeGolf";
         private const string FunctionName = "Main";
 
-        Option<Func<object[], Option<T, ErrorSet>>, ErrorSet> IRunner.Compile<T>(
+        Option<Func<object[], Task<Option<T, ErrorSet>>>, ErrorSet> IRunner.Compile<T>(
             string function, IReadOnlyList<Type> paramTypes)
         {
             var assembly = Compile(function);
@@ -28,15 +30,19 @@ namespace CodeGolf
                 var validationFailures = ValidateCompiledFunction(fun, typeof(T), paramTypes);
                 if (validationFailures.Errors.Any())
                 {
-                    return Option.None<Func<object[], Option<T, ErrorSet>>, ErrorSet>(validationFailures);
+                    return Option.None<Func<object[], Task<Option<T, ErrorSet>>>, ErrorSet>(validationFailures);
                 }
 
-                Option<T, ErrorSet> Func(object[] args)
+                async Task<Option<T, ErrorSet>> Func(object[] args)
                 {
                     var obj = Activator.CreateInstance(type);
+                    var cts = new CancellationTokenSource();
+                    cts.CancelAfter(100);
                     try
                     {
-                        return Option.Some<T, ErrorSet>((T)fun.Invoke(obj, BindingFlags.Default | BindingFlags.InvokeMethod, null, args, CultureInfo.InvariantCulture));
+                        var r = await Task.Run(() => fun.Invoke(obj, BindingFlags.Default | BindingFlags.InvokeMethod,
+                            null, args, CultureInfo.InvariantCulture), cts.Token);
+                        return Option.Some<T, ErrorSet>((T)r);
                     }
                     catch (Exception e)
                     {
@@ -44,7 +50,7 @@ namespace CodeGolf
                     }
                 }
 
-                return Option.Some<Func<object[], Option<T, ErrorSet>>, ErrorSet>(Func);
+                return Option.Some<Func<object[], Task<Option<T, ErrorSet>>>, ErrorSet>(Func);
             });
         }
 

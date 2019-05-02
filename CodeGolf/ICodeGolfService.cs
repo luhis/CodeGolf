@@ -1,10 +1,11 @@
-﻿using CodeGolf.Dtos;
+﻿using System.Threading.Tasks;
+using CodeGolf.Dtos;
 using Optional;
 
 namespace CodeGolf
 {
     public interface ICodeGolfService
     {
-        Option<int, ErrorSet> Score<T>(string code, ChallengeSet<T> challenge);
+        Task<Option<int, ErrorSet>> Score<T>(string code, ChallengeSet<T> challenge);
     }
 }

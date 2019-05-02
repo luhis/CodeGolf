@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -22,10 +23,10 @@ namespace CodeGolf.Web.Pages
 
         }
 
-        public void OnPost()
+        public async Task OnPost()
         {
             var challenge = Challenges.HelloWorld;
-            var res = this.codeGolfService.Score(this.Code, challenge);
+            var res = await this.codeGolfService.Score(this.Code, challenge);
             res.Match(a => this.Score = a, err => this.Errors = err.Errors);
         }
 

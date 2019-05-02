@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Xunit;
 
@@ -11,7 +12,7 @@ namespace CodeGolf.Unit.Test
         [Fact]
         public void ReturnHelloWorld()
         {
-            var r = this.runner.Compile<string>("public string Main(string s){ return s;}", new[] { typeof(string) }).ExtractSuccess()(new[] { "Hello world" });
+            var r = this.runner.Compile<string>("public string Main(string s){ return s;}", new[] { typeof(string) }).ExtractSuccess()(new[] { "Hello world" }).Result;
             r.ExtractSuccess().Should().BeEquivalentTo("Hello world");
         }
 
@@ -19,7 +20,7 @@ namespace CodeGolf.Unit.Test
         public void ReturnNotHelloWorld()
         {
             var r = this.runner.Compile<string>("public string Main(string s){ return \"not \" + s;}", new[] { typeof(string) }).ExtractSuccess()(new[]
-                {"Hello world"});
+                {"Hello world"}).Result;
             r.ExtractSuccess().Should().BeEquivalentTo("not Hello world");
         }
 
@@ -60,7 +61,7 @@ namespace CodeGolf.Unit.Test
             var code = @"
         private int X() => 42;
         public string Main(string s){ return s + X();}";
-            this.runner.Compile<string>(code, new[] { typeof(string) }).ExtractSuccess()(new object[] {"Hello world"}).ExtractSuccess().Should().BeEquivalentTo("Hello world42");
+            this.runner.Compile<string>(code, new[] { typeof(string) }).ExtractSuccess()(new object[] {"Hello world"}).Result.ExtractSuccess().Should().BeEquivalentTo("Hello world42");
         }
 
         [Fact]
@@ -71,11 +72,11 @@ namespace CodeGolf.Unit.Test
             var a = (new [] {1})[1];
             return s;
         }";
-            this.runner.Compile<string>(code, new[] { typeof(string) }).ExtractSuccess()(new object[] { "Hello world" }).ExtractErrors().Should().BeEquivalentTo("Exception has been thrown by the target of an invocation.");
+            this.runner.Compile<string>(code, new[] { typeof(string) }).ExtractSuccess()(new object[] { "Hello world" }).Result.ExtractErrors().Should().BeEquivalentTo("Exception has been thrown by the target of an invocation.");
         }
 
-        [Fact(Skip = "This test fails")]
-        public void DealWithInfiniteLoops()
+        [Fact(Skip = "not working")]
+        public async Task DealWithInfiniteLoops()
         {
             var code = @"
         public string Main(string s){ 
@@ -84,7 +85,8 @@ namespace CodeGolf.Unit.Test
             }
             return s;
         }";
-            this.runner.Compile<string>(code, new[] { typeof(string) }).ExtractSuccess()(new object[] { "Hello world" }).ExtractErrors().Should().BeEquivalentTo("Exception has been thrown by the target of an invocation.");
+            var r = await this.runner.Compile<string>(code, new[] { typeof(string) }).ExtractSuccess()(new object[] { "Hello world" });
+                r.ExtractErrors().Should().BeEquivalentTo("A task was canceled.");
         }
     }
 }

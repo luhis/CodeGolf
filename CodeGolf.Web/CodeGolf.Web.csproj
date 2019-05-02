@@ -23,4 +23,9 @@
     <ProjectReference Include="..\CodeGolf\CodeGolf.csproj" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Folder Include="Pages\Shared\Components\" />
+  </ItemGroup>
+
 </Project>

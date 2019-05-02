@@ -1,6 +1,8 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using CodeGolf.Dtos;
 using Optional;
+using Optional.Async;
 
 namespace CodeGolf
 {
@@ -9,12 +11,12 @@ namespace CodeGolf
         private readonly IRunner runner = new Runner();
         private readonly IScorer scorer = new Scorer();
 
-        public Option<int, ErrorSet> Score<T>(string code, ChallengeSet<T> challenge)
+        Task<Option<int, ErrorSet>> ICodeGolfService.Score<T>(string code, ChallengeSet<T> challenge)
         {
             var compileResult = this.runner.Compile<T>(code, challenge.Params);
-            return compileResult.FlatMap(compiled =>
+            var x = compileResult.FlatMapAsync(async compiled =>
             {
-                var fails = challenge.Challenges.Select(a => (challenge: a, result: compiled(a.Args))).Where(a => a.result.Match(success => !success.Equals(a.challenge.ExpectedResult), _ => false));
+                var fails = (await Task.WhenAll(challenge.Challenges.Select(async a => (challenge: a, result: await compiled(a.Args))))).Where(a => (a.result).Match(success => !success.Equals(a.challenge.ExpectedResult), _ => false));
                 if (fails.Any())
                 {
                     var failStrings = fails.Select(a => $"Expected: {a.challenge.ExpectedResult}, Found: {MapToString(a.result)}");
@@ -25,6 +27,8 @@ namespace CodeGolf
                     return Option.Some<int, ErrorSet>(this.scorer.Score(code));
                 }
             });
+
+            return x;
         }
 
         private static string MapToString<T>(Option<T, ErrorSet> o) =>

@@ -17,7 +17,7 @@ namespace CodeGolf.Unit.Test
                 new ChallengeSet<string>("a", "b", new Type[] { }, new[]
                 {
                     new Challenge<string>(new object[0], "Hello World")
-                }));
+                })).Result;
             r.ExtractSuccess().Should().Be(38);
         }
 
@@ -29,7 +29,7 @@ namespace CodeGolf.Unit.Test
                 new ChallengeSet<string>("a", "b", new Type[] { }, new[]
                 {
                     new Challenge<string>(new object[0], "Hello World")
-                }));
+                })).Result;
             r.ExtractErrors().Should().BeEquivalentTo("(1,74): error CS1519: Invalid token ';' in class, struct, or interface member declaration");
         }
 
@@ -41,7 +41,7 @@ namespace CodeGolf.Unit.Test
                 new ChallengeSet<string>("a", "b", new Type[] { }, new[]
                 {
                     new Challenge<string>(new object[0], "Hello World")
-                }));
+                })).Result;
             r.ExtractErrors().Should().BeEquivalentTo("Return value incorrect. Expected Expected: Hello World, Found: Hello X World");
         }
     }
