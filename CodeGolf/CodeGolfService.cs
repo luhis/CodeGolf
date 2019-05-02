@@ -16,7 +16,7 @@ namespace CodeGolf
             var compileResult = this.runner.Compile<T>(code, challenge.Params);
             var x = compileResult.FlatMapAsync(async compiled =>
             {
-                var fails = (await Task.WhenAll(challenge.Challenges.Select(async a => (challenge: a, result: await compiled(a.Args))))).Where(a => (a.result).Match(success => !success.Equals(a.challenge.ExpectedResult), _ => false));
+                var fails = (await Task.WhenAll(challenge.Challenges.Select(async a => (challenge: a, result: await compiled(a.Args))))).Where(IsFailure);
                 if (fails.Any())
                 {
                     var failStrings = fails.Select(a => $"Expected: {a.challenge.ExpectedResult}, Found: {MapToString(a.result)}");
@@ -30,6 +30,10 @@ namespace CodeGolf
 
             return x;
         }
+
+        private static bool IsFailure<T>((Challenge<T> challenge, Option<T, ErrorSet> result) prop) => 
+            prop.result.Match(success => !success.Equals(prop.challenge.ExpectedResult), _ => true);
+
 
         private static string MapToString<T>(Option<T, ErrorSet> o) =>
             o.Match(some => some.ToString(), error => string.Join("", error));
