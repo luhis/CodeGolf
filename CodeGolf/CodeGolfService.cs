@@ -19,8 +19,8 @@ namespace CodeGolf
                 var fails = (await Task.WhenAll(challenge.Challenges.Select(async a => (challenge: a, result: await compiled(a.Args))))).Where(IsFailure);
                 if (fails.Any())
                 {
-                    var failStrings = fails.Select(a => $"Expected: {a.challenge.ExpectedResult}, Found: {MapToString(a.result)}");
-                    return Option.None<int, ErrorSet>(new ErrorSet($"Return value incorrect. Expected {string.Join(", ", failStrings)}"));
+                    var failStrings = fails.Select(a => $"Return value incorrect. Expected: {a.challenge.ExpectedResult}, Found: {MapToString(a.result)}").ToList();
+                    return Option.None<int, ErrorSet>(new ErrorSet(failStrings));
                 }
                 else
                 {

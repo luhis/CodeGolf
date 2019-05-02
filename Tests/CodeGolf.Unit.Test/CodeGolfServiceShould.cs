@@ -42,7 +42,7 @@ namespace CodeGolf.Unit.Test
                 {
                     new Challenge<string>(new object[0], "Hello World")
                 })).Result;
-            r.ExtractErrors().Should().BeEquivalentTo("Return value incorrect. Expected Expected: Hello World, Found: Hello X World");
+            r.ExtractErrors().Should().BeEquivalentTo("Return value incorrect. Expected: Hello World, Found: Hello X World");
         }
     }
 }
