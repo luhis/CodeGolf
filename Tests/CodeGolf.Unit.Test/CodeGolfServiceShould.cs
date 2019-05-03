@@ -18,7 +18,7 @@ namespace CodeGolf.Unit.Test
                 {
                     new Challenge<string>(new object[0], "Hello World")
                 })).Result;
-            r.ExtractSuccess().Should().Be(38);
+            r.ExtractSuccess().Should().Be(33);
         }
 
         [Fact]
