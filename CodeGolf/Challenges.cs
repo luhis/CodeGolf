@@ -22,7 +22,7 @@ namespace CodeGolf
             i | ini
             o | api
             u | iki",
-            new Type[] {typeof(string)}, 
+            new [] {typeof(string)}, 
             new[]
             {
                 new Challenge<string>(new object[] { "Shaun" }, "Shoboikin"),
@@ -31,5 +31,15 @@ namespace CodeGolf
                 new Challenge<string>(new object[] { "Alan" }, "Obolobon"),
                 new Challenge<string>(new object[] { "Australia" }, "Oboikistroboliniobo"),
             } );
+
+        public static readonly ChallengeSet<string> Calculator = new ChallengeSet<string>("Basic Calculator",
+            @"You must write a program to evaluate a string that would be entered into a calculator.",
+            new[] { typeof(string) },
+            new[]
+            {
+                new Challenge<string>(new object[] { "-4 + 5" }, "1"),
+                new Challenge<string>(new object[] { "-7.5 / 2.5" }, "-3"),
+                new Challenge<string>(new object[] { "-2 + 6 / 2 * 8 - 1 / 2.5 - 18" }, "-12"),
+            });
     }
 }
