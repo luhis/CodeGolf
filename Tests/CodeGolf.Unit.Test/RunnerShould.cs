@@ -61,7 +61,8 @@ namespace CodeGolf.Unit.Test
             var code = @"
         private int X() => 42;
         public string Main(string s){ return s + X();}";
-            this.runner.Compile<string>(code, new[] { typeof(string) }).ExtractSuccess()(new object[] {"Hello world"}).Result.ExtractSuccess().Should().BeEquivalentTo("Hello world42");
+            this.runner.Compile<string>(code, new[] { typeof(string) }).ExtractSuccess()(new object[] {"Hello world"}).Result.
+                ExtractSuccess().Should().BeEquivalentTo("Hello world42");
         }
 
         [Fact]
@@ -72,10 +73,11 @@ namespace CodeGolf.Unit.Test
             var a = (new [] {1})[1];
             return s;
         }";
-            this.runner.Compile<string>(code, new[] { typeof(string) }).ExtractSuccess()(new object[] { "Hello world" }).Result.ExtractErrors().Should().BeEquivalentTo("Exception has been thrown by the target of an invocation.");
+            this.runner.Compile<string>(code, new[] { typeof(string) }).ExtractSuccess()(new object[] { "Hello world" }).Result
+                .ExtractErrors().Should().BeEquivalentTo("One or more errors occurred. (Exception has been thrown by the target of an invocation.)");
         }
 
-        [Fact(Skip = "not working")]
+        [Fact]
         public async Task DealWithInfiniteLoops()
         {
             var code = @"

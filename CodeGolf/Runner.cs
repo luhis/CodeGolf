@@ -4,7 +4,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
 using CodeGolf.Dtos;
 using Microsoft.CodeAnalysis;
@@ -25,7 +24,7 @@ namespace CodeGolf
 
             return assembly.FlatMap(success =>
             {
-                var type = success.GetType($"{ClassName}");
+                var type = success.GetType(ClassName);
                 var fun = type.GetMethod(FunctionName);
                 var validationFailures = ValidateCompiledFunction(fun, typeof(T), paramTypes);
                 if (validationFailures.Errors.Any())
@@ -33,20 +32,23 @@ namespace CodeGolf
                     return Option.None<Func<object[], Task<Option<T, ErrorSet>>>, ErrorSet>(validationFailures);
                 }
 
-                async Task<Option<T, ErrorSet>> Func(object[] args)
+                Task<Option<T, ErrorSet>> Func(object[] args)
                 {
                     var obj = Activator.CreateInstance(type);
-                    var cts = new CancellationTokenSource();
-                    cts.CancelAfter(100);
                     try
                     {
-                        var r = await Task.Run(() => fun.Invoke(obj, BindingFlags.Default | BindingFlags.InvokeMethod,
-                            null, args, CultureInfo.InvariantCulture), cts.Token);
-                        return Option.Some<T, ErrorSet>((T)r);
+                        var t = Task.Run(() => fun.Invoke(obj, BindingFlags.Default | BindingFlags.InvokeMethod,
+                            null, args, CultureInfo.InvariantCulture));
+                        var r = t.Wait(TimeSpan.FromMilliseconds(100));
+                        if (!r)
+                        {
+                            throw new Exception("A task was canceled.");
+                        }
+                        return Task.FromResult(Option.Some<T, ErrorSet>((T)t.Result));
                     }
                     catch (Exception e)
                     {
-                        return Option.None<T, ErrorSet>(new ErrorSet (e.Message));
+                        return Task.FromResult(Option.None<T, ErrorSet>(new ErrorSet (e.Message)));
                     }
                 }
 
