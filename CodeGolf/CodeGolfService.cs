@@ -36,6 +36,6 @@ namespace CodeGolf
 
 
         private static string MapToString<T>(Option<T, ErrorSet> o) =>
-            o.Match(some => some.ToString(), error => string.Join("", error));
+            o.Match(some => some.ToString(), error => string.Join("", error.Errors));
     }
 }

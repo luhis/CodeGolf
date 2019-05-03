@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using CodeGolf.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -13,9 +14,12 @@ namespace CodeGolf.Web.Pages
         public string Code { get; set; }
         public int Score { get; private set; }
 
+        public ChallengeSet<string> ChallengeSet { get; private set; }
+
         public DemoModel(ICodeGolfService codeGolfService)
         {
             this.codeGolfService = codeGolfService;
+            this.ChallengeSet = Challenges.HelloWorld;
         }
 
         public void OnGet()
@@ -25,8 +29,7 @@ namespace CodeGolf.Web.Pages
 
         public async Task OnPost()
         {
-            var challenge = Challenges.HelloWorld;
-            var res = await this.codeGolfService.Score(this.Code, challenge);
+            var res = await this.codeGolfService.Score(this.Code, this.ChallengeSet);
             res.Match(a => this.Score = a, err => this.Errors = err.Errors);
         }
 

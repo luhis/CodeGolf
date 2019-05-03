@@ -2,12 +2,11 @@
 @model CodeGolf.Web.Pages.DemoModel
 @{
     ViewData["Title"] = "Demo";
-    var challenge = Challenges.HelloWorld;
 }
 
 <h1>Demo</h1>
 
-<vc:challenge-view p="@challenge"/>
+<vc:challenge-view p="@Model.ChallengeSet"/>
 
 <form method="post">
     <div class="field">
