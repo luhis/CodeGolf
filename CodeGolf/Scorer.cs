@@ -1,8 +1,15 @@
-﻿namespace CodeGolf
+﻿using System.Linq;
+
+namespace CodeGolf
 {
     public class Scorer : IScorer
     {
-        private static string CleanSource(string s) => s.Replace("\n", "");
+        private static string TrimLines(string s)
+        {
+            return string.Join("\n", s.Split('\n').Select(a => a.Trim()));
+        }
+
+        private static string CleanSource(string s) => TrimLines(s).Replace("\n", "").Replace(" ", "");
 
         int IScorer.Score(string code)
         {

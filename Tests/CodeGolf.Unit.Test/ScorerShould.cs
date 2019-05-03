@@ -11,7 +11,20 @@ namespace CodeGolf.Unit.Test
         public void ReturnCorrectScore()
         {
             var r = this.scorer.Score("public string Main(string s){ return s;}");
-            r.Should().Be(40);
+            r.Should().Be(35);
+        }
+
+        [Fact]
+        public void ReturnCorrectScoreWithWhiteSpace()
+        {
+            var code = @"
+            public string Main(string s)
+            {
+                return s;
+            }";
+            
+            var r = this.scorer.Score(code);
+            r.Should().Be(35);
         }
     }
 }
