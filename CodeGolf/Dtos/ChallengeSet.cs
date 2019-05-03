@@ -9,9 +9,9 @@ namespace CodeGolf.Dtos
     {
         public ChallengeSet(string title, string description, IReadOnlyList<Type> ps, IReadOnlyList<Challenge<T>> challenges)
         {
-            this.Title = title;
-            this.Description = description;
-            this.Params = ps;
+            this.Title = EnsureArg.IsNotNull(title, nameof(title));
+            this.Description = EnsureArg.IsNotNull(description, nameof(description));
+            this.Params = EnsureArg.IsNotNull(ps, nameof(ps));
             this.Challenges = EnsureArg.IsNotNull(challenges, nameof(challenges));
             foreach (var challenge in challenges)
             {
