@@ -75,7 +75,7 @@ namespace CodeGolf
             }
 
             var missMatches = fun.GetParameters().Select(a => a.ParameterType)
-                .Zip(paramTypes, (typeA, typeB) => (typeA, typeB)).Where(a => a.typeA != a.typeB);
+                .Zip(paramTypes, ValueTuple.Create).Where(a => a.Item1 != a.Item2);
             if (missMatches.Any())
             {
                 return new ErrorSet("Parameter type mismatch");

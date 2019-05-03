@@ -9,5 +9,27 @@ namespace CodeGolf
             "Write a function that returns 'Hello World'",
             new Type[]{}, 
             new[] {new Challenge<string>(new object[0], "Hello World")});
+
+        public static readonly ChallengeSet<string> AlienSpeak = new ChallengeSet<string>("English to Alien translator",
+            @"Take a string and output the alien's language equivalent. The translation works as such:
+
+        Swap all the vowels in the word with the corresponding:
+
+        Vowel | With
+        -------- + --------
+        a | obo
+            e | unu
+            i | ini
+            o | api
+            u | iki",
+            new Type[] {typeof(string)}, 
+            new[]
+            {
+                new Challenge<string>(new object[] { "Shaun" }, "Shoboikin"),
+                new Challenge<string>(new object[] { "Java" }, "Jobovobo"),
+                new Challenge<string>(new object[] { "Hello, World!" }, "Hunullapi, Wapirld!"),
+                new Challenge<string>(new object[] { "Alan" }, "Obolobon"),
+                new Challenge<string>(new object[] { "Australia" }, "Oboikistroboliniobo"),
+            } );
     }
 }
