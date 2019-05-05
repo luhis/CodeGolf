@@ -1,0 +1,17 @@
+[Unit]
+Description=Code Golf website
+
+[Service]
+WorkingDirectory=/var/www/codegolf/CodeGolf/CodeGolf.Web/publish/
+ExecStart=/usr/bin/dotnet /var/www/codegolf/CodeGolf/CodeGolf.Web/publish/codegolf.dll
+Restart=always
+# Restart service after 10 seconds if the dotnet service crashes:
+RestartSec=10
+KillSignal=SIGINT
+SyslogIdentifier=dotnet-example
+User=www-data
+Environment=ASPNETCORE_ENVIRONMENT=Production
+Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
+
+[Install]
+WantedBy=multi-user.target
