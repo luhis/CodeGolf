@@ -5,5 +5,7 @@ namespace CodeGolf
     public interface IGameService
     {
         Game GetGame();
+
+        GameSlot GetCurrent();
     }
 }

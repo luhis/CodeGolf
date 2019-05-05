@@ -13,5 +13,10 @@ namespace CodeGolf
                 new GameSlot(Challenges.AlienSpeak, TimeSpan.FromMinutes(5)),
             });
         }
+
+        GameSlot IGameService.GetCurrent()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
