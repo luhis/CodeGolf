@@ -63,6 +63,12 @@ namespace CodeGolf.Web
                 app.UseHsts();
             }
 
+            app.UseSecurityHeaders(policies =>
+                    policies
+                        .AddDefaultSecurityHeaders()
+                        .AddStrictTransportSecurityMaxAgeIncludeSubDomains(maxAgeInSeconds: 63072000)
+                );
+
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
