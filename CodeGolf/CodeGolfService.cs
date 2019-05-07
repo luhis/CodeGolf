@@ -16,7 +16,7 @@ namespace CodeGolf
             var compileResult = this.runner.Compile<T>(code, challenge.Params);
             var x = compileResult.FlatMapAsync(async compiled =>
             {
-                var fails = (await Task.WhenAll(challenge.Challenges.Select(async a => (challenge: a, result: await compiled(a.Args))))).Where(IsFailure);
+                var fails = (await Task.WhenAll(challenge.Challenges.Select(async a => (challenge: a, result: await compiled(a.Args).ConfigureAwait(false)))).ConfigureAwait(false)).Where(IsFailure);
                 if (fails.Any())
                 {
                     var failStrings = fails.Select(a => $"Return value incorrect. Expected: {a.challenge.ExpectedResult}, Found: {MapToString(a.result)}").ToList();
