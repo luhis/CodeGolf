@@ -29,7 +29,7 @@ namespace CodeGolf.Web.Pages
 
         public async Task OnPost()
         {
-            var res = await this.codeGolfService.Score(this.Code, this.ChallengeSet);
+            var res = await this.codeGolfService.Score(this.Code, this.ChallengeSet).ConfigureAwait(false);
             res.Match(a => this.Score = a, err => this.Errors = err.Errors);
         }
 
