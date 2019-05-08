@@ -78,7 +78,7 @@ namespace CodeGolf.Unit.Test
         }
 
         [Fact]
-        public async Task DealWithInfiniteLoops()
+        public void DealWithInfiniteLoops()
         {
             var code = @"
         public string Main(string s){ 
@@ -87,8 +87,7 @@ namespace CodeGolf.Unit.Test
             }
             return s;
         }";
-            var r = await this.runner.Compile<string>(code, new[] { typeof(string) }).ExtractSuccess()(new object[] { "Hello world" });
-                r.ExtractErrors().Should().BeEquivalentTo("A task was canceled.");
+            this.runner.Compile<string>(code, new[] { typeof(string) }).ExtractErrors().Should().BeEquivalentTo("(6,13): warning CS0162: Unreachable code detected");
         }
     }
 }

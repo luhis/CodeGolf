@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using CodeGolf.Dtos;
 using Microsoft.CodeAnalysis;
@@ -32,23 +33,32 @@ namespace CodeGolf
                     return Option.None<Func<object[], Task<Option<T, ErrorSet>>>, ErrorSet>(validationFailures);
                 }
 
-                Task<Option<T, ErrorSet>> Func(object[] args)
+                async Task<Option<T, ErrorSet>> Func(object[] args)
                 {
                     var obj = Activator.CreateInstance(type);
                     try
                     {
-                        var t = Task.Run(() => fun.Invoke(obj, BindingFlags.Default | BindingFlags.InvokeMethod,
-                            null, args, CultureInfo.InvariantCulture));
-                        var r = t.Wait(TimeSpan.FromMilliseconds(100));
-                        if (!r)
+                        var source = new CancellationTokenSource();
+                        source.CancelAfter(TimeSpan.FromSeconds(1));
+                        var completionSource = new TaskCompletionSource<object>();
+                        source.Token.Register(() => completionSource.TrySetCanceled());
+                        using (var task = Task<object>.Factory.StartNew(() => fun.Invoke(obj,
+                            BindingFlags.Default | BindingFlags.InvokeMethod,
+                            null, args, CultureInfo.InvariantCulture), source.Token))
                         {
-                            throw new Exception("A task was canceled.");
+                            await Task.WhenAny(task, completionSource.Task);
+
+                            if (source.IsCancellationRequested)
+                            {
+                                throw new Exception("A task was canceled.");
+                            }
+
+                            return Option.Some<T, ErrorSet>((T)task.Result);
                         }
-                        return Task.FromResult(Option.Some<T, ErrorSet>((T)t.Result));
                     }
                     catch (Exception e)
                     {
-                        return Task.FromResult(Option.None<T, ErrorSet>(new ErrorSet (e.Message)));
+                        return Option.None<T, ErrorSet>(new ErrorSet (e.Message));
                     }
                 }
 
@@ -120,17 +130,17 @@ namespace CodeGolf
                     assemblyName,
                     syntaxTrees: new[] {syntaxTree},
                     references: references,
-                    options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+                    options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, warningLevel: 4, reportSuppressedDiagnostics: true, allowUnsafe: false));
 
                 using (var ms = new MemoryStream())
                 {
                     var result = compilation.Emit(ms);
 
-                    if (!result.Success)
+
+                    if (result.Diagnostics.Any(a => a.Severity > DiagnosticSeverity.Info))
                     {
                         var failures = result.Diagnostics.Where(diagnostic =>
-                            diagnostic.IsWarningAsError ||
-                            diagnostic.Severity == DiagnosticSeverity.Error).Select(a => a.ToString());
+                            diagnostic.Severity > DiagnosticSeverity.Info).Select(a => a.ToString());
 
                         return Option.None<Assembly, ErrorSet>( new ErrorSet(failures.ToList()));
                     }
