@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using EnsureThat;
 
 namespace CodeGolf.Dtos
 {
@@ -6,7 +7,7 @@ namespace CodeGolf.Dtos
     {
         public ErrorSet(IReadOnlyList<string> errors)
         {
-            this.Errors = errors;
+            this.Errors = EnsureArg.IsNotNull(errors, nameof(errors));
         }
 
         public ErrorSet(params string[] s)

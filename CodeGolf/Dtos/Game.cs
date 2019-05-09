@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using EnsureThat;
 
 namespace CodeGolf.Dtos
 {
@@ -6,7 +7,7 @@ namespace CodeGolf.Dtos
     {
         public Game(IReadOnlyList<GameSlot> slots)
         {
-            this.Slots = slots;
+            this.Slots = EnsureArg.IsNotNull(slots, nameof(slots));
         }
 
         public  IReadOnlyList<GameSlot> Slots { get; }

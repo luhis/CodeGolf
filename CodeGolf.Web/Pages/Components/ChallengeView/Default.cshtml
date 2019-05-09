@@ -1,8 +1,8 @@
 ﻿@model Dtos.ChallengeSet<string>;
 
-@Model.Title
+    <h4 class="title">@Model.Title</h4>
 
-@Model.Description
+    <p>@Model.Description</p>
 
 @foreach (var a in Model.Challenges)
 {

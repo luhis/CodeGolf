@@ -1,0 +1,15 @@
+﻿@page
+@model CodeGolf.Web.Pages.DashboardModel
+
+<p>
+    <input type="button" class="button" value="Start Game" />
+</p>
+
+<vc:challenge-view p="@Model.CurrentChallenge" />
+
+<span class="title">Attempts</span>
+
+@foreach (var attempt in Model.Attempts)
+{
+    <div>@attempt.Name - @attempt.Score</div>
+}

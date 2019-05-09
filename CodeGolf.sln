@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGolf.Unit.Test", "Tests
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{C6B72B8F-FFBE-4498-9ED5-6C7849166D73}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGolf.Web", "CodeGolf.Web\CodeGolf.Web.csproj", "{EDFDE8AA-C57A-4A72-B58B-E66D2C68875D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGolf.Web", "CodeGolf.Web\CodeGolf.Web.csproj", "{EDFDE8AA-C57A-4A72-B58B-E66D2C68875D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
