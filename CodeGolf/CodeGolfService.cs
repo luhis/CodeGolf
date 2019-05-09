@@ -7,8 +7,14 @@ namespace CodeGolf
 {
     public class CodeGolfService : ICodeGolfService
     {
-        private readonly IRunner runner = new Runner();
-        private readonly IScorer scorer = new Scorer();
+        private readonly IRunner runner;
+        private readonly IScorer scorer;
+
+        public CodeGolfService(IRunner runner, IScorer scorer)
+        {
+            this.runner = runner;
+            this.scorer = scorer;
+        }
 
         Task<Option<int, ErrorSet>> ICodeGolfService.Score<T>(string code, ChallengeSet<T> challenge)
         {

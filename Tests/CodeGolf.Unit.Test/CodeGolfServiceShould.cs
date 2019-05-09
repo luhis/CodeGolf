@@ -7,7 +7,7 @@ namespace CodeGolf.Unit.Test
 {
     public class CodeGolfServiceShould
     {
-        private readonly ICodeGolfService codeGolfService = new CodeGolfService();
+        private readonly ICodeGolfService codeGolfService = new CodeGolfService(new Runner(), new Scorer());
 
         [Fact]
         public void ReturnCorrectResultForHelloWorld()

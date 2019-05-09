@@ -7,6 +7,9 @@ namespace CodeGolf
         public static void Add(IServiceCollection collection)
         {
             collection.AddTransient<ICodeGolfService, CodeGolfService>();
+            collection.AddTransient<IScorer, Scorer>();
+            collection.AddTransient<IRunner, Runner>();
+            collection.AddTransient<IGameService, GameService>();
         }
     }
 }
