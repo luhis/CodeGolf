@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using CodeGolf.Dtos;
 using Optional;
-using Optional.Async;
 
 namespace CodeGolf
 {
@@ -14,7 +13,7 @@ namespace CodeGolf
         Task<Option<int, ErrorSet>> ICodeGolfService.Score<T>(string code, ChallengeSet<T> challenge)
         {
             var compileResult = this.runner.Compile<T>(code, challenge.Params);
-            var x = compileResult.FlatMapAsync(async compiled =>
+            return compileResult.Match(async compiled =>
             {
                 var fails = (await Task.WhenAll(challenge.Challenges.Select(async a => (challenge: a, result: await compiled(a.Args).ConfigureAwait(false)))).ConfigureAwait(false)).Where(IsFailure);
                 if (fails.Any())
@@ -26,14 +25,11 @@ namespace CodeGolf
                 {
                     return Option.Some<int, ErrorSet>(this.scorer.Score(code));
                 }
-            });
-
-            return x;
+            }, err => Task.FromResult(Option.None<int, ErrorSet>(err)));
         }
 
         private static bool IsFailure<T>((Challenge<T> challenge, Option<T, ErrorSet> result) prop) => 
             prop.result.Match(success => !success.Equals(prop.challenge.ExpectedResult), _ => true);
-
 
         private static string MapToString<T>(Option<T, ErrorSet> o) =>
             o.Match(some => some.ToString(), error => string.Join("", error.Errors));

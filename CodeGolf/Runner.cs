@@ -42,23 +42,23 @@ namespace CodeGolf
                         source.CancelAfter(TimeSpan.FromSeconds(1));
                         var completionSource = new TaskCompletionSource<object>();
                         source.Token.Register(() => completionSource.TrySetCanceled());
-                        using (var task = Task<object>.Factory.StartNew(() => fun.Invoke(obj,
+                        var task = Task<object>.Factory.StartNew(() => fun.Invoke(obj,
                             BindingFlags.Default | BindingFlags.InvokeMethod,
-                            null, args, CultureInfo.InvariantCulture), source.Token))
+                            null, args, CultureInfo.InvariantCulture), source.Token);
+
+                        await Task.WhenAny(task, completionSource.Task);
+
+                        if (source.IsCancellationRequested)
                         {
-                            await Task.WhenAny(task, completionSource.Task);
-
-                            if (source.IsCancellationRequested)
-                            {
-                                throw new Exception("A task was canceled.");
-                            }
-
-                            return Option.Some<T, ErrorSet>((T)task.Result);
+                            throw new Exception("A task was canceled.");
                         }
+
+                        return Option.Some<T, ErrorSet>((T) task.Result);
+
                     }
                     catch (Exception e)
                     {
-                        return Option.None<T, ErrorSet>(new ErrorSet (e.Message));
+                        return Option.None<T, ErrorSet>(new ErrorSet(e.Message));
                     }
                 }
 
