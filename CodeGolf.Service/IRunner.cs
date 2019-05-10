@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using CodeGolf.Dtos;
+using CodeGolf.Service.Dtos;
 using Optional;
 
-namespace CodeGolf
+namespace CodeGolf.Service
 {
     public interface IRunner
     {

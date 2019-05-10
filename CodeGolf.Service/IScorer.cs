@@ -1,4 +1,4 @@
-﻿namespace CodeGolf
+﻿namespace CodeGolf.Service
 {
     public interface IScorer
     {

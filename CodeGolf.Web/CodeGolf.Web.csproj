@@ -21,12 +21,13 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\CodeGolf\CodeGolf.csproj" />
+    <Folder Include="Pages\Shared\Components\" />
   </ItemGroup>
 
 
   <ItemGroup>
-    <Folder Include="Pages\Shared\Components\" />
+    <ProjectReference Include="..\CodeGolf.Persistence\CodeGolf.Persistence.csproj" />
+    <ProjectReference Include="..\CodeGolf.Service\CodeGolf.Service.csproj" />
   </ItemGroup>
 
 </Project>

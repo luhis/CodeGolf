@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CodeGolf.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -46,7 +47,9 @@ namespace CodeGolf.Web
 
         private static readonly IReadOnlyList<Action<IServiceCollection>> DiModules = new List<Action<IServiceCollection>>
         {
-            CodeGolf.DiModule.Add
+            CodeGolf.Web.DiModule.Add,
+            CodeGolf.Service.DiModule.Add,
+            CodeGolf.Persistence.DiModule.Add
         };
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

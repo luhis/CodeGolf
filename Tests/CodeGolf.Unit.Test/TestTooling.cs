@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using CodeGolf.Dtos;
+using CodeGolf.Service.Dtos;
 using Optional;
 
 namespace CodeGolf.Unit.Test

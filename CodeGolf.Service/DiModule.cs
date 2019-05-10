@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace CodeGolf
+namespace CodeGolf.Service
 {
     public static class DiModule
     {

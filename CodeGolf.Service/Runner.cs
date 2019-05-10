@@ -6,12 +6,12 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using CodeGolf.Dtos;
+using CodeGolf.Service.Dtos;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Optional;
 
-namespace CodeGolf
+namespace CodeGolf.Service
 {
     public class Runner : IRunner
     {

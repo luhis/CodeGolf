@@ -1,6 +1,6 @@
 using EnsureThat;
 
-namespace CodeGolf.Dtos
+namespace CodeGolf.Service.Dtos
 {
     public class Attempt
     {

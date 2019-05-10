@@ -1,5 +1,6 @@
 using System;
-using CodeGolf.Dtos;
+using CodeGolf.Service;
+using CodeGolf.Service.Dtos;
 using FluentAssertions;
 using Xunit;
 

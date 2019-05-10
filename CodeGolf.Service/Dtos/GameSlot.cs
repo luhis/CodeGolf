@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using EnsureThat;
 
-namespace CodeGolf.Dtos
+namespace CodeGolf.Service.Dtos
 {
     public class GameSlot
     {

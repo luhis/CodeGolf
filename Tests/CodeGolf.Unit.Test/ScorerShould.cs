@@ -1,3 +1,4 @@
+using CodeGolf.Service;
 using FluentAssertions;
 using Xunit;
 

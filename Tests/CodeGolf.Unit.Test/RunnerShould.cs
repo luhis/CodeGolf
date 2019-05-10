@@ -1,5 +1,5 @@
 using System;
-using System.Threading.Tasks;
+using CodeGolf.Service;
 using FluentAssertions;
 using Xunit;
 

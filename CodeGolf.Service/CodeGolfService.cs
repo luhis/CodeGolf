@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using CodeGolf.Dtos;
+using CodeGolf.Service.Dtos;
 using Optional;
 
-namespace CodeGolf
+namespace CodeGolf.Service
 {
     public class CodeGolfService : ICodeGolfService
     {

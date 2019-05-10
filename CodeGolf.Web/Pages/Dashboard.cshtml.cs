@@ -1,5 +1,6 @@
 using System.Collections.Generic;
-using CodeGolf.Dtos;
+using CodeGolf.Service;
+using CodeGolf.Service.Dtos;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace CodeGolf.Web.Pages

@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace CodeGolf
+namespace CodeGolf.Service
 {
     public class Scorer : IScorer
     {
