@@ -12,9 +12,12 @@ namespace CodeGolf.Web.Pages
 
         [BindProperty]
         public string Code { get; set; }
+
         public int? Score { get; private set; }
 
-        public ChallengeSet<string> ChallengeSet { get; private set; }
+        public ErrorSet Errors { get; private set; } = new ErrorSet();
+
+        public ChallengeSet<string> ChallengeSet { get; }
 
         public DemoModel(ICodeGolfService codeGolfService)
         {
@@ -22,21 +25,10 @@ namespace CodeGolf.Web.Pages
             this.ChallengeSet = Challenges.HelloWorld;
         }
 
-        public void OnGet()
-        {
-
-        }
-
         public async Task OnPost()
         {
             var res = await this.codeGolfService.Score(this.Code, this.ChallengeSet).ConfigureAwait(false);
-            res.Match(a => this.Score = a, err =>
-            {
-                this.Score = null;
-                this.Errors = err.Errors;
-            });
+            res.Match(a => this.Score = a, err => this.Errors = err);
         }
-
-        public IReadOnlyList<string> Errors { get; private set; } = new List<string>();
     }
 }
