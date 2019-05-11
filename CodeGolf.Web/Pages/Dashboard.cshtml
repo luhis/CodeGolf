@@ -1,10 +1,14 @@
 ﻿@page
 @model CodeGolf.Web.Pages.DashboardModel
+@using Optional.Unsafe
+@{
+    ViewData["Title"] = "Dashboard";
+}
 
 <p>
     @if (!Model.Game.HasValue)
     {
-        <input type="button" class="button" value="Start Game"/>
+        <input type="button" class="button" value="Start Game" />
     }
     else
     {
@@ -12,11 +16,15 @@
     }
 </p>
 
-<vc:challenge-view p="@Model.CurrentChallenge" />
-
-<span class="title">Attempts</span>
-
-@foreach (var attempt in Model.Attempts)
+@if (Model.CurrentChallenge.HasValue)
 {
-    <div>@attempt.Name - @attempt.Score</div>
+    var challenge = Model.CurrentChallenge.ValueOrFailure();
+    <vc:challenge-view p="@challenge.ChallengeSet" />
+
+    <span class="title">Attempts</span>
+
+    @foreach (var attempt in challenge.Attempts)
+    {
+        <div>@attempt.Name - @attempt.Score</div>
+    }
 }

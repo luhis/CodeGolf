@@ -4,6 +4,8 @@ using CodeGolf.Service.Dtos;
 using CodeGolf.Web.Tooling;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Optional;
+using Optional.Unsafe;
 
 namespace CodeGolf.Web.Pages
 {
@@ -19,23 +21,18 @@ namespace CodeGolf.Web.Pages
 
         public ErrorSet Errors { get; private set; } = new ErrorSet();
 
-        public ChallengeSet<string> ChallengeSet { get; }
+        public Option<ChallengeSet<string>> ChallengeSet { get; }
 
         public GameModel(IGameService gameService, IIdentityTools identityTools)
         {
             this.gameService = gameService;
             this.identityTools = identityTools;
-            this.ChallengeSet = gameService.GetCurrent().ChallengeSet;
-        }
-
-        public void OnGet()
-        {
-
+            this.ChallengeSet = gameService.GetCurrent().Map(a => a.ChallengeSet);
         }
 
         public async Task OnPost()
         {
-            var res = await this.gameService.Attempt(this.identityTools.GetIdentity(this.Request), this.Code, this.ChallengeSet).ConfigureAwait(false);
+            var res = await this.gameService.Attempt(this.identityTools.GetIdentity(this.Request), this.Code, this.ChallengeSet.ValueOrFailure()).ConfigureAwait(false);
             res.Match(a => this.Score = a, err => this.Errors = err);
         }
     }

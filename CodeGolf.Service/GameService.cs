@@ -30,9 +30,9 @@ namespace CodeGolf.Service
             return Option.Some<Game>(this.game);
         }
 
-        GameSlot IGameService.GetCurrent()
+        Option<GameSlot> IGameService.GetCurrent()
         {
-            return this.game.Slots.First();
+            return Option.Some<GameSlot>(this.game.Slots.First());
         }
 
         public async Task<Option<int, ErrorSet>> Attempt(Guid userId, string code, ChallengeSet<string> challengeSet)

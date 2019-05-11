@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using CodeGolf.Service;
 using CodeGolf.Service.Dtos;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -8,9 +7,7 @@ namespace CodeGolf.Web.Pages
 {
     public class DashboardModel : PageModel
     {
-        public ChallengeSet<string> CurrentChallenge { get; private set; }
-
-        public IReadOnlyList<Attempt> Attempts { get; private set; }
+        public Option<GameSlot> CurrentChallenge { get; private set; }
 
         public Option<Game> Game { get; private set; }
 
@@ -25,8 +22,7 @@ namespace CodeGolf.Web.Pages
         {
             this.Game = this.gameService.GetGame();
             var curr = this.gameService.GetCurrent();
-            this.CurrentChallenge = curr.ChallengeSet;
-            this.Attempts = curr.Attempts;
+            this.CurrentChallenge = curr;
         }
     }
 }
