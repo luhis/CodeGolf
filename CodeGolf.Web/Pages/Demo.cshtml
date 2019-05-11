@@ -21,6 +21,4 @@
 <div>
     Score: @Model.Score
 </div>
-<div>
-    Errors: @string.Join(", ", Model.Errors.Errors)
-</div>
+<vc:errors-view p="@Model.Errors"/>

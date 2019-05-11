@@ -4,5 +4,21 @@
     ViewData["Title"] = "Game";
 }
 
-<h1>Game</h1>
+<h1 class="title">Game</h1>
 
+<vc:challenge-view p="@Model.ChallengeSet" />
+
+<form method="post">
+    <div class="field">
+        <label class="label">Code</label>
+        <div class="control">
+            <textarea asp-for="Code" rows="10" cols="50"></textarea>
+        </div>
+    </div>
+    <button class="button" type="submit">Submit</button>
+</form>
+
+<div>
+    Score: @Model.Score
+</div>
+<vc:errors-view p="@Model.Errors" />
