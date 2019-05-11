@@ -25,9 +25,9 @@ namespace CodeGolf.Service
             this.attemptRepository = attemptRepository;
         }
 
-        Game IGameService.GetGame()
+        Option<Game> IGameService.GetGame()
         {
-            return this.game;
+            return Option.Some<Game>(this.game);
         }
 
         GameSlot IGameService.GetCurrent()

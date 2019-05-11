@@ -2,7 +2,14 @@
 @model CodeGolf.Web.Pages.DashboardModel
 
 <p>
-    <input type="button" class="button" value="Start Game" />
+    @if (!Model.Game.HasValue)
+    {
+        <input type="button" class="button" value="Start Game"/>
+    }
+    else
+    {
+        <input type="button" class="button" value="Next Challenge" />
+    }
 </p>
 
 <vc:challenge-view p="@Model.CurrentChallenge" />
