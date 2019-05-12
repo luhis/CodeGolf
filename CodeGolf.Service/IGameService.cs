@@ -9,8 +9,8 @@ namespace CodeGolf.Service
     {
         Option<Game> GetGame();
 
-        Option<GameSlot> GetCurrent();
+        Task<Option<Round>> GetCurrent();
 
-        Task<Option<int, ErrorSet>> Attempt(Guid userId, string code, ChallengeSet<string> challengeSet);
+        Task<Option<int, ErrorSet>> Attempt(Guid userId, Guid gameSlotId, string code, ChallengeSet<string> challengeSet);
     }
 }

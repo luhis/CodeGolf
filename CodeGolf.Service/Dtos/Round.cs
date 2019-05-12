@@ -1,17 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using CodeGolf.Domain;
 using EnsureThat;
 
 namespace CodeGolf.Service.Dtos
 {
-    public class GameSlot
+    public class Round
     {
-        public GameSlot(ChallengeSet<string> challengeSet, TimeSpan duration, IReadOnlyList<Attempt> attempts)
+        public Round(Guid roundId, ChallengeSet<string> challengeSet, TimeSpan duration,
+            IReadOnlyList<Attempt> attempts)
         {
+            this.RoundId = EnsureArg.IsNotEmpty(roundId, nameof(roundId));
             this.ChallengeSet = EnsureArg.IsNotNull(challengeSet, nameof(challengeSet));
             this.Duration = duration;
             this.Attempts = EnsureArg.IsNotNull(attempts, nameof(attempts));
         }
+
+        public Guid RoundId { get; }
 
         public ChallengeSet<string> ChallengeSet { get; }
 

@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CodeGolf.Service;
 using CodeGolf.Service.Dtos;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -7,7 +8,7 @@ namespace CodeGolf.Web.Pages
 {
     public class DashboardModel : PageModel
     {
-        public Option<GameSlot> CurrentChallenge { get; private set; }
+        public Option<Round> CurrentChallenge { get; private set; }
 
         public Option<Game> Game { get; private set; }
 
@@ -18,10 +19,10 @@ namespace CodeGolf.Web.Pages
             this.gameService = gameService;
         }
 
-        public void OnGet()
+        public async Task OnGet()
         {
             this.Game = this.gameService.GetGame();
-            var curr = this.gameService.GetCurrent();
+            var curr = await this.gameService.GetCurrent();
             this.CurrentChallenge = curr;
         }
     }

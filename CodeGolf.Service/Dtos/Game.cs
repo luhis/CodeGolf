@@ -5,11 +5,11 @@ namespace CodeGolf.Service.Dtos
 {
     public class Game
     {
-        public Game(IReadOnlyList<GameSlot> slots)
+        public Game(IReadOnlyList<Round> slots)
         {
-            this.Slots = EnsureArg.IsNotNull(slots, nameof(slots));
+            this.Rounds = EnsureArg.IsNotNull(slots, nameof(slots));
         }
 
-        public  IReadOnlyList<GameSlot> Slots { get; }
+        public  IReadOnlyList<Round> Rounds { get; }
     }
 }

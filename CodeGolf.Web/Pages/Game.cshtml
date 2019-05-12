@@ -7,7 +7,7 @@
 
 <h1 class="title">Game</h1>
 
-<vc:challenge-view p="@Model.ChallengeSet.ValueOrFailure()" />
+<vc:challenge-view p="@Model.ChallengeSet.ValueOrFailure().ChallengeSet" />
 
 <form method="post">
     <div class="field">

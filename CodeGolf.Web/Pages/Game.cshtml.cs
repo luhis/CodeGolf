@@ -21,18 +21,19 @@ namespace CodeGolf.Web.Pages
 
         public ErrorSet Errors { get; private set; } = new ErrorSet();
 
-        public Option<ChallengeSet<string>> ChallengeSet { get; }
+        public Option<Round> ChallengeSet { get; }
 
         public GameModel(IGameService gameService, IIdentityTools identityTools)
         {
             this.gameService = gameService;
             this.identityTools = identityTools;
-            this.ChallengeSet = gameService.GetCurrent().Map(a => a.ChallengeSet);
+            this.ChallengeSet = gameService.GetCurrent().Result; // fix this
         }
 
         public async Task OnPost()
         {
-            var res = await this.gameService.Attempt(this.identityTools.GetIdentity(this.Request), this.Code, this.ChallengeSet.ValueOrFailure()).ConfigureAwait(false);
+            var gs = this.ChallengeSet.ValueOrFailure();
+            var res = await this.gameService.Attempt(this.identityTools.GetIdentity(this.Request), gs.RoundId, this.Code, gs.ChallengeSet).ConfigureAwait(false);
             res.Match(a => this.Score = a, err => this.Errors = err);
         }
     }
