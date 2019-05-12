@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime;
 using System.Threading;
 using System.Threading.Tasks;
 using CodeGolf.Service.Dtos;
@@ -96,9 +98,11 @@ namespace CodeGolf.Service
 
         private static string WrapInClass(string function)
         {
-            return @"using System;"
-                   + $"public class {ClassName}"
-                   + "{"
+            return "using System;\n"
+                   + "using System.Collections.Generic;\n"
+                   + "using System.Linq;\n"
+                   + $"public class {ClassName}\n"
+                   + "{\n"
                    + function
                    + "}";
         }
@@ -116,14 +120,16 @@ namespace CodeGolf.Service
 
         private static Option<Assembly, ErrorSet> Compile(string function)
         {
-            var syntaxTree = CSharpSyntaxTree.ParseText(WrapInClass(function));
+            var finalCode = WrapInClass(function);
+            var syntaxTree = CSharpSyntaxTree.ParseText(finalCode);
 
             return UseTempFile(Path.GetRandomFileName, assemblyName =>
             {
                 var references = new MetadataReference[]
                 {
                     MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
-                    MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location)
+                    MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location),
+                    MetadataReference.CreateFromFile(typeof(AssemblyTargetedPatchBandAttribute).Assembly.Location)
                 };
 
                 var compilation = CSharpCompilation.Create(
@@ -135,7 +141,6 @@ namespace CodeGolf.Service
                 using (var ms = new MemoryStream())
                 {
                     var result = compilation.Emit(ms);
-
 
                     if (result.Diagnostics.Any(a => a.Severity > DiagnosticSeverity.Info))
                     {

@@ -14,7 +14,7 @@ namespace CodeGolf.Unit.Test
 
         public static T ExtractSuccess<T>(this Option<T, ErrorSet> input)
         {
-            return input.Match(a => a, errors => throw new Exception($"Option contains error: {string.Join(", ", errors)}"));
+            return input.Match(a => a, errors => throw new Exception($"Option contains error: {string.Join(", ", errors.Errors)}"));
         }
     }
 }

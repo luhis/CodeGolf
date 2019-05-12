@@ -20,7 +20,7 @@ namespace CodeGolf.Unit.Test
                     new[] {new Challenge<string>(new object[0], "Hello World")})).Result;
             r.ExtractErrors().Should()
                 .BeEquivalentTo(
-                    "(1,57): error CS0234: The type or namespace name 'File' does not exist in the namespace 'System.IO' (are you missing an assembly reference?)");
+                    "(6,22): error CS0234: The type or namespace name 'File' does not exist in the namespace 'System.IO' (are you missing an assembly reference?)");
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using CodeGolf.Service;
 using FluentAssertions;
 using Xunit;
@@ -28,7 +29,7 @@ namespace CodeGolf.Unit.Test
         public void FailToCompileInvalidApplication()
         {
             this.runner.Compile<string>("abc", new Type[] { }).ExtractErrors()
-                .Should().BeEquivalentTo("(1,39): error CS1519: Invalid token '}' in class, struct, or interface member declaration");
+                .Should().BeEquivalentTo("(6,4): error CS1519: Invalid token '}' in class, struct, or interface member declaration");
         }
 
         [Fact]
@@ -87,7 +88,15 @@ namespace CodeGolf.Unit.Test
             }
             return s;
         }";
-            this.runner.Compile<string>(code, new[] { typeof(string) }).ExtractErrors().Should().BeEquivalentTo("(6,13): warning CS0162: Unreachable code detected");
+            this.runner.Compile<string>(code, new[] { typeof(string) }).ExtractErrors().Should().BeEquivalentTo("(11,13): warning CS0162: Unreachable code detected");
+        }
+
+        [Fact]
+        public void SupportLinq()
+        {
+            var code = "public IEnumerable<int> Main(int[] a) { return a.Select(b => b+1); }";
+            var r = this.runner.Compile<IEnumerable<int>>(code, new[] { typeof(int[]) }).ExtractSuccess()(new[] { new[] {1, 2} }).Result;
+            r.ExtractSuccess().Should().BeEquivalentTo(new[] {2, 3});
         }
     }
 }
