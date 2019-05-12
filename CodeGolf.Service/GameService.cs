@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CodeGolf.Domain;
@@ -11,31 +10,25 @@ namespace CodeGolf.Service
 {
     public class GameService : IGameService
     {
-        private readonly Game game = new Game(new[]
-        {
-            new Round(Guid.Parse("5ccbb74c-1972-47cd-9c5c-f2f512ad95e5"), Challenges.HelloWorld,
-                TimeSpan.FromMinutes(5), new List<Attempt>()),
-            new Round(Guid.Parse("d44ee76a-ccde-4006-aa83-86578296a886"), Challenges.AlienSpeak,
-                TimeSpan.FromMinutes(5), new List<Attempt>()),
-        });
-
         private readonly ICodeGolfService codeGolfService;
         private readonly IAttemptRepository attemptRepository;
+        private readonly IGameRepository gameRepository;
 
-        public GameService(ICodeGolfService codeGolfService, IAttemptRepository attemptRepository)
+        public GameService(ICodeGolfService codeGolfService, IAttemptRepository attemptRepository, IGameRepository gameRepository)
         {
             this.codeGolfService = codeGolfService;
             this.attemptRepository = attemptRepository;
+            this.gameRepository = gameRepository;
         }
 
         Option<Game> IGameService.GetGame()
         {
-            return Option.Some(this.game);
+            return Option.Some(this.gameRepository.GetGame());
         }
 
         async Task<Option<Round>> IGameService.GetCurrent()
         {
-            var curr = this.game.Rounds.First();
+            var curr = this.gameRepository.GetGame().Rounds.First();
             return Option.Some(new Round(curr.RoundId, curr.ChallengeSet, curr.Duration,
                 await this.attemptRepository.GetAttempts(curr.RoundId)));
         }

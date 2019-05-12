@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using CodeGolf.Domain;
 using CodeGolf.Service;
 using CodeGolf.Service.Dtos;
 using CodeGolf.Web.Tooling;

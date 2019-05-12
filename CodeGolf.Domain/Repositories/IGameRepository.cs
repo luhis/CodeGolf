@@ -1,7 +1,7 @@
 ﻿namespace CodeGolf.Domain.Repositories
 {
-    public class IGameRepository
+    public interface IGameRepository
     {
-
+        Game GetGame();
     }
 }

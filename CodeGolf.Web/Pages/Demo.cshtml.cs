@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using CodeGolf.Domain;
+using CodeGolf.Persistence;
 using CodeGolf.Service;
 using CodeGolf.Service.Dtos;
 using Microsoft.AspNetCore.Mvc;

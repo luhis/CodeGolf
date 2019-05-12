@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using CodeGolf.Domain;
 using CodeGolf.Service.Dtos;
 using Optional;
 

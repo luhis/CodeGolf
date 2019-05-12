@@ -1,6 +1,6 @@
 ﻿using EnsureThat;
 
-namespace CodeGolf.Service.Dtos
+namespace CodeGolf.Domain
 {
     public class Challenge<T>
     {

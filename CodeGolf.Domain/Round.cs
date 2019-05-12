@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using CodeGolf.Domain;
 using EnsureThat;
 
-namespace CodeGolf.Service.Dtos
+namespace CodeGolf.Domain
 {
     public class Round
     {

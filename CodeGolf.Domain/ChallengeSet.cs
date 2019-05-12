@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using EnsureThat;
 
-namespace CodeGolf.Service.Dtos
+namespace CodeGolf.Domain
 {
     public class ChallengeSet<T>
     {

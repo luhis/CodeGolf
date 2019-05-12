@@ -1,7 +1,7 @@
 using System;
-using CodeGolf.Service.Dtos;
+using CodeGolf.Domain;
 
-namespace CodeGolf.Service
+namespace CodeGolf.Persistence
 {
     public static class Challenges
     {

@@ -1,4 +1,5 @@
 using System;
+using CodeGolf.Domain;
 using CodeGolf.Service;
 using CodeGolf.Service.Dtos;
 using FluentAssertions;
