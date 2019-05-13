@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using CodeGolf.Service;
+using CodeGolf.Unit.Test.Tooling;
 using FluentAssertions;
 using Xunit;
 
-namespace CodeGolf.Unit.Test
+namespace CodeGolf.Unit.Test.Services
 {
     public class RunnerShould
     {

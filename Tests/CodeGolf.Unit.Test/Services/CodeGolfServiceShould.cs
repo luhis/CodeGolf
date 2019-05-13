@@ -1,11 +1,11 @@
 using System;
 using CodeGolf.Domain;
 using CodeGolf.Service;
-using CodeGolf.Service.Dtos;
+using CodeGolf.Unit.Test.Tooling;
 using FluentAssertions;
 using Xunit;
 
-namespace CodeGolf.Unit.Test
+namespace CodeGolf.Unit.Test.Services
 {
     public class CodeGolfServiceShould
     {

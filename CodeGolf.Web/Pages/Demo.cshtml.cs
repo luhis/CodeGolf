@@ -27,6 +27,11 @@ namespace CodeGolf.Web.Pages
             this.ChallengeSet = Challenges.HelloWorld;
         }
 
+        public void OnGet()
+        {
+
+        }
+
         public async Task OnPost()
         {
             var res = await this.codeGolfService.Score(this.Code, this.ChallengeSet).ConfigureAwait(false);

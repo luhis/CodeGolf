@@ -1,10 +1,9 @@
 using System;
 using CodeGolf.Domain;
-using CodeGolf.Service.Dtos;
 using FluentAssertions;
 using Xunit;
 
-namespace CodeGolf.Unit.Test
+namespace CodeGolf.Unit.Test.Domain
 {
     public class ChallengeSetShould
     {

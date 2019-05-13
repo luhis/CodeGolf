@@ -2,7 +2,7 @@ using CodeGolf.Service;
 using FluentAssertions;
 using Xunit;
 
-namespace CodeGolf.Unit.Test
+namespace CodeGolf.Unit.Test.Services
 {
     public class ScorerShould
     {

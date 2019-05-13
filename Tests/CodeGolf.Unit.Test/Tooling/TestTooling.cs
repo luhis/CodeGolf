@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using CodeGolf.Service.Dtos;
 using Optional;
 
-namespace CodeGolf.Unit.Test
+namespace CodeGolf.Unit.Test.Tooling
 {
     public static class TestTooling
     {
