@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using CodeGolf.Domain;
 using CodeGolf.Service;
-using CodeGolf.Service.Dtos;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Optional;
 

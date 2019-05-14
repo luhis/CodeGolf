@@ -1,17 +1,16 @@
 ﻿using CodeGolf.Service;
 using CodeGolf.Web.Pages;
-using FluentAssertions;
 using Moq;
 using Xunit;
 
 namespace CodeGolf.Unit.Test.Pages
 {
-    public class DemoShould
+    public class DemoModelShould
     {
         private readonly MockRepository mockRepository;
         private readonly DemoModel demoModel;
 
-        public DemoShould()
+        public DemoModelShould()
         {
             this.mockRepository = new MockRepository(MockBehavior.Strict);
             this.demoModel = new DemoModel(this.mockRepository.Create<ICodeGolfService>().Object);
@@ -21,6 +20,7 @@ namespace CodeGolf.Unit.Test.Pages
         public void Initial()
         {
             this.demoModel.OnGet();
+            this.mockRepository.VerifyAll();
         }
     }
 }

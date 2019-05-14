@@ -1,5 +1,4 @@
 ﻿using CodeGolf.Domain;
-using CodeGolf.Service.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CodeGolf.Web.ViewComponents

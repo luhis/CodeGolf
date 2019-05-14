@@ -14,7 +14,9 @@
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="5.6.0" />
     <PackageReference Include="FluentAssertions.OneOf" Version="0.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.RazorPages" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="2.2.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.0" />
     <PackageReference Include="Moq" Version="4.10.1" />
     <PackageReference Include="xunit" Version="2.4.1" />
@@ -25,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\CodeGolf.Domain\CodeGolf.Domain.csproj" />
     <ProjectReference Include="..\..\CodeGolf.Service\CodeGolf.Service.csproj" />
     <ProjectReference Include="..\..\CodeGolf.Web\CodeGolf.Web.csproj" />
   </ItemGroup>
