@@ -1,18 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using EnsureThat;
 
 namespace CodeGolf.Domain
 {
     public class Round
     {
-        public Round(Guid roundId, ChallengeSet<string> challengeSet, TimeSpan duration,
-            IReadOnlyList<Attempt> attempts)
+        public Round(Guid roundId, ChallengeSet<string> challengeSet, TimeSpan duration)
         {
             this.RoundId = EnsureArg.IsNotEmpty(roundId, nameof(roundId));
             this.ChallengeSet = EnsureArg.IsNotNull(challengeSet, nameof(challengeSet));
             this.Duration = duration;
-            this.Attempts = EnsureArg.IsNotNull(attempts, nameof(attempts));
         }
 
         public Guid RoundId { get; }
@@ -20,7 +17,5 @@ namespace CodeGolf.Domain
         public ChallengeSet<string> ChallengeSet { get; }
 
         public TimeSpan Duration { get; }
-
-        public IReadOnlyList<Attempt> Attempts { get; }
     }
 }

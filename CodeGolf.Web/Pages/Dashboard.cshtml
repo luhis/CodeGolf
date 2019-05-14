@@ -5,16 +5,20 @@
     ViewData["Title"] = "Dashboard";
 }
 
-<p>
-    @if (!Model.Game.HasValue)
-    {
-        <input type="button" class="button" value="Start Game" />
-    }
-    else
-    {
-        <input type="button" class="button" value="Next Challenge" />
-    }
-</p>
+    <div>
+        @if (!Model.Game.HasValue)
+        {
+            <form asp-page-handler="StartGame" method="post">
+                <button class="button">Start Game</button>
+            </form>
+        }
+        else
+        {        
+            <form asp-page-handler="NextRound" method="post">
+                <button class="button">Next Round</button>
+            </form>
+        }
+    </div>
 
 @if (Model.CurrentChallenge.HasValue)
 {

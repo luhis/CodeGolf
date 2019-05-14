@@ -1,7 +1,5 @@
 ﻿using System.Threading.Tasks;
 using CodeGolf.Domain;
-using CodeGolf.Persistence;
-using CodeGolf.Persistence.Static;
 using CodeGolf.Service;
 using CodeGolf.Service.Dtos;
 using Microsoft.AspNetCore.Mvc;

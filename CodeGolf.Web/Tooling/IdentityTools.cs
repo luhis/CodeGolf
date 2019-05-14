@@ -5,6 +5,6 @@ namespace CodeGolf.Web.Tooling
 {
     public class IdentityTools : IIdentityTools
     {
-        Guid IIdentityTools.GetIdentity(HttpRequest hr) => Guid.Empty;
+        Guid IIdentityTools.GetIdentity(HttpRequest hr) => Guid.NewGuid();
     }
 }

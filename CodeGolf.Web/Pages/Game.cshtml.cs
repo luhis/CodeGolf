@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using CodeGolf.Domain;
 using CodeGolf.Service;
 using CodeGolf.Service.Dtos;
 using CodeGolf.Web.Tooling;
@@ -22,7 +21,7 @@ namespace CodeGolf.Web.Pages
 
         public ErrorSet Errors { get; private set; } = new ErrorSet();
 
-        public Option<Round> ChallengeSet { get; private set; }
+        public Option<RoundDto> ChallengeSet { get; private set; }
 
         public GameModel(IGameService gameService, IIdentityTools identityTools)
         {
