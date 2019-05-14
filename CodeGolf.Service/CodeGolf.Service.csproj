@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CodeGolf.Domain\CodeGolf.Domain.csproj" />
+    <ProjectReference Include="..\CodeGolf.Persistence.Static\CodeGolf.Persistence.Static.csproj" />
   </ItemGroup>
 
   <ItemGroup>

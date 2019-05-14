@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using CodeGolf.Domain;
 using CodeGolf.Domain.Repositories;
 
-namespace CodeGolf.Persistence
+namespace CodeGolf.Persistence.Static
 {
     public class GameRepository : IGameRepository
     {
-        private static readonly Game game = new Game(new[]
+        private static readonly Game Game = new Game(new[]
         {
             new Round(Guid.Parse("5ccbb74c-1972-47cd-9c5c-f2f512ad95e5"), Challenges.HelloWorld,
                 TimeSpan.FromMinutes(5), new List<Attempt>()),
@@ -17,7 +17,7 @@ namespace CodeGolf.Persistence
 
         Game IGameRepository.GetGame()
         {
-            return game;
+            return Game;
         }
     }
 }

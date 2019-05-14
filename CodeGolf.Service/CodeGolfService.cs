@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using CodeGolf.Domain;
+using CodeGolf.Persistence.Static;
 using CodeGolf.Service.Dtos;
 using Optional;
 
@@ -33,6 +34,11 @@ namespace CodeGolf.Service
                     return Option.Some<int, ErrorSet>(this.scorer.Score(code));
                 }
             }, err => Task.FromResult(Option.None<int, ErrorSet>(err)));
+        }
+
+        ChallengeSet<string> ICodeGolfService.GetDemoChallenge()
+        {
+            return Challenges.HelloWorld;
         }
 
         private static bool IsFailure<T>((Challenge<T> challenge, Option<T, ErrorSet> result) prop) => 

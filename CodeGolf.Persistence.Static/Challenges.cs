@@ -1,7 +1,7 @@
 using System;
 using CodeGolf.Domain;
 
-namespace CodeGolf.Persistence
+namespace CodeGolf.Persistence.Static
 {
     public static class Challenges
     {
@@ -41,5 +41,8 @@ namespace CodeGolf.Persistence
                 new Challenge<string>(new object[] { "-7.5 / 2.5" }, "-3"),
                 new Challenge<string>(new object[] { "-2 + 6 / 2 * 8 - 1 / 2.5 - 18" }, "-12"),
             });
+
+
+        // fizzbuzz
     }
 }

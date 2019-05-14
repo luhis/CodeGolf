@@ -9,17 +9,17 @@ namespace CodeGolf.Persistence
 {
     public class AttemptRepository : IAttemptRepository
     {
-        private static readonly List<Attempt> attempts = new List<Attempt>();
+        private static readonly List<Attempt> Attempts = new List<Attempt>();
 
         Task IAttemptRepository.AddAttempt(Attempt attempt)
         {
-            attempts.Add(attempt);
+            Attempts.Add(attempt);
             return Task.CompletedTask;
         }
 
         Task<IReadOnlyList<Attempt>> IAttemptRepository.GetAttempts(Guid roundId)
         {
-            return Task.FromResult<IReadOnlyList<Attempt>>(attempts.Where(a => a.RoundId == roundId).ToList());
+            return Task.FromResult<IReadOnlyList<Attempt>>(Attempts.Where(a => a.RoundId == roundId).ToList());
         }
     }
 }

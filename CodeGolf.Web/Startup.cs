@@ -48,7 +48,8 @@ namespace CodeGolf.Web
         {
             CodeGolf.Web.DiModule.Add,
             CodeGolf.Service.DiModule.Add,
-            CodeGolf.Persistence.DiModule.Add
+            CodeGolf.Persistence.DiModule.Add,
+            CodeGolf.Persistence.Static.DiModule.Add,
         };
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

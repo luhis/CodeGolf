@@ -26,7 +26,7 @@ namespace CodeGolf.Service
             return Option.Some(this.gameRepository.GetGame());
         }
 
-        async Task<Option<Round>> IGameService.GetCurrent()
+        async Task<Option<Round>> IGameService.GetCurrentRound()
         {
             var curr = this.gameRepository.GetGame().Rounds.First();
             return Option.Some(new Round(curr.RoundId, curr.ChallengeSet, curr.Duration,

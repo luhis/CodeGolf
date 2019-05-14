@@ -8,5 +8,7 @@ namespace CodeGolf.Service
     public interface ICodeGolfService
     {
         Task<Option<int, ErrorSet>> Score<T>(string code, ChallengeSet<T> challenge);
+
+        ChallengeSet<string> GetDemoChallenge();
     }
 }
