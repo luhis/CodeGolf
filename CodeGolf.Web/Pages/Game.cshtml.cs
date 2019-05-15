@@ -18,9 +18,7 @@ namespace CodeGolf.Web.Pages
         [BindProperty]
         public string Code { get; set; }
 
-        public int? Score { get; private set; }
-
-        public ErrorSet Errors { get; private set; } = new ErrorSet();
+        public Option<int, ErrorSet> Result { get; private set; }
 
         public Option<ChallengeSet<string>> Round { get; private set; }
 
@@ -40,8 +38,7 @@ namespace CodeGolf.Web.Pages
             var round = await this.gameService.GetCurrentHole();
             this.Round = round.Map(a => a.Hole.ChallengeSet);
             var gs = round.ValueOrFailure();
-            var res = await this.gameService.Attempt(this.identityTools.GetIdentity(this.Request), gs.Hole.HoleId, this.Code, gs.Hole.ChallengeSet).ConfigureAwait(false);
-            res.Match(a => this.Score = a, err => this.Errors = err);
+            this.Result = await this.gameService.Attempt(this.identityTools.GetIdentity(this.Request), gs.Hole.HoleId, this.Code, gs.Hole.ChallengeSet).ConfigureAwait(false);
         }
     }
 }

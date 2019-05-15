@@ -4,6 +4,7 @@ using CodeGolf.Service;
 using CodeGolf.Service.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Optional;
 
 namespace CodeGolf.Web.Pages
 {
@@ -14,9 +15,7 @@ namespace CodeGolf.Web.Pages
         [BindProperty]
         public string Code { get; set; }
 
-        public int? Score { get; private set; }
-
-        public ErrorSet Errors { get; private set; } = new ErrorSet();
+        public Option<int, ErrorSet> Result { get; private set; }
 
         public ChallengeSet<string> ChallengeSet { get; }
 
@@ -33,8 +32,7 @@ namespace CodeGolf.Web.Pages
 
         public async Task OnPost()
         {
-            var res = await this.codeGolfService.Score(this.Code, this.ChallengeSet).ConfigureAwait(false);
-            res.Match(a => this.Score = a, err => this.Errors = err);
+            this.Result = await this.codeGolfService.Score(this.Code, this.ChallengeSet).ConfigureAwait(false);
         }
     }
 }

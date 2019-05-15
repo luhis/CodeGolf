@@ -24,10 +24,7 @@
         </div>
     </form>
 
-    <div>
-        Score: @Model.Score
-    </div>
-    <vc:errors-view p="@Model.Errors"/>
+    <vc:score-view p="@Model.Result" />
 }
 else
 {
