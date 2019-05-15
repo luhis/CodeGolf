@@ -2,7 +2,20 @@
 
 <span class="title">Attempts</span>
 
-@foreach (var attempt in Model)
-{
-    <div>@attempt.UserId - @attempt.Score</div>
-}
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Score</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var attempt in Model)
+        {
+            <tr>
+                <td>@attempt.UserId</td>
+                <td>@attempt.Score</td>
+            </tr>
+        }
+    </tbody>
+</table>

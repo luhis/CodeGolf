@@ -6,19 +6,19 @@ namespace CodeGolf.Service.Dtos
 {
     public class HoleDto
     {
-        public HoleDto(Guid roundId, ChallengeSet<string> challengeSet, TimeSpan duration, IReadOnlyList<Attempt> attempts)
+        public HoleDto(Hole hole, DateTime start, DateTime end, IReadOnlyList<Attempt> attempts)
         {
-            this.RoundId = roundId;
-            this.ChallengeSet = challengeSet;
-            this.Duration = duration;
+            this.Hole = hole;
+            this.Start = start;
+            this.End = end;
             this.Attempts = attempts;
         }
 
-        public Guid RoundId { get; }
+        public Hole Hole { get; }
 
-        public ChallengeSet<string> ChallengeSet { get; }
+        public DateTime Start { get; }
 
-        public TimeSpan Duration { get; }
+        public DateTime End { get; }
 
         public IReadOnlyList<Attempt> Attempts { get; }
     }

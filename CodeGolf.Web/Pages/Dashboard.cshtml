@@ -1,4 +1,5 @@
 ﻿@page
+@using Optional.Unsafe
 @model CodeGolf.Web.Pages.DashboardModel
 @{
     ViewData["Title"] = "Dashboard";
@@ -10,6 +11,10 @@
     </form>
 </div>
 
-<div>Start: TODO, End: TODO</div>
-<vc:challenge-view cs="@Model.CurrentChallenge.Map(a => a.ChallengeSet)" />
+@if (Model.CurrentChallenge.HasValue)
+{
+    var extracted = Model.CurrentChallenge.ValueOrFailure();
+    <div>Start: @extracted.Start, End: @extracted.End</div>
+}
+<vc:challenge-view cs="@Model.CurrentChallenge.Map(a => a.Hole.ChallengeSet)" />
 <vc:attempts-view cs="@Model.CurrentChallenge.Map(a => a.Attempts)" />

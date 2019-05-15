@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using CodeGolf.Domain;
 using CodeGolf.Domain.Repositories;
 using CodeGolf.Service.Dtos;
-using Microsoft.Win32.SafeHandles;
 using Optional;
 using Optional.Async;
 
@@ -44,8 +43,7 @@ namespace CodeGolf.Service
             return await round.MapAsync(async a =>
             {
                 var curr = this.gameRepository.GetGame().Holes.First(b => b.HoleId.Equals(a.HoleId));
-                return new HoleDto(curr.HoleId, curr.ChallengeSet, curr.Duration,
-                    await this.GetBestAttempts(curr.HoleId));
+                return new HoleDto(curr, a.Start, a.End, await this.GetBestAttempts(curr.HoleId));
             });
         }
 
