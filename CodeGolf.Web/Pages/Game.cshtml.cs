@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using CodeGolf.Domain;
 using CodeGolf.Service;
 using CodeGolf.Service.Dtos;
 using CodeGolf.Web.Tooling;
@@ -21,7 +22,7 @@ namespace CodeGolf.Web.Pages
 
         public ErrorSet Errors { get; private set; } = new ErrorSet();
 
-        public Option<RoundDto> ChallengeSet { get; private set; }
+        public Option<ChallengeSet<string>> Round { get; private set; }
 
         public GameModel(IGameService gameService, IIdentityTools identityTools)
         {
@@ -31,13 +32,14 @@ namespace CodeGolf.Web.Pages
 
         public async Task OnGet()
         {
-            this.ChallengeSet = await this.gameService.GetCurrentRound();
+            this.Round = (await this.gameService.GetCurrentRound()).Map(a => a.ChallengeSet);
         }
 
         public async Task OnPost()
         {
-            this.ChallengeSet = await this.gameService.GetCurrentRound();
-            var gs = this.ChallengeSet.ValueOrFailure();
+            var round = await this.gameService.GetCurrentRound();
+            this.Round = round.Map(a => a.ChallengeSet);
+            var gs = round.ValueOrFailure();
             var res = await this.gameService.Attempt(this.identityTools.GetIdentity(this.Request), gs.RoundId, this.Code, gs.ChallengeSet).ConfigureAwait(false);
             res.Match(a => this.Score = a, err => this.Errors = err);
         }

@@ -1,4 +1,5 @@
 ﻿@page
+@using Optional
 @model CodeGolf.Web.Pages.DemoModel
 @{
     ViewData["Title"] = "Demo";
@@ -6,7 +7,7 @@
 
 <h1 class="title">Demo</h1>
 
-<vc:challenge-view p="@Model.ChallengeSet"/>
+<vc:challenge-view cs="@Option.Some(Model.ChallengeSet)"/>
 
 <form method="post">
     <div class="field">

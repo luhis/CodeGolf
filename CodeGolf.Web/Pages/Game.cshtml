@@ -1,5 +1,4 @@
 ﻿@page
-@using Optional.Unsafe
 @model CodeGolf.Web.Pages.GameModel
 @{
     ViewData["Title"] = "Game";
@@ -7,7 +6,7 @@
 
 <h1 class="title">Game</h1>
 
-<vc:challenge-view p="@Model.ChallengeSet.ValueOrFailure().ChallengeSet" />
+<vc:challenge-view cs="@Model.Round" />
 
 <form method="post">
     <div class="field">
