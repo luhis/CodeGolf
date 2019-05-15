@@ -34,7 +34,7 @@ namespace CodeGolf.Web.Pages
             return this.RedirectToPage("Dashboard");
         }
 
-        public async Task<IActionResult> OnPostNextRound()
+        public async Task<IActionResult> OnPostNextHole()
         {
             await this.gameService.NextRound();
             return this.RedirectToPage("Dashboard");
