@@ -1,5 +1,10 @@
 ﻿@model CodeGolf.Service.Dtos.ErrorSet;
 
-<span class="tag is-danger">
-    Errors: @string.Join(", ", Model.Errors)
-</span>
+<article class="message is-danger">
+    <div class="message-header">
+        <p>Error</p>
+    </div>
+    <div class="message-body">
+        @string.Join(", ", Model.Errors)
+    </div>
+</article>

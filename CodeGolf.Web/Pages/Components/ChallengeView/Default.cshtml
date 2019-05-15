@@ -1,10 +1,16 @@
 ﻿@model CodeGolf.Domain.ChallengeSet<string>;
 
-<h4 class="title">@Model.Title</h4>
 
-<p>@Model.Description</p>
+<article class="message">
+    <div class="message-header">
+        <p>@Model.Title</p>
+    </div>
+    <div class="message-body">
+        <p>@Model.Description</p>
 
-@foreach (var a in Model.Challenges)
-{
-    <div>@(GenericPresentationHelpers.DisplayFunction(a, Model.Params))</div>
-}
+        @foreach (var a in Model.Challenges)
+        {
+            <div>@(GenericPresentationHelpers.DisplayFunction(a, Model.Params))</div>
+        }
+    </div>
+</article>
