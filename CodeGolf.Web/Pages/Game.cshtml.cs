@@ -32,12 +32,12 @@ namespace CodeGolf.Web.Pages
 
         public async Task OnGet()
         {
-            this.Round = (await this.gameService.GetCurrentRound()).Map(a => a.ChallengeSet);
+            this.Round = (await this.gameService.GetCurrentHole()).Map(a => a.ChallengeSet);
         }
 
         public async Task OnPost()
         {
-            var round = await this.gameService.GetCurrentRound();
+            var round = await this.gameService.GetCurrentHole();
             this.Round = round.Map(a => a.ChallengeSet);
             var gs = round.ValueOrFailure();
             var res = await this.gameService.Attempt(this.identityTools.GetIdentity(this.Request), gs.RoundId, this.Code, gs.ChallengeSet).ConfigureAwait(false);

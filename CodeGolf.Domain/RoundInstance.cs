@@ -1,17 +1,18 @@
 ﻿using System;
+using EnsureThat;
 
 namespace CodeGolf.Domain
 {
     public class RoundInstance
     {
-        public RoundInstance(Guid roundId, DateTime start, DateTime end)
+        public RoundInstance(Guid holeId, DateTime start, DateTime end)
         {
-            this.RoundId = roundId;
+            this.HoleId = EnsureArg.IsNotEmpty(holeId, nameof(holeId));
             this.Start = start;
             this.End = end;
         }
 
-        public Guid RoundId { get; }
+        public Guid HoleId { get; }
 
         public DateTime Start { get; }
 

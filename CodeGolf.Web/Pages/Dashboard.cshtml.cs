@@ -24,7 +24,7 @@ namespace CodeGolf.Web.Pages
         public async Task OnGet()
         {
             this.Game = this.gameService.GetGame();
-            var curr = await this.gameService.GetCurrentRound();
+            var curr = await this.gameService.GetCurrentHole();
             this.CurrentChallenge = curr;
         }
 

@@ -8,9 +8,9 @@ namespace CodeGolf.Persistence.Static
     {
         private static readonly Game Game = new Game(new[]
         {
-            new Round(Guid.Parse("5ccbb74c-1972-47cd-9c5c-f2f512ad95e5"), Challenges.HelloWorld,
+            new Hole(Guid.Parse("5ccbb74c-1972-47cd-9c5c-f2f512ad95e5"), Challenges.HelloWorld,
                 TimeSpan.FromMinutes(5)),
-            new Round(Guid.Parse("d44ee76a-ccde-4006-aa83-86578296a886"), Challenges.AlienSpeak,
+            new Hole(Guid.Parse("d44ee76a-ccde-4006-aa83-86578296a886"), Challenges.AlienSpeak,
                 TimeSpan.FromMinutes(5)),
         });
 

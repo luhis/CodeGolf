@@ -17,9 +17,9 @@ namespace CodeGolf.Persistence
             return Task.CompletedTask;
         }
 
-        Task<IReadOnlyList<Attempt>> IAttemptRepository.GetAttempts(Guid roundId)
+        Task<IReadOnlyList<Attempt>> IAttemptRepository.GetAttempts(Guid holdId)
         {
-            return Task.FromResult<IReadOnlyList<Attempt>>(Attempts.Where(a => a.RoundId == roundId).ToList());
+            return Task.FromResult<IReadOnlyList<Attempt>>(Attempts.Where(a => a.HoleId == holdId).ToList());
         }
     }
 }

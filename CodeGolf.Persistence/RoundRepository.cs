@@ -11,7 +11,7 @@ namespace CodeGolf.Persistence
     {
         private static readonly List<RoundInstance> Rounds = new List<RoundInstance>();
 
-        public Task<Option<RoundInstance>> GetCurrentRound()
+        public Task<Option<RoundInstance>> GetCurrentHole()
         {
             if (Rounds.Any())
             {

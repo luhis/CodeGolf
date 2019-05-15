@@ -8,6 +8,6 @@ namespace CodeGolf.Domain.Repositories
     {
         Task AddAttempt(Attempt attempt);
 
-        Task<IReadOnlyList<Attempt>> GetAttempts(Guid roundId);
+        Task<IReadOnlyList<Attempt>> GetAttempts(Guid holdId);
     }
 }

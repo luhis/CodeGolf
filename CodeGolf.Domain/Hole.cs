@@ -3,16 +3,16 @@ using EnsureThat;
 
 namespace CodeGolf.Domain
 {
-    public class Round
+    public class Hole
     {
-        public Round(Guid roundId, ChallengeSet<string> challengeSet, TimeSpan duration)
+        public Hole(Guid holeId, ChallengeSet<string> challengeSet, TimeSpan duration)
         {
-            this.RoundId = EnsureArg.IsNotEmpty(roundId, nameof(roundId));
+            this.HoleId = EnsureArg.IsNotEmpty(holeId, nameof(holeId));
             this.ChallengeSet = EnsureArg.IsNotNull(challengeSet, nameof(challengeSet));
             this.Duration = duration;
         }
 
-        public Guid RoundId { get; }
+        public Guid HoleId { get; }
 
         public ChallengeSet<string> ChallengeSet { get; }
 

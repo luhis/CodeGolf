@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using CodeGolf.Domain;
 using CodeGolf.Domain.Repositories;
 using CodeGolf.Service.Dtos;
+using Microsoft.Win32.SafeHandles;
 using Optional;
 using Optional.Async;
 
@@ -31,14 +32,20 @@ namespace CodeGolf.Service
             return Option.Some(this.gameRepository.GetGame());
         }
 
-        async Task<Option<RoundDto>> IGameService.GetCurrentRound()
+        private async Task<IReadOnlyList<Attempt>> GetBestAttempts(Guid holeId)
         {
-            var round = await this.roundRepository.GetCurrentRound();
+            var attempts = await this.attemptRepository.GetAttempts(holeId);
+            return attempts.OrderByDescending(a => a.Score).GroupBy(a => a.UserId).Select(a => a.First()).OrderByDescending(a => a.Score).ToList();
+        }
+
+        async Task<Option<RoundDto>> IGameService.GetCurrentHole()
+        {
+            var round = await this.roundRepository.GetCurrentHole();
             return await round.MapAsync(async a =>
             {
-                var curr = this.gameRepository.GetGame().Rounds.First(b => b.RoundId.Equals(a.RoundId));
-                return new RoundDto(curr.RoundId, curr.ChallengeSet, curr.Duration,
-                    await this.attemptRepository.GetAttempts(curr.RoundId));
+                var curr = this.gameRepository.GetGame().Holes.First(b => b.HoleId.Equals(a.HoleId));
+                return new RoundDto(curr.HoleId, curr.ChallengeSet, curr.Duration,
+                    await this.GetBestAttempts(curr.HoleId));
             });
         }
 
@@ -56,10 +63,10 @@ namespace CodeGolf.Service
 
         async Task IGameService.NextRound()
         {
-            var round = await this.roundRepository.GetCurrentRound();
-            var next = round.Match(some => GetAfter(this.gameRepository.GetGame().Rounds, item => item.RoundId.Equals(some.RoundId)), 
-                () => this.gameRepository.GetGame().Rounds.First());
-            await this.roundRepository.AddRound(new RoundInstance(next.RoundId, DateTime.UtcNow,
+            var round = await this.roundRepository.GetCurrentHole();
+            var next = round.Match(some => GetAfter(this.gameRepository.GetGame().Holes, item => item.HoleId.Equals(some.HoleId)), 
+                () => this.gameRepository.GetGame().Holes.First());
+            await this.roundRepository.AddRound(new RoundInstance(next.HoleId, DateTime.UtcNow,
                 DateTime.UtcNow.Add(next.Duration)));
         }
     }

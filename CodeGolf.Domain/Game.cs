@@ -5,11 +5,11 @@ namespace CodeGolf.Domain
 {
     public class Game
     {
-        public Game(IReadOnlyList<Round> slots)
+        public Game(IReadOnlyList<Hole> slots)
         {
-            this.Rounds = EnsureArg.IsNotNull(slots, nameof(slots));
+            this.Holes = EnsureArg.IsNotNull(slots, nameof(slots));
         }
 
-        public  IReadOnlyList<Round> Rounds { get; }
+        public  IReadOnlyList<Hole> Holes { get; }
     }
 }
