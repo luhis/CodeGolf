@@ -1,0 +1,8 @@
+﻿@model IReadOnlyList<CodeGolf.Domain.Attempt>;
+
+<span class="title">Attempts</span>
+
+@foreach (var attempt in Model)
+{
+    <div>@attempt.UserId - @attempt.Score</div>
+}

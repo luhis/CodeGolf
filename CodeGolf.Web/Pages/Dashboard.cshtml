@@ -1,34 +1,15 @@
 ﻿@page
 @model CodeGolf.Web.Pages.DashboardModel
-@using Optional.Unsafe
 @{
     ViewData["Title"] = "Dashboard";
 }
 
-    <div>
-        @if (!Model.Game.HasValue)
-        {
-            <form asp-page-handler="StartGame" method="post">
-                <button class="button">Start Game</button>
-            </form>
-        }
-        else
-        {        
-            <form asp-page-handler="NextHole" method="post">
-                <button class="button">Next Hole</button>
-            </form>
-        }
-    </div>
+<div>
+    <form asp-page-handler="NextHole" method="post">
+        <button class="button">Next Hole</button>
+    </form>
+</div>
 
-@if (Model.CurrentChallenge.HasValue)
-{
-    var challenge = Model.CurrentChallenge.ValueOrFailure();
-    <vc:challenge-view p="@challenge.ChallengeSet" />
-
-    <span class="title">Attempts</span>
-
-    @foreach (var attempt in challenge.Attempts)
-    {
-        <div>@attempt.UserId - @attempt.Score</div>
-    }
-}
+<div>Start: TODO, End: TODO</div>
+<vc:challenge-view cs="@Model.CurrentChallenge.Map(a => a.ChallengeSet)" />
+<vc:attempts-view cs="@Model.CurrentChallenge.Map(a => a.Attempts)" />

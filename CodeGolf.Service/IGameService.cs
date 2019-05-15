@@ -10,7 +10,7 @@ namespace CodeGolf.Service
     {
         Option<Game> GetGame();
 
-        Task<Option<RoundDto>> GetCurrentHole();
+        Task<Option<HoleDto>> GetCurrentHole();
 
         Task<Option<int, ErrorSet>> Attempt(Guid userId, Guid gameSlotId, string code, ChallengeSet<string> challengeSet);
 

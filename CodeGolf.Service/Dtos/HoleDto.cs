@@ -4,9 +4,9 @@ using CodeGolf.Domain;
 
 namespace CodeGolf.Service.Dtos
 {
-    public class RoundDto
+    public class HoleDto
     {
-        public RoundDto(Guid roundId, ChallengeSet<string> challengeSet, TimeSpan duration, IReadOnlyList<Attempt> attempts)
+        public HoleDto(Guid roundId, ChallengeSet<string> challengeSet, TimeSpan duration, IReadOnlyList<Attempt> attempts)
         {
             this.RoundId = roundId;
             this.ChallengeSet = challengeSet;

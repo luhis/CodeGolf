@@ -38,13 +38,13 @@ namespace CodeGolf.Service
             return attempts.OrderByDescending(a => a.Score).GroupBy(a => a.UserId).Select(a => a.First()).OrderByDescending(a => a.Score).ToList();
         }
 
-        async Task<Option<RoundDto>> IGameService.GetCurrentHole()
+        async Task<Option<HoleDto>> IGameService.GetCurrentHole()
         {
             var round = await this.roundRepository.GetCurrentHole();
             return await round.MapAsync(async a =>
             {
                 var curr = this.gameRepository.GetGame().Holes.First(b => b.HoleId.Equals(a.HoleId));
-                return new RoundDto(curr.HoleId, curr.ChallengeSet, curr.Duration,
+                return new HoleDto(curr.HoleId, curr.ChallengeSet, curr.Duration,
                     await this.GetBestAttempts(curr.HoleId));
             });
         }

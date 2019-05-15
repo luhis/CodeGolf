@@ -10,7 +10,7 @@ namespace CodeGolf.Web.Pages
 {
     public class DashboardModel : PageModel
     {
-        public Option<RoundDto> CurrentChallenge { get; private set; }
+        public Option<HoleDto> CurrentChallenge { get; private set; }
 
         public Option<Game> Game { get; private set; }
 
@@ -26,12 +26,6 @@ namespace CodeGolf.Web.Pages
             this.Game = this.gameService.GetGame();
             var curr = await this.gameService.GetCurrentHole();
             this.CurrentChallenge = curr;
-        }
-
-        public async Task<IActionResult> OnPostStartGame()
-        {
-            await this.gameService.NextRound();
-            return this.RedirectToPage("Dashboard");
         }
 
         public async Task<IActionResult> OnPostNextHole()
