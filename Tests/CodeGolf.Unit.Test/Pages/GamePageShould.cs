@@ -3,16 +3,16 @@ using System.Threading.Tasks;
 using CodeGolf.Web;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Xunit;
 using Microsoft.AspNetCore.TestHost;
+using Xunit;
 
 namespace CodeGolf.Unit.Test.Pages
 {
-    public class DemoPageShould
+    public class GamePageShould
     {
         private readonly HttpClient client;
 
-        public DemoPageShould()
+        public GamePageShould()
         {
             var server = new TestServer(WebHost.CreateDefaultBuilder()
                 .UseStartup<Startup>());
@@ -22,7 +22,7 @@ namespace CodeGolf.Unit.Test.Pages
         [Fact]
         public async Task GetDemo()
         {
-            var response = await this.client.GetAsync("/demo");
+            var response = await this.client.GetAsync("/game");
             response.EnsureSuccessStatusCode();
         }
     }
