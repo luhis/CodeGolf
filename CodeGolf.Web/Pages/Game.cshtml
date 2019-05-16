@@ -6,10 +6,9 @@
 
 <h1 class="title">Game</h1>
 
-<vc:challenge-view cs="@Model.Round" />
-
 @if (Model.Round.HasValue)
 {
+    <vc:challenge-view cs="@Model.Round" />
     <form method="post">
         <div class="field">
             <label class="label">Code</label>
@@ -28,5 +27,7 @@
 }
 else
 {
-    <span>Please wait for the game to begin.</span>
+    <div class="notification is-info">
+        Please wait for the game to begin
+    </div>
 }
