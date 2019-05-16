@@ -1,6 +1,7 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 using CodeGolf.Web;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Xunit;
 using Microsoft.AspNetCore.TestHost;
@@ -14,12 +15,12 @@ namespace CodeGolf.Unit.Test.Pages
 
         public DemoPageShould()
         {
-            this.server = new TestServer(new WebHostBuilder()
+            this.server = new TestServer(WebHost.CreateDefaultBuilder()
                 .UseStartup<Startup>());
             this.client = this.server.CreateClient();
         }
 
-        [Fact(Skip = "Test server not working")]
+        [Fact]
         public async Task GetDemo()
         {
             var response = await this.client.GetAsync("/demo");
