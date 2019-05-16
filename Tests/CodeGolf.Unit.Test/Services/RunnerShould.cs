@@ -36,7 +36,7 @@ namespace CodeGolf.Unit.Test.Services
         [Fact]
         public void FailCleanlyWhenFunctionMisnamed()
         {
-            this.runner.Compile<string>("public string MainXXX(string s){ return \"not \" + s;}", new[] { typeof(string) }).ExtractErrors().Should().BeEquivalentTo("Function 'Main' missing");
+            this.runner.Compile<string>("public string MainXXX(string s){ return \"not \" + s;}", new[] { typeof(string) }).ExtractErrors().Should().BeEquivalentTo("Public function 'Main' missing");
         }
 
         [Fact]

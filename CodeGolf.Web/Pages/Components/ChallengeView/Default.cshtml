@@ -1,18 +1,16 @@
 ﻿@model CodeGolf.Domain.ChallengeSet<string>;
 
 
-<article class="message">
-    <div class="message-header">
+<div class="panel">
+    <div class="panel-heading">
         <p>@Model.Title</p>
     </div>
-    <div class="message-body">
+    <div class="panel-block">
         <p>@Model.Description</p>
-
-        <div class="panel">
-            @foreach (var a in Model.Challenges)
-            {
-                <div class="panel-block">@(GenericPresentationHelpers.DisplayFunction(a, Model.Params))</div>
-            }
-        </div>
     </div>
-</article>
+
+    @foreach (var a in Model.Challenges)
+    {
+        <div class="panel-block">@(GenericPresentationHelpers.DisplayFunction(a, Model.Params))</div>
+    }
+</div>

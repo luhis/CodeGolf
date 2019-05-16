@@ -72,7 +72,7 @@ namespace CodeGolf.Service
         {
             if (fun == null)
             {
-                return new ErrorSet($"Function '{FunctionName}' missing");
+                return new ErrorSet($"Public function '{FunctionName}' missing");
             }
 
             if (fun.GetParameters().Length != paramTypes.Count)
@@ -93,6 +93,11 @@ namespace CodeGolf.Service
             }
 
             return new ErrorSet();
+        }
+
+        string IRunner.Wrap(string function)
+        {
+            return WrapInClass(function);
         }
 
         private static string WrapInClass(string function)
