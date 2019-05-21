@@ -40,5 +40,10 @@ namespace CodeGolf.Web.Pages
             var gs = round.ValueOrFailure();
             this.Result = await this.gameService.Attempt(this.identityTools.GetIdentity(this.Request), gs.Hole.HoleId, this.Code, gs.Hole.ChallengeSet).ConfigureAwait(false);
         }
+
+        public IActionResult OnPostViewSource()
+        {
+            return this.RedirectToAction("Preview", "Code", new { this.Code });
+        }
     }
 }

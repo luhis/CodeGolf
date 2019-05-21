@@ -16,14 +16,13 @@
             <textarea class="textarea" asp-for="Code" rows="10" cols="50"></textarea>
         </div>
     </div>
-    <div class="field">
+    <div class="field is-grouped">
         <div class="control">
-            <button class="button" type="submit">Submit</button>
+            <button class="button is-primary" type="submit">Submit</button>
         </div>
-    </div>
-    <div class="field">
+
         <div class="control">
-            <button class="button" type="submit">View .CS file</button>
+            <button class="button" type="submit" asp-page-handler="ViewSource">View .CS file</button>
         </div>
     </div>
 </form>

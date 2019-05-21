@@ -47,12 +47,12 @@ namespace CodeGolf.Service
             });
         }
 
-        async Task<Option<int, ErrorSet>> IGameService.Attempt(Guid userId, Guid gameSlotId, string code,
+        async Task<Option<int, ErrorSet>> IGameService.Attempt(Guid userId, Guid holeId, string code,
             ChallengeSet<string> challengeSet)
         {
             var res = await this.codeGolfService.Score(code, challengeSet);
             res.Map(success =>
-                this.attemptRepository.AddAttempt(new Domain.Attempt(userId, gameSlotId, code, success)));
+                this.attemptRepository.AddAttempt(new Domain.Attempt(userId, holeId, code, success)));
             return res;
         }
 

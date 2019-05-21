@@ -34,5 +34,10 @@ namespace CodeGolf.Web.Pages
         {
             this.Result = await this.codeGolfService.Score(this.Code, this.ChallengeSet).ConfigureAwait(false);
         }
+
+        public IActionResult OnPostViewSource()
+        {
+             return this.RedirectToAction("Preview", "Code", new { this.Code });
+        }
     }
 }

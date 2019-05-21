@@ -10,5 +10,7 @@ namespace CodeGolf.Service
         Task<Option<int, ErrorSet>> Score<T>(string code, ChallengeSet<T> challenge);
 
         ChallengeSet<string> GetDemoChallenge();
+
+        string WrapCode(string code);
     }
 }

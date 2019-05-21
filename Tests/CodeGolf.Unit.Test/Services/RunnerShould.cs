@@ -30,7 +30,7 @@ namespace CodeGolf.Unit.Test.Services
         public void FailToCompileInvalidApplication()
         {
             this.runner.Compile<string>("abc", new Type[] { }).ExtractErrors()
-                .Should().BeEquivalentTo("(6,4): error CS1519: Invalid token '}' in class, struct, or interface member declaration");
+                .Should().BeEquivalentTo("(7,1): error CS1519: Invalid token '}' in class, struct, or interface member declaration");
         }
 
         [Fact]

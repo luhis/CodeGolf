@@ -108,7 +108,7 @@ namespace CodeGolf.Service
                    + $"public class {ClassName}\n"
                    + "{\n"
                    + function
-                   + "}";
+                   + "\n}";
         }
 
         private static T UseTempFile<T>(Func<string> gen, Func<string, T> process)
