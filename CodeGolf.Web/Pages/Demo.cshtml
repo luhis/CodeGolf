@@ -7,7 +7,7 @@
 
 <h1 class="title">Demo</h1>
 
-<vc:challenge-view cs="@Option.Some(Model.ChallengeSet)"/>
+<vc:challenge-view cs="@Option.Some(Model.ChallengeSet)" />
 
 <form method="post">
     <span class="tag is-info tooltip" data-tooltip="Create a function like 'public void Main() { ... }'"><i class="fas fa-question-circle"></i>Help</span>
@@ -28,4 +28,10 @@
     </div>
 </form>
 
-<vc:score-view p="@Model.Result"/>
+<vc:score-view p="@Model.Result" />
+
+@section Scripts {
+    <script src="lib/codemirror/codemirror.min.js"></script>
+    <script src="lib/codemirror/mode/clike/clike.min.js"></script>
+    <script src="js/editor.js"></script>
+}

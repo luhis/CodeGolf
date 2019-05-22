@@ -16,6 +16,11 @@
       "files": [ "dist/css/bulma-tooltip.min.css" ]
     },
     {
+      "library": "codemirror@5.47.0",
+      "destination": "wwwroot/lib/codemirror",
+      "files": [ "codemirror.min.js" , "mode/clike/clike.min.js", "codemirror.min.css"]
+    },
+    {
       "library": "font-awesome@5.8.1",
       "destination": "wwwroot/lib/font-awesome",
       "files": [ "css/solid.min.css", "css/fontawesome.min.css", "webfonts/fa-solid-900.woff2" ]
