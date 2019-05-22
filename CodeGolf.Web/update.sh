@@ -1,3 +1,5 @@
+#!/bin/sh
+
 echo "Update Source"
 git pull
 echo "Stop codegolf service"
