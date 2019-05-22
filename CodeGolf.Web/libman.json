@@ -10,6 +10,12 @@
       ]
     },
     {
+      "library": "bulma-tooltip@2.0.2",
+      "provider": "unpkg",
+      "destination": "wwwroot/lib/bulma-tooltip",
+      "files": [ "dist/css/bulma-tooltip.min.css" ]
+    },
+    {
       "library": "font-awesome@5.8.1",
       "destination": "wwwroot/lib/font-awesome",
       "files": [ "css/solid.min.css", "css/fontawesome.min.css", "webfonts/fa-solid-900.woff2" ]
