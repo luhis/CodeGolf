@@ -52,7 +52,7 @@ namespace CodeGolf.Service
         {
             var res = await this.codeGolfService.Score(code, challengeSet);
             res.Map(success =>
-                this.attemptRepository.AddAttempt(new Domain.Attempt(userId, holeId, code, success)));
+                this.attemptRepository.AddAttempt(new Domain.Attempt(userId, holeId, code, success, DateTime.UtcNow)));
             return res;
         }
 
