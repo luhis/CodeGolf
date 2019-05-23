@@ -10,7 +10,7 @@
 {
     <vc:challenge-view cs="@Model.Round" />
     <form method="post">
-        <span class="tag is-info tooltip" data-tooltip="Create a function like 'public void Main() { ... }'"><i class="fas fa-question-circle"></i>Help</span>
+        <vc:help-tool-tip-view cs="@Model.Round"/>
         <div class="field">
             <label class="label">Code</label>
             <div class="control">
