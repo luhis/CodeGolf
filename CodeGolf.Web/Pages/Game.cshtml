@@ -4,41 +4,42 @@
     ViewData["Title"] = "Game";
 }
 
-<h1 class="title">Game</h1>
+<section class="section">
+    <h1 class="title">Game</h1>
 
-@if (Model.Round.HasValue)
-{
-    <vc:challenge-view cs="@Model.Round" />
-    <form method="post">
-        <vc:help-tool-tip-view cs="@Model.Round"/>
-        <div class="field">
-            <label class="label">Code</label>
-            <div class="control">
-                <textarea class="textarea" asp-for="Code" rows="10" cols="50"></textarea>
+    @if (Model.Round.HasValue)
+    {
+        <vc:challenge-view cs="@Model.Round" />
+        <form method="post">
+            <vc:help-tool-tip-view cs="@Model.Round" />
+            <div class="field">
+                <label class="label">Code</label>
+                <div class="control">
+                    <textarea class="textarea" asp-for="Code" rows="10" cols="50"></textarea>
+                </div>
             </div>
+            <div class="field is-grouped">
+                <div class="control">
+                    <button class="button is-primary" type="submit">Submit</button>
+                </div>
+
+                <div class="control">
+                    <button class="button" type="submit" asp-page-handler="ViewSource">View .CS file</button>
+                </div>
+            </div>
+        </form>
+
+        <vc:score-view p="@Model.Result" />
+    }
+    else
+    {
+        <div class="notification is-info">
+            Please wait for the game to begin
         </div>
-        <div class="field is-grouped">
-            <div class="control">
-                <button class="button is-primary" type="submit">Submit</button>
-            </div>
-
-            <div class="control">
-                <button class="button" type="submit" asp-page-handler="ViewSource">View .CS file</button>
-            </div>
-        </div>
-    </form>
-
-    <vc:score-view p="@Model.Result" />
-}
-else
-{
-    <div class="notification is-info">
-        Please wait for the game to begin
-    </div>
-}
-
-@section Scripts {
-    <script src="lib/codemirror/codemirror.min.js"></script>
-    <script src="lib/codemirror/mode/clike/clike.min.js"></script>
-    <script src="js/editor.js"></script>
-}
+    }
+    </section>
+    @section Scripts {
+        <script src="lib/codemirror/codemirror.min.js"></script>
+        <script src="lib/codemirror/mode/clike/clike.min.js"></script>
+        <script src="js/editor.js"></script>
+    }

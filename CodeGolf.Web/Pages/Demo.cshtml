@@ -5,30 +5,32 @@
     ViewData["Title"] = "Demo";
 }
 
-<h1 class="title">Demo</h1>
+<section class="section">
+    <h1 class="title">Demo</h1>
 
-<vc:challenge-view cs="@Option.Some(Model.ChallengeSet)" />
+    <vc:challenge-view cs="@Option.Some(Model.ChallengeSet)" />
 
-<form method="post">
-    <vc:help-tool-tip-view cs="@Option.Some(Model.ChallengeSet)"/>
-    <div class="field">
-        <label class="label">Code</label>
-        <div class="control">
-            <textarea class="textarea" asp-for="Code" rows="10" cols="50"></textarea>
+    <form method="post">
+        <vc:help-tool-tip-view cs="@Option.Some(Model.ChallengeSet)" />
+        <div class="field">
+            <label class="label">Code</label>
+            <div class="control">
+                <textarea class="textarea" asp-for="Code" rows="10" cols="50"></textarea>
+            </div>
         </div>
-    </div>
-    <div class="field is-grouped">
-        <div class="control">
-            <button class="button is-primary" type="submit">Submit</button>
-        </div>
+        <div class="field is-grouped">
+            <div class="control">
+                <button class="button is-primary" type="submit">Submit</button>
+            </div>
 
-        <div class="control">
-            <button class="button" type="submit" asp-page-handler="ViewSource">View .CS file</button>
+            <div class="control">
+                <button class="button" type="submit" asp-page-handler="ViewSource">View .CS file</button>
+            </div>
         </div>
-    </div>
-</form>
+    </form>
 
-<vc:score-view p="@Model.Result" />
+    <vc:score-view p="@Model.Result" />
+</section>
 
 @section Scripts {
     <script src="lib/codemirror/codemirror.min.js"></script>

@@ -5,16 +5,18 @@
     ViewData["Title"] = "Dashboard";
 }
 
-<div>
-    <form asp-page-handler="NextHole" method="post">
-        <button class="button">Next Hole</button>
-    </form>
-</div>
+<section class="section">
+    <div>
+        <form asp-page-handler="NextHole" method="post">
+            <button class="button">Next Hole</button>
+        </form>
+    </div>
 
-@if (Model.CurrentChallenge.HasValue)
-{
-    var extracted = Model.CurrentChallenge.ValueOrFailure();
-    <div>Start: @extracted.Start, End: @extracted.End</div>
-}
-<vc:challenge-view cs="@Model.CurrentChallenge.Map(a => a.Hole.ChallengeSet)" />
-<vc:attempts-view cs="@Model.CurrentChallenge.Map(a => a.Attempts)" />
+    @if (Model.CurrentChallenge.HasValue)
+    {
+        var extracted = Model.CurrentChallenge.ValueOrFailure();
+        <div>Start: @extracted.Start, End: @extracted.End</div>
+    }
+    <vc:challenge-view cs="@Model.CurrentChallenge.Map(a => a.Hole.ChallengeSet)" />
+    <vc:attempts-view cs="@Model.CurrentChallenge.Map(a => a.Attempts)" />
+</section>
