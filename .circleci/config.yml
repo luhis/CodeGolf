@@ -10,5 +10,6 @@ jobs:
           name: Run result
           command: |
             pushd ./Tests/CodeGolf.Unit.Test/
+            dotnet clean
             dotnet test
             popd
