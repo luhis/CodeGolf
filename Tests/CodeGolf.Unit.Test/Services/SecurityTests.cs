@@ -58,5 +58,22 @@ namespace CodeGolf.Unit.Test.Services
                     "(6,46): error CS0246: The type or namespace name 'Assembly' could not be found (are you missing a using directive or an assembly reference?)", 
                     "(6,66): error CS0103: The name 'Assembly' does not exist in the current context");
         }
+
+        [Fact]
+        public void HandleDoubleClasses()
+        {
+            var code = "}" +
+                       "using System.Reflection;" +
+                       "public class Naughty {" +
+                       "public string Main(){" +
+                       "return \"a\";}";
+            var r = this.codeGolfService.Score(
+                code,
+                new ChallengeSet<string>("a", "b", new Type[] { },
+                    new[] { new Challenge<string>(new object[0], "Hello World") })).Result;
+            r.ExtractErrors().Should()
+                .BeEquivalentTo(
+                    "(6,2): error CS1529: A using clause must precede all other elements defined in the namespace except extern alias declarations");
+        }
     }
 }
