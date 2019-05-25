@@ -1,30 +1,7 @@
 ﻿@page
-@using CodeGolf.Service.Dtos
-@using Microsoft.AspNetCore.Html
 @model CodeGolf.Web.Pages.DashboardModel
 @{
     ViewData["Title"] = "Dashboard";
-
-    Func<int, IHtmlContent> None =
-    @<span>
-    </span>;
-
-Func<HoleDto, IHtmlContent> Success =
-@<div class="field is-grouped is-grouped-multiline">
-    <div class="control">
-        <div class="tags has-addons">
-            <span class="tag is-dark">start</span>
-            <span class="tag is-success">@item.Start</span>
-        </div>
-    </div>
-
-    <div class="control">
-        <div class="tags has-addons">
-            <span class="tag is-dark">end</span>
-            <span class="tag is-info">@item.End</span>
-        </div>
-    </div>
-</div>;
 }
 <section class="section">
     <div>
@@ -36,7 +13,7 @@ Func<HoleDto, IHtmlContent> Success =
             </div>
         </form>
     </div>
-    @Model.CurrentChallenge.Match(Success, () => None(42))
+    <vc:times-view hole="@Model.CurrentChallenge"/>
 
     <vc:challenge-view cs="@Model.CurrentChallenge.Map(a => a.Hole.ChallengeSet)" />
     <vc:attempts-view cs="@Model.CurrentChallenge.Map(a => a.Attempts)" />

@@ -41,6 +41,8 @@ namespace CodeGolf.Web
                 options.AppendTrailingSlash = false;
             });
 
+            services.Configure<WebSiteSettings>(this.Configuration);
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.Extensions.Options
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -12,13 +13,14 @@
     <link rel="stylesheet" href="lib/codemirror/codemirror.min.css">
     <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-136387472-2"></script>
+    @inject IOptions<WebSiteSettings> WebSiteSettings
+    <script async src="https://www.googletagmanager.com/gtag/js?id=@WebSiteSettings.Value.GoogleAnalyticsKey"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
+        function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
 
-        gtag('config', 'UA-136387472-2');
+        gtag('config', '@WebSiteSettings.Value.GoogleAnalyticsKey');
     </script>
 
 </head>
