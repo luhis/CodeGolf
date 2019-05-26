@@ -17,7 +17,7 @@ namespace CodeGolf.Service
                         Identifier(TokenName))
                     .WithType(ParseTypeName(typeof(CancellationToken).FullName))).NormalizeWhitespace();
 
-            return node.ReplaceNode(node, updated);
+            return base.VisitMethodDeclaration(node.ReplaceNode(node, updated));
         }
 
         public override SyntaxNode VisitWhileStatement(WhileStatementSyntax node)
@@ -28,7 +28,7 @@ namespace CodeGolf.Service
                     throw new System.Threading.Tasks.TaskCanceledException();
                 }");
             var statement = node.Statement;
-            return node.ReplaceNode(statement, Block(throwIfCancelled).NormalizeWhitespace());
+            return base.VisitWhileStatement(node.ReplaceNode(statement, Block(throwIfCancelled).NormalizeWhitespace()));
         }
     }
 }

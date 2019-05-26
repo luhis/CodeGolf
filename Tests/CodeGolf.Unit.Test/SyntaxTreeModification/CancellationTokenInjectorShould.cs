@@ -27,7 +27,7 @@ public string Main(System.Threading.CancellationToken cancellationToken)
             newSource.ToFullString().Should().BeEquivalentTo(expect);
         }
 
-        [Fact(Skip = "Can only get one transform to run at a time")]
+        [Fact]
         public void AddCancellationTokenChecker()
         {
             var code = @"public class HelloWorld
@@ -46,14 +46,13 @@ public string Main(System.Threading.CancellationToken cancellationToken)
     {
 public string Main(System.Threading.CancellationToken cancellationToken)
 {
-            while(true)
-            {
-                if (token.IsCancellationRequested)
-                {
-                    throw new System.Threading.Tasks.TaskCanceledException();
-                }
-}
-    return ""Hello World"";
+    while (true)
+{
+    if (cancellationToken.IsCancellationRequested)
+    {
+        throw new System.Threading.Tasks.TaskCanceledException();
+    }
+}    return ""Hello World"";
 }    }";
             newSource.ToFullString().Should().BeEquivalentTo(expect);
         }
