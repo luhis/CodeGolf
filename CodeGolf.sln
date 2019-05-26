@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGolf.Persistence", "Cod
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGolf.Service", "CodeGolf.Service\CodeGolf.Service.csproj", "{7CD907B0-D95A-4609-9045-1930F5CCC768}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGolf.Persistence.Static", "CodeGolf.Persistence.Static\CodeGolf.Persistence.Static.csproj", "{3F80022C-5D46-49DF-A4BE-0D66E75A8ABC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGolf.Persistence.Static", "CodeGolf.Persistence.Static\CodeGolf.Persistence.Static.csproj", "{3F80022C-5D46-49DF-A4BE-0D66E75A8ABC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGolf.Recaptcha", "CodeGolf.Recapcha\CodeGolf.Recaptcha.csproj", "{20A8CF2C-BD36-48E0-8C7F-A7DB82ABAEBA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{3F80022C-5D46-49DF-A4BE-0D66E75A8ABC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F80022C-5D46-49DF-A4BE-0D66E75A8ABC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F80022C-5D46-49DF-A4BE-0D66E75A8ABC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20A8CF2C-BD36-48E0-8C7F-A7DB82ABAEBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20A8CF2C-BD36-48E0-8C7F-A7DB82ABAEBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20A8CF2C-BD36-48E0-8C7F-A7DB82ABAEBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20A8CF2C-BD36-48E0-8C7F-A7DB82ABAEBA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

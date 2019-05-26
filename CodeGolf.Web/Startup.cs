@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CodeGolf.Recaptcha;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -42,6 +43,7 @@ namespace CodeGolf.Web
             });
 
             services.Configure<WebSiteSettings>(this.Configuration);
+            services.Configure<RecaptchaSettings>(this.Configuration.GetSection("Recaptcha"));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
@@ -50,6 +52,7 @@ namespace CodeGolf.Web
         {
             CodeGolf.Web.DiModule.Add,
             CodeGolf.Service.DiModule.Add,
+            CodeGolf.Recaptcha.DiModule.Add,
             CodeGolf.Persistence.DiModule.Add,
             CodeGolf.Persistence.Static.DiModule.Add,
         };

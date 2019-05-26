@@ -1,38 +1,51 @@
 ﻿@page
+@using CodeGolf.Recaptcha
+@using Microsoft.Extensions.Options
 @using Optional
 @model CodeGolf.Web.Pages.DemoModel
+@inject IOptions<RecaptchaSettings> RecaptchaSettings;
 @{
     ViewData["Title"] = "Demo";
 }
 
-<section class="section">
-    <h1 class="title">Demo</h1>
+    <section class="section">
+        <h1 class="title">Demo</h1>
 
-    <vc:challenge-view cs="@Option.Some(Model.ChallengeSet)" />
-
-    <form method="post">
-        <vc:help-tool-tip-view cs="@Option.Some(Model.ChallengeSet)" />
-        <div class="field">
-            <label class="label">Code</label>
-            <div class="control">
-                <textarea class="textarea" asp-for="Code" rows="10" cols="50"></textarea>
+        <vc:challenge-view cs="@Option.Some(Model.ChallengeSet)" />
+        <div asp-validation-summary="All"></div>
+        <form method="post">
+            <vc:help-tool-tip-view cs="@Option.Some(Model.ChallengeSet)" />
+            <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
+            <div class="field">
+                <label class="label">Code</label>
+                <div class="control">
+                    <textarea class="textarea" asp-for="Code" rows="10" cols="50"></textarea>
+                </div>
             </div>
-        </div>
-        <div class="field is-grouped">
-            <div class="control">
-                <button class="button is-primary" type="submit">Submit</button>
-            </div>
+            <div class="field is-grouped">
+                <div class="control">
+                    <button class="button is-primary" type="submit">Submit</button>
+                </div>
 
-            <div class="control">
-                <button class="button" type="submit" asp-page-handler="ViewSource">View .CS file</button>
+                <div class="control">
+                    <button class="button" type="submit" asp-page-handler="ViewSource">View .CS file</button>
+                </div>
             </div>
-        </div>
-    </form>
+        </form>
 
-    <vc:score-view p="@Model.Result" />
-</section>
+        <vc:score-view p="@Model.Result" />
+    </section>
 
 @section Scripts {
+    <script src="https://www.google.com/recaptcha/api.js?render=@RecaptchaSettings.Value.SiteKey"></script>
+    <script>
+        grecaptcha.ready(function() {
+            grecaptcha.execute('@RecaptchaSettings.Value.SiteKey', {action: 'demo'}).then(function(token) {
+                console.log(token);
+                document.getElementById('g-recaptcha-response').value =    token;
+            });;
+        });
+    </script>
     <script src="lib/codemirror/codemirror.min.js"></script>
     <script src="lib/codemirror/mode/clike/clike.min.js"></script>
     <script src="js/editor.js"></script>

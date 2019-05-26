@@ -25,6 +25,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CodeGolf.Persistence.Static\CodeGolf.Persistence.Static.csproj" />
     <ProjectReference Include="..\CodeGolf.Persistence\CodeGolf.Persistence.csproj" />
+    <ProjectReference Include="..\CodeGolf.Recapcha\CodeGolf.Recaptcha.csproj" />
     <ProjectReference Include="..\CodeGolf.Service\CodeGolf.Service.csproj" />
   </ItemGroup>
 

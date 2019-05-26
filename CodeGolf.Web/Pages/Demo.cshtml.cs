@@ -2,12 +2,14 @@
 using CodeGolf.Domain;
 using CodeGolf.Service;
 using CodeGolf.Service.Dtos;
+using CodeGolf.Web.Attributes;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Optional;
 
 namespace CodeGolf.Web.Pages
 {
+    [ServiceFilter(typeof(RecaptchaAttribute))]
     public class DemoModel : PageModel
     {
         private readonly ICodeGolfService codeGolfService;
@@ -32,7 +34,10 @@ namespace CodeGolf.Web.Pages
 
         public async Task OnPost()
         {
-            this.Result = await this.codeGolfService.Score(this.Code, this.ChallengeSet).ConfigureAwait(false);
+            if (this.ModelState.IsValid)
+            {
+                this.Result = await this.codeGolfService.Score(this.Code, this.ChallengeSet).ConfigureAwait(false);
+            }
         }
 
         public IActionResult OnPostViewSource()
