@@ -9,7 +9,7 @@ namespace CodeGolf.Unit.Test.Services
 {
     public class CodeGolfServiceShould
     {
-        private readonly ICodeGolfService codeGolfService = new CodeGolfService(new Runner(), new Scorer());
+        private readonly ICodeGolfService codeGolfService = new CodeGolfService(new Runner(new SyntaxTreeTransformer()), new Scorer());
 
         [Fact]
         public void ReturnCorrectResultForHelloWorld()

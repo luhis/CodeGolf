@@ -9,7 +9,7 @@ namespace CodeGolf.Unit.Test.Services
 {
     public class RunnerShould
     {
-        private readonly IRunner runner = new Runner();
+        private readonly IRunner runner = new Runner(new SyntaxTreeTransformer());
 
         [Fact]
         public void ReturnHelloWorld()

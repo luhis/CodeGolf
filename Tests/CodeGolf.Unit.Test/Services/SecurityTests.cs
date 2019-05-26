@@ -9,7 +9,7 @@ namespace CodeGolf.Unit.Test.Services
 {
     public class SecurityTests
     {
-        private readonly ICodeGolfService codeGolfService = new CodeGolfService(new Runner(), new Scorer());
+        private readonly ICodeGolfService codeGolfService = new CodeGolfService(new Runner(new SyntaxTreeTransformer()), new Scorer());
 
         [Fact]
         public void NotAllowFileAccess()

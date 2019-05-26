@@ -18,11 +18,17 @@ namespace CodeGolf.Service
     {
         private const string ClassName = "CodeGolf";
         private const string FunctionName = "Main";
+        private readonly ISyntaxTreeTransformer syntaxTreeTransformer;
+
+        public Runner(ISyntaxTreeTransformer syntaxTreeTransformer)
+        {
+            this.syntaxTreeTransformer = syntaxTreeTransformer;
+        }
 
         Option<Func<object[], Task<Option<T, ErrorSet>>>, ErrorSet> IRunner.Compile<T>(
             string function, IReadOnlyList<Type> paramTypes)
         {
-            var assembly = Compile(function);
+            var assembly = this.Compile(function);
 
             return assembly.FlatMap(success =>
             {
@@ -122,10 +128,12 @@ namespace CodeGolf.Service
             return res;
         }
 
-        private static Option<Assembly, ErrorSet> Compile(string function)
+        private Option<Assembly, ErrorSet> Compile(string function)
         {
             var finalCode = WrapInClass(function);
             var syntaxTree = CSharpSyntaxTree.ParseText(finalCode);
+
+            var transformed = this.syntaxTreeTransformer.Transform(syntaxTree);
 
             return UseTempFile(Path.GetRandomFileName, assemblyName =>
             {
@@ -138,7 +146,7 @@ namespace CodeGolf.Service
 
                 var compilation = CSharpCompilation.Create(
                     assemblyName,
-                    syntaxTrees: new[] {syntaxTree},
+                    syntaxTrees: new[] { transformed },
                     references: references,
                     options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, warningLevel: 4, reportSuppressedDiagnostics: true, allowUnsafe: false));
 
