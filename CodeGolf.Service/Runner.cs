@@ -18,6 +18,7 @@ namespace CodeGolf.Service
     {
         private const string ClassName = "CodeGolf";
         private const string FunctionName = "Main";
+        private const int ExecutionTimeoutMilliseconds = 1000;
         private readonly ISyntaxTreeTransformer syntaxTreeTransformer;
 
         public Runner(ISyntaxTreeTransformer syntaxTreeTransformer)
@@ -46,7 +47,7 @@ namespace CodeGolf.Service
                     try
                     {
                         var source = new CancellationTokenSource();
-                        source.CancelAfter(TimeSpan.FromSeconds(1));
+                        source.CancelAfter(TimeSpan.FromMilliseconds(ExecutionTimeoutMilliseconds));
                         var task = Task<object>.Factory.StartNew(() => fun.Invoke(obj,
                             BindingFlags.Default | BindingFlags.InvokeMethod,
                             null, args.Append(source.Token).ToArray(), CultureInfo.InvariantCulture), source.Token);

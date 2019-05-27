@@ -29,23 +29,23 @@ namespace CodeGolf.Service
 
         public override SyntaxNode VisitWhileStatement(WhileStatementSyntax node)
         {
-            //what if there is a body?
-            var statement = node.Statement;
-            return base.VisitWhileStatement(node.ReplaceNode(statement, Block(ThrowIfCancelled).NormalizeWhitespace()));
+            var statement = (BlockSyntax) node.Statement;
+            var updated = statement.AddStatements(ThrowIfCancelled).NormalizeWhitespace();
+            return base.VisitWhileStatement(node.ReplaceNode(statement, updated));
         }
 
         public override SyntaxNode VisitForStatement(ForStatementSyntax node)
         {
-            //what if there is a body?
-            var statement = node.Statement;
-            return base.VisitForStatement(node.ReplaceNode(statement, Block(ThrowIfCancelled).NormalizeWhitespace()));
+            var statement = (BlockSyntax)node.Statement;
+            var updated = statement.AddStatements(ThrowIfCancelled).NormalizeWhitespace();
+            return base.VisitForStatement(node.ReplaceNode(statement, updated));
         }
 
         public override SyntaxNode VisitDoStatement(DoStatementSyntax node)
         {
-            //what if there is a body?
-            var statement = node.Statement;
-            return base.VisitDoStatement(node.ReplaceNode(statement, Block(ThrowIfCancelled).NormalizeWhitespace()));
+            var statement = (BlockSyntax)node.Statement;
+            var updated = statement.AddStatements(ThrowIfCancelled).NormalizeWhitespace();
+            return base.VisitDoStatement(node.ReplaceNode(statement, updated));
         }
 
         public override SyntaxNode VisitInvocationExpression(InvocationExpressionSyntax node)

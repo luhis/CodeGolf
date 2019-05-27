@@ -58,6 +58,41 @@ public string Main(System.Threading.CancellationToken cancellationToken)
         }
 
         [Fact]
+        public void NotLoseLoopBody()
+        {
+            var code = @"public class HelloWorld
+    {
+        public string Main()
+        {
+            var i = 0;
+            while(true)
+            {
+                i++;
+            }
+            return ""Hello World"";
+        }
+    }";
+
+            var newSource = CompilationTooling.Transform(code);
+
+            var expect = @"public class HelloWorld
+    {
+public string Main(System.Threading.CancellationToken cancellationToken)
+{
+    var i = 0;
+    while (true)
+{
+    i++;
+    if (cancellationToken.IsCancellationRequested)
+    {
+        throw new System.Threading.Tasks.TaskCanceledException();
+    }
+}    return ""Hello World"";
+}    }";
+            newSource.ToFullString().Should().BeEquivalentTo(expect);
+        }
+
+        [Fact]
         public void WorkWithPrivateFunctions()
         {
             var code = @"public class HelloWorld
