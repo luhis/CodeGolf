@@ -12,5 +12,6 @@ namespace CodeGolf.Service
         ChallengeSet<string> GetDemoChallenge();
 
         string WrapCode(string code);
+        string DebugCode(string code);
     }
 }

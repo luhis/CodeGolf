@@ -19,5 +19,11 @@ namespace CodeGolf.Web.Controllers
         {
             return this.codeGolfService.WrapCode(code);
         }
+
+        [HttpGet("[action]")]
+        public ActionResult<string> Debug(string code)
+        {
+            return this.codeGolfService.DebugCode(code);
+        }
     }
 }

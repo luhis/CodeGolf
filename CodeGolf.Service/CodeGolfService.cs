@@ -44,6 +44,9 @@ namespace CodeGolf.Service
         string ICodeGolfService.WrapCode(string code)
             => this.runner.Wrap(code);
 
+        string ICodeGolfService.DebugCode(string code)
+            => this.runner.DebugCode(code);
+
         private static bool IsFailure<T>((Challenge<T> challenge, Option<T, ErrorSet> result) prop) => 
             prop.result.Match(success => !success.Equals(prop.challenge.ExpectedResult), _ => true);
 

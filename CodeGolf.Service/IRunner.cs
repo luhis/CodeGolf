@@ -11,5 +11,7 @@ namespace CodeGolf.Service
         Option<Func<object[], Task<Option<T, ErrorSet>>>, ErrorSet> Compile<T>(string function, IReadOnlyList<Type> paramTypes);
 
         string Wrap(string function);
+
+        string DebugCode(string function);
     }
 }

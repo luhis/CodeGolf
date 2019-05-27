@@ -104,6 +104,15 @@ namespace CodeGolf.Service
 
         string IRunner.Wrap(string function) => WrapInClass(function);
 
+        string IRunner.DebugCode(string function)
+        {
+            var classString = WrapInClass(function);
+            var syntaxTree = CSharpSyntaxTree.ParseText(classString);
+
+            var transformed = this.syntaxTreeTransformer.Transform(syntaxTree);
+            return transformed.GetRoot().ToFullString();
+        }
+
         private static string WrapInClass(string function)
         {
             return "using System;\n"
