@@ -46,7 +46,7 @@
         grecaptcha.ready(function() {
             grecaptcha.execute('@RecaptchaSettings.Value.SiteKey', {action: 'demo'}).then(function(token) {
                 console.log(token);
-                document.getElementById('g-recaptcha-response').value =    token;
+                document.getElementById('g-recaptcha-response').value = token;
             });;
         });
     </script>
