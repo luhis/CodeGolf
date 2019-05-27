@@ -11,6 +11,7 @@ namespace CodeGolf.Service
             collection.AddTransient<IRunner, Runner>();
             collection.AddTransient<IGameService, GameService>();
             collection.AddTransient<ISyntaxTreeTransformer, SyntaxTreeTransformer>();
+            collection.AddTransient<CancellationTokenInjector>();
         }
     }
 }

@@ -9,7 +9,7 @@ namespace CodeGolf.Unit.Test.Services
 {
     public class RunnerShould
     {
-        private readonly IRunner runner = new Runner(new SyntaxTreeTransformer());
+        private readonly IRunner runner = new Runner(new SyntaxTreeTransformer(new CancellationTokenInjector()));
 
         [Fact]
         public void ReturnHelloWorld()
@@ -89,7 +89,7 @@ namespace CodeGolf.Unit.Test.Services
             }
             return s;
         }";
-            this.runner.Compile<string>(code, new[] { typeof(string) }).ExtractErrors().Should().BeEquivalentTo("(11,13): warning CS0162: Unreachable code detected");
+            this.runner.Compile<string>(code, new[] { typeof(string) }).ExtractErrors().Should().BeEquivalentTo("(14,6): warning CS0162: Unreachable code detected");
         }
 
         [Fact]

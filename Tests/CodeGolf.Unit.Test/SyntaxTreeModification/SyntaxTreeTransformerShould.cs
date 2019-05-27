@@ -7,7 +7,7 @@ namespace CodeGolf.Unit.Test.SyntaxTreeModification
 {
     public class SyntaxTreeTransformerShould
     {
-        private readonly ISyntaxTreeTransformer syntaxTreeTransformer = new SyntaxTreeTransformer();
+        private readonly ISyntaxTreeTransformer syntaxTreeTransformer = new SyntaxTreeTransformer(new CancellationTokenInjector());
 
         [Fact(Skip = "later")]
         public void Test()

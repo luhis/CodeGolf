@@ -56,5 +56,26 @@ public string Main(System.Threading.CancellationToken cancellationToken)
 }    }";
             newSource.ToFullString().Should().BeEquivalentTo(expect);
         }
+
+        [Fact]
+        public void WorkWithPrivateFunctions()
+        {
+            var code = @"public class HelloWorld
+    {
+        private int X() => 42;
+
+        public string Main(string s){ return s + X();}
+    }";
+
+            var newSource = CompilationTooling.Transform(code);
+
+            var expect = @"public class HelloWorld
+    {
+private int X(System.Threading.CancellationToken cancellationToken) => 42;public string Main(string s, System.Threading.CancellationToken cancellationToken)
+{
+    return s + X(cancellationToken);
+}    }";
+            newSource.ToFullString().Should().BeEquivalentTo(expect);
+        }
     }
 }

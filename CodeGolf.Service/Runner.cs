@@ -51,7 +51,7 @@ namespace CodeGolf.Service
                         source.Token.Register(() => completionSource.TrySetCanceled());
                         var task = Task<object>.Factory.StartNew(() => fun.Invoke(obj,
                             BindingFlags.Default | BindingFlags.InvokeMethod,
-                            null, args, CultureInfo.InvariantCulture), source.Token);
+                            null, args.Append(source.Token).ToArray(), CultureInfo.InvariantCulture), source.Token);
 
                         await Task.WhenAny(task, completionSource.Task);
 
@@ -81,7 +81,9 @@ namespace CodeGolf.Service
                 return new ErrorSet($"Public function '{FunctionName}' missing");
             }
 
-            if (fun.GetParameters().Length != paramTypes.Count)
+            var compiledParams = fun.GetParameters().Take(fun.GetParameters().Length -1);
+
+            if (compiledParams.Count() != paramTypes.Count)
             {
                 return new ErrorSet($"Incorrect parameter count expected {paramTypes.Count}");
             }
@@ -91,7 +93,7 @@ namespace CodeGolf.Service
                 return new ErrorSet($"Return type incorrect expected {expectedReturn}");
             }
 
-            var missMatches = fun.GetParameters().Select(a => a.ParameterType)
+            var missMatches = compiledParams.Select(a => a.ParameterType)
                 .Zip(paramTypes, ValueTuple.Create).Where(a => a.Item1 != a.Item2);
             if (missMatches.Any())
             {
