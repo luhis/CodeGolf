@@ -30,21 +30,21 @@ namespace CodeGolf.Service
         public override SyntaxNode VisitWhileStatement(WhileStatementSyntax node)
         {
             var statement = (BlockSyntax) node.Statement;
-            var updated = statement.AddStatements(ThrowIfCancelled).NormalizeWhitespace();
+            var updated = statement.AddStatements(ThrowIfCancelled).WithLeadingTrivia(statement.GetLeadingTrivia()).WithTrailingTrivia(statement.GetTrailingTrivia());
             return base.VisitWhileStatement(node.ReplaceNode(statement, updated).NormalizeWhitespace());
         }
 
         public override SyntaxNode VisitForStatement(ForStatementSyntax node)
         {
             var statement = (BlockSyntax)node.Statement;
-            var updated = statement.AddStatements(ThrowIfCancelled).NormalizeWhitespace();
+            var updated = statement.AddStatements(ThrowIfCancelled).WithLeadingTrivia(statement.GetLeadingTrivia()).WithTrailingTrivia(statement.GetTrailingTrivia());
             return base.VisitForStatement(node.ReplaceNode(statement, updated));
         }
 
         public override SyntaxNode VisitDoStatement(DoStatementSyntax node)
         {
             var statement = (BlockSyntax)node.Statement;
-            var updated = statement.AddStatements(ThrowIfCancelled).NormalizeWhitespace();
+            var updated = statement.AddStatements(ThrowIfCancelled).WithLeadingTrivia(statement.GetLeadingTrivia()).WithTrailingTrivia(statement.GetTrailingTrivia());
             return base.VisitDoStatement(node.ReplaceNode(statement, updated));
         }
 

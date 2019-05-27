@@ -107,17 +107,18 @@ namespace CodeGolf.Service
             var syntaxTree = CSharpSyntaxTree.ParseText(classString);
 
             var transformed = this.syntaxTreeTransformer.Transform(syntaxTree);
-            return transformed.GetRoot().ToFullString();
+            return transformed.GetRoot().NormalizeWhitespace().ToFullString();
         }
 
         private static string WrapInClass(string function)
         {
+            var transformed = string.Join("\n", function.Split('\n').Select(s => "    " + s));
             return "using System;\n"
                    + "using System.Collections.Generic;\n"
                    + "using System.Linq;\n"
                    + $"public class {ClassName}\n"
                    + "{\n"
-                   + function
+                   + transformed
                    + "\n}";
         }
 
