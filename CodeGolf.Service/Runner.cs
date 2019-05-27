@@ -57,10 +57,7 @@ namespace CodeGolf.Service
                             BindingFlags.Default | BindingFlags.InvokeMethod,
                             null, args.Append(source.Token).ToArray(), CultureInfo.InvariantCulture), source.Token);
 
-                        await task;
-
-                        return Option.Some<T, ErrorSet>((T) task.Result);
-
+                        return Option.Some<T, ErrorSet>((T)await task);
                     }
                     catch (Exception e)
                     {

@@ -13,7 +13,7 @@ namespace CodeGolf.Service
         private static readonly StatementSyntax ThrowIfCancelled = ParseStatement(@"if (" + TokenName + @".IsCancellationRequested)
                 {
                     throw new System.Threading.Tasks.TaskCanceledException();
-                }");
+                }").NormalizeWhitespace();
 
         private IList<string> ModifiedFuncs { get; } = new List<string>();
 
@@ -31,7 +31,7 @@ namespace CodeGolf.Service
         {
             var statement = (BlockSyntax) node.Statement;
             var updated = statement.AddStatements(ThrowIfCancelled).NormalizeWhitespace();
-            return base.VisitWhileStatement(node.ReplaceNode(statement, updated));
+            return base.VisitWhileStatement(node.ReplaceNode(statement, updated).NormalizeWhitespace());
         }
 
         public override SyntaxNode VisitForStatement(ForStatementSyntax node)

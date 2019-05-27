@@ -9,6 +9,7 @@ namespace CodeGolf.Persistence
         {
             services.AddScoped<IAttemptRepository, AttemptRepository>();
             services.AddScoped<IRoundRepository, RoundRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
         }
     }
 }
