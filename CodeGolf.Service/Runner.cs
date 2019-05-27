@@ -20,6 +20,11 @@ namespace CodeGolf.Service
         private const string FunctionName = "Main";
         private const int ExecutionTimeoutMilliseconds = 1000;
         private readonly ISyntaxTreeTransformer syntaxTreeTransformer;
+        private static readonly MetadataReference[] MetadataReferences = {
+            MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
+            MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location),
+            MetadataReference.CreateFromFile(typeof(AssemblyTargetedPatchBandAttribute).Assembly.Location)
+        };
 
         public Runner(ISyntaxTreeTransformer syntaxTreeTransformer)
         {
@@ -132,17 +137,10 @@ namespace CodeGolf.Service
 
             return UseTempFile(Path.GetRandomFileName, assemblyName =>
             {
-                var references = new MetadataReference[]
-                {
-                    MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
-                    MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location),
-                    MetadataReference.CreateFromFile(typeof(AssemblyTargetedPatchBandAttribute).Assembly.Location)
-                };
-
                 var compilation = CSharpCompilation.Create(
                     assemblyName,
                     syntaxTrees: new[] { transformed },
-                    references: references,
+                    references: MetadataReferences,
                     options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, warningLevel: 4, reportSuppressedDiagnostics: true, allowUnsafe: false));
 
                 using (var ms = new MemoryStream())
