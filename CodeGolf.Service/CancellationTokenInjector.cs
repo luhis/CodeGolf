@@ -10,6 +10,12 @@ namespace CodeGolf.Service
     public class CancellationTokenInjector : CSharpSyntaxRewriter
     { 
         private const string TokenName = "cancellationToken";
+        private static readonly StatementSyntax ThrowIfCancelled = ParseStatement(@"if (" + TokenName + @".IsCancellationRequested)
+                {
+                    throw new System.Threading.Tasks.TaskCanceledException();
+                }");
+
+        private IList<string> ModifiedFuncs { get; } = new List<string>();
 
         public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax node)
         {
@@ -21,17 +27,25 @@ namespace CodeGolf.Service
             return base.VisitMethodDeclaration(node.ReplaceNode(node, updated));
         }
 
-        private IList<string> ModifiedFuncs { get; } = new List<string>();
-
         public override SyntaxNode VisitWhileStatement(WhileStatementSyntax node)
         {
-            var throwIfCancelled =
-                ParseStatement(@"if (" + TokenName + @".IsCancellationRequested)
-                {
-                    throw new System.Threading.Tasks.TaskCanceledException();
-                }");
+            //what if there is a body?
             var statement = node.Statement;
-            return base.VisitWhileStatement(node.ReplaceNode(statement, Block(throwIfCancelled).NormalizeWhitespace()));
+            return base.VisitWhileStatement(node.ReplaceNode(statement, Block(ThrowIfCancelled).NormalizeWhitespace()));
+        }
+
+        public override SyntaxNode VisitForStatement(ForStatementSyntax node)
+        {
+            //what if there is a body?
+            var statement = node.Statement;
+            return base.VisitForStatement(node.ReplaceNode(statement, Block(ThrowIfCancelled).NormalizeWhitespace()));
+        }
+
+        public override SyntaxNode VisitDoStatement(DoStatementSyntax node)
+        {
+            //what if there is a body?
+            var statement = node.Statement;
+            return base.VisitDoStatement(node.ReplaceNode(statement, Block(ThrowIfCancelled).NormalizeWhitespace()));
         }
 
         public override SyntaxNode VisitInvocationExpression(InvocationExpressionSyntax node)
@@ -47,6 +61,5 @@ namespace CodeGolf.Service
                 return base.VisitInvocationExpression(node);
             }
         }
-    
     }
 }

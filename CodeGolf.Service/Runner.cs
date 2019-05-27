@@ -47,25 +47,18 @@ namespace CodeGolf.Service
                     {
                         var source = new CancellationTokenSource();
                         source.CancelAfter(TimeSpan.FromSeconds(1));
-                        var completionSource = new TaskCompletionSource<object>();
-                        source.Token.Register(() => completionSource.TrySetCanceled());
                         var task = Task<object>.Factory.StartNew(() => fun.Invoke(obj,
                             BindingFlags.Default | BindingFlags.InvokeMethod,
                             null, args.Append(source.Token).ToArray(), CultureInfo.InvariantCulture), source.Token);
 
-                        await Task.WhenAny(task, completionSource.Task);
-
-                        if (source.IsCancellationRequested)
-                        {
-                            throw new Exception("A task was canceled.");
-                        }
+                        await task;
 
                         return Option.Some<T, ErrorSet>((T) task.Result);
 
                     }
                     catch (Exception e)
                     {
-                        return Option.None<T, ErrorSet>(new ErrorSet(e.Message));
+                        return Option.None<T, ErrorSet>(new ErrorSet(e.InnerException.Message));
                     }
                 }
 
@@ -103,10 +96,7 @@ namespace CodeGolf.Service
             return new ErrorSet();
         }
 
-        string IRunner.Wrap(string function)
-        {
-            return WrapInClass(function);
-        }
+        string IRunner.Wrap(string function) => WrapInClass(function);
 
         private static string WrapInClass(string function)
         {
@@ -129,6 +119,8 @@ namespace CodeGolf.Service
 
             return res;
         }
+
+        private static bool IsStoppable(Diagnostic a) => a.Severity > DiagnosticSeverity.Warning;
 
         private Option<Assembly, ErrorSet> Compile(string function)
         {
@@ -156,10 +148,9 @@ namespace CodeGolf.Service
                 {
                     var result = compilation.Emit(ms);
 
-                    if (result.Diagnostics.Any(a => a.Severity > DiagnosticSeverity.Info))
+                    if (result.Diagnostics.Any(IsStoppable))
                     {
-                        var failures = result.Diagnostics.Where(diagnostic =>
-                            diagnostic.Severity > DiagnosticSeverity.Info).Select(a => a.ToString());
+                        var failures = result.Diagnostics.Where(IsStoppable).Select(a => a.ToString());
 
                         return Option.None<Assembly, ErrorSet>( new ErrorSet(failures.ToList()));
                     }

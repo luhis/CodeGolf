@@ -76,11 +76,11 @@ namespace CodeGolf.Unit.Test.Services
             return s;
         }";
             this.runner.Compile<string>(code, new[] { typeof(string) }).ExtractSuccess()(new object[] { "Hello world" }).Result
-                .ExtractErrors().Should().BeEquivalentTo("One or more errors occurred. (Exception has been thrown by the target of an invocation.)");
+                .ExtractErrors().Should().BeEquivalentTo("Index was outside the bounds of the array.");
         }
 
         [Fact]
-        public void DealWithInfiniteLoops()
+        public void DealWithInfiniteWhileLoops()
         {
             var code = @"
         public string Main(string s){ 
@@ -89,7 +89,36 @@ namespace CodeGolf.Unit.Test.Services
             }
             return s;
         }";
-            this.runner.Compile<string>(code, new[] { typeof(string) }).ExtractErrors().Should().BeEquivalentTo("(14,6): warning CS0162: Unreachable code detected");
+            this.runner.Compile<string>(code, new[] { typeof(string) }).ExtractSuccess()(new object[] { "Hello world" }).Result
+                .ExtractErrors().Should().BeEquivalentTo("A task was canceled.");
+        }
+
+        [Fact]
+        public void DealWithInfiniteForLoops()
+        {
+            var code = @"
+        public string Main(string s){ 
+            for(var i = 0; i > -1;)
+            {
+            }
+            return s;
+        }";
+            this.runner.Compile<string>(code, new[] { typeof(string) }).ExtractSuccess()(new object[] { "Hello world" }).Result
+                .ExtractErrors().Should().BeEquivalentTo("A task was canceled.");
+        }
+
+        [Fact]
+        public void DealWithInfiniteDoWhileLoops()
+        {
+            var code = @"
+        public string Main(string s){ 
+            do
+            {
+            } while(true);
+            return s;
+        }";
+            this.runner.Compile<string>(code, new[] { typeof(string) }).ExtractSuccess()(new object[] { "Hello world" }).Result
+                .ExtractErrors().Should().BeEquivalentTo("A task was canceled.");
         }
 
         [Fact]
