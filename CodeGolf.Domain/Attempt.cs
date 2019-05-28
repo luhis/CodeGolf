@@ -5,7 +5,7 @@ namespace CodeGolf.Domain
 {
     public class Attempt
     {
-        public Attempt(Guid userId, Guid holeId, string code, int score, DateTime timeStamp)
+        public Attempt(string userId, Guid holeId, string code, int score, DateTime timeStamp)
         {
             this.UserId = EnsureArg.IsNotEmpty(userId, nameof(userId));
             this.HoleId = EnsureArg.IsNotEmpty(holeId, nameof(holeId));
@@ -14,7 +14,7 @@ namespace CodeGolf.Domain
             this.TimeStamp = EnsureArg.IsNotDefault(timeStamp, nameof(timeStamp));
         }
 
-        public Guid UserId { get; }
+        public string UserId { get; }
 
         public Guid HoleId { get; }
 

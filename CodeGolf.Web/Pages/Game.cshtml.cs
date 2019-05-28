@@ -4,6 +4,7 @@ using CodeGolf.Domain;
 using CodeGolf.Service;
 using CodeGolf.Service.Dtos;
 using CodeGolf.Web.Tooling;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Optional;
@@ -11,6 +12,7 @@ using Optional.Unsafe;
 
 namespace CodeGolf.Web.Pages
 {
+    [Authorize]
     public class GameModel : PageModel
     {
         private readonly IGameService gameService;
@@ -39,8 +41,9 @@ namespace CodeGolf.Web.Pages
             var round = await this.gameService.GetCurrentHole();
             this.Round = round.Map(a => a.Hole.ChallengeSet);
             var gs = round.ValueOrFailure();
+
             this.Result = 
-                await this.gameService.Attempt(this.identityTools.GetIdentity(this.Request), gs.Hole.HoleId, this.Code, gs.Hole.ChallengeSet, cancellationToken).ConfigureAwait(false);
+                await this.gameService.Attempt(this.identityTools.GetIdentity(this.HttpContext).ValueOrFailure(), gs.Hole.HoleId, this.Code, gs.Hole.ChallengeSet, cancellationToken).ConfigureAwait(false);
         }
 
         public IActionResult OnPostViewSource()

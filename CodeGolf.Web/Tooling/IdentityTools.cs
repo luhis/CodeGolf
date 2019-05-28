@@ -1,10 +1,21 @@
 ﻿using System;
 using Microsoft.AspNetCore.Http;
+using Optional;
 
 namespace CodeGolf.Web.Tooling
 {
     public class IdentityTools : IIdentityTools
     {
-        Guid IIdentityTools.GetIdentity(HttpRequest hr) => Guid.NewGuid();
+        Option<string> IIdentityTools.GetIdentity(HttpContext hc)
+        {
+            var user = hc.User;
+            if (user.Identity.IsAuthenticated)
+            {
+                var loginName = user.FindFirst(c => c.Type == "urn:github:login").Value;
+                return Option.Some(loginName);
+            }
+
+            return Option.None<string>();
+        }
     }
 }

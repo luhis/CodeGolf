@@ -9,5 +9,7 @@ namespace CodeGolf.Domain.Repositories
         Task AddAttempt(Attempt attempt);
 
         Task<IReadOnlyList<Attempt>> GetAttempts(Guid holdId);
+
+        Task ClearAll();
     }
 }

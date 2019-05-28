@@ -27,11 +27,6 @@ namespace CodeGolf.Service
             this.roundRepository = roundRepository;
         }
 
-        Option<Game> IGameService.GetGame()
-        {
-            return Option.Some(this.gameRepository.GetGame());
-        }
-
         private async Task<IReadOnlyList<Attempt>> GetBestAttempts(Guid holeId)
         {
             var attempts = await this.attemptRepository.GetAttempts(holeId);
@@ -48,12 +43,12 @@ namespace CodeGolf.Service
             });
         }
 
-        async Task<Option<int, ErrorSet>> IGameService.Attempt(Guid userId, Guid holeId, string code,
+        async Task<Option<int, ErrorSet>> IGameService.Attempt(string userId, Guid holeId, string code,
             ChallengeSet<string> challengeSet, CancellationToken cancellationToken)
         {
             var res = await this.codeGolfService.Score(code, challengeSet, cancellationToken);
             res.Map(success =>
-                this.attemptRepository.AddAttempt(new Domain.Attempt(userId, holeId, code, success, DateTime.UtcNow)));
+                this.attemptRepository.AddAttempt(new Attempt(userId, holeId, code, success, DateTime.UtcNow)));
             return res;
         }
 
@@ -65,8 +60,14 @@ namespace CodeGolf.Service
             var round = await this.roundRepository.GetCurrentHole();
             var next = round.Match(some => GetAfter(this.gameRepository.GetGame().Holes, item => item.HoleId.Equals(some.HoleId)), 
                 () => this.gameRepository.GetGame().Holes.First());
-            await this.roundRepository.AddRound(new RoundInstance(next.HoleId, DateTime.UtcNow,
+            await this.roundRepository.AddHole(new HoleInstance(next.HoleId, DateTime.UtcNow,
                 DateTime.UtcNow.Add(next.Duration)));
+        }
+
+        async Task IGameService.ResetGame()
+        {
+            await this.attemptRepository.ClearAll();
+            await this.roundRepository.ClearAll();
         }
     }
 }

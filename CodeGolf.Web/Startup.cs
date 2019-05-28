@@ -1,8 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Security.Claims;
 using CodeGolf.Recaptcha;
 using CodeGolf.Service;
+using CodeGolf.Web.Attributes;
+using CodeGolf.Web.Pages;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -11,6 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Linq;
 
 namespace CodeGolf.Web
 {
@@ -30,7 +39,7 @@ namespace CodeGolf.Web
             {
                 module(services);
             }
-            
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -38,24 +47,73 @@ namespace CodeGolf.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.Configure<RouteOptions>(options => {
+            services.Configure<RouteOptions>(options =>
+            {
                 options.LowercaseUrls = true;
                 options.AppendTrailingSlash = false;
             });
 
             services.Configure<WebSiteSettings>(this.Configuration);
+            services.Configure<GameAdminSettings>(this.Configuration);
             services.Configure<RecaptchaSettings>(this.Configuration.GetSection("Recaptcha"));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = "GitHub";
+            })
+            .AddCookie()
+            .AddOAuth("GitHub", options =>
+            {
+                options.ClientId = this.Configuration["GitHub:ClientId"];
+                options.ClientSecret = this.Configuration["GitHub:ClientSecret"];
+                options.CallbackPath = new PathString("/signin-github");
+
+                options.AuthorizationEndpoint = "https://github.com/login/oauth/authorize";
+                options.TokenEndpoint = "https://github.com/login/oauth/access_token";
+                options.UserInformationEndpoint = "https://api.github.com/user";
+
+                options.ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+                options.ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
+                options.ClaimActions.MapJsonKey("urn:github:login", "login");
+                options.ClaimActions.MapJsonKey("urn:github:url", "html_url");
+                options.ClaimActions.MapJsonKey("urn:github:avatar", "avatar_url");
+
+                options.Events = new OAuthEvents
+                {
+                    OnCreatingTicket = async context =>
+                    {
+                        using (var request =
+                            new HttpRequestMessage(HttpMethod.Get, context.Options.UserInformationEndpoint))
+                        {
+                            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", context.AccessToken);
+
+                            using (var response = await context.Backchannel.SendAsync(request,
+                                HttpCompletionOption.ResponseHeadersRead, context.HttpContext.RequestAborted))
+                            {
+                                response.EnsureSuccessStatusCode();
+
+                                var user = JObject.Parse(await response.Content.ReadAsStringAsync());
+
+                                context.RunClaimActions(user);
+                            }
+                        }
+                    }
+                };
+            });
         }
 
         private static readonly IReadOnlyList<Action<IServiceCollection>> DiModules = new List<Action<IServiceCollection>>
         {
-            CodeGolf.Web.DiModule.Add,
-            CodeGolf.Service.DiModule.Add,
+            DiModule.Add,
+            Service.DiModule.Add,
             CodeGolf.Recaptcha.DiModule.Add,
-            CodeGolf.Persistence.DiModule.Add,
-            CodeGolf.Persistence.Static.DiModule.Add,
+            Persistence.DiModule.Add,
+            Persistence.Static.DiModule.Add,
         };
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -98,6 +156,9 @@ namespace CodeGolf.Web
                         }
                     }
             });
+
+            app.UseAuthentication();
+
             app.UseCookiePolicy();
 
             app.UseMvc();

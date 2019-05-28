@@ -9,12 +9,12 @@ namespace CodeGolf.Service
 {
     public interface IGameService
     {
-        Option<Game> GetGame();
-
         Task<Option<HoleDto>> GetCurrentHole();
 
-        Task<Option<int, ErrorSet>> Attempt(Guid userId, Guid holeId, string code, ChallengeSet<string> challengeSet, CancellationToken cancellationToken);
+        Task<Option<int, ErrorSet>> Attempt(string userId, Guid holeId, string code, ChallengeSet<string> challengeSet, CancellationToken cancellationToken);
 
         Task NextRound();
+
+        Task ResetGame();
     }
 }

@@ -21,5 +21,11 @@ namespace CodeGolf.Persistence
         {
             return Task.FromResult<IReadOnlyList<Attempt>>(Attempts.Where(a => a.HoleId == holdId).ToList());
         }
+
+        Task IAttemptRepository.ClearAll()
+        {
+            Attempts.Clear();
+            return Task.CompletedTask;
+        }
     }
 }

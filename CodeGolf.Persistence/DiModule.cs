@@ -8,8 +8,7 @@ namespace CodeGolf.Persistence
         public static void Add(IServiceCollection services)
         {
             services.AddScoped<IAttemptRepository, AttemptRepository>();
-            services.AddScoped<IRoundRepository, RoundRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRoundRepository, HoleRepository>();
         }
     }
 }

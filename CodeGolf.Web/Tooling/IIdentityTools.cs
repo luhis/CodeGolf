@@ -1,10 +1,11 @@
 ﻿using System;
 using Microsoft.AspNetCore.Http;
+using Optional;
 
 namespace CodeGolf.Web.Tooling
 {
     public interface IIdentityTools
     {
-        Guid GetIdentity(HttpRequest hr);
+       Option<string> GetIdentity(HttpContext hc);
     }
 }

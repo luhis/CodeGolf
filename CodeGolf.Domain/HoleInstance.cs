@@ -3,13 +3,13 @@ using EnsureThat;
 
 namespace CodeGolf.Domain
 {
-    public class RoundInstance
+    public class HoleInstance
     {
-        public RoundInstance(Guid holeId, DateTime start, DateTime end)
+        public HoleInstance(Guid holeId, DateTime start, DateTime end)
         {
             this.HoleId = EnsureArg.IsNotEmpty(holeId, nameof(holeId));
-            this.Start = start;
-            this.End = end;
+            this.Start = EnsureArg.IsNotDefault(start, nameof(start));
+            this.End = EnsureArg.IsNotDefault(end, nameof(end));
         }
 
         public Guid HoleId { get; }

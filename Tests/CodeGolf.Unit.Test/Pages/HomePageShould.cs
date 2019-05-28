@@ -1,24 +1,18 @@
 ﻿using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using CodeGolf.Web;
 using FluentAssertions;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.TestHost;
 using Xunit;
 
 namespace CodeGolf.Unit.Test.Pages
 {
-    public class HomePageShould
+    public class HomePageShould : IClassFixture<ClientFixture>
     {
         private readonly HttpClient client;
 
-        public HomePageShould()
+        public HomePageShould(ClientFixture fixture)
         {
-            var server = new TestServer(WebHost.CreateDefaultBuilder()
-                .UseStartup<Startup>());
-            this.client = server.CreateClient();
+            this.client = fixture.Client;
         }
 
         [Fact]

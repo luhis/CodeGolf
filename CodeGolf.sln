@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGolf.Service", "CodeGol
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGolf.Persistence.Static", "CodeGolf.Persistence.Static\CodeGolf.Persistence.Static.csproj", "{3F80022C-5D46-49DF-A4BE-0D66E75A8ABC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGolf.Recaptcha", "CodeGolf.Recapcha\CodeGolf.Recaptcha.csproj", "{20A8CF2C-BD36-48E0-8C7F-A7DB82ABAEBA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGolf.Recaptcha", "CodeGolf.Recapcha\CodeGolf.Recaptcha.csproj", "{20A8CF2C-BD36-48E0-8C7F-A7DB82ABAEBA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

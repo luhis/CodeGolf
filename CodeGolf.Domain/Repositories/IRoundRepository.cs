@@ -5,8 +5,10 @@ namespace CodeGolf.Domain.Repositories
 {
     public interface IRoundRepository
     {
-        Task<Option<RoundInstance>> GetCurrentHole();
+        Task<Option<HoleInstance>> GetCurrentHole();
 
-        Task AddRound(RoundInstance round);
+        Task AddHole(HoleInstance hole);
+
+        Task ClearAll();
     }
 }

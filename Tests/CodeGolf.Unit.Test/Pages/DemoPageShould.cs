@@ -1,22 +1,16 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
-using CodeGolf.Web;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
 using Xunit;
-using Microsoft.AspNetCore.TestHost;
 
 namespace CodeGolf.Unit.Test.Pages
 {
-    public class DemoPageShould
+    public class DemoPageShould : IClassFixture<ClientFixture>
     {
         private readonly HttpClient client;
 
-        public DemoPageShould()
+        public DemoPageShould(ClientFixture fixture)
         {
-            var server = new TestServer(WebHost.CreateDefaultBuilder()
-                .UseStartup<Startup>());
-            this.client = server.CreateClient();
+            this.client = fixture.Client;
         }
 
         [Fact]

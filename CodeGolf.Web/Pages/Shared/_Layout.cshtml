@@ -42,6 +42,10 @@
                 <a class="navbar-item" asp-page="/Demo">Demo</a>
                 <a class="navbar-item" asp-page="/Dashboard">Dashboard</a>
                 <a class="navbar-item" asp-page="/Game">Game</a>
+                @if (this.User.Identity.IsAuthenticated)
+                {
+                    <a class="navbar-item" asp-page="/SignOut">Sign Out</a>
+                }
             </div>
         </div>
     </nav>

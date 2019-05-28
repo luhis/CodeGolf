@@ -8,9 +8,10 @@ namespace CodeGolf.Web
     {
         public static void Add(IServiceCollection collection)
         {
-            collection.AddScoped<IIdentityTools, IdentityTools>();
+            collection.AddSingleton<IIdentityTools, IdentityTools>();
             collection.AddSingleton<IGetIp, GetIp>();
             collection.AddSingleton<RecaptchaAttribute>();
+            collection.AddSingleton<GameAdminAuthAttribute>();
         }
     }
 }
