@@ -1,13 +1,20 @@
- [
+﻿[
   {
     "outputFile": "wwwroot/css/site.css",
     "inputFile": "wwwroot/css/site.scss",
     "minify": {
       "enabled": true
     },
-    "includeInProject": true,
     "options": {
       "sourceMap": true
     }
+  },
+  {
+    "outputFile": "wwwroot/js/site.es5.js",
+    "inputFile": "wwwroot/js/site.js"
+  },
+  {
+    "outputFile": "wwwroot/js/editor.es5.js",
+    "inputFile": "wwwroot/js/editor.js"
   }
 ]
