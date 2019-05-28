@@ -122,6 +122,30 @@ namespace CodeGolf.Unit.Test.Services
         }
 
         [Fact]
+        public void DealWithThreadSleep()
+        {
+            var code = @"
+        public string Main(string s){ 
+            System.Threading.Thread.Sleep(1000);
+            return s;
+        }";
+            this.runner.Compile<string>(code, new[] { typeof(string) })
+                .ExtractErrors().Should().BeEquivalentTo("(8,22): error CS0122: 'Thread' is inaccessible due to its protection level");
+        }
+
+        [Fact(Skip = "One day")]
+        public void DealWithTaskSleep()
+        {
+            var code = @"
+        public string Main(string s){ 
+            System.Threading.Tasks.Task.Delay(100000).Wait();
+            return s;
+        }";
+            this.runner.Compile<string>(code, new[] { typeof(string) }).ExtractSuccess()(new[] {"aaa"}).Result
+                .ExtractErrors().Should().BeEquivalentTo("(8,22): error CS0122: 'Thread' is inaccessible due to its protection level");
+        }
+
+        [Fact]
         public void SupportLinq()
         {
             var code = "public IEnumerable<int> Main(int[] a) { return a.Select(b => b+1); }";
