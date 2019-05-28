@@ -15,7 +15,7 @@ namespace CodeGolf.Web.Pages
         private readonly IGameService gameService;
         private readonly IIdentityTools identityTools;
 
-        [BindProperty]
+        [BindProperty(BinderType = typeof(StringBinder))]
         public string Code { get; set; }
 
         public Option<int, ErrorSet> Result { get; private set; }

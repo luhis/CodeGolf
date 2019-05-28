@@ -14,7 +14,7 @@ namespace CodeGolf.Web.Pages
     {
         private readonly ICodeGolfService codeGolfService;
 
-        [BindProperty]
+        [BindProperty(BinderType = typeof(StringBinder))]
         public string Code { get; set; }
 
         public Option<int, ErrorSet> Result { get; private set; }
