@@ -16,5 +16,9 @@
   {
     "outputFile": "wwwroot/js/editor.es5.js",
     "inputFile": "wwwroot/js/editor.js"
+  },
+  {
+    "outputFile": "wwwroot/js/cookies.es5.js",
+    "inputFile": "wwwroot/js/cookies.js"
   }
 ]
