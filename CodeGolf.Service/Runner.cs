@@ -99,27 +99,26 @@ namespace CodeGolf.Service
             return new ErrorSet();
         }
 
-        string IRunner.Wrap(string function) => WrapInClass(function);
+        string IRunner.Wrap(string function) => WrapInClass(function).GetRoot().NormalizeWhitespace().ToFullString();
 
         string IRunner.DebugCode(string function)
         {
-            var classString = WrapInClass(function);
-            var syntaxTree = CSharpSyntaxTree.ParseText(classString);
+            var syntaxTree = WrapInClass(function);
 
             var transformed = this.syntaxTreeTransformer.Transform(syntaxTree);
             return transformed.GetRoot().NormalizeWhitespace().ToFullString();
         }
 
-        private static string WrapInClass(string function)
+        private static SyntaxTree WrapInClass(string function)
         {
             var transformed = string.Join("\n", function.Split('\n').Select(s => "    " + s));
-            return "using System;\n"
+            return CSharpSyntaxTree.ParseText("using System;\n"
                    + "using System.Collections.Generic;\n"
                    + "using System.Linq;\n\n"
                    + $"public class {ClassName}\n"
                    + "{\n"
                    + transformed
-                   + "\n}";
+                   + "\n}");
         }
 
         private static T UseTempFile<T>(Func<string> gen, Func<string, T> process)
@@ -137,8 +136,7 @@ namespace CodeGolf.Service
 
         private Option<Assembly, ErrorSet> Compile(string function)
         {
-            var finalCode = WrapInClass(function);
-            var syntaxTree = CSharpSyntaxTree.ParseText(finalCode);
+            var syntaxTree = WrapInClass(function);
 
             var transformed = this.syntaxTreeTransformer.Transform(syntaxTree);
 
