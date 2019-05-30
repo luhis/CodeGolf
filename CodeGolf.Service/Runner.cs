@@ -115,7 +115,7 @@ namespace CodeGolf.Service
             var transformed = string.Join("\n", function.Split('\n').Select(s => "    " + s));
             return "using System;\n"
                    + "using System.Collections.Generic;\n"
-                   + "using System.Linq;\n"
+                   + "using System.Linq;\n\n"
                    + $"public class {ClassName}\n"
                    + "{\n"
                    + transformed

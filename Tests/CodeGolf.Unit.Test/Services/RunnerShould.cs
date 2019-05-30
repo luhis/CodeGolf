@@ -30,7 +30,7 @@ namespace CodeGolf.Unit.Test.Services
         public void FailToCompileInvalidApplication()
         {
             this.runner.Compile<string>("abc", new Type[] { }).ExtractErrors()
-                .Should().BeEquivalentTo("(7,1): error CS1519: Invalid token '}' in class, struct, or interface member declaration");
+                .Should().BeEquivalentTo("(8,1): error CS1519: Invalid token '}' in class, struct, or interface member declaration");
         }
 
         [Fact]
@@ -130,7 +130,7 @@ namespace CodeGolf.Unit.Test.Services
             return s;
         }";
             this.runner.Compile<string>(code, new[] { typeof(string) })
-                .ExtractErrors().Should().BeEquivalentTo("(8,22): error CS0122: 'Thread' is inaccessible due to its protection level");
+                .ExtractErrors().Should().BeEquivalentTo("(9,22): error CS0122: 'Thread' is inaccessible due to its protection level");
         }
 
         [Fact(Skip = "One day")]
