@@ -32,9 +32,9 @@ namespace CodeGolf.Service
         }
 
         Option<Func<object[], Task<Option<T, ErrorSet>>>, ErrorSet> IRunner.Compile<T>(
-            string function, IReadOnlyList<Type> paramTypes)
+            string function, IReadOnlyList<Type> paramTypes, CancellationToken cancellationToken)
         {
-            var assembly = this.Compile(function);
+            var assembly = this.Compile(function, cancellationToken);
 
             return assembly.FlatMap(success =>
             {
@@ -99,17 +99,17 @@ namespace CodeGolf.Service
             return new ErrorSet();
         }
 
-        string IRunner.Wrap(string function) => WrapInClass(function).GetRoot().NormalizeWhitespace().ToFullString();
+        string IRunner.Wrap(string function, CancellationToken cancellationToken) => WrapInClass(function, cancellationToken).GetRoot().NormalizeWhitespace().ToFullString();
 
-        string IRunner.DebugCode(string function)
+        string IRunner.DebugCode(string function, CancellationToken cancellationToken)
         {
-            var syntaxTree = WrapInClass(function);
+            var syntaxTree = WrapInClass(function, cancellationToken);
 
             var transformed = this.syntaxTreeTransformer.Transform(syntaxTree);
             return transformed.GetRoot().NormalizeWhitespace().ToFullString();
         }
 
-        private static SyntaxTree WrapInClass(string function)
+        private static SyntaxTree WrapInClass(string function, CancellationToken cancellationToken)
         {
             var transformed = string.Join("\n", function.Split('\n').Select(s => "    " + s));
             return CSharpSyntaxTree.ParseText("using System;\n"
@@ -118,7 +118,7 @@ namespace CodeGolf.Service
                    + $"public class {ClassName}\n"
                    + "{\n"
                    + transformed
-                   + "\n}");
+                   + "\n}", cancellationToken: cancellationToken);
         }
 
         private static T UseTempFile<T>(Func<string> gen, Func<string, T> process)
@@ -134,9 +134,9 @@ namespace CodeGolf.Service
 
         private static bool IsStoppable(Diagnostic a) => a.Severity > DiagnosticSeverity.Warning;
 
-        private Option<Assembly, ErrorSet> Compile(string function)
+        private Option<Assembly, ErrorSet> Compile(string function, CancellationToken cancellationToken)
         {
-            var syntaxTree = WrapInClass(function);
+            var syntaxTree = WrapInClass(function, cancellationToken);
 
             var transformed = this.syntaxTreeTransformer.Transform(syntaxTree);
 
@@ -150,7 +150,7 @@ namespace CodeGolf.Service
 
                 using (var ms = new MemoryStream())
                 {
-                    var result = compilation.Emit(ms);
+                    var result = compilation.Emit(ms, cancellationToken: cancellationToken);
 
                     if (result.Diagnostics.Any(IsStoppable))
                     {

@@ -1,4 +1,5 @@
-﻿using CodeGolf.Service;
+﻿using System.Threading;
+using CodeGolf.Service;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CodeGolf.Web.Controllers
@@ -15,15 +16,15 @@ namespace CodeGolf.Web.Controllers
         }
 
         [HttpGet("[action]")]
-        public ActionResult<string> Preview(string code)
+        public ActionResult<string> Preview(string code, CancellationToken cancellationToken)
         {
-            return this.codeGolfService.WrapCode(code);
+            return this.codeGolfService.WrapCode(code, cancellationToken);
         }
 
         [HttpGet("[action]")]
-        public ActionResult<string> Debug(string code)
+        public ActionResult<string> Debug(string code, CancellationToken cancellationToken)
         {
-            return this.codeGolfService.DebugCode(code);
+            return this.codeGolfService.DebugCode(code, cancellationToken);
         }
     }
 }

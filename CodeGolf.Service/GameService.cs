@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using CodeGolf.Domain;
 using CodeGolf.Domain.Repositories;
@@ -48,9 +49,9 @@ namespace CodeGolf.Service
         }
 
         async Task<Option<int, ErrorSet>> IGameService.Attempt(Guid userId, Guid holeId, string code,
-            ChallengeSet<string> challengeSet)
+            ChallengeSet<string> challengeSet, CancellationToken cancellationToken)
         {
-            var res = await this.codeGolfService.Score(code, challengeSet);
+            var res = await this.codeGolfService.Score(code, challengeSet, cancellationToken);
             res.Map(success =>
                 this.attemptRepository.AddAttempt(new Domain.Attempt(userId, holeId, code, success, DateTime.UtcNow)));
             return res;

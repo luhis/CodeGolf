@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using CodeGolf.Domain;
 using CodeGolf.Service;
 using CodeGolf.Service.Dtos;
@@ -32,11 +33,11 @@ namespace CodeGolf.Web.Pages
 
         }
 
-        public async Task OnPost()
+        public async Task OnPost(CancellationToken cancellationToken)
         {
             if (this.ModelState.IsValid)
             {
-                this.Result = await this.codeGolfService.Score(this.Code, this.ChallengeSet).ConfigureAwait(false);
+                this.Result = await this.codeGolfService.Score(this.Code, this.ChallengeSet, cancellationToken).ConfigureAwait(false);
             }
         }
 

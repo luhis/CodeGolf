@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using CodeGolf.Domain;
 using CodeGolf.Service;
 using CodeGolf.Service.Dtos;
@@ -33,12 +34,13 @@ namespace CodeGolf.Web.Pages
             this.Round = (await this.gameService.GetCurrentHole()).Map(a => a.Hole.ChallengeSet);
         }
 
-        public async Task OnPost()
+        public async Task OnPost(CancellationToken cancellationToken)
         {
             var round = await this.gameService.GetCurrentHole();
             this.Round = round.Map(a => a.Hole.ChallengeSet);
             var gs = round.ValueOrFailure();
-            this.Result = await this.gameService.Attempt(this.identityTools.GetIdentity(this.Request), gs.Hole.HoleId, this.Code, gs.Hole.ChallengeSet).ConfigureAwait(false);
+            this.Result = 
+                await this.gameService.Attempt(this.identityTools.GetIdentity(this.Request), gs.Hole.HoleId, this.Code, gs.Hole.ChallengeSet, cancellationToken).ConfigureAwait(false);
         }
 
         public IActionResult OnPostViewSource()

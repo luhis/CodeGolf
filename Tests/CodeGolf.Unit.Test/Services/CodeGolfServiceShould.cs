@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using CodeGolf.Domain;
 using CodeGolf.Service;
 using CodeGolf.Unit.Test.Tooling;
@@ -19,7 +20,7 @@ namespace CodeGolf.Unit.Test.Services
                 new ChallengeSet<string>("a", "b", new Type[] { }, new[]
                 {
                     new Challenge<string>(new object[0], "Hello World")
-                })).Result;
+                }), CancellationToken.None).Result;
             r.ExtractSuccess().Should().Be(33);
         }
 
@@ -31,7 +32,7 @@ namespace CodeGolf.Unit.Test.Services
                 new ChallengeSet<string>("a", "b", new Type[] { }, new[]
                 {
                     new Challenge<string>(new object[0], "Hello World")
-                })).Result;
+                }), CancellationToken.None).Result;
             r.ExtractErrors().Should().BeEquivalentTo("(7,92): error CS1519: Invalid token ';' in class, struct, or interface member declaration");
         }
 
@@ -43,7 +44,7 @@ namespace CodeGolf.Unit.Test.Services
                 new ChallengeSet<string>("a", "b", new Type[] { }, new[]
                 {
                     new Challenge<string>(new object[0], "Hello World")
-                })).Result;
+                }), CancellationToken.None).Result;
             r.ExtractErrors().Should().BeEquivalentTo("Return value incorrect. Expected: Hello World, Found: Hello X World");
         }
     }

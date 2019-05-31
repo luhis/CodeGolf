@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using CodeGolf.Domain;
 using CodeGolf.Service;
 using CodeGolf.Unit.Test.Tooling;
@@ -17,7 +18,7 @@ namespace CodeGolf.Unit.Test.Services
             var r = this.codeGolfService.Score(
                 "public string Main(){System.IO.File.ReadAllBytes(\"a.txt\");return \"a\";}",
                 new ChallengeSet<string>("a", "b", new Type[] { },
-                    new[] {new Challenge<string>(new object[0], "Hello World")})).Result;
+                    new[] {new Challenge<string>(new object[0], "Hello World")}), CancellationToken.None).Result;
             r.ExtractErrors().Should()
                 .BeEquivalentTo(
                     "(9,5): error CS0234: The type or namespace name 'File' does not exist in the namespace 'System.IO' (are you missing an assembly reference?)");
@@ -32,7 +33,7 @@ namespace CodeGolf.Unit.Test.Services
             var r = this.codeGolfService.Score(
                 code,
                 new ChallengeSet<string>("a", "b", new Type[] { },
-                    new[] { new Challenge<string>(new object[0], "Hello World") })).Result;
+                    new[] { new Challenge<string>(new object[0], "Hello World") }), CancellationToken.None).Result;
             r.ExtractErrors().Should()
                 .BeEquivalentTo(
                     "(9,5): error CS0246: The type or namespace name 'Assembly' could not be found (are you missing a using directive or an assembly reference?)", 
@@ -49,7 +50,7 @@ namespace CodeGolf.Unit.Test.Services
             var r = this.codeGolfService.Score(
                 code,
                 new ChallengeSet<string>("a", "b", new Type[] { },
-                    new[] { new Challenge<string>(new object[0], "Hello World") })).Result;
+                    new[] { new Challenge<string>(new object[0], "Hello World") }), CancellationToken.None).Result;
             r.ExtractErrors().Should()
                 .BeEquivalentTo(
                     "(6,2): error CS1513: } expected",
@@ -70,7 +71,7 @@ namespace CodeGolf.Unit.Test.Services
             var r = this.codeGolfService.Score(
                 code,
                 new ChallengeSet<string>("a", "b", new Type[] { },
-                    new[] { new Challenge<string>(new object[0], "Hello World") })).Result;
+                    new[] { new Challenge<string>(new object[0], "Hello World") }), CancellationToken.None).Result;
             r.ExtractErrors().Should()
                 .BeEquivalentTo(
                     "(7,6): error CS1529: A using clause must precede all other elements defined in the namespace except extern alias declarations");
