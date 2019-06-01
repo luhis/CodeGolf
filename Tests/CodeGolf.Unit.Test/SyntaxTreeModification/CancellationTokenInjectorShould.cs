@@ -22,6 +22,10 @@ namespace CodeGolf.Unit.Test.SyntaxTreeModification
                         {
                             public string Main(System.Threading.CancellationToken cancellationToken)
                             {
+                                if (cancellationToken.IsCancellationRequested)
+                                {
+                                    throw new System.Threading.Tasks.TaskCanceledException();
+                                }
                                 return ""Hello World"";
                             }
                         }";
@@ -47,6 +51,10 @@ namespace CodeGolf.Unit.Test.SyntaxTreeModification
     {
         public string Main(System.Threading.CancellationToken cancellationToken)
         {
+            if (cancellationToken.IsCancellationRequested)
+            {
+                throw new System.Threading.Tasks.TaskCanceledException();
+            }
             while (true)
             {
                 if (cancellationToken.IsCancellationRequested)
@@ -82,6 +90,10 @@ namespace CodeGolf.Unit.Test.SyntaxTreeModification
     {
         public string Main(System.Threading.CancellationToken cancellationToken)
         {
+            if (cancellationToken.IsCancellationRequested)
+            {
+                throw new System.Threading.Tasks.TaskCanceledException();
+            }
             var i = 0;
             while (true)
             {
@@ -104,17 +116,30 @@ namespace CodeGolf.Unit.Test.SyntaxTreeModification
     {
         private int X() => 42;
 
-        public string Main(string s){ return s + X();}
+        public string Main(string s)
+        {
+            return s + X();
+        }
     }";
 
             var newSource = CompilationTooling.Transform(code);
 
             var expect = @"public class HelloWorld
     {
-        private int X(System.Threading.CancellationToken cancellationToken) => 42;
+        private int X(System.Threading.CancellationToken cancellationToken){
+            if (cancellationToken.IsCancellationRequested)
+                {
+                    throw new System.Threading.Tasks.TaskCanceledException();
+                }
+            return 42;
+        }
 
         public string Main(string s, System.Threading.CancellationToken cancellationToken)
         {
+            if (cancellationToken.IsCancellationRequested)
+            {
+                throw new System.Threading.Tasks.TaskCanceledException();
+            }
             return s + X(cancellationToken);
         }
     }";
@@ -124,7 +149,7 @@ namespace CodeGolf.Unit.Test.SyntaxTreeModification
         [Fact]
         public void WorkWithGotoStatements()
         {
-            var code = @"public string Main(string s){ 
+            var code = @"public string Main(string s){
             forever:
                 goto forever;
             return s;
@@ -132,7 +157,11 @@ namespace CodeGolf.Unit.Test.SyntaxTreeModification
 
             var newSource = CompilationTooling.Transform(code);
 
-            var expect = @"public string Main(string s, System.Threading.CancellationToken cancellationToken){ 
+            var expect = @"public string Main(string s, System.Threading.CancellationToken cancellationToken){
+            if (cancellationToken.IsCancellationRequested)
+                {
+                    throw new System.Threading.Tasks.TaskCanceledException();
+                }
             forever:
                 {if (cancellationToken.IsCancellationRequested)
                 {

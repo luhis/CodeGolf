@@ -128,7 +128,7 @@ namespace CodeGolf.Unit.Test.Services
                 .ExtractErrors().Should().BeEquivalentTo("A task was canceled.");
         }
 
-        [Fact(Skip = "in a bit")]
+        [Fact(Skip ="soon")]
         public void DealWithInfiniteRecursion()
         {
             var code = @"
@@ -148,7 +148,7 @@ namespace CodeGolf.Unit.Test.Services
             return s;
         }";
             this.runner.Compile<string>(code, new[] { typeof(string) }, CancellationToken.None)
-                .ExtractErrors().Should().BeEquivalentTo("(9,26): error CS0122: 'Thread' is inaccessible due to its protection level");
+                .ExtractErrors().Should().BeEquivalentTo("(9,34): error CS0122: 'Thread' is inaccessible due to its protection level");
         }
 
         [Fact(Skip = "One day")]

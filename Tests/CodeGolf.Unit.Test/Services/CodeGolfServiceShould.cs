@@ -33,7 +33,7 @@ namespace CodeGolf.Unit.Test.Services
                 {
                     new Challenge<string>(new object[0], "Hello World")
                 }), CancellationToken.None).Result;
-            r.ExtractErrors().Should().BeEquivalentTo("(7,96): error CS1519: Invalid token ';' in class, struct, or interface member declaration");
+            r.ExtractErrors().Should().BeEquivalentTo("(7,43): error CS1519: Invalid token ';' in class, struct, or interface member declaration");
         }
 
         [Fact]

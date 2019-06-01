@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -26,10 +27,13 @@ namespace CodeGolf.Service
 
         public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax node)
         {
-            var updated = node.AddParameterListParameters(
-                Parameter(
-                        Identifier(TokenName))
-                    .WithType(ParseTypeName(typeof(CancellationToken).FullName)));
+            var statements = node.Body != null ? node.Body.Statements.ToArray() : new [] { ReturnStatement(node.ExpressionBody.Expression)};
+            var updated = node.AddParameterListParameters(Parameter(Identifier(TokenName))
+                    .WithType(ParseTypeName(typeof(CancellationToken).FullName)))
+                    .WithBody(Block( new[]{ ThrowIfCancelled}.Concat(statements)))
+                    .WithExpressionBody(null)
+                    .WithoutTrivia().WithSemicolonToken(Token(SyntaxKind.None));
+            
             this.ModifiedFuncs.Add(node.Identifier.ValueText);
             return base.VisitMethodDeclaration(node.ReplaceNode(node, updated));
         }
@@ -53,6 +57,13 @@ namespace CodeGolf.Service
             var statement = (BlockSyntax)node.Statement;
             var updated = statement.AddStatements(ThrowIfCancelled);
             return base.VisitDoStatement(node.ReplaceNode(statement, updated));
+        }
+
+        public override SyntaxNode VisitForEachStatement(ForEachStatementSyntax node)
+        {
+            var statement = (BlockSyntax)node.Statement;
+            var updated = statement.AddStatements(ThrowIfCancelled);
+            return base.VisitForEachStatement(node.ReplaceNode(statement, updated));
         }
 
         public override SyntaxNode VisitInvocationExpression(InvocationExpressionSyntax node)

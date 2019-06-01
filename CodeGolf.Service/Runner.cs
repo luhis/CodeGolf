@@ -39,7 +39,7 @@ namespace CodeGolf.Service
             return assembly.FlatMap(success =>
             {
                 var type = success.GetType(ClassName);
-                var fun = type.GetMethod(FunctionName);
+                var fun = type.GetMethod(FunctionName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
                 var validationFailures = ValidateCompiledFunction(fun, typeof(T), paramTypes);
                 if (validationFailures.Errors.Any())
                 {
@@ -138,13 +138,22 @@ namespace CodeGolf.Service
         {
             var syntaxTree = WrapInClass(function, cancellationToken);
 
-            var transformed = this.syntaxTreeTransformer.Transform(syntaxTree);
+            // compile the basic source first, then the modified source to keep the error messages readable
+            return TryCompile(syntaxTree, cancellationToken).FlatMap(_ =>
+            {
+                var transformed = this.syntaxTreeTransformer.Transform(syntaxTree);
 
+                return TryCompile(transformed, cancellationToken);
+            });
+        }
+
+        private static Option<Assembly, ErrorSet> TryCompile(SyntaxTree syntaxTree, CancellationToken cancellationToken)
+        {
             return UseTempFile(Path.GetRandomFileName, assemblyName =>
             {
                 var compilation = CSharpCompilation.Create(
                     assemblyName,
-                    syntaxTrees: new[] { transformed },
+                    syntaxTrees: new[] { syntaxTree },
                     references: MetadataReferences,
                     options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, warningLevel: 4, reportSuppressedDiagnostics: true, allowUnsafe: false));
 
@@ -156,7 +165,7 @@ namespace CodeGolf.Service
                     {
                         var failures = result.Diagnostics.Where(IsStoppable).Select(a => a.ToString());
 
-                        return Option.None<Assembly, ErrorSet>( new ErrorSet(failures.ToList()));
+                        return Option.None<Assembly, ErrorSet>(new ErrorSet(failures.ToList()));
                     }
                     else
                     {

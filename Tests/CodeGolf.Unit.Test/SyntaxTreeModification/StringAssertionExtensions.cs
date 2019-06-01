@@ -7,7 +7,7 @@ namespace CodeGolf.Unit.Test.SyntaxTreeModification
     {
         private static string Clean(string s)
         {
-            return s.ToLowerInvariant().Trim().Replace("\n", "").Replace(" ", "").Replace("\r", "");
+            return s.Trim().Replace("\n", "").Replace(" ", "").Replace("\r", "");
         }
 
         public static void BeEquivalentToIgnoreWS(this StringAssertions sa, string expect)
