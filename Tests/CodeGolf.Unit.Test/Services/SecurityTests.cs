@@ -21,7 +21,7 @@ namespace CodeGolf.Unit.Test.Services
                     new[] {new Challenge<string>(new object[0], "Hello World")}), CancellationToken.None).Result;
             r.ExtractErrors().Should()
                 .BeEquivalentTo(
-                    "(9,5): error CS0234: The type or namespace name 'File' does not exist in the namespace 'System.IO' (are you missing an assembly reference?)");
+                    "(9,9): error CS0234: The type or namespace name 'File' does not exist in the namespace 'System.IO' (are you missing an assembly reference?)");
         }
 
         [Fact]
@@ -36,8 +36,8 @@ namespace CodeGolf.Unit.Test.Services
                     new[] { new Challenge<string>(new object[0], "Hello World") }), CancellationToken.None).Result;
             r.ExtractErrors().Should()
                 .BeEquivalentTo(
-                    "(9,5): error CS0246: The type or namespace name 'Assembly' could not be found (are you missing a using directive or an assembly reference?)", 
-                    "(9,25): error CS0103: The name 'Assembly' does not exist in the current context");
+                    "(9,9): error CS0246: The type or namespace name 'Assembly' could not be found (are you missing a using directive or an assembly reference?)", 
+                    "(9,29): error CS0103: The name 'Assembly' does not exist in the current context");
         }
 
         [Fact]
@@ -53,11 +53,11 @@ namespace CodeGolf.Unit.Test.Services
                     new[] { new Challenge<string>(new object[0], "Hello World") }), CancellationToken.None).Result;
             r.ExtractErrors().Should()
                 .BeEquivalentTo(
-                    "(6,2): error CS1513: } expected",
+                    "(6,3): error CS1513: } expected",
                     "(7,5): error CS1529: A using clause must precede all other elements defined in the namespace except extern alias declarations", 
-                    "(11,3): error CS1022: Type or namespace definition, or end-of-file expected", 
-                    "(9,5): error CS0246: The type or namespace name 'Assembly' could not be found (are you missing a using directive or an assembly reference?)", 
-                    "(9,25): error CS0103: The name 'Assembly' does not exist in the current context");
+                    "(13,3): error CS1022: Type or namespace definition, or end-of-file expected", 
+                    "(11,5): error CS0246: The type or namespace name 'Assembly' could not be found (are you missing a using directive or an assembly reference?)", 
+                    "(11,25): error CS0103: The name 'Assembly' does not exist in the current context");
         }
 
         [Fact]

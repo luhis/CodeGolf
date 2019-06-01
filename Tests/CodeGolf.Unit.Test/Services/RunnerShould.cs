@@ -28,13 +28,6 @@ namespace CodeGolf.Unit.Test.Services
         }
 
         [Fact]
-        public void FailToCompileInvalidApplication()
-        {
-            this.runner.Compile<string>("abc", new Type[] { }, CancellationToken.None).ExtractErrors()
-                .Should().BeEquivalentTo("(8,1): error CS1519: Invalid token '}' in class, struct, or interface member declaration");
-        }
-
-        [Fact]
         public void FailCleanlyWhenFunctionMisnamed()
         {
             this.runner.Compile<string>("public string MainXXX(string s){ return \"not \" + s;}", new[] { typeof(string) }, CancellationToken.None).ExtractErrors().Should().BeEquivalentTo("Public function 'Main' missing");
@@ -112,7 +105,7 @@ namespace CodeGolf.Unit.Test.Services
         public void DealWithInfiniteDoWhileLoops()
         {
             var code = @"
-        public string Main(string s){ 
+        public string Main(string s){
             do
             {
             } while(true);
@@ -126,10 +119,21 @@ namespace CodeGolf.Unit.Test.Services
         public void DealWithInfiniteGotoLoops()
         {
             var code = @"
-        public string Main(string s){ 
+        public string Main(string s){
             forever:
                 goto forever;
             return s;
+        }";
+            this.runner.Compile<string>(code, new[] { typeof(string) }, CancellationToken.None).ExtractSuccess()(new object[] { "Hello world" }).Result
+                .ExtractErrors().Should().BeEquivalentTo("A task was canceled.");
+        }
+
+        [Fact(Skip = "in a bit")]
+        public void DealWithInfiniteRecursion()
+        {
+            var code = @"
+        public string Main(string s){
+            return Main(s);
         }";
             this.runner.Compile<string>(code, new[] { typeof(string) }, CancellationToken.None).ExtractSuccess()(new object[] { "Hello world" }).Result
                 .ExtractErrors().Should().BeEquivalentTo("A task was canceled.");
@@ -144,7 +148,7 @@ namespace CodeGolf.Unit.Test.Services
             return s;
         }";
             this.runner.Compile<string>(code, new[] { typeof(string) }, CancellationToken.None)
-                .ExtractErrors().Should().BeEquivalentTo("(9,22): error CS0122: 'Thread' is inaccessible due to its protection level");
+                .ExtractErrors().Should().BeEquivalentTo("(9,26): error CS0122: 'Thread' is inaccessible due to its protection level");
         }
 
         [Fact(Skip = "One day")]

@@ -13,7 +13,7 @@ namespace CodeGolf.Service
 
         SyntaxTree ISyntaxTreeTransformer.Transform(SyntaxTree syntaxTree)
         {
-            return this.cancellationTokenInjector.Visit(syntaxTree.GetRoot()).SyntaxTree;
+            return this.cancellationTokenInjector.Visit(syntaxTree.GetRoot()).NormalizeWhitespace().SyntaxTree;
         }
     }
 }
