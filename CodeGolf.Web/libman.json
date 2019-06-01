@@ -3,7 +3,7 @@
   "defaultProvider": "cdnjs",
   "libraries": [
     {
-      "library": "bulma@0.7.4",
+      "library": "bulma@0.7.5",
       "destination": "wwwroot/lib/bulma",
       "files": [
         "css/bulma.min.css"
@@ -21,7 +21,7 @@
       "files": [ "codemirror.min.js" , "mode/clike/clike.min.js", "codemirror.min.css"]
     },
     {
-      "library": "font-awesome@5.8.1",
+      "library": "font-awesome@5.8.2",
       "destination": "wwwroot/lib/font-awesome",
       "files": [ "css/solid.min.css", "css/fontawesome.min.css", "webfonts/fa-solid-900.woff2" ]
     }
