@@ -123,6 +123,19 @@ namespace CodeGolf.Unit.Test.Services
         }
 
         [Fact]
+        public void DealWithInfiniteGotoLoops()
+        {
+            var code = @"
+        public string Main(string s){ 
+            forever:
+                goto forever;
+            return s;
+        }";
+            this.runner.Compile<string>(code, new[] { typeof(string) }, CancellationToken.None).ExtractSuccess()(new object[] { "Hello world" }).Result
+                .ExtractErrors().Should().BeEquivalentTo("A task was canceled.");
+        }
+
+        [Fact]
         public void DealWithThreadSleep()
         {
             var code = @"

@@ -17,6 +17,13 @@ namespace CodeGolf.Service
 
         private IList<string> ModifiedFuncs { get; } = new List<string>();
 
+        public override SyntaxNode VisitLabeledStatement(LabeledStatementSyntax node)
+        {
+            var statement = (GotoStatementSyntax) node.Statement;
+            var updated = Block(ThrowIfCancelled, statement);
+            return base.VisitLabeledStatement(node.ReplaceNode(node.Statement, updated));
+        }
+
         public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax node)
         {
             var updated = node.AddParameterListParameters(

@@ -111,11 +111,36 @@ namespace CodeGolf.Unit.Test.SyntaxTreeModification
 
             var expect = @"public class HelloWorld
     {
-        private int X(System.Threading.CancellationToken cancellationToken) => 42;public string Main(string s, System.Threading.CancellationToken cancellationToken)
+        private int X(System.Threading.CancellationToken cancellationToken) => 42;
+
+        public string Main(string s, System.Threading.CancellationToken cancellationToken)
         {
             return s + X(cancellationToken);
         }
     }";
+            newSource.ToFullString().Should().BeEquivalentToIgnoreWS(expect);
+        }
+
+        [Fact]
+        public void WorkWithGotoStatements()
+        {
+            var code = @"public string Main(string s){ 
+            forever:
+                goto forever;
+            return s;
+        }";
+
+            var newSource = CompilationTooling.Transform(code);
+
+            var expect = @"public string Main(string s, System.Threading.CancellationToken cancellationToken){ 
+            forever:
+                {if (cancellationToken.IsCancellationRequested)
+                {
+                    throw new System.Threading.Tasks.TaskCanceledException();
+                }
+                goto forever;}
+            return s;
+        }";
             newSource.ToFullString().Should().BeEquivalentToIgnoreWS(expect);
         }
     }
