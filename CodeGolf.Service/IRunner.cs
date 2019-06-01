@@ -14,5 +14,7 @@ namespace CodeGolf.Service
         string Wrap(string function, CancellationToken cancellationToken);
 
         string DebugCode(string function, CancellationToken cancellationToken);
+
+        void WakeUpCompiler();
     }
 }

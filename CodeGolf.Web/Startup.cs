@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CodeGolf.Recaptcha;
+using CodeGolf.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -100,6 +101,8 @@ namespace CodeGolf.Web
             app.UseCookiePolicy();
 
             app.UseMvc();
+
+            app.ApplicationServices.GetService<IRunner>().WakeUpCompiler();
         }
     }
 }

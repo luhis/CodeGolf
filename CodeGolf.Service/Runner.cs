@@ -109,6 +109,11 @@ namespace CodeGolf.Service
             return transformed.GetRoot().NormalizeWhitespace().ToFullString();
         }
 
+        void IRunner.WakeUpCompiler()
+        {
+            TryCompile(WrapInClass(string.Empty, CancellationToken.None), CancellationToken.None);
+        }
+
         private static SyntaxTree WrapInClass(string function, CancellationToken cancellationToken)
         {
             var transformed = string.Join("\n", function.Split('\n').Select(s => "    " + s));
