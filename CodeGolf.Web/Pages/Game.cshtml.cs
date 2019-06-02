@@ -31,14 +31,14 @@ namespace CodeGolf.Web.Pages
             this.identityTools = identityTools;
         }
 
-        public async Task OnGet()
+        public async Task OnGet(CancellationToken cancellationToken)
         {
-            this.Round = (await this.gameService.GetCurrentHole()).Map(a => a.Hole.ChallengeSet);
+            this.Round = (await this.gameService.GetCurrentHole(cancellationToken)).Map(a => a.Hole.ChallengeSet);
         }
 
         public async Task OnPost(CancellationToken cancellationToken)
         {
-            var round = await this.gameService.GetCurrentHole();
+            var round = await this.gameService.GetCurrentHole(cancellationToken);
             this.Round = round.Map(a => a.Hole.ChallengeSet);
             var gs = round.ValueOrFailure();
 

@@ -27,19 +27,19 @@ namespace CodeGolf.Service
             this.holeRepository = holeRepository;
         }
 
-        private async Task<IReadOnlyList<Attempt>> GetBestAttempts(Guid holeId)
+        private async Task<IReadOnlyList<Attempt>> GetBestAttempts(Guid holeId, CancellationToken cancellationToken)
         {
-            var attempts = await this.attemptRepository.GetAttempts(holeId);
+            var attempts = await this.attemptRepository.GetAttempts(holeId, cancellationToken);
             return attempts.OrderByDescending(a => a.Score).GroupBy(a => a.UserId).Select(a => a.First()).OrderByDescending(a => a.Score).ToList();
         }
 
-        async Task<Option<HoleDto>> IGameService.GetCurrentHole()
+        async Task<Option<HoleDto>> IGameService.GetCurrentHole(CancellationToken cancellationToken)
         {
             var round = await this.holeRepository.GetCurrentHole();
             return await round.MapAsync(async a =>
             {
                 var curr = this.gameRepository.GetGame().Holes.First(b => b.HoleId.Equals(a.HoleId));
-                return new HoleDto(curr, a.Start, a.End, await this.GetBestAttempts(curr.HoleId));
+                return new HoleDto(curr, a.Start, a.End, await this.GetBestAttempts(curr.HoleId, cancellationToken));
             });
         }
 

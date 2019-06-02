@@ -9,7 +9,7 @@ namespace CodeGolf.Service
 {
     public interface IGameService
     {
-        Task<Option<HoleDto>> GetCurrentHole();
+        Task<Option<HoleDto>> GetCurrentHole(CancellationToken cancellationToken);
 
         Task<Option<int, ErrorSet>> Attempt(string userId, Guid holeId, string code, ChallengeSet<string> challengeSet, CancellationToken cancellationToken);
 

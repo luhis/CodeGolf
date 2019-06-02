@@ -23,9 +23,9 @@ namespace CodeGolf.Persistence.Repositories
             return this.context.SaveChangesAsync();
         }
 
-        Task<IReadOnlyList<Attempt>> IAttemptRepository.GetAttempts(Guid holdId)
+        Task<IReadOnlyList<Attempt>> IAttemptRepository.GetAttempts(Guid holeId, CancellationToken cancellationToken)
         {
-            return this.context.Attempts.Where(a => a.HoleId == holdId).ToReadOnlyAsync(CancellationToken.None);
+            return this.context.Attempts.Where(a => a.HoleId == holeId).ToReadOnlyAsync(cancellationToken);
         }
 
         Task IAttemptRepository.ClearAll()

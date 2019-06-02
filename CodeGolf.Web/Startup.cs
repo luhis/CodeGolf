@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
+using System.Threading;
 using CodeGolf.Persistence;
 using CodeGolf.Recaptcha;
 using CodeGolf.Service;
@@ -177,7 +178,7 @@ namespace CodeGolf.Web
             app.UseMvc();
 
             codeGolfContext.SeedDatabase().Wait();
-            app.ApplicationServices.GetService<IRunner>().WakeUpCompiler();
+            app.ApplicationServices.GetService<IRunner>().WakeUpCompiler(CancellationToken.None);
         }
     }
 }

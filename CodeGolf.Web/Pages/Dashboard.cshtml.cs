@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Threading.Tasks;
 using CodeGolf.Service;
 using CodeGolf.Service.Dtos;
@@ -22,9 +23,9 @@ namespace CodeGolf.Web.Pages
             this.gameService = gameService;
         }
 
-        public async Task OnGet()
+        public async Task OnGet(CancellationToken cancellationToken)
         {
-            var curr = await this.gameService.GetCurrentHole();
+            var curr = await this.gameService.GetCurrentHole(cancellationToken);
             this.CurrentChallenge = curr;
         }
 

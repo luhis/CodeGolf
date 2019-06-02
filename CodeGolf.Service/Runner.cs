@@ -109,9 +109,9 @@ namespace CodeGolf.Service
             return transformed.GetRoot().NormalizeWhitespace().ToFullString();
         }
 
-        void IRunner.WakeUpCompiler()
+        void IRunner.WakeUpCompiler(CancellationToken cancellationToken)
         {
-            TryCompile(WrapInClass(string.Empty, CancellationToken.None), CancellationToken.None);
+            TryCompile(WrapInClass(string.Empty, cancellationToken), cancellationToken);
         }
 
         private static SyntaxTree WrapInClass(string function, CancellationToken cancellationToken)
