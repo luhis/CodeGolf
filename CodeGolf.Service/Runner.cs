@@ -74,7 +74,7 @@ namespace CodeGolf.Service
         {
             if (fun == null)
             {
-                return new ErrorSet($"Public function '{FunctionName}' missing");
+                return new ErrorSet($"Function '{FunctionName}' missing");
             }
 
             var compiledParams = fun.GetParameters().Take(fun.GetParameters().Length -1);

@@ -29,7 +29,7 @@ namespace CodeGolf.Unit.Test.Services
         [Fact]
         public void FailCleanlyWhenFunctionMisnamed()
         {
-            this.runner.Compile<string>("public string MainXXX(string s){ return \"not \" + s;}", new[] { typeof(string) }, CancellationToken.None).ExtractErrors().Should().BeEquivalentTo("Public function 'Main' missing");
+            this.runner.Compile<string>("public string MainXXX(string s){ return \"not \" + s;}", new[] { typeof(string) }, CancellationToken.None).ExtractErrors().Should().BeEquivalentTo("Function 'Main' missing");
         }
 
         [Fact]
