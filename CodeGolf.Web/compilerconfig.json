@@ -20,5 +20,9 @@
   {
     "outputFile": "wwwroot/js/cookies.es5.js",
     "inputFile": "wwwroot/js/cookies.js"
+  },
+  {
+    "outputFile": "wwwroot/js/recaptcha.es5.js",
+    "inputFile": "wwwroot/js/recaptcha.js"
   }
 ]

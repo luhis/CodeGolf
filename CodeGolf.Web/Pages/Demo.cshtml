@@ -13,6 +13,7 @@
 
         <vc:challenge-view cs="@Option.Some(Model.ChallengeSet)" />
         <div asp-validation-summary="All"></div>
+        <input type="hidden" id="g-recaptcha-site-key" value="@RecaptchaSettings.Value.SiteKey"/>
         <form method="post">
             <vc:help-tool-tip-view cs="@Option.Some(Model.ChallengeSet)" />
             <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
@@ -42,13 +43,6 @@
 
 @section Scripts {
     <script src="https://www.google.com/recaptcha/api.js?render=@RecaptchaSettings.Value.SiteKey"></script>
-    <script>
-        grecaptcha.ready(function() {
-            grecaptcha.execute('@RecaptchaSettings.Value.SiteKey', {action: 'demo'}).then(function(token) {
-                console.log(token);
-                document.getElementById('g-recaptcha-response').value = token;
-            });;
-        });
-    </script>
+    <script src="~/js/recaptcha.es5.min.js"></script>
     <partial name="~/Partials/EditorScripts.cshtml"/>
 }
