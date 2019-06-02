@@ -16,15 +16,15 @@ namespace CodeGolf.Service
         private readonly ICodeGolfService codeGolfService;
         private readonly IAttemptRepository attemptRepository;
         private readonly IGameRepository gameRepository;
-        private readonly IRoundRepository roundRepository;
+        private readonly IHoleRepository holeRepository;
 
         public GameService(ICodeGolfService codeGolfService, IAttemptRepository attemptRepository,
-            IGameRepository gameRepository, IRoundRepository roundRepository)
+            IGameRepository gameRepository, IHoleRepository holeRepository)
         {
             this.codeGolfService = codeGolfService;
             this.attemptRepository = attemptRepository;
             this.gameRepository = gameRepository;
-            this.roundRepository = roundRepository;
+            this.holeRepository = holeRepository;
         }
 
         private async Task<IReadOnlyList<Attempt>> GetBestAttempts(Guid holeId)
@@ -35,7 +35,7 @@ namespace CodeGolf.Service
 
         async Task<Option<HoleDto>> IGameService.GetCurrentHole()
         {
-            var round = await this.roundRepository.GetCurrentHole();
+            var round = await this.holeRepository.GetCurrentHole();
             return await round.MapAsync(async a =>
             {
                 var curr = this.gameRepository.GetGame().Holes.First(b => b.HoleId.Equals(a.HoleId));
@@ -48,7 +48,7 @@ namespace CodeGolf.Service
         {
             var res = await this.codeGolfService.Score(code, challengeSet, cancellationToken);
             res.Map(success =>
-                this.attemptRepository.AddAttempt(new Attempt(userId, holeId, code, success, DateTime.UtcNow)));
+                this.attemptRepository.AddAttempt(new Attempt(Guid.NewGuid(), userId, holeId, code, success, DateTime.UtcNow)));
             return res;
         }
 
@@ -57,17 +57,17 @@ namespace CodeGolf.Service
 
         async Task IGameService.NextRound()
         {
-            var round = await this.roundRepository.GetCurrentHole();
+            var round = await this.holeRepository.GetCurrentHole();
             var next = round.Match(some => GetAfter(this.gameRepository.GetGame().Holes, item => item.HoleId.Equals(some.HoleId)), 
                 () => this.gameRepository.GetGame().Holes.First());
-            await this.roundRepository.AddHole(new HoleInstance(next.HoleId, DateTime.UtcNow,
+            await this.holeRepository.AddHole(new HoleInstance(next.HoleId, DateTime.UtcNow,
                 DateTime.UtcNow.Add(next.Duration)));
         }
 
         async Task IGameService.ResetGame()
         {
             await this.attemptRepository.ClearAll();
-            await this.roundRepository.ClearAll();
+            await this.holeRepository.ClearAll();
         }
     }
 }

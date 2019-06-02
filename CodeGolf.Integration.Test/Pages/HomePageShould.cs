@@ -25,7 +25,7 @@ namespace CodeGolf.Unit.Test.Pages
         [Fact]
         public async Task NotFindIncorrectPage()
         {
-            var response = await this.client.GetAsync("/IMNOTHERE");
+            var response = await this.client.GetAsync("/ImNotThere");
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
     }

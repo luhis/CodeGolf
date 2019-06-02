@@ -4,10 +4,10 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
+using CodeGolf.Persistence;
 using CodeGolf.Recaptcha;
 using CodeGolf.Service;
 using CodeGolf.Web.Attributes;
-using CodeGolf.Web.Pages;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OAuth;
@@ -117,7 +117,7 @@ namespace CodeGolf.Web
         };
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, CodeGolfContext codeGolfContext)
         {
             if (env.IsDevelopment())
             {
@@ -163,6 +163,7 @@ namespace CodeGolf.Web
 
             app.UseMvc();
 
+            codeGolfContext.SeedDatabase().Wait();
             app.ApplicationServices.GetService<IRunner>().WakeUpCompiler();
         }
     }

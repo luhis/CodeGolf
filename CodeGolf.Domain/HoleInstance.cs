@@ -12,10 +12,10 @@ namespace CodeGolf.Domain
             this.End = EnsureArg.IsNotDefault(end, nameof(end));
         }
 
-        public Guid HoleId { get; }
+        public Guid HoleId { get; private set; }
 
-        public DateTime Start { get; }
+        public DateTime Start { get; private set; }
 
-        public DateTime End { get; }
+        public DateTime End { get; private set; }
     }
 }

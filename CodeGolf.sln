@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGolf.Persistence.Static
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGolf.Recaptcha", "CodeGolf.Recapcha\CodeGolf.Recaptcha.csproj", "{20A8CF2C-BD36-48E0-8C7F-A7DB82ABAEBA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGolf.Integration.Test", "CodeGolf.Integration.Test\CodeGolf.Integration.Test.csproj", "{D4EEA7EE-D7E5-4505-9AE7-6D3DEC83C982}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,12 +55,17 @@ Global
 		{20A8CF2C-BD36-48E0-8C7F-A7DB82ABAEBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20A8CF2C-BD36-48E0-8C7F-A7DB82ABAEBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20A8CF2C-BD36-48E0-8C7F-A7DB82ABAEBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4EEA7EE-D7E5-4505-9AE7-6D3DEC83C982}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4EEA7EE-D7E5-4505-9AE7-6D3DEC83C982}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4EEA7EE-D7E5-4505-9AE7-6D3DEC83C982}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4EEA7EE-D7E5-4505-9AE7-6D3DEC83C982}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D021F1A6-4578-4A97-85E2-AF272912BD90} = {C6B72B8F-FFBE-4498-9ED5-6C7849166D73}
+		{D4EEA7EE-D7E5-4505-9AE7-6D3DEC83C982} = {C6B72B8F-FFBE-4498-9ED5-6C7849166D73}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DEE59748-BC83-47EC-9F1D-B56E05CF3EC5}

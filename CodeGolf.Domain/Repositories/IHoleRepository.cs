@@ -3,7 +3,7 @@ using Optional;
 
 namespace CodeGolf.Domain.Repositories
 {
-    public interface IRoundRepository
+    public interface IHoleRepository
     {
         Task<Option<HoleInstance>> GetCurrentHole();
 

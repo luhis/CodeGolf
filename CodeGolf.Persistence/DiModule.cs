@@ -1,4 +1,5 @@
 ﻿using CodeGolf.Domain.Repositories;
+using CodeGolf.Persistence.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CodeGolf.Persistence
@@ -8,7 +9,8 @@ namespace CodeGolf.Persistence
         public static void Add(IServiceCollection services)
         {
             services.AddScoped<IAttemptRepository, AttemptRepository>();
-            services.AddScoped<IRoundRepository, HoleRepository>();
+            services.AddScoped<IHoleRepository, HoleRepository>();
+            services.AddDbContext<CodeGolfContext>();
         }
     }
 }

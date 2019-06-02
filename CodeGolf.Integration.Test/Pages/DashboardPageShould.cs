@@ -17,7 +17,7 @@ namespace CodeGolf.Unit.Test.Pages
         public async Task GetDashboard()
         {
             this.client.DefaultRequestHeaders.Add(AuthenticatedTestRequestMiddleware.TestingHeader, AuthenticatedTestRequestMiddleware.TestingHeaderValue);
-            this.client.DefaultRequestHeaders.Add("Authorization", "Bearer aaaa");
+            this.client.DefaultRequestHeaders.Add("Authorization", "Bearer Admin");
             var response = await this.client.GetAsync("/dashboard");
             response.EnsureSuccessStatusCode();
         }
