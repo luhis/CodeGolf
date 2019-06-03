@@ -25,9 +25,10 @@ namespace CodeGolf.Service
             var compileResult = this.runner.Compile<T>(code, challenge.Params, cancellationToken);
             return compileResult.Match(async compiled =>
             {
+               // var res = challenge.GetResults(await compiled);
                 var fails = (await Task
                         .WhenAll(challenge.Challenges.Select(async a =>
-                            (challenge: a, result: await compiled(a.Args).ConfigureAwait(false))))
+                            (challenge: a, result: await compiled(a).ConfigureAwait(false))))
                         .ConfigureAwait(false))
                     .Where(IsFailure);
                 if (fails.Any())

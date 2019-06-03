@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Runtime;
 using System.Threading;
 using System.Threading.Tasks;
+using CodeGolf.Domain;
 using CodeGolf.Service.Dtos;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -33,7 +34,7 @@ namespace CodeGolf.Service
             this.syntaxTreeTransformer = syntaxTreeTransformer;
         }
 
-        Option<Func<object[], Task<Option<T, ErrorSet>>>, ErrorSet> IRunner.Compile<T>(
+        Option<Func<Challenge<T>, Task<Option<T, ErrorSet>>>, ErrorSet> IRunner.Compile<T>(
             string function, IReadOnlyList<Type> paramTypes, CancellationToken cancellationToken)
         {
             var assembly = this.Compile(function, cancellationToken);
@@ -46,10 +47,10 @@ namespace CodeGolf.Service
                 var validationFailures = ValidateCompiledFunction(fun, typeof(T), paramTypes);
                 if (validationFailures.Errors.Any())
                 {
-                    return Option.None<Func<object[], Task<Option<T, ErrorSet>>>, ErrorSet>(validationFailures);
+                    return Option.None<Func<Challenge<T>, Task<Option<T, ErrorSet>>>, ErrorSet>(validationFailures);
                 }
 
-                async Task<Option<T, ErrorSet>> Func(object[] args)
+                async Task<Option<T, ErrorSet>> Func(Challenge<T> challenge)
                 {
                     var obj = Activator.CreateInstance(type);
                     try
@@ -58,7 +59,7 @@ namespace CodeGolf.Service
                         source.CancelAfter(TimeSpan.FromMilliseconds(ExecutionTimeoutMilliseconds));
                         var task = Task<object>.Factory.StartNew(() => fun.Invoke(obj,
                             BindingFlags.Default | BindingFlags.InvokeMethod,
-                            null, args.Append(source.Token).ToArray(), CultureInfo.InvariantCulture), source.Token);
+                            null, challenge.Args.Append(source.Token).ToArray(), CultureInfo.InvariantCulture), source.Token);
 
                         return Option.Some<T, ErrorSet>((T) await task);
                     }
@@ -68,7 +69,7 @@ namespace CodeGolf.Service
                     }
                 }
 
-                return Option.Some<Func<object[], Task<Option<T, ErrorSet>>>, ErrorSet>(Func);
+                return Option.Some<Func<Challenge<T>, Task<Option<T, ErrorSet>>>, ErrorSet>(Func);
             });
         }
 

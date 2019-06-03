@@ -5,7 +5,7 @@ using EnsureThat;
 
 namespace CodeGolf.Domain
 {
-    public class ChallengeSet<T>
+    public class ChallengeSet<T> : IChallengeSet
     {
         public ChallengeSet(string title, string description, IReadOnlyList<Type> ps, IReadOnlyList<Challenge<T>> challenges)
         {
@@ -43,9 +43,9 @@ namespace CodeGolf.Domain
 
         public IReadOnlyList<Challenge<T>> Challenges { get; }
 
-        public IReadOnlyList<Tuple<bool, Challenge<T>>> GetResult(Func<object[],T> t)
+        IReadOnlyList<Tuple<bool, IChallenge>> IChallengeSet.GetResults(Func<object[], object> t)
         {
-            return this.Challenges.Select(a => Tuple.Create(t(a.Args).Equals(a.ExpectedResult), a)).ToList();
+            return this.Challenges.Select(a => Tuple.Create(((T)t(a.Args)).Equals(a.ExpectedResult), (IChallenge)a)).ToList();
         }
     }
 }

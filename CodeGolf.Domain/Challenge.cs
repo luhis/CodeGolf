@@ -2,7 +2,7 @@
 
 namespace CodeGolf.Domain
 {
-    public class Challenge<T>
+    public class Challenge<T> : IChallenge
     {
         public Challenge(object[] args, T expectedResult)
         {
@@ -13,5 +13,7 @@ namespace CodeGolf.Domain
         public object[] Args { get; }
 
         public T ExpectedResult { get; }
+
+        string IChallenge.ExpectedResult => this.ExpectedResult.ToString();
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using CodeGolf.Domain;
 
 namespace CodeGolf.Persistence.Static
@@ -42,7 +43,25 @@ namespace CodeGolf.Persistence.Static
                 new Challenge<string>(new object[] { "-2 + 6 / 2 * 8 - 1 / 2.5 - 18" }, "-12"),
             });
 
-
-        // fizzbuzz
+        public static readonly ChallengeSet<string[]> FizzBuzz = new ChallengeSet<string[]>("Fizzbuzz",
+            @"Write a program that prints the decimal numbers from 1 to 100 inclusive. But for multiples of three print “Fizz” instead of the number and for the multiples of five print “Buzz”. For numbers which are multiples of both three and five print “FizzBuzz”.",
+            new[] { typeof(int) },
+            new[]
+            {
+                new Challenge<string[]>(new object[] { 10 }, new string[]
+                {
+                    "1", "2",
+                    "Fizz",
+                    "4",
+                    "Buzz",
+                    "Fizz",
+                    "7",
+                    "8",
+                    "Fizz",
+                    "Buzz",
+                }),
+                new Challenge<string[]>(new object[] { 20 }, new string[] {}),
+                new Challenge<string[]>(new object[] { 100 }, new string[] {}),
+            });
     }
 }

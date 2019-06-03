@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading;
+using CodeGolf.Domain;
 using CodeGolf.Service;
 using CodeGolf.Unit.Test.Tooling;
 using FluentAssertions;
@@ -14,40 +15,50 @@ namespace CodeGolf.Unit.Test.Services
         [Fact]
         public void ReturnHelloWorld()
         {
-            var r = this.runner.Compile<string>("public string Main(string s){ return s;}", new[] { typeof(string) }, CancellationToken.None).ExtractSuccess()(new[] { "Hello world" }).Result;
+            var r = this.runner.Compile<string>("public string Main(string s){ return s;}", new[] {typeof(string)},
+                CancellationToken.None).ExtractSuccess()(new Challenge<string>(new[] {"Hello world"}, "a")).Result;
             r.ExtractSuccess().Should().BeEquivalentTo("Hello world");
         }
 
         [Fact]
         public void ReturnNotHelloWorld()
         {
-            var r = this.runner.Compile<string>("public string Main(string s){ return \"not \" + s;}", new[] { typeof(string) }, CancellationToken.None).ExtractSuccess()(new[]
-                {"Hello world"}).Result;
+            var r = this.runner.Compile<string>("public string Main(string s){ return \"not \" + s;}",
+                new[] {typeof(string)}, CancellationToken.None).ExtractSuccess()(new Challenge<string>(new[]
+                {"Hello world"}, "a")).Result;
             r.ExtractSuccess().Should().BeEquivalentTo("not Hello world");
         }
 
         [Fact]
         public void FailCleanlyWhenFunctionMisnamed()
         {
-            this.runner.Compile<string>("public string MainXXX(string s){ return \"not \" + s;}", new[] { typeof(string) }, CancellationToken.None).ExtractErrors().Should().BeEquivalentTo("Function 'Main' missing");
+            this.runner.Compile<string>("public string MainXXX(string s){ return \"not \" + s;}",
+                    new[] {typeof(string)}, CancellationToken.None).ExtractErrors().Should()
+                .BeEquivalentTo("Function 'Main' missing");
         }
 
         [Fact]
         public void FailWhenWrongNumberOfParameters()
         {
-            this.runner.Compile<string>("public string Main(string s){ return \"not \" + s;}", new[] { typeof(string), typeof(int) }, CancellationToken.None).ExtractErrors().Should().BeEquivalentTo("Incorrect parameter count expected 2");
+            this.runner.Compile<string>("public string Main(string s){ return \"not \" + s;}",
+                    new[] {typeof(string), typeof(int)}, CancellationToken.None).ExtractErrors().Should()
+                .BeEquivalentTo("Incorrect parameter count expected 2");
         }
 
         [Fact]
         public void FailWhenReturnTypeIsUnexpected()
         {
-            this.runner.Compile<string>("public int Main(string s){ return 42;}", new[] { typeof(string) }, CancellationToken.None).ExtractErrors().Should().BeEquivalentTo("Return type incorrect expected System.String");
+            this.runner
+                .Compile<string>("public int Main(string s){ return 42;}", new[] {typeof(string)},
+                    CancellationToken.None).ExtractErrors().Should()
+                .BeEquivalentTo("Return type incorrect expected System.String");
         }
 
         [Fact]
         public void FailWhenParametersHaveWrongType()
         {
-            this.runner.Compile<string>("public string Main(int i){ return \"not \";}", new[] { typeof(string) }, CancellationToken.None).ExtractErrors().Should().BeEquivalentTo("Parameter type mismatch");
+            this.runner.Compile<string>("public string Main(int i){ return \"not \";}", new[] {typeof(string)},
+                CancellationToken.None).ExtractErrors().Should().BeEquivalentTo("Parameter type mismatch");
         }
 
         [Fact]
@@ -56,8 +67,9 @@ namespace CodeGolf.Unit.Test.Services
             var code = @"
         private int X() => 42;
         public string Main(string s){ return s + X();}";
-            this.runner.Compile<string>(code, new[] { typeof(string) }, CancellationToken.None).ExtractSuccess()(new object[] {"Hello world"}).Result.
-                ExtractSuccess().Should().BeEquivalentTo("Hello world42");
+            this.runner.Compile<string>(code, new[] {typeof(string)}, CancellationToken.None).ExtractSuccess()(
+                    new Challenge<string>(new object[] {"Hello world"}, "a")).Result.ExtractSuccess().Should()
+                .BeEquivalentTo("Hello world42");
         }
 
         [Fact]
@@ -68,7 +80,8 @@ namespace CodeGolf.Unit.Test.Services
             var a = (new [] {1})[1];
             return s;
         }";
-            this.runner.Compile<string>(code, new[] { typeof(string) }, CancellationToken.None).ExtractSuccess()(new object[] { "Hello world" }).Result
+            this.runner.Compile<string>(code, new[] {typeof(string)}, CancellationToken.None).ExtractSuccess()(
+                    new Challenge<string>(new object[] {"Hello world"}, "a")).Result
                 .ExtractErrors().Should().BeEquivalentTo("Index was outside the bounds of the array.");
         }
 
@@ -82,7 +95,8 @@ namespace CodeGolf.Unit.Test.Services
             }
             return s;
         }";
-            this.runner.Compile<string>(code, new[] { typeof(string) }, CancellationToken.None).ExtractSuccess()(new object[] { "Hello world" }).Result
+            this.runner.Compile<string>(code, new[] {typeof(string)}, CancellationToken.None).ExtractSuccess()(
+                    new Challenge<string>(new object[] {"Hello world"}, "a")).Result
                 .ExtractErrors().Should().BeEquivalentTo("A task was canceled.");
         }
 
@@ -96,7 +110,8 @@ namespace CodeGolf.Unit.Test.Services
             }
             return s;
         }";
-            this.runner.Compile<string>(code, new[] { typeof(string) }, CancellationToken.None).ExtractSuccess()(new object[] { "Hello world" }).Result
+            this.runner.Compile<string>(code, new[] {typeof(string)}, CancellationToken.None).ExtractSuccess()(
+                    new Challenge<string>(new object[] {"Hello world"}, "a")).Result
                 .ExtractErrors().Should().BeEquivalentTo("A task was canceled.");
         }
 
@@ -110,7 +125,8 @@ namespace CodeGolf.Unit.Test.Services
             } while(true);
             return s;
         }";
-            this.runner.Compile<string>(code, new[] { typeof(string) }, CancellationToken.None).ExtractSuccess()(new object[] { "Hello world" }).Result
+            this.runner.Compile<string>(code, new[] {typeof(string)}, CancellationToken.None).ExtractSuccess()(
+                    new Challenge<string>(new object[] {"Hello world"}, "a")).Result
                 .ExtractErrors().Should().BeEquivalentTo("A task was canceled.");
         }
 
@@ -123,18 +139,20 @@ namespace CodeGolf.Unit.Test.Services
                 goto forever;
             return s;
         }";
-            this.runner.Compile<string>(code, new[] { typeof(string) }, CancellationToken.None).ExtractSuccess()(new object[] { "Hello world" }).Result
+            this.runner.Compile<string>(code, new[] {typeof(string)}, CancellationToken.None).ExtractSuccess()(
+                    new Challenge<string>(new object[] {"Hello world"}, "a")).Result
                 .ExtractErrors().Should().BeEquivalentTo("A task was canceled.");
         }
 
-        [Fact(Skip ="soon")]
+        [Fact(Skip = "soon")]
         public void DealWithInfiniteRecursion()
         {
             var code = @"
         public string Main(string s){
             return Main(s);
         }";
-            this.runner.Compile<string>(code, new[] { typeof(string) }, CancellationToken.None).ExtractSuccess()(new object[] { "Hello world" }).Result
+            this.runner.Compile<string>(code, new[] {typeof(string)}, CancellationToken.None).ExtractSuccess()(
+                    new Challenge<string>(new object[] {"Hello world"}, "a")).Result
                 .ExtractErrors().Should().BeEquivalentTo("A task was canceled.");
         }
 
@@ -146,8 +164,9 @@ namespace CodeGolf.Unit.Test.Services
             System.Threading.Thread.Sleep(1000);
             return s;
         }";
-            this.runner.Compile<string>(code, new[] { typeof(string) }, CancellationToken.None)
-                .ExtractErrors().Should().BeEquivalentTo("(9,34): error CS0122: 'Thread' is inaccessible due to its protection level");
+            this.runner.Compile<string>(code, new[] {typeof(string)}, CancellationToken.None)
+                .ExtractErrors().Should()
+                .BeEquivalentTo("(9,34): error CS0122: 'Thread' is inaccessible due to its protection level");
         }
 
         [Fact(Skip = "One day")]
@@ -158,15 +177,19 @@ namespace CodeGolf.Unit.Test.Services
             System.Threading.Tasks.Task.Delay(100000).Wait();
             return s;
         }";
-            this.runner.Compile<string>(code, new[] { typeof(string) }, CancellationToken.None).ExtractSuccess()(new[] {"aaa"}).Result
-                .ExtractErrors().Should().BeEquivalentTo("(8,22): error CS0122: 'Thread' is inaccessible due to its protection level");
+            this.runner.Compile<string>(code, new[] {typeof(string)}, CancellationToken.None).ExtractSuccess()(
+                    new Challenge<string>(new[]
+                        {"aaa"}, "a")).Result
+                .ExtractErrors().Should()
+                .BeEquivalentTo("(8,22): error CS0122: 'Thread' is inaccessible due to its protection level");
         }
 
         [Fact]
         public void SupportLinq()
         {
             var code = "public IEnumerable<int> Main(int[] a) { return a.Select(b => b+1); }";
-            var r = this.runner.Compile<IEnumerable<int>>(code, new[] { typeof(int[]) }, CancellationToken.None).ExtractSuccess()(new[] { new[] {1, 2} }).Result;
+            var r = this.runner.Compile<IEnumerable<int>>(code, new[] {typeof(int[])}, CancellationToken.None)
+                .ExtractSuccess()(new Challenge<IEnumerable<int>>(new[] {new[] {1, 2}}, new[] {1})).Result;
             r.ExtractSuccess().Should().BeEquivalentTo(new[] {2, 3});
         }
     }

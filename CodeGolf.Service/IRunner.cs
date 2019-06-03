@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using CodeGolf.Domain;
 using CodeGolf.Service.Dtos;
 using Optional;
 
@@ -9,7 +10,7 @@ namespace CodeGolf.Service
 {
     public interface IRunner
     {
-        Option<Func<object[], Task<Option<T, ErrorSet>>>, ErrorSet> Compile<T>(string function, IReadOnlyList<Type> paramTypes, CancellationToken cancellationToken);
+        Option<Func<Challenge<T>, Task<Option<T, ErrorSet>>>, ErrorSet> Compile<T>(string function, IReadOnlyList<Type> paramTypes, CancellationToken cancellationToken);
 
         string Wrap(string function, CancellationToken cancellationToken);
 
