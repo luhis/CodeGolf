@@ -42,5 +42,10 @@ namespace CodeGolf.Domain
         public IReadOnlyList<Type> Params { get; }
 
         public IReadOnlyList<Challenge<T>> Challenges { get; }
+
+        public IReadOnlyList<Tuple<bool, Challenge<T>>> GetResult(Func<object[],T> t)
+        {
+            return this.Challenges.Select(a => Tuple.Create(t(a.Args).Equals(a.ExpectedResult), a)).ToList();
+        }
     }
 }
