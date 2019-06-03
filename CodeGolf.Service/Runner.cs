@@ -20,7 +20,9 @@ namespace CodeGolf.Service
         private const string FunctionName = "Main";
         private const int ExecutionTimeoutMilliseconds = 1000;
         private readonly ISyntaxTreeTransformer syntaxTreeTransformer;
-        private static readonly MetadataReference[] MetadataReferences = {
+
+        private static readonly MetadataReference[] MetadataReferences =
+        {
             MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
             MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location),
             MetadataReference.CreateFromFile(typeof(AssemblyTargetedPatchBandAttribute).Assembly.Location)
@@ -39,7 +41,8 @@ namespace CodeGolf.Service
             return assembly.FlatMap(success =>
             {
                 var type = success.GetType(ClassName);
-                var fun = type.GetMethod(FunctionName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                var fun = type.GetMethod(FunctionName,
+                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
                 var validationFailures = ValidateCompiledFunction(fun, typeof(T), paramTypes);
                 if (validationFailures.Errors.Any())
                 {
@@ -57,7 +60,7 @@ namespace CodeGolf.Service
                             BindingFlags.Default | BindingFlags.InvokeMethod,
                             null, args.Append(source.Token).ToArray(), CultureInfo.InvariantCulture), source.Token);
 
-                        return Option.Some<T, ErrorSet>((T)await task);
+                        return Option.Some<T, ErrorSet>((T) await task);
                     }
                     catch (Exception e)
                     {
@@ -77,7 +80,7 @@ namespace CodeGolf.Service
                 return new ErrorSet($"Function '{FunctionName}' missing");
             }
 
-            var compiledParams = fun.GetParameters().Take(fun.GetParameters().Length -1);
+            var compiledParams = fun.GetParameters().Take(fun.GetParameters().Length - 1);
 
             if (compiledParams.Count() != paramTypes.Count)
             {
@@ -99,7 +102,8 @@ namespace CodeGolf.Service
             return new ErrorSet();
         }
 
-        string IRunner.Wrap(string function, CancellationToken cancellationToken) => WrapInClass(function, cancellationToken).GetRoot().NormalizeWhitespace().ToFullString();
+        string IRunner.Wrap(string function, CancellationToken cancellationToken) =>
+            WrapInClass(function, cancellationToken).GetRoot().NormalizeWhitespace().ToFullString();
 
         string IRunner.DebugCode(string function, CancellationToken cancellationToken)
         {
@@ -118,12 +122,12 @@ namespace CodeGolf.Service
         {
             var transformed = string.Join("\n", function.Split('\n').Select(s => "    " + s));
             return CSharpSyntaxTree.ParseText("using System;\n"
-                   + "using System.Collections.Generic;\n"
-                   + "using System.Linq;\n\n"
-                   + $"public class {ClassName}\n"
-                   + "{\n"
-                   + transformed
-                   + "\n}", cancellationToken: cancellationToken);
+                                              + "using System.Collections.Generic;\n"
+                                              + "using System.Linq;\n\n"
+                                              + $"public class {ClassName}\n"
+                                              + "{\n"
+                                              + transformed
+                                              + "\n}", cancellationToken: cancellationToken);
         }
 
         private static T UseTempFile<T>(Func<string> gen, Func<string, T> process)
@@ -158,9 +162,10 @@ namespace CodeGolf.Service
             {
                 var compilation = CSharpCompilation.Create(
                     assemblyName,
-                    syntaxTrees: new[] { syntaxTree },
+                    syntaxTrees: new[] {syntaxTree},
                     references: MetadataReferences,
-                    options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, warningLevel: 4, reportSuppressedDiagnostics: true, allowUnsafe: false));
+                    options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, warningLevel: 4,
+                        reportSuppressedDiagnostics: true, allowUnsafe: false));
 
                 using (var ms = new MemoryStream())
                 {

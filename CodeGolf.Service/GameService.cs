@@ -30,7 +30,8 @@ namespace CodeGolf.Service
         private async Task<IReadOnlyList<Attempt>> GetBestAttempts(Guid holeId, CancellationToken cancellationToken)
         {
             var attempts = await this.attemptRepository.GetAttempts(holeId, cancellationToken);
-            return attempts.OrderByDescending(a => a.Score).GroupBy(a => a.UserId).Select(a => a.First()).OrderByDescending(a => a.Score).ToList();
+            return attempts.OrderByDescending(a => a.Score).GroupBy(a => a.UserId).Select(a => a.First())
+                .OrderByDescending(a => a.Score).ToList();
         }
 
         async Task<Option<HoleDto>> IGameService.GetCurrentHole(CancellationToken cancellationToken)
@@ -48,7 +49,8 @@ namespace CodeGolf.Service
         {
             var res = await this.codeGolfService.Score(code, challengeSet, cancellationToken);
             res.Map(success =>
-                this.attemptRepository.AddAttempt(new Attempt(Guid.NewGuid(), userId, holeId, code, success, DateTime.UtcNow)));
+                this.attemptRepository.AddAttempt(new Attempt(Guid.NewGuid(), userId, holeId, code, success,
+                    DateTime.UtcNow)));
             return res;
         }
 
@@ -58,7 +60,8 @@ namespace CodeGolf.Service
         async Task IGameService.NextRound()
         {
             var round = await this.holeRepository.GetCurrentHole();
-            var next = round.Match(some => GetAfter(this.gameRepository.GetGame().Holes, item => item.HoleId.Equals(some.HoleId)), 
+            var next = round.Match(
+                some => GetAfter(this.gameRepository.GetGame().Holes, item => item.HoleId.Equals(some.HoleId)),
                 () => this.gameRepository.GetGame().Holes.First());
             await this.holeRepository.AddHole(new HoleInstance(next.HoleId, DateTime.UtcNow,
                 DateTime.UtcNow.Add(next.Duration)));
