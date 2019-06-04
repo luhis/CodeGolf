@@ -6,7 +6,7 @@ namespace CodeGolf.Web.ViewComponents
 {
     public class ChallengeView : ViewComponent
     {
-        public IViewComponentResult Invoke(Option<ChallengeSet<string>> cs) =>
+        public IViewComponentResult Invoke(Option<IChallengeSet> cs) =>
             cs.Match(this.View, () => this.View("None"));
     }
 }

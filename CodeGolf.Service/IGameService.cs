@@ -11,7 +11,7 @@ namespace CodeGolf.Service
     {
         Task<Option<HoleDto>> GetCurrentHole(CancellationToken cancellationToken);
 
-        Task<Option<int, ErrorSet>> Attempt(string userId, Guid holeId, string code, ChallengeSet<string> challengeSet, CancellationToken cancellationToken);
+        Task<Option<int, ErrorSet>> Attempt(string userId, Guid holeId, string code, IChallengeSet challengeSet, CancellationToken cancellationToken);
 
         Task NextRound();
 

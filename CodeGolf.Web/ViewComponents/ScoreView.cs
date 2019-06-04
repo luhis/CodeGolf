@@ -1,4 +1,4 @@
-﻿using CodeGolf.Service.Dtos;
+﻿using CodeGolf.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Optional;
 

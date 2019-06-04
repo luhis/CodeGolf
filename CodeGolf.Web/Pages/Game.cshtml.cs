@@ -23,7 +23,7 @@ namespace CodeGolf.Web.Pages
 
         public Option<int, ErrorSet> Result { get; private set; }
 
-        public Option<ChallengeSet<string>> Round { get; private set; }
+        public Option<IChallengeSet> Round { get; private set; }
 
         public GameModel(IGameService gameService, IIdentityTools identityTools)
         {

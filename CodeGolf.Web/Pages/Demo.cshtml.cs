@@ -20,7 +20,7 @@ namespace CodeGolf.Web.Pages
 
         public Option<int, ErrorSet> Result { get; private set; }
 
-        public ChallengeSet<string> ChallengeSet { get; }
+        public IChallengeSet ChallengeSet { get; }
 
         public DemoModel(ICodeGolfService codeGolfService)
         {

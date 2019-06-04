@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using CodeGolf.Domain;
 
 namespace CodeGolf.Persistence.Static

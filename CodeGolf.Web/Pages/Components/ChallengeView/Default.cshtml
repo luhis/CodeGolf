@@ -1,4 +1,4 @@
-﻿@model CodeGolf.Domain.ChallengeSet<string>;
+﻿@model CodeGolf.Domain.IChallengeSet;
 
 
 <div class="panel">
@@ -11,6 +11,6 @@
 
     @foreach (var a in Model.Challenges)
     {
-        <div class="panel-block">@(GenericPresentationHelpers.DisplayFunction(a, Model.Params))</div>
+        <div class="panel-block">@(GenericPresentationHelpers.DisplayFunction(a, Model.Params, Model.ReturnType))</div>
     }
 </div>

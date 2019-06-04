@@ -6,7 +6,7 @@ namespace CodeGolf.Web.ViewComponents
 {
     public class HelpToolTipView : ViewComponent
     {
-        public IViewComponentResult Invoke(Option<ChallengeSet<string>> cs) =>
+        public IViewComponentResult Invoke(Option<IChallengeSet> cs) =>
             cs.Match(this.View, () => (IViewComponentResult)this.Content(string.Empty));
     }
 }

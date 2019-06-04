@@ -45,7 +45,7 @@ namespace CodeGolf.Service
         }
 
         async Task<Option<int, ErrorSet>> IGameService.Attempt(string userId, Guid holeId, string code,
-            ChallengeSet<string> challengeSet, CancellationToken cancellationToken)
+            IChallengeSet challengeSet, CancellationToken cancellationToken)
         {
             var res = await this.codeGolfService.Score(code, challengeSet, cancellationToken);
             res.Map(success =>

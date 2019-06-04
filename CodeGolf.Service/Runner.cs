@@ -8,7 +8,6 @@ using System.Runtime;
 using System.Threading;
 using System.Threading.Tasks;
 using CodeGolf.Domain;
-using CodeGolf.Service.Dtos;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Optional;
@@ -34,8 +33,8 @@ namespace CodeGolf.Service
             this.syntaxTreeTransformer = syntaxTreeTransformer;
         }
 
-        Option<Func<Challenge<T>, Task<Option<T, ErrorSet>>>, ErrorSet> IRunner.Compile<T>(
-            string function, IReadOnlyList<Type> paramTypes, CancellationToken cancellationToken)
+        Option<Func<IChallenge, Task<Option<object, ErrorSet>>>, ErrorSet> IRunner.Compile(
+            string function, IReadOnlyList<Type> paramTypes, Type returnType, CancellationToken cancellationToken)
         {
             var assembly = this.Compile(function, cancellationToken);
 
@@ -44,13 +43,13 @@ namespace CodeGolf.Service
                 var type = success.GetType(ClassName);
                 var fun = type.GetMethod(FunctionName,
                     BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                var validationFailures = ValidateCompiledFunction(fun, typeof(T), paramTypes);
+                var validationFailures = ValidateCompiledFunction(fun, returnType, paramTypes);
                 if (validationFailures.Errors.Any())
                 {
-                    return Option.None<Func<Challenge<T>, Task<Option<T, ErrorSet>>>, ErrorSet>(validationFailures);
+                    return Option.None<Func<IChallenge, Task<Option<object, ErrorSet>>>, ErrorSet>(validationFailures);
                 }
 
-                async Task<Option<T, ErrorSet>> Func(Challenge<T> challenge)
+                async Task<Option<object, ErrorSet>> Func(IChallenge challenge)
                 {
                     var obj = Activator.CreateInstance(type);
                     try
@@ -61,15 +60,15 @@ namespace CodeGolf.Service
                             BindingFlags.Default | BindingFlags.InvokeMethod,
                             null, challenge.Args.Append(source.Token).ToArray(), CultureInfo.InvariantCulture), source.Token);
 
-                        return Option.Some<T, ErrorSet>((T) await task);
+                        return Option.Some<object, ErrorSet>(await task);
                     }
                     catch (Exception e)
                     {
-                        return Option.None<T, ErrorSet>(new ErrorSet(e.InnerException.Message));
+                        return Option.None<object, ErrorSet>(new ErrorSet(e.InnerException.Message));
                     }
                 }
 
-                return Option.Some<Func<Challenge<T>, Task<Option<T, ErrorSet>>>, ErrorSet>(Func);
+                return Option.Some<Func<IChallenge, Task<Option<object, ErrorSet>>>, ErrorSet>(Func);
             });
         }
 

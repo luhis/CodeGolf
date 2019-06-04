@@ -1,9 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using CodeGolf.Domain;
 using CodeGolf.Persistence.Static;
-using CodeGolf.Service.Dtos;
 using Optional;
 
 namespace CodeGolf.Service
@@ -19,24 +20,17 @@ namespace CodeGolf.Service
             this.scorer = scorer;
         }
 
-        Task<Option<int, ErrorSet>> ICodeGolfService.Score<T>(string code, ChallengeSet<T> challenge,
+        Task<Option<int, ErrorSet>> ICodeGolfService.Score(string code, IChallengeSet challenge,
             CancellationToken cancellationToken)
         {
-            var compileResult = this.runner.Compile<T>(code, challenge.Params, cancellationToken);
+            var compileResult = this.runner.Compile(code, challenge.Params, challenge.ReturnType, cancellationToken);
             return compileResult.Match(async compiled =>
             {
-               // var res = challenge.GetResults(await compiled);
-                var fails = (await Task
-                        .WhenAll(challenge.Challenges.Select(async a =>
-                            (challenge: a, result: await compiled(a).ConfigureAwait(false))))
-                        .ConfigureAwait(false))
-                    .Where(IsFailure);
+                var fails = (await challenge.GetResults(compiled))
+                    .Where(this.IsFailure);
                 if (fails.Any())
                 {
-                    var failStrings = fails.Select(a =>
-                            $"Return value incorrect. Expected: {a.challenge.ExpectedResult}, Found: {MapToString(a.result)}")
-                        .ToList();
-                    return Option.None<int, ErrorSet>(new ErrorSet(failStrings));
+                    return Option.None<int, ErrorSet>(new ErrorSet(fails.SelectMany(a => a.Item1.Match(b => b, () => new List<string>())).ToList()));
                 }
                 else
                 {
@@ -45,7 +39,12 @@ namespace CodeGolf.Service
             }, err => Task.FromResult(Option.None<int, ErrorSet>(err)));
         }
 
-        ChallengeSet<string> ICodeGolfService.GetDemoChallenge()
+        private bool IsFailure(Tuple<Option<IReadOnlyList<string>>, IChallenge> tuple)
+        {
+            return tuple.Item1.HasValue;
+        }
+
+        IChallengeSet ICodeGolfService.GetDemoChallenge()
         {
             return Challenges.HelloWorld;
         }
@@ -55,11 +54,5 @@ namespace CodeGolf.Service
 
         string ICodeGolfService.DebugCode(string code, CancellationToken cancellationToken)
             => this.runner.DebugCode(code, cancellationToken);
-
-        private static bool IsFailure<T>((Challenge<T> challenge, Option<T, ErrorSet> result) prop) =>
-            prop.result.Match(success => !success.Equals(prop.challenge.ExpectedResult), _ => true);
-
-        private static string MapToString<T>(Option<T, ErrorSet> o) =>
-            o.Match(some => some.ToString(), error => string.Join("", error.Errors));
     }
 }

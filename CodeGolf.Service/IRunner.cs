@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using CodeGolf.Domain;
-using CodeGolf.Service.Dtos;
 using Optional;
 
 namespace CodeGolf.Service
 {
     public interface IRunner
     {
-        Option<Func<Challenge<T>, Task<Option<T, ErrorSet>>>, ErrorSet> Compile<T>(string function, IReadOnlyList<Type> paramTypes, CancellationToken cancellationToken);
+        Option<Func<IChallenge, Task<Option<object, ErrorSet>>>, ErrorSet> Compile(string function, IReadOnlyList<Type> paramTypes, Type returnType, CancellationToken cancellationToken);
 
         string Wrap(string function, CancellationToken cancellationToken);
 
