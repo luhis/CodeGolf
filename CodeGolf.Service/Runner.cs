@@ -33,7 +33,7 @@ namespace CodeGolf.Service
             this.syntaxTreeTransformer = syntaxTreeTransformer;
         }
 
-        Option<Func<IChallenge, Task<Option<object, string>>>, ErrorSet> IRunner.Compile(
+        Option<Func<object[], Task<Option<object, string>>>, ErrorSet> IRunner.Compile(
             string function, IReadOnlyList<Type> paramTypes, Type returnType, CancellationToken cancellationToken)
         {
             var assembly = this.Compile(function, cancellationToken);
@@ -46,10 +46,10 @@ namespace CodeGolf.Service
                 var validationFailures = ValidateCompiledFunction(fun, returnType, paramTypes);
                 if (validationFailures.Errors.Any())
                 {
-                    return Option.None<Func<IChallenge, Task<Option<object, string>>>, ErrorSet>(validationFailures);
+                    return Option.None<Func<object[], Task<Option<object, string>>>, ErrorSet>(validationFailures);
                 }
 
-                async Task<Option<object, string>> Func(IChallenge challenge)
+                async Task<Option<object, string>> Func(object[] args)
                 {
                     var obj = Activator.CreateInstance(type);
                     try
@@ -58,7 +58,7 @@ namespace CodeGolf.Service
                         source.CancelAfter(TimeSpan.FromMilliseconds(ExecutionTimeoutMilliseconds));
                         var task = Task<object>.Factory.StartNew(() => fun.Invoke(obj,
                             BindingFlags.Default | BindingFlags.InvokeMethod,
-                            null, challenge.Args.Append(source.Token).ToArray(), CultureInfo.InvariantCulture), source.Token);
+                            null, args.Append(source.Token).ToArray(), CultureInfo.InvariantCulture), source.Token);
 
                         return Option.Some<object, string>(await task);
                     }
@@ -68,7 +68,7 @@ namespace CodeGolf.Service
                     }
                 }
 
-                return Option.Some<Func<IChallenge, Task<Option<object, string>>>, ErrorSet>(Func);
+                return Option.Some<Func<object[], Task<Option<object, string>>>, ErrorSet>(Func);
             });
         }
 

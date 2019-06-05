@@ -51,11 +51,11 @@ namespace CodeGolf.Domain
         IReadOnlyList<IChallenge> IChallengeSet.Challenges => this.Challenges;
 
         async Task<IReadOnlyList<ChallengeResult>> IChallengeSet.GetResults(
-            Func<IChallenge, Task<Option<object, string>>> t)
+            Func<object[], Task<Option<object, string>>> t)
         {
             return (await Task.WhenAll(this.Challenges.Select(async challenge =>
             {
-                var r = await t(challenge);
+                var r = await t(challenge.Args);
                 var errors = r.Match(success =>
                 {
                     var res = (T) success;
