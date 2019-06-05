@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Threading;
-using CodeGolf.Domain;
 using CodeGolf.Service;
 using CodeGolf.Unit.Test.Tooling;
 using FluentAssertions;

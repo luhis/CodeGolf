@@ -4,6 +4,6 @@
     {
         object[] Args { get; }
 
-        string ExpectedResult { get; }
+        object ExpectedResult { get; }
     }
 }

@@ -61,12 +61,12 @@ namespace CodeGolf.Domain
                     var res = (T) success;
                     if (!res.Equals(challenge.ExpectedResult))
                     {
-                        return Option.Some<string>(
-                            $"Return value incorrect. Expected: {challenge.ExpectedResult}, Found: {res}");
+                        return Option.Some(
+                            $"Return value incorrect. Expected: {GenericPresentationHelpers.WrapIfArray(challenge.ExpectedResult, typeof(T))}, Found: {GenericPresentationHelpers.WrapIfArray(res, typeof(T))}");
                     }
 
                     return Option.None<string>();
-                }, err => Option.Some(err));
+                }, Option.Some);
                 return new ChallengeResult(errors, challenge);
             }))).ToList();
         }

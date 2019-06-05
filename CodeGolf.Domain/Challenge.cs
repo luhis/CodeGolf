@@ -14,6 +14,6 @@ namespace CodeGolf.Domain
 
         public T ExpectedResult { get; }
 
-        string IChallenge.ExpectedResult => this.ExpectedResult.ToString();
+        object IChallenge.ExpectedResult => this.ExpectedResult;
     }
 }

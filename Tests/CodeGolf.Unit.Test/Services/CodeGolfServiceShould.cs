@@ -47,7 +47,7 @@ namespace CodeGolf.Unit.Test.Services
                 {
                     new Challenge<string>(new object[0], "Hello World")
                 }), CancellationToken.None).Result;
-            r.ExtractSuccess().ExtractErrors().First().Error.ValueOrFailure().Should().BeEquivalentTo("Return value incorrect. Expected: Hello World, Found: Hello X World");
+            r.ExtractSuccess().ExtractErrors().First().Error.ValueOrFailure().Should().BeEquivalentTo("Return value incorrect. Expected: \"Hello World\", Found: \"Hello X World\"");
         }
     }
 }

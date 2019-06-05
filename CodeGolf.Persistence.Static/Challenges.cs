@@ -47,7 +47,7 @@ namespace CodeGolf.Persistence.Static
             new[] { typeof(int) },
             new[]
             {
-                new Challenge<string[]>(new object[] { 10 }, new string[]
+                new Challenge<string[]>(new object[] { 10 }, new[]
                 {
                     "1", "2",
                     "Fizz",
@@ -58,9 +58,7 @@ namespace CodeGolf.Persistence.Static
                     "8",
                     "Fizz",
                     "Buzz",
-                }),
-                new Challenge<string[]>(new object[] { 20 }, new string[] {}),
-                new Challenge<string[]>(new object[] { 100 }, new string[] {}),
+                })
             });
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
-using CodeGolf.Unit.Test.Pages;
 using Xunit;
 
 namespace CodeGolf.Integration.Test.Pages
