@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Net.Http;
 using CodeGolf.Web;
-using CodeGolf.Web.Pages;
 using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace CodeGolf.Unit.Test.Pages
+namespace CodeGolf.Integration.Test.Pages
 {
     public class ClientFixture : IDisposable
     {

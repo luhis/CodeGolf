@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Xunit;
 
-namespace CodeGolf.Unit.Test.Pages
+namespace CodeGolf.Integration.Test.Pages
 {
     public class HomePageShould : IClassFixture<ClientFixture>
     {

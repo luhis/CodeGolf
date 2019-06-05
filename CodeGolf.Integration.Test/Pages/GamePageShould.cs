@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Xunit;
 
-namespace CodeGolf.Unit.Test.Pages
+namespace CodeGolf.Integration.Test.Pages
 {
     public class GamePageShould : IClassFixture<ClientFixture>
     {
