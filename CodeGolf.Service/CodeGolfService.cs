@@ -49,7 +49,7 @@ namespace CodeGolf.Service
 
         IChallengeSet ICodeGolfService.GetDemoChallenge()
         {
-            return Challenges.HelloWorld;
+            return Challenges.FizzBuzz;
         }
 
         string ICodeGolfService.WrapCode(string code, CancellationToken cancellationToken)

@@ -59,7 +59,7 @@ namespace CodeGolf.Domain
                 var errors = r.Match(success =>
                 {
                     var res = (T) success;
-                    if (!res.Equals(challenge.ExpectedResult))
+                    if (!AreEqual(res, challenge.ExpectedResult))
                     {
                         return Option.Some(
                             $"Return value incorrect. Expected: {GenericPresentationHelpers.WrapIfArray(challenge.ExpectedResult, typeof(T))}, Found: {GenericPresentationHelpers.WrapIfArray(res, typeof(T))}");
@@ -69,6 +69,25 @@ namespace CodeGolf.Domain
                 }, Option.Some);
                 return new ChallengeResult(errors, challenge);
             }))).ToList();
+        }
+
+        private static bool AreEqual(object a, object b)
+        {
+            if (typeof(T).IsArray)
+            {
+                if (a is int[] intArr)
+                {
+                    return intArr.Zip((int[]) b, Tuple.Create).All(t => t.Item1 == t.Item2);
+                }
+                else
+                {
+                    return ((string[])a).Zip((string[])b, Tuple.Create).All(t => t.Item1 == t.Item2);
+                }
+            }
+            else
+            {
+                return a.Equals(b);
+            }
         }
     }
 }

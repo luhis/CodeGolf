@@ -1,11 +1,19 @@
-﻿@using Optional.Unsafe
-@model IReadOnlyList<Domain.ChallengeResult>;
+﻿@using CodeGolf.Domain
+@using Optional.Unsafe
+@model Tuple<IReadOnlyList<Domain.ChallengeResult>, IChallengeSet>;
 
 <article class="message is-danger">
     <div class="message-header">
         <p>Error</p>
     </div>
     <div class="message-body">
-        @string.Join(", ", Model.Where(a => a.Error.HasValue).Select(a => a.Error.ValueOrFailure()))
+        @foreach (var c in Model.Item1.Where(a => a.Error.HasValue))
+        {
+        <p>
+            <i class="fas fa-exclamation-triangle"></i>
+            @GenericPresentationHelpers.DisplayFunction(c.Challenge, Model.Item2.Params, Model.Item2.ReturnType):
+            @c.Error.ValueOrFailure()
+        </p>
+        }
     </div>
 </article>
