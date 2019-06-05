@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using CodeGolf.Domain;
@@ -11,7 +12,7 @@ namespace CodeGolf.Service
     {
         Task<Option<HoleDto>> GetCurrentHole(CancellationToken cancellationToken);
 
-        Task<Option<int, ErrorSet>> Attempt(string userId, Guid holeId, string code, IChallengeSet challengeSet, CancellationToken cancellationToken);
+        Task<Option<Option<int, IReadOnlyList<ChallengeResult>>, ErrorSet>> Attempt(string userId, Guid holeId, string code, IChallengeSet challengeSet, CancellationToken cancellationToken);
 
         Task NextRound();
 

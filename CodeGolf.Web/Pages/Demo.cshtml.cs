@@ -1,8 +1,8 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using CodeGolf.Domain;
 using CodeGolf.Service;
-using CodeGolf.Service.Dtos;
 using CodeGolf.Web.Attributes;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -18,7 +18,7 @@ namespace CodeGolf.Web.Pages
         [BindProperty(BinderType = typeof(StringBinder))]
         public string Code { get; set; }
 
-        public Option<int, ErrorSet> Result { get; private set; }
+        public Option<Option<int, IReadOnlyList<Domain.ChallengeResult>>, ErrorSet> Result { get; private set; }
 
         public IChallengeSet ChallengeSet { get; }
 

@@ -7,7 +7,7 @@ namespace CodeGolf.Domain
 {
     public interface IChallengeSet
     {
-        Task<IReadOnlyList<Tuple<Option<IReadOnlyList<string>>, IChallenge>>> GetResults(Func<IChallenge, Task<Option<object, ErrorSet>>> t);
+        Task<IReadOnlyList<ChallengeResult>> GetResults(Func<IChallenge, Task<Option<object, string>>> t);
 
         IReadOnlyList<Type> Params { get; }
 

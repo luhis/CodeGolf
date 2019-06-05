@@ -20,7 +20,8 @@ namespace CodeGolf.Service
             this.scorer = scorer;
         }
 
-        Task<Option<int, ErrorSet>> ICodeGolfService.Score(string code, IChallengeSet challenge,
+        Task<Option<Option<int, IReadOnlyList<ChallengeResult>>, ErrorSet>> ICodeGolfService.Score(string code,
+            IChallengeSet challenge,
             CancellationToken cancellationToken)
         {
             var compileResult = this.runner.Compile(code, challenge.Params, challenge.ReturnType, cancellationToken);
@@ -30,18 +31,21 @@ namespace CodeGolf.Service
                     .Where(this.IsFailure);
                 if (fails.Any())
                 {
-                    return Option.None<int, ErrorSet>(new ErrorSet(fails.SelectMany(a => a.Item1.Match(b => b, () => new List<string>())).ToList()));
+                    return Option.Some<Option<int, IReadOnlyList<ChallengeResult>>, ErrorSet>(
+                        Option.None<int, IReadOnlyList<ChallengeResult>>(
+                            fails.ToList()));
                 }
                 else
                 {
-                    return Option.Some<int, ErrorSet>(this.scorer.Score(code));
+                    return Option.Some<Option<int, IReadOnlyList<ChallengeResult>>, ErrorSet>(
+                        Option.Some<int, IReadOnlyList<ChallengeResult>>(this.scorer.Score(code)));
                 }
-            }, err => Task.FromResult(Option.None<int, ErrorSet>(err)));
+            }, err => Task.FromResult(Option.None<Option<int, IReadOnlyList<ChallengeResult>>, ErrorSet>(err)));
         }
 
-        private bool IsFailure(Tuple<Option<IReadOnlyList<string>>, IChallenge> tuple)
+        private bool IsFailure(ChallengeResult tuple)
         {
-            return tuple.Item1.HasValue;
+            return tuple.Error.HasValue;
         }
 
         IChallengeSet ICodeGolfService.GetDemoChallenge()

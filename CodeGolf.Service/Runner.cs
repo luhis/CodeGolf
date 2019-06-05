@@ -33,7 +33,7 @@ namespace CodeGolf.Service
             this.syntaxTreeTransformer = syntaxTreeTransformer;
         }
 
-        Option<Func<IChallenge, Task<Option<object, ErrorSet>>>, ErrorSet> IRunner.Compile(
+        Option<Func<IChallenge, Task<Option<object, string>>>, ErrorSet> IRunner.Compile(
             string function, IReadOnlyList<Type> paramTypes, Type returnType, CancellationToken cancellationToken)
         {
             var assembly = this.Compile(function, cancellationToken);
@@ -46,10 +46,10 @@ namespace CodeGolf.Service
                 var validationFailures = ValidateCompiledFunction(fun, returnType, paramTypes);
                 if (validationFailures.Errors.Any())
                 {
-                    return Option.None<Func<IChallenge, Task<Option<object, ErrorSet>>>, ErrorSet>(validationFailures);
+                    return Option.None<Func<IChallenge, Task<Option<object, string>>>, ErrorSet>(validationFailures);
                 }
 
-                async Task<Option<object, ErrorSet>> Func(IChallenge challenge)
+                async Task<Option<object, string>> Func(IChallenge challenge)
                 {
                     var obj = Activator.CreateInstance(type);
                     try
@@ -60,15 +60,15 @@ namespace CodeGolf.Service
                             BindingFlags.Default | BindingFlags.InvokeMethod,
                             null, challenge.Args.Append(source.Token).ToArray(), CultureInfo.InvariantCulture), source.Token);
 
-                        return Option.Some<object, ErrorSet>(await task);
+                        return Option.Some<object, string>(await task);
                     }
                     catch (Exception e)
                     {
-                        return Option.None<object, ErrorSet>(new ErrorSet(e.InnerException.Message));
+                        return Option.None<object, string>(e.InnerException.Message);
                     }
                 }
 
-                return Option.Some<Func<IChallenge, Task<Option<object, ErrorSet>>>, ErrorSet>(Func);
+                return Option.Some<Func<IChallenge, Task<Option<object, string>>>, ErrorSet>(Func);
             });
         }
 

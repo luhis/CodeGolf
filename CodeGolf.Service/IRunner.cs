@@ -9,7 +9,7 @@ namespace CodeGolf.Service
 {
     public interface IRunner
     {
-        Option<Func<IChallenge, Task<Option<object, ErrorSet>>>, ErrorSet> Compile(string function, IReadOnlyList<Type> paramTypes, Type returnType, CancellationToken cancellationToken);
+        Option<Func<IChallenge, Task<Option<object, string>>>, ErrorSet> Compile(string function, IReadOnlyList<Type> paramTypes, Type returnType, CancellationToken cancellationToken);
 
         string Wrap(string function, CancellationToken cancellationToken);
 

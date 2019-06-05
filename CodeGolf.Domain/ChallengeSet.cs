@@ -50,24 +50,24 @@ namespace CodeGolf.Domain
 
         IReadOnlyList<IChallenge> IChallengeSet.Challenges => this.Challenges;
 
-        async Task<IReadOnlyList<Tuple<Option<IReadOnlyList<string>>, IChallenge>>> IChallengeSet.GetResults(
-            Func<IChallenge, Task<Option<object, ErrorSet>>> t)
+        async Task<IReadOnlyList<ChallengeResult>> IChallengeSet.GetResults(
+            Func<IChallenge, Task<Option<object, string>>> t)
         {
-            return (await Task.WhenAll(this.Challenges.Select(async a =>
+            return (await Task.WhenAll(this.Challenges.Select(async challenge =>
             {
-                var r = await t(a);
+                var r = await t(challenge);
                 var errors = r.Match(success =>
                 {
                     var res = (T) success;
-                    if (!res.Equals(a.ExpectedResult))
+                    if (!res.Equals(challenge.ExpectedResult))
                     {
-                        return Option.Some<IReadOnlyList<string>>(new List<string>
-                            {$"Return value incorrect. Expected: {a.ExpectedResult}, Found: {res}"});
+                        return Option.Some<string>(
+                            $"Return value incorrect. Expected: {challenge.ExpectedResult}, Found: {res}");
                     }
 
-                    return Option.None<IReadOnlyList<string>>();
-                }, err => Option.Some(err.Errors));
-                return Tuple.Create(errors, (IChallenge) a);
+                    return Option.None<string>();
+                }, err => Option.Some(err));
+                return new ChallengeResult(errors, challenge);
             }))).ToList();
         }
     }

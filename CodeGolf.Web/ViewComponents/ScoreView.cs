@@ -1,4 +1,5 @@
-﻿using CodeGolf.Domain;
+﻿using System.Collections.Generic;
+using CodeGolf.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Optional;
 
@@ -6,9 +7,9 @@ namespace CodeGolf.Web.ViewComponents
 {
     public class ScoreView : ViewComponent
     {
-        public IViewComponentResult Invoke(Option<int, ErrorSet> p)
+        public IViewComponentResult Invoke(Option<Option<int, IReadOnlyList<Domain.ChallengeResult>>, ErrorSet> p)
         {
-            return p.Match(score => this.View("Score", score), errors =>
+            return p.Match(score => score.Match(num => this.View("Score", num), err => this.View("ChallengeErrors", err)), errors =>
             {
                 if (errors == null)
                 {

@@ -44,13 +44,14 @@ namespace CodeGolf.Service
             });
         }
 
-        async Task<Option<int, ErrorSet>> IGameService.Attempt(string userId, Guid holeId, string code,
+        async Task<Option<Option<int, IReadOnlyList<ChallengeResult>>, ErrorSet>> IGameService.Attempt(string userId,
+            Guid holeId, string code,
             IChallengeSet challengeSet, CancellationToken cancellationToken)
         {
             var res = await this.codeGolfService.Score(code, challengeSet, cancellationToken);
-            res.Map(success =>
-                this.attemptRepository.AddAttempt(new Attempt(Guid.NewGuid(), userId, holeId, code, success,
-                    DateTime.UtcNow)));
+            res.Map(success => success.Map(innerSuccess =>
+                this.attemptRepository.AddAttempt(new Attempt(Guid.NewGuid(), userId, holeId, code, innerSuccess,
+                    DateTime.UtcNow))));
             return res;
         }
 

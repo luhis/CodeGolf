@@ -1,9 +1,11 @@
 using System;
+using System.Linq;
 using System.Threading;
 using CodeGolf.Domain;
 using CodeGolf.Service;
 using CodeGolf.Unit.Test.Tooling;
 using FluentAssertions;
+using Optional.Unsafe;
 using Xunit;
 
 namespace CodeGolf.Unit.Test.Services
@@ -21,7 +23,7 @@ namespace CodeGolf.Unit.Test.Services
                 {
                     new Challenge<string>(new object[0], "Hello World")
                 }), CancellationToken.None).Result;
-            r.ExtractSuccess().Should().Be(33);
+            r.ExtractSuccess().ExtractSuccess().Should().Be(33);
         }
 
         [Fact]
@@ -45,7 +47,7 @@ namespace CodeGolf.Unit.Test.Services
                 {
                     new Challenge<string>(new object[0], "Hello World")
                 }), CancellationToken.None).Result;
-            r.ExtractErrors().Should().BeEquivalentTo("Return value incorrect. Expected: Hello World, Found: Hello X World");
+            r.ExtractSuccess().ExtractErrors().First().Error.ValueOrFailure().Should().BeEquivalentTo("Return value incorrect. Expected: Hello World, Found: Hello X World");
         }
     }
 }
