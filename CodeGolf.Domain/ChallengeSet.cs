@@ -59,7 +59,7 @@ namespace CodeGolf.Domain
                 var errors = r.Match(success =>
                 {
                     var res = (T) success;
-                    if (!AreEqual(res, challenge.ExpectedResult))
+                    if (!AreEqual(challenge.ExpectedResult, res))
                     {
                         return Option.Some(
                             $"Return value incorrect. Expected: {GenericPresentationHelpers.WrapIfArray(challenge.ExpectedResult, typeof(T))}, Found: {GenericPresentationHelpers.WrapIfArray(res, typeof(T))}");
