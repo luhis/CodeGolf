@@ -21,6 +21,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGolf.Recaptcha", "CodeG
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGolf.Integration.Test", "Tests\CodeGolf.Integration.Test\CodeGolf.Integration.Test.csproj", "{2B99FE0E-EC82-45BB-89A0-45D8A182CCF7}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGolf.ExecutionServer", "CodeGolf.ExecutionServer\CodeGolf.ExecutionServer.csproj", "{C1A14574-C85C-4741-A0DC-61DD902374CA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGolf.ServiceInterfaces", "CodeGolf.ServiceInterfaces\CodeGolf.ServiceInterfaces.csproj", "{6E811EA9-027F-4E70-B05B-F92483327BD3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +63,14 @@ Global
 		{2B99FE0E-EC82-45BB-89A0-45D8A182CCF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B99FE0E-EC82-45BB-89A0-45D8A182CCF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B99FE0E-EC82-45BB-89A0-45D8A182CCF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1A14574-C85C-4741-A0DC-61DD902374CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1A14574-C85C-4741-A0DC-61DD902374CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1A14574-C85C-4741-A0DC-61DD902374CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1A14574-C85C-4741-A0DC-61DD902374CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E811EA9-027F-4E70-B05B-F92483327BD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E811EA9-027F-4E70-B05B-F92483327BD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E811EA9-027F-4E70-B05B-F92483327BD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E811EA9-027F-4E70-B05B-F92483327BD3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

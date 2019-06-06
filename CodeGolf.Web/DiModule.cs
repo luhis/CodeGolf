@@ -1,7 +1,9 @@
 using System;
 using CodeGolf.Persistence;
+using CodeGolf.ServiceInterfaces;
 using CodeGolf.Web.Attributes;
 using CodeGolf.Web.Tooling;
+using JKang.IpcServiceFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +22,8 @@ namespace CodeGolf.Web
             collection.AddSingleton<IGetIp, GetIp>();
             collection.AddSingleton<RecaptchaAttribute>();
             collection.AddSingleton<GameAdminAuthAttribute>();
+            collection.AddSingleton<IpcServiceClient<IExecutionService>>(a => new IpcServiceClientBuilder<IExecutionService>()
+                .UseNamedPipe(SharedSettings.PipeName).Build());
         }
     }
 }

@@ -7,10 +7,10 @@ using Optional;
 
 namespace CodeGolf.Domain
 {
-    public class ChallengeSet<T> : IChallengeSet
+    public class ChallengeSetArray<T> : IChallengeSet
     {
-        public ChallengeSet(string title, string description, IReadOnlyList<Type> ps,
-            IReadOnlyList<Challenge<T>> challenges)
+        public ChallengeSetArray(string title, string description, IReadOnlyList<Type> ps,
+            IReadOnlyList<ChallengeArr<T>> challenges)
         {
             this.Title = EnsureArg.IsNotNull(title, nameof(title));
             this.Description = EnsureArg.IsNotNull(description, nameof(description));
@@ -24,7 +24,7 @@ namespace CodeGolf.Domain
 
         private static bool IsMisMatched(ValueTuple<object, Type> t) => t.Item1.GetType() != t.Item2;
 
-        private void ValidateParameters(Challenge<T> challenge)
+        private void ValidateParameters(ChallengeArr<T> challenge)
         {
             if (challenge.Args.Length != this.Params.Count)
             {
@@ -44,11 +44,12 @@ namespace CodeGolf.Domain
 
         public IReadOnlyList<Type> Params { get; }
 
-        Type IChallengeSet.ReturnType => typeof(T);
+        Type IChallengeSet.ReturnType => typeof(T[]);
 
-        private IReadOnlyList<Challenge<T>> Challenges { get; }
+        private IReadOnlyList<ChallengeArr<T>> Challenges { get; }
 
         IReadOnlyList<IChallenge> IChallengeSet.Challenges => this.Challenges;
+
 
         async Task<IReadOnlyList<ChallengeResult>> IChallengeSet.GetResults(
             Func<object[], Task<Option<object, string>>> t)
@@ -58,11 +59,11 @@ namespace CodeGolf.Domain
                 var r = await t(challenge.Args);
                 var errors = r.Match(success =>
                 {
-                    var res = (T) success;
+                    var res = success != null ? ((object[]) success).Cast<T>().ToArray() : null;
                     if (!AreEqual(challenge.ExpectedResult, res))
                     {
                         return Option.Some(
-                            $"Return value incorrect. Expected: {GenericPresentationHelpers.WrapIfArray(challenge.ExpectedResult, typeof(T))}, Found: {GenericPresentationHelpers.WrapIfArray(res, typeof(T))}");
+                            $"Return value incorrect. Expected: {GenericPresentationHelpers.WrapIfArray(challenge.ExpectedResult, typeof(T[]))}, Found: {GenericPresentationHelpers.WrapIfArray(res, typeof(T[]))}");
                     }
 
                     return Option.None<string>();
@@ -71,9 +72,19 @@ namespace CodeGolf.Domain
             }))).ToList();
         }
 
-        private static bool AreEqual(object expect, object actual)
+        private static bool AreEqual(T[] expect, T[] actual)
         {
-            return expect.Equals(actual);
+            if (actual == null)
+            {
+                return false;
+            }
+
+            if (expect.Length != actual.Length)
+            {
+                return false;
+            }
+
+            return expect.Zip(actual, Tuple.Create).All(t => string.Equals(t.Item1, t.Item2));
         }
     }
 }

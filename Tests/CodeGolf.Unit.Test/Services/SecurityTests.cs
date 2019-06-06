@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using CodeGolf.Domain;
+using CodeGolf.ExecutionServer;
 using CodeGolf.Service;
 using CodeGolf.Unit.Test.Tooling;
 using FluentAssertions;
@@ -10,7 +11,7 @@ namespace CodeGolf.Unit.Test.Services
 {
     public class SecurityTests
     {
-        private readonly ICodeGolfService codeGolfService = new CodeGolfService(new Runner(new SyntaxTreeTransformer(new CancellationTokenInjector())), new Scorer());
+        private readonly ICodeGolfService codeGolfService = new CodeGolfService(new Runner(new SyntaxTreeTransformer(new CancellationTokenInjector()), new ExecutionService()), new Scorer());
 
         [Fact]
         public void NotAllowFileAccess()

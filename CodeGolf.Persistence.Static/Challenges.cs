@@ -42,12 +42,12 @@ namespace CodeGolf.Persistence.Static
                 new Challenge<string>(new object[] {"-2 + 6 / 2 * 8 - 1 / 2.5 - 18"}, "-12"),
             });
 
-        public static readonly ChallengeSet<string[]> FizzBuzz = new ChallengeSet<string[]>("Fizzbuzz",
+        public static readonly ChallengeSetArray<string> FizzBuzz = new ChallengeSetArray<string>("Fizzbuzz",
             "Write a program that prints the integer numbers from 1 to i inclusive. But for multiples of three print \"Fizz\" instead of the number and for the multiples of five print \"Buzz\". For numbers which are multiples of both three and five print \"FizzBuzz\".",
             new[] {typeof(int)},
             new[]
             {
-                new Challenge<string[]>(new object[] {10}, new[]
+                new ChallengeArr<string>(new object[] {10}, new[]
                 {
                     "1",
                     "2",
@@ -60,7 +60,7 @@ namespace CodeGolf.Persistence.Static
                     "Fizz",
                     "Buzz",
                 }),
-                new Challenge<string[]>(new object[] {20}, new[]
+                new ChallengeArr<string>(new object[] {20}, new[]
                 {"1",
                     "2",
                     "Fizz",

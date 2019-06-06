@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -8,6 +7,8 @@ using System.Runtime;
 using System.Threading;
 using System.Threading.Tasks;
 using CodeGolf.Domain;
+using CodeGolf.ServiceInterfaces;
+using JKang.IpcServiceFramework;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Optional;
@@ -18,8 +19,8 @@ namespace CodeGolf.Service
     {
         private const string ClassName = "CodeGolf";
         private const string FunctionName = "Main";
-        private const int ExecutionTimeoutMilliseconds = 1000;
         private readonly ISyntaxTreeTransformer syntaxTreeTransformer;
+        private readonly IExecutionService svc;
 
         private static readonly MetadataReference[] MetadataReferences =
         {
@@ -28,9 +29,10 @@ namespace CodeGolf.Service
             MetadataReference.CreateFromFile(typeof(AssemblyTargetedPatchBandAttribute).Assembly.Location)
         };
 
-        public Runner(ISyntaxTreeTransformer syntaxTreeTransformer)
+        public Runner(ISyntaxTreeTransformer syntaxTreeTransformer, IExecutionService svc)
         {
             this.syntaxTreeTransformer = syntaxTreeTransformer;
+            this.svc = svc;
         }
 
         Option<Func<object[], Task<Option<object, string>>>, ErrorSet> IRunner.Compile(
@@ -40,7 +42,8 @@ namespace CodeGolf.Service
 
             return assembly.FlatMap(success =>
             {
-                var type = success.GetType(ClassName);
+                var ass = Assembly.Load(success);
+                var type = ass.GetType(ClassName);
                 var fun = type.GetMethod(FunctionName,
                     BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
                 var validationFailures = ValidateCompiledFunction(fun, returnType, paramTypes);
@@ -51,25 +54,31 @@ namespace CodeGolf.Service
 
                 async Task<Option<object, string>> Func(object[] args)
                 {
-                    var obj = Activator.CreateInstance(type);
                     try
                     {
-                        var source = new CancellationTokenSource();
-                        source.CancelAfter(TimeSpan.FromMilliseconds(ExecutionTimeoutMilliseconds));
-                        var task = Task<object>.Factory.StartNew(() => fun.Invoke(obj,
-                            BindingFlags.Default | BindingFlags.InvokeMethod,
-                            null, args.Append(source.Token).ToArray(), CultureInfo.InvariantCulture), source.Token);
-
-                        return Option.Some<object, string>(await task);
+                        var r = await this.InvokeAsync(success, args, paramTypes.ToArray(), returnType, cancellationToken);
+                        return Option.Some<object, string>(r);
                     }
                     catch (Exception e)
                     {
-                        return Option.None<object, string>(e.InnerException.Message);
+                        return Option.None<object, string>(e.InnerException != null ? e.InnerException.Message : e.Message);
                     }
                 }
 
                 return Option.Some<Func<object[], Task<Option<object, string>>>, ErrorSet>(Func);
             });
+        }
+
+        private async Task<object> InvokeAsync(byte[] success, object[] args, Type[] paramTypes, Type returnType, CancellationToken cancellationToken)
+        {
+            if (returnType.IsArray)
+            {
+                return (object) await this.svc.ExecuteArr(success, ClassName, FunctionName, args, paramTypes);
+            }
+            else
+            {
+                return await this.svc.Execute(success, ClassName, FunctionName, args, paramTypes);
+            }
         }
 
         private static ErrorSet ValidateCompiledFunction(MethodInfo fun, Type expectedReturn,
@@ -143,7 +152,7 @@ namespace CodeGolf.Service
 
         private static bool IsStoppable(Diagnostic a) => a.Severity > DiagnosticSeverity.Warning;
 
-        private Option<Assembly, ErrorSet> Compile(string function, CancellationToken cancellationToken)
+        private Option<byte[], ErrorSet> Compile(string function, CancellationToken cancellationToken)
         {
             var syntaxTree = WrapInClass(function, cancellationToken);
 
@@ -156,7 +165,7 @@ namespace CodeGolf.Service
             });
         }
 
-        private static Option<Assembly, ErrorSet> TryCompile(SyntaxTree syntaxTree, CancellationToken cancellationToken)
+        private static Option<byte[], ErrorSet> TryCompile(SyntaxTree syntaxTree, CancellationToken cancellationToken)
         {
             return UseTempFile(Path.GetRandomFileName, assemblyName =>
             {
@@ -175,12 +184,12 @@ namespace CodeGolf.Service
                     {
                         var failures = result.Diagnostics.Where(IsStoppable).Select(a => a.ToString());
 
-                        return Option.None<Assembly, ErrorSet>(new ErrorSet(failures.ToList()));
+                        return Option.None<byte[], ErrorSet>(new ErrorSet(failures.ToList()));
                     }
                     else
                     {
                         ms.Seek(0, SeekOrigin.Begin);
-                        return Option.Some<Assembly, ErrorSet>(Assembly.Load(ms.ToArray()));
+                        return Option.Some<byte[], ErrorSet>(ms.ToArray());
                     }
                 }
             });

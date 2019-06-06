@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading;
+using CodeGolf.ExecutionServer;
 using CodeGolf.Service;
 using CodeGolf.Unit.Test.Tooling;
 using FluentAssertions;
@@ -9,7 +10,7 @@ namespace CodeGolf.Unit.Test.Services
 {
     public class RunnerShould
     {
-        private readonly IRunner runner = new Runner(new SyntaxTreeTransformer(new CancellationTokenInjector()));
+        private readonly IRunner runner = new Runner(new SyntaxTreeTransformer(new CancellationTokenInjector()), new ExecutionService() );
 
         [Fact]
         public void ReturnHelloWorld()
