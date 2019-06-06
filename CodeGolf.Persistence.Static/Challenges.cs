@@ -43,7 +43,7 @@ namespace CodeGolf.Persistence.Static
             });
 
         public static readonly ChallengeSet<string[]> FizzBuzz = new ChallengeSet<string[]>("Fizzbuzz",
-            @"Write a program that prints the decimal numbers from 1 to 100 inclusive. But for multiples of three print “Fizz” instead of the number and for the multiples of five print “Buzz”. For numbers which are multiples of both three and five print “FizzBuzz”.",
+            "Write a program that prints the integer numbers from 1 to i inclusive. But for multiples of three print \"Fizz\" instead of the number and for the multiples of five print \"Buzz\". For numbers which are multiples of both three and five print \"FizzBuzz\".",
             new[] {typeof(int)},
             new[]
             {
