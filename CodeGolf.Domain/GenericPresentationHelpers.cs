@@ -6,19 +6,21 @@ namespace CodeGolf.Domain
 {
     public static class GenericPresentationHelpers
     {
+        private static string ToCommaSep<T>(T[] arr) => arr == null ? "null": string.Join(", ", arr.Select(a => a.ToString()));
+
         private static string WrapIfString(object o, Type t) => t == typeof(string) ? $"\"{o}\"" : o.ToString();
+
         public static string WrapIfArray(object o, Type t)
         {
             if (t.IsArray)
             {
-                var objArr = o as object[];
-                if (objArr != null)
+                if (o is object[] objArr)
                 {
-                    return $"[{string.Join(", ", objArr.Select(a => a.ToString()))}]";
+                    return $"[{ToCommaSep(objArr)}]";
                 }
                 else
                 {
-                    return $"[{string.Join(", ", ((int[])o).Select(a => a.ToString()))}]";
+                    return $"[{ToCommaSep((int[])o)}]";
                 }
             }
             else

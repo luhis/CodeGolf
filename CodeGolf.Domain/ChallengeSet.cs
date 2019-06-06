@@ -71,22 +71,26 @@ namespace CodeGolf.Domain
             }))).ToList();
         }
 
-        private static bool AreEqual(object a, object b)
+        private static bool AreEqual(object expect, object actual)
         {
             if (typeof(T).IsArray)
             {
-                if (a is int[] intArr)
+                if (actual == null)
                 {
-                    return intArr.Zip((int[]) b, Tuple.Create).All(t => t.Item1 == t.Item2);
+                    return false;
+                }
+                if (expect is int[] intArr)
+                {
+                    return intArr.Zip((int[]) actual, Tuple.Create).All(t => t.Item1 == t.Item2);
                 }
                 else
                 {
-                    return ((string[])a).Zip((string[])b, Tuple.Create).All(t => t.Item1 == t.Item2);
+                    return ((string[])expect).Zip((string[])actual, Tuple.Create).All(t => t.Item1 == t.Item2);
                 }
             }
             else
             {
-                return a.Equals(b);
+                return expect.Equals(actual);
             }
         }
     }
