@@ -48,11 +48,31 @@ namespace CodeGolf.Unit.Test.Domain
         }
 
         [Fact]
-        public void ReturnFalseResultWhenIncorrectWithEmptyArray()
+        public void ReturnFalseResultWhenIncorrectWithArray()
         {
             var a = (IChallengeSet)new ChallengeSet<string[]>("a", "b", new[] { typeof(string) },
                 new[] { new Challenge<string[]>(new object[] { "test" }, new string[] {"a"}) });
             var r = a.GetResults(o => Task.FromResult(Option.Some<object, string>(new [] {"testXX"}))).Result;
+            r.Single().Error
+                .HasValue.Should().BeTrue();
+        }
+
+        [Fact]
+        public void ReturnFalseResultWhenIncorrectWithEmptyArray()
+        {
+            var a = (IChallengeSet)new ChallengeSet<string[]>("a", "b", new[] { typeof(string) },
+                new[] { new Challenge<string[]>(new object[] { "test" }, new string[] { "a" }) });
+            var r = a.GetResults(o => Task.FromResult(Option.Some<object, string>(new string[] { }))).Result;
+            r.Single().Error
+                .HasValue.Should().BeTrue();
+        }
+
+        [Fact]
+        public void ReturnFalseResultWhenIncorrectWithNullInArray()
+        {
+            var a = (IChallengeSet)new ChallengeSet<string[]>("a", "b", new[] { typeof(string) },
+                new[] { new Challenge<string[]>(new object[] { "test" }, new string[] { "a" }) });
+            var r = a.GetResults(o => Task.FromResult(Option.Some<object, string>(new string[] { null }))).Result;
             r.Single().Error
                 .HasValue.Should().BeTrue();
         }

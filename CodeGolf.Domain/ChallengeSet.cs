@@ -79,14 +79,29 @@ namespace CodeGolf.Domain
                 {
                     return false;
                 }
+
                 if (expect is int[] intArr)
                 {
-                    return intArr.Zip((int[]) actual, Tuple.Create).All(t => t.Item1 == t.Item2);
+                    var actualInt = (int[]) actual;
+                    if (intArr.Length != actualInt.Length)
+                    {
+                        return false;
+                    }
+
+                    return intArr.Zip(actualInt, Tuple.Create).All(t => t.Item1 == t.Item2);
                 }
-                else
+                else if (expect is string[] strArr)
                 {
-                    return ((string[])expect).Zip((string[])actual, Tuple.Create).All(t => t.Item1 == t.Item2);
+                    var actualInt = (string[]) actual;
+                    if (strArr.Length != actualInt.Length)
+                    {
+                        return false;
+                    }
+
+                    return strArr.Zip(actualInt, Tuple.Create).All(t => string.Equals(t.Item1, t.Item2));
                 }
+
+                throw new ApplicationException("Unknown type");
             }
             else
             {
