@@ -28,5 +28,6 @@ systemctl enable execution-codegolf.service
 
 echo "Start codegolf service"
 systemctl start kestrel-codegolf.service
-systemctl status kestrel-codegolf.service
 systemctl start execution-codegolf.service
+systemctl status kestrel-codegolf.service
+systemctl status execution-codegolf.service

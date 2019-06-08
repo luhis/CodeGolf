@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using CodeGolf.ServiceInterfaces;
@@ -16,7 +17,7 @@ namespace CodeGolf.ExecutionServer
 
             // build and run service host
             var host = new IpcServiceHostBuilder(services.BuildServiceProvider())
-                .AddNamedPipeEndpoint<IExecutionService>(name: "endpoint2", pipeName: SharedSettings.PipeName)
+                .AddTcpEndpoint<IExecutionService>(name: "endpoint2", ipEndpoint: IPAddress.Loopback, port: SharedSettings.PortNumber)
                 .Build();
 
             var source = new CancellationTokenSource();

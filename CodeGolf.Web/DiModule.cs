@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using CodeGolf.Persistence;
 using CodeGolf.ServiceInterfaces;
 using CodeGolf.Web.Attributes;
@@ -23,7 +24,7 @@ namespace CodeGolf.Web
             collection.AddSingleton<RecaptchaAttribute>();
             collection.AddSingleton<GameAdminAuthAttribute>();
             collection.AddSingleton<IpcServiceClient<IExecutionService>>(a => new IpcServiceClientBuilder<IExecutionService>()
-                .UseNamedPipe(SharedSettings.PipeName).Build());
+                .UseTcp(IPAddress.Loopback, SharedSettings.PortNumber).Build());
         }
     }
 }
