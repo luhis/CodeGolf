@@ -32,7 +32,7 @@ namespace CodeGolf.Unit.Test.Domain
         {
             var a = (IChallengeSet) new ChallengeSet<string>("a", "b", new[] {typeof(string)},
                 new[] {new Challenge<string>(new object[] {"test"}, "test")});
-            var r = a.GetResults(o => Task.FromResult(Option.Some<object, string>("test"))).Result;
+            var r = a.GetResults(o => Task.FromResult(Option.Some<OneOf.OneOf<object, object[]>, string>("test"))).Result;
             r.Single().Error
                 .HasValue.Should().BeFalse();
         }
@@ -42,7 +42,7 @@ namespace CodeGolf.Unit.Test.Domain
         {
             var a = (IChallengeSet)new ChallengeSet<string>("a", "b", new[] { typeof(string) },
                 new[] { new Challenge<string>(new object[] { "test" }, "test") });
-            var r = a.GetResults(o => Task.FromResult(Option.Some<object, string>("testXX"))).Result;
+            var r = a.GetResults(o => Task.FromResult(Option.Some< OneOf.OneOf<object, object[]>, string>("testXX"))).Result;
             r.Single().Error
                 .HasValue.Should().BeTrue();
         }

@@ -52,14 +52,15 @@ namespace CodeGolf.Domain
 
 
         async Task<IReadOnlyList<ChallengeResult>> IChallengeSet.GetResults(
-            Func<object[], Task<Option<object, string>>> t)
+            Func<object[], Task<Option<OneOf.OneOf<object, object[]>, string>>> t)
         {
             return (await Task.WhenAll(this.Challenges.Select(async challenge =>
             {
                 var r = await t(challenge.Args);
                 var errors = r.Match(success =>
                 {
-                    var res = success != null ? ((object[]) success).Cast<T>().ToArray() : null;
+                    var x = success.AsT1;
+                    var res = x != null ? x.Cast<T>().ToArray() : null;
                     if (!AreEqual(challenge.ExpectedResult, res))
                     {
                         return Option.Some(

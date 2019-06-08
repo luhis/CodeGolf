@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EnsureThat;
+using OneOf;
 using Optional;
 
 namespace CodeGolf.Domain
@@ -51,14 +52,14 @@ namespace CodeGolf.Domain
         IReadOnlyList<IChallenge> IChallengeSet.Challenges => this.Challenges;
 
         async Task<IReadOnlyList<ChallengeResult>> IChallengeSet.GetResults(
-            Func<object[], Task<Option<object, string>>> t)
+            Func<object[], Task<Option<OneOf<object, object[]>, string>>> t)
         {
             return (await Task.WhenAll(this.Challenges.Select(async challenge =>
             {
                 var r = await t(challenge.Args);
                 var errors = r.Match(success =>
                 {
-                    var res = (T) success;
+                    var res = success.AsT0;
                     if (!AreEqual(challenge.ExpectedResult, res))
                     {
                         return Option.Some(

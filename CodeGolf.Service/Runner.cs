@@ -11,6 +11,7 @@ using CodeGolf.ServiceInterfaces;
 using JKang.IpcServiceFramework;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using OneOf;
 using Optional;
 
 namespace CodeGolf.Service
@@ -35,7 +36,7 @@ namespace CodeGolf.Service
             this.svc = svc;
         }
 
-        Option<Func<object[], Task<Option<object, string>>>, ErrorSet> IRunner.Compile(
+        Option<Func<object[], Task<Option<OneOf<object, object[]>, string>>>, ErrorSet> IRunner.Compile(
             string function, IReadOnlyList<Type> paramTypes, Type returnType, CancellationToken cancellationToken)
         {
             var assembly = this.Compile(function, cancellationToken);
@@ -49,31 +50,31 @@ namespace CodeGolf.Service
                 var validationFailures = ValidateCompiledFunction(fun, returnType, paramTypes);
                 if (validationFailures.Errors.Any())
                 {
-                    return Option.None<Func<object[], Task<Option<object, string>>>, ErrorSet>(validationFailures);
+                    return Option.None<Func<object[], Task<Option<OneOf<object, object[]>, string>>>, ErrorSet>(validationFailures);
                 }
 
-                async Task<Option<object, string>> Func(object[] args)
+                async Task<Option<OneOf<object, object[]>, string>> Func(object[] args)
                 {
                     try
                     {
                         var r = await this.InvokeAsync(success, args, paramTypes.ToArray(), returnType, cancellationToken);
-                        return Option.Some<object, string>(r);
+                        return Option.Some<OneOf<object, object[]>, string>(r);
                     }
                     catch (Exception e)
                     {
-                        return Option.None<object, string>(e.InnerException != null ? e.InnerException.Message : e.Message);
+                        return Option.None<OneOf<object, object[]>, string>(e.InnerException != null ? e.InnerException.Message : e.Message);
                     }
                 }
 
-                return Option.Some<Func<object[], Task<Option<object, string>>>, ErrorSet>(Func);
+                return Option.Some<Func<object[], Task<Option<OneOf<object, object[]>, string>>>, ErrorSet>(Func);
             });
         }
 
-        private async Task<object> InvokeAsync(byte[] success, object[] args, Type[] paramTypes, Type returnType, CancellationToken cancellationToken)
+        private async Task<OneOf<object, object[]>> InvokeAsync(byte[] success, object[] args, Type[] paramTypes, Type returnType, CancellationToken cancellationToken)
         {
             if (returnType.IsArray)
             {
-                return (object) await this.svc.ExecuteArr(success, ClassName, FunctionName, args, paramTypes);
+                return await this.svc.ExecuteArr(success, ClassName, FunctionName, args, paramTypes);
             }
             else
             {
