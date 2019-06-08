@@ -74,11 +74,11 @@ namespace CodeGolf.Service
         {
             if (returnType.IsArray)
             {
-                return await this.svc.ExecuteArr(success, ClassName, FunctionName, args, paramTypes);
+                return await this.svc.Execute<object[]>(success, ClassName, FunctionName, args, paramTypes);
             }
             else
             {
-                return await this.svc.Execute(success, ClassName, FunctionName, args, paramTypes);
+                return await this.svc.Execute<object>(success, ClassName, FunctionName, args, paramTypes);
             }
         }
 

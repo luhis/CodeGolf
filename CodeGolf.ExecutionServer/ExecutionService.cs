@@ -15,7 +15,7 @@ namespace CodeGolf.ExecutionServer
 
         public Task<bool> IsAlive() =>Task.FromResult(true);
 
-        public Task<object> Execute(byte[] assembly, string className, string funcName, object[] args,
+        public Task<T> Execute<T>(byte[] assembly, string className, string funcName, object[] args,
             Type[] paramTypes)
         {
             var castArgs = CastArgs(args, paramTypes);
@@ -25,7 +25,7 @@ namespace CodeGolf.ExecutionServer
             var fun = GetMethod(funcName, type);
             var source = new CancellationTokenSource();
             source.CancelAfter(TimeSpan.FromMilliseconds(ExecutionTimeoutMilliseconds));
-            return Task<object>.Factory.StartNew(() => fun.Invoke(inst,
+            return Task<T>.Factory.StartNew(() => (T)fun.Invoke(inst,
                 BindingFlags.Default | BindingFlags.InvokeMethod,
                 null, castArgs.Append(source.Token).ToArray(), CultureInfo.InvariantCulture), source.Token);
         }
@@ -39,20 +39,6 @@ namespace CodeGolf.ExecutionServer
         private static IEnumerable<object> CastArgs(IEnumerable<object> args, IEnumerable<Type> paramTypes)
         {
             return paramTypes.Zip(args, Tuple.Create).Select(a => Convert.ChangeType(a.Item2, a.Item1));
-        }
-
-        public Task<object[]> ExecuteArr(byte[] assembly, string className, string funcName, object[] args, Type[] paramTypes)
-        {
-            var castArgs = CastArgs(args, paramTypes);
-            var obj = Assembly.Load(assembly);
-            var type = obj.GetType(className);
-            var inst = Activator.CreateInstance(type);
-            var fun = GetMethod(funcName, type);
-            var source = new CancellationTokenSource();
-            source.CancelAfter(TimeSpan.FromMilliseconds(ExecutionTimeoutMilliseconds));
-            return Task<object[]>.Factory.StartNew(() => (object[])fun.Invoke(inst,
-                BindingFlags.Default | BindingFlags.InvokeMethod,
-                null, castArgs.Append(source.Token).ToArray(), CultureInfo.InvariantCulture), source.Token);
         }
     }
 }

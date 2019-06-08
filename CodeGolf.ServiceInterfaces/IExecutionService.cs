@@ -7,10 +7,7 @@ namespace CodeGolf.ServiceInterfaces
     {
         Task<bool> IsAlive();
 
-        Task<object> Execute(byte[] assembly, string className, string funcName, object[] args,
-            Type[] paramTypes);
-
-        Task<object[]> ExecuteArr(byte[] assembly, string className, string funcName, object[] args,
+        Task<T> Execute<T>(byte[] assembly, string className, string funcName, object[] args,
             Type[] paramTypes);
     }
 }
