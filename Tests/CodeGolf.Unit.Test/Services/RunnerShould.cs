@@ -189,10 +189,10 @@ namespace CodeGolf.Unit.Test.Services
         [Fact]
         public void SupportLinq()
         {
-            var code = "public IEnumerable<int> Main(int[] a) { return a.Select(b => b+1); }";
-            var r = this.runner.Compile(code, new[] {typeof(int[])}, typeof(IEnumerable<int>), CancellationToken.None)
+            var code = "public int[] Main(int[] a) { return a.Select(b => b+1).ToArray(); }";
+            var r = this.runner.Compile(code, new[] {typeof(int[])}, typeof(int[]), CancellationToken.None)
                 .ExtractSuccess()(new[] {new[] {1, 2}}).Result;
-            r.ExtractSuccess().AsT0.Should().BeEquivalentTo(new[] {2, 3});
+            r.ExtractSuccess().AsT1.Should().BeEquivalentTo(new[] {2, 3});
         }
     }
 }

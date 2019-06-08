@@ -8,11 +8,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using CodeGolf.Domain;
 using CodeGolf.ServiceInterfaces;
-using JKang.IpcServiceFramework;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using OneOf;
 using Optional;
+using ResultOrError = Optional.Option<OneOf.OneOf<object, object[]>, string>;
 
 namespace CodeGolf.Service
 {
@@ -36,7 +36,7 @@ namespace CodeGolf.Service
             this.svc = svc;
         }
 
-        Option<Func<object[], Task<Option<OneOf<object, object[]>, string>>>, ErrorSet> IRunner.Compile(
+        Option<Func<object[], Task<ResultOrError>>, ErrorSet> IRunner.Compile(
             string function, IReadOnlyList<Type> paramTypes, Type returnType, CancellationToken cancellationToken)
         {
             var assembly = this.Compile(function, cancellationToken);
@@ -50,14 +50,14 @@ namespace CodeGolf.Service
                 var validationFailures = ValidateCompiledFunction(fun, returnType, paramTypes);
                 if (validationFailures.Errors.Any())
                 {
-                    return Option.None<Func<object[], Task<Option<OneOf<object, object[]>, string>>>, ErrorSet>(validationFailures);
+                    return Option.None<Func<object[], Task<ResultOrError>>, ErrorSet>(validationFailures);
                 }
 
-                async Task<Option<OneOf<object, object[]>, string>> Func(object[] args)
+                async Task<ResultOrError> Func(object[] args)
                 {
                     try
                     {
-                        var r = await this.InvokeAsync(success, args, paramTypes.ToArray(), returnType, cancellationToken);
+                        var r = await this.InvokeAsync(success, args, paramTypes.ToArray(), returnType);
                         return Option.Some<OneOf<object, object[]>, string>(r);
                     }
                     catch (Exception e)
@@ -66,11 +66,11 @@ namespace CodeGolf.Service
                     }
                 }
 
-                return Option.Some<Func<object[], Task<Option<OneOf<object, object[]>, string>>>, ErrorSet>(Func);
+                return Option.Some<Func<object[], Task<ResultOrError>>, ErrorSet>(Func);
             });
         }
 
-        private async Task<OneOf<object, object[]>> InvokeAsync(byte[] success, object[] args, Type[] paramTypes, Type returnType, CancellationToken cancellationToken)
+        private async Task<OneOf<object, object[]>> InvokeAsync(byte[] success, object[] args, Type[] paramTypes, Type returnType)
         {
             if (returnType.IsArray)
             {

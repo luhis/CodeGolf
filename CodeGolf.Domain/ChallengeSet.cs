@@ -25,7 +25,7 @@ namespace CodeGolf.Domain
 
         private static bool IsMisMatched(ValueTuple<object, Type> t) => t.Item1.GetType() != t.Item2;
 
-        private void ValidateParameters(Challenge<T> challenge)
+        private void ValidateParameters(IChallenge challenge)
         {
             if (challenge.Args.Length != this.Params.Count)
             {
