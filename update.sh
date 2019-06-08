@@ -9,12 +9,12 @@ systemctl stop execution-codegolf.service
 sleep 5
 
 echo "Run build"
-dotnet publish ./CodeGolf.Web -o ./publish -c Release
-dotnet publish ./CodeGolf.ExecutionServer -o ./executionServer -c Release
+dotnet publish ./CodeGolf.Web -o ../publish -c Release
+dotnet publish ./CodeGolf.ExecutionServer -o ../executionServer -c Release
 
 echo "Creating files and folders"
-touch ../publish/appsettings.Production.json
-mkdir ../publish/db
+touch ./publish/appsettings.Production.json
+mkdir ./publish/db
 
 echo "Setting file ownership"
 chown -R www-data:www-data ./publish/wwwroot
