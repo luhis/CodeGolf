@@ -10,7 +10,7 @@ namespace CodeGolf.Domain
     public class ChallengeSetArray<T> : IChallengeSet
     {
         public ChallengeSetArray(string title, string description, IReadOnlyList<Type> ps,
-            IReadOnlyList<ChallengeArr<T>> challenges)
+            IReadOnlyList<ChallengeArray<T>> challenges)
         {
             this.Title = EnsureArg.IsNotNull(title, nameof(title));
             this.Description = EnsureArg.IsNotNull(description, nameof(description));
@@ -46,17 +46,17 @@ namespace CodeGolf.Domain
 
         Type IChallengeSet.ReturnType => typeof(T[]);
 
-        private IReadOnlyList<ChallengeArr<T>> Challenges { get; }
+        private IReadOnlyList<ChallengeArray<T>> Challenges { get; }
 
         IReadOnlyList<IChallenge> IChallengeSet.Challenges => this.Challenges;
 
 
         async Task<IReadOnlyList<ChallengeResult>> IChallengeSet.GetResults(
-            Func<object[], Task<Option<OneOf.OneOf<object, object[]>, string>>> t)
+            CompileResult t)
         {
             return (await Task.WhenAll(this.Challenges.Select(async challenge =>
             {
-                var r = await t(challenge.Args);
+                var r = await t.Func(challenge.Args);
                 var errors = r.Match(success =>
                 {
                     var x = success.AsT1;

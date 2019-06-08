@@ -7,7 +7,7 @@ namespace CodeGolf.Domain
 {
     public interface IChallengeSet
     {
-        Task<IReadOnlyList<ChallengeResult>> GetResults(Func<object[], Task<Option<OneOf.OneOf<object, object[]>, string>>> t);
+        Task<IReadOnlyList<ChallengeResult>> GetResults(CompileResult t);
 
         IReadOnlyList<Type> Params { get; }
 

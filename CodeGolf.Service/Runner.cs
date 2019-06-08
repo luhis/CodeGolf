@@ -36,7 +36,7 @@ namespace CodeGolf.Service
             this.svc = svc;
         }
 
-        Option<Func<object[], Task<ResultOrError>>, ErrorSet> IRunner.Compile(
+        Option<CompileResult, ErrorSet> IRunner.Compile(
             string function, IReadOnlyList<Type> paramTypes, Type returnType, CancellationToken cancellationToken)
         {
             var assembly = this.Compile(function, cancellationToken);
@@ -50,7 +50,7 @@ namespace CodeGolf.Service
                 var validationFailures = ValidateCompiledFunction(fun, returnType, paramTypes);
                 if (validationFailures.Errors.Any())
                 {
-                    return Option.None<Func<object[], Task<ResultOrError>>, ErrorSet>(validationFailures);
+                    return Option.None<CompileResult, ErrorSet>(validationFailures);
                 }
 
                 async Task<ResultOrError> Func(object[] args)
@@ -66,12 +66,16 @@ namespace CodeGolf.Service
                     }
                 }
 
-                return Option.Some<Func<object[], Task<ResultOrError>>, ErrorSet>(Func);
+                return Option.Some<CompileResult, ErrorSet>(new CompileResult(Func));
             });
         }
 
         private async Task<OneOf<object, object[]>> InvokeAsync(byte[] success, object[] args, Type[] paramTypes, Type returnType)
         {
+            if (returnType == typeof(int[]))
+            {
+                return await this.svc.Execute<int[]>(success, ClassName, FunctionName, args, paramTypes);
+            }
             if (returnType.IsArray)
             {
                 return await this.svc.Execute<object[]>(success, ClassName, FunctionName, args, paramTypes);

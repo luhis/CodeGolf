@@ -13,9 +13,9 @@ namespace CodeGolf.Unit.Test.Domain
         public void ReturnFalseResultWhenIncorrectWithArray()
         {
             var a = (IChallengeSet) new ChallengeSetArray<string>("a", "b", new[] {typeof(string)},
-                new[] {new ChallengeArr<string>(new object[] {"test"}, new string[] {"a"})});
-            var r = a.GetResults(o =>
-                Task.FromResult(Option.Some<OneOf.OneOf<object, object[]>, string>(new[] {"testXX"}))).Result;
+                new[] {new ChallengeArray<string>(new object[] {"test"}, new string[] {"a"})});
+            var r = a.GetResults(new CompileResult(o =>
+                Task.FromResult(Option.Some<OneOf.OneOf<object, object[]>, string>(new[] {"testXX"})))).Result;
             r.Single().Error
                 .HasValue.Should().BeTrue();
         }
@@ -24,9 +24,9 @@ namespace CodeGolf.Unit.Test.Domain
         public void ReturnFalseResultWhenIncorrectWithEmptyArray()
         {
             var a = (IChallengeSet) new ChallengeSetArray<string>("a", "b", new[] {typeof(string)},
-                new[] {new ChallengeArr<string>(new object[] {"test"}, new string[] {"a"}),});
-            var r = a.GetResults(o =>
-                Task.FromResult(Option.Some<OneOf.OneOf<object, object[]>, string>(new string[] { }))).Result;
+                new[] {new ChallengeArray<string>(new object[] {"test"}, new string[] {"a"}),});
+            var r = a.GetResults(new CompileResult(o =>
+                Task.FromResult(Option.Some<OneOf.OneOf<object, object[]>, string>(new string[] { })))).Result;
             r.Single().Error
                 .HasValue.Should().BeTrue();
         }
@@ -35,9 +35,9 @@ namespace CodeGolf.Unit.Test.Domain
         public void ReturnFalseResultWhenIncorrectWithNullInArray()
         {
             var a = (IChallengeSet) new ChallengeSetArray<string>("a", "b", new[] {typeof(string)},
-                new[] {new ChallengeArr<string>(new object[] {"test"}, new string[] {"a"}),});
-            var r = a.GetResults(o =>
-                Task.FromResult(Option.Some<OneOf.OneOf<object, object[]>, string>(new string[] {null}))).Result;
+                new[] {new ChallengeArray<string>(new object[] {"test"}, new string[] {"a"}),});
+            var r = a.GetResults(new CompileResult(o =>
+                Task.FromResult(Option.Some<OneOf.OneOf<object, object[]>, string>(new string[] {null})))).Result;
             r.Single().Error
                 .HasValue.Should().BeTrue();
         }
@@ -46,8 +46,8 @@ namespace CodeGolf.Unit.Test.Domain
         public void ReturnFalseResultWhenIncorrectWithNull()
         {
             var a = (IChallengeSet) new ChallengeSetArray<string>("a", "b", new[] {typeof(string)},
-                new[] {new ChallengeArr<string>(new object[] {"test"}, new string[] {"a"}),});
-            var r = a.GetResults(o => Task.FromResult(Option.Some<OneOf.OneOf<object, object[]>, string>(null))).Result;
+                new[] {new ChallengeArray<string>(new object[] {"test"}, new string[] {"a"}),});
+            var r = a.GetResults(new CompileResult(o => Task.FromResult(Option.Some<OneOf.OneOf<object, object[]>, string>(null)))).Result;
             r.Single().Error
                 .HasValue.Should().BeTrue();
         }

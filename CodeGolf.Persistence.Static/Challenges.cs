@@ -47,7 +47,7 @@ namespace CodeGolf.Persistence.Static
             new[] {typeof(int)},
             new[]
             {
-                new ChallengeArr<string>(new object[] {10}, new[]
+                new ChallengeArray<string>(new object[] {10}, new[]
                 {
                     "1",
                     "2",
@@ -60,7 +60,7 @@ namespace CodeGolf.Persistence.Static
                     "Fizz",
                     "Buzz",
                 }),
-                new ChallengeArr<string>(new object[] {20}, new[]
+                new ChallengeArray<string>(new object[] {20}, new[]
                 {"1",
                     "2",
                     "Fizz",
