@@ -30,7 +30,7 @@ namespace CodeGolf.ExecutionServer
                 null, castArgs.Append(source.Token).ToArray(), CultureInfo.InvariantCulture), source.Token);
         }
 
-        private static MethodInfo GetMethod(string funcName, Type type)
+        private static MethodInfo GetMethod(string funcName, IReflect type)
         {
             return type.GetMethod(funcName,
                 BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
