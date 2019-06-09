@@ -58,7 +58,7 @@ namespace CodeGolf.Domain
                 var r = await t.Func(challenge.Args);
                 var errors = r.Match(success =>
                 {
-                    var res = success.AsT0;
+                    var res = success;
                     if (!AreEqual(challenge.ExpectedResult, res))
                     {
                         return Option.Some(

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using CodeGolf.ServiceInterfaces;
 using JKang.IpcServiceFramework;
+using Optional;
 
 namespace CodeGolf.Service
 {
@@ -14,12 +15,13 @@ namespace CodeGolf.Service
             this.svc = svc;
         }
 
-        public Task<bool> IsAlive()
+        Task<bool> IExecutionService.IsAlive()
         {
             return this.svc.InvokeAsync(a => a.IsAlive());
         }
 
-        public Task<T> Execute<T>(byte[] assembly, string className, string funcName, object[] args, Type[] paramTypes)
+        Task<Tuple<T, string>> IExecutionService.Execute<T>(byte[] assembly, string className, string funcName,
+            object[] args, Type[] paramTypes)
         {
             return this.svc.InvokeAsync(
                 a => a.Execute<T>(assembly, className, funcName, args, paramTypes));

@@ -59,8 +59,8 @@ namespace CodeGolf.Domain
                 var r = await t.Func(challenge.Args);
                 var errors = r.Match(success =>
                 {
-                    var x = success.AsT1;
-                    var res = x != null ? x.Cast<T>().ToArray() : null;
+                    var x = success;
+                    var res = x != null ? (T[])x : null;
                     if (!AreEqual(challenge.ExpectedResult, res))
                     {
                         return Option.Some(

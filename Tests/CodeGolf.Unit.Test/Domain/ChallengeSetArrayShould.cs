@@ -15,7 +15,7 @@ namespace CodeGolf.Unit.Test.Domain
             var a = (IChallengeSet) new ChallengeSetArray<string>("a", "b", new[] {typeof(string)},
                 new[] {new ChallengeArray<string>(new object[] {"test"}, new string[] {"a"})});
             var r = a.GetResults(new CompileResult(o =>
-                Task.FromResult(Option.Some<OneOf.OneOf<object, object[]>, string>(new[] {"testXX"})))).Result;
+                Task.FromResult(Option.Some<object, string>(new[] {"testXX"})))).Result;
             r.Single().Error
                 .HasValue.Should().BeTrue();
         }
@@ -26,7 +26,7 @@ namespace CodeGolf.Unit.Test.Domain
             var a = (IChallengeSet) new ChallengeSetArray<string>("a", "b", new[] {typeof(string)},
                 new[] {new ChallengeArray<string>(new object[] {"test"}, new string[] {"a"}),});
             var r = a.GetResults(new CompileResult(o =>
-                Task.FromResult(Option.Some<OneOf.OneOf<object, object[]>, string>(new string[] { })))).Result;
+                Task.FromResult(Option.Some<object, string>(new string[] { })))).Result;
             r.Single().Error
                 .HasValue.Should().BeTrue();
         }
@@ -37,7 +37,7 @@ namespace CodeGolf.Unit.Test.Domain
             var a = (IChallengeSet) new ChallengeSetArray<string>("a", "b", new[] {typeof(string)},
                 new[] {new ChallengeArray<string>(new object[] {"test"}, new string[] {"a"}),});
             var r = a.GetResults(new CompileResult(o =>
-                Task.FromResult(Option.Some<OneOf.OneOf<object, object[]>, string>(new string[] {null})))).Result;
+                Task.FromResult(Option.Some<object, string>(new string[] {null})))).Result;
             r.Single().Error
                 .HasValue.Should().BeTrue();
         }
@@ -47,7 +47,7 @@ namespace CodeGolf.Unit.Test.Domain
         {
             var a = (IChallengeSet) new ChallengeSetArray<string>("a", "b", new[] {typeof(string)},
                 new[] {new ChallengeArray<string>(new object[] {"test"}, new string[] {"a"}),});
-            var r = a.GetResults(new CompileResult(o => Task.FromResult(Option.Some<OneOf.OneOf<object, object[]>, string>(null)))).Result;
+            var r = a.GetResults(new CompileResult(o => Task.FromResult(Option.Some<object, string>(null)))).Result;
             r.Single().Error
                 .HasValue.Should().BeTrue();
         }

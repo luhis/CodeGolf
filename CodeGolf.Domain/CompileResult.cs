@@ -8,11 +8,11 @@ namespace CodeGolf.Domain
 {
     public class CompileResult
     {
-        public CompileResult(Func<object[], Task<Option<OneOf<object, object[]>, string>>> func)
+        public CompileResult(Func<object[], Task<Option<object, string>>> func)
         {
             this.Func = EnsureArg.IsNotNull(func, nameof(func));
         }
 
-        public Func<object[], Task<Option<OneOf<object, object[]>, string>>> Func { get; }
+        public Func<object[], Task<Option<object, string>>> Func { get; }
     }
 }

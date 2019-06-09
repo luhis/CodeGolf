@@ -13,9 +13,9 @@ namespace CodeGolf.ExecutionServer
     {
         private const int ExecutionTimeoutMilliseconds = 1000;
 
-        public Task<bool> IsAlive() =>Task.FromResult(true);
+        public Task<bool> IsAlive() => Task.FromResult(true);
 
-        public Task<T> Execute<T>(byte[] assembly, string className, string funcName, object[] args,
+        public async Task<Tuple<T, string>> Execute<T>(byte[] assembly, string className, string funcName, object[] args,
             Type[] paramTypes)
         {
             var castArgs = CastArgs(args, paramTypes);
@@ -25,9 +25,16 @@ namespace CodeGolf.ExecutionServer
             var fun = GetMethod(funcName, type);
             var source = new CancellationTokenSource();
             source.CancelAfter(TimeSpan.FromMilliseconds(ExecutionTimeoutMilliseconds));
-            return Task<T>.Factory.StartNew(() => (T)fun.Invoke(inst,
-                BindingFlags.Default | BindingFlags.InvokeMethod,
-                null, castArgs.Append(source.Token).ToArray(), CultureInfo.InvariantCulture), source.Token);
+            try
+            {
+                return Tuple.Create<T, string>(await Task<T>.Factory.StartNew(() => (T) fun.Invoke(inst,
+                    BindingFlags.Default | BindingFlags.InvokeMethod,
+                    null, castArgs.Append(source.Token).ToArray(), CultureInfo.InvariantCulture), source.Token), null);
+            }
+            catch (Exception e)
+            {
+                return Tuple.Create(default(T), e.InnerException != null ? e.InnerException.Message : e.Message);
+            }
         }
 
         private static MethodInfo GetMethod(string funcName, IReflect type)

@@ -12,7 +12,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using OneOf;
 using Optional;
-using ResultOrError = Optional.Option<OneOf.OneOf<object, object[]>, string>;
+using ResultOrError = Optional.Option<object, string>;
 
 namespace CodeGolf.Service
 {
@@ -57,12 +57,11 @@ namespace CodeGolf.Service
                 {
                     try
                     {
-                        var r = await this.InvokeAsync(success, args, paramTypes.ToArray(), returnType);
-                        return Option.Some<OneOf<object, object[]>, string>(r);
+                        return await this.InvokeAsync(success, args, paramTypes.ToArray(), returnType);
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
-                        return Option.None<OneOf<object, object[]>, string>(e.InnerException != null ? e.InnerException.Message : e.Message);
+                        return Option.None<object, string>("It looks like someone crashed the microservice. Give it a sec.");
                     }
                 }
 
@@ -70,21 +69,25 @@ namespace CodeGolf.Service
             });
         }
 
-        private async Task<OneOf<object, object[]>> InvokeAsync(byte[] success, object[] args, Type[] paramTypes, Type returnType)
+        private async Task<Option<object, string>> InvokeAsync(byte[] success, object[] args, Type[] paramTypes, Type returnType)
         {
             if (returnType == typeof(int[]))
             {
-                return await this.svc.Execute<int[]>(success, ClassName, FunctionName, args, paramTypes);
+                return ToOpt(await this.svc.Execute<int[]>(success, ClassName, FunctionName, args, paramTypes));
             }
             if (returnType.IsArray)
             {
-                return await this.svc.Execute<object[]>(success, ClassName, FunctionName, args, paramTypes);
+                return ToOpt(await this.svc.Execute<object[]>(success, ClassName, FunctionName, args, paramTypes));
             }
             else
             {
-                return await this.svc.Execute<object>(success, ClassName, FunctionName, args, paramTypes);
+                return ToOpt(await this.svc.Execute<object>(success, ClassName, FunctionName, args, paramTypes));
             }
         }
+
+        private static Option<object, string> ToOpt<T>(Tuple<T, string> t) => t.Item2 == null
+            ? Option.Some<object, string>(t.Item1)
+            : Option.None<object, string>(t.Item2);
 
         private static ErrorSet ValidateCompiledFunction(MethodInfo fun, Type expectedReturn,
             IReadOnlyCollection<Type> paramTypes)
