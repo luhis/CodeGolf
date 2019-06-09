@@ -12,7 +12,7 @@ namespace CodeGolf.Integration.Test.Fixtures
         public ClientFixture()
         {
             var server = new TestServer(WebHost.CreateDefaultBuilder()
-                .UseStartup<Startup>().UseSetting("GitHub:ClientId", "aaa").UseSetting("GitHub:ClientSecret", "aaa"));
+                .UseStartup<Startup>().UseSetting("GitHub:ClientId", "aaa").UseSetting("GitHub:ClientSecret", "aaa").UseSetting("DbPath", "Data Source=codeGolf.db"));
                 ////.Configure(a => a.UseMiddleware<AuthenticatedTestRequestMiddleware>())
                 ////.ConfigureServices(a => a.AddMvc().AddApplicationPart(typeof(DemoModel).Assembly)));
             this.Client = server.CreateClient();
