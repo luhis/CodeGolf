@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using CodeGolf.Domain;
 using CodeGolf.Persistence.Static;
+using EnsureThat;
 using Optional;
 
 namespace CodeGolf.Service
@@ -53,9 +54,15 @@ namespace CodeGolf.Service
         }
 
         string ICodeGolfService.WrapCode(string code, CancellationToken cancellationToken)
-            => this.runner.Wrap(code, cancellationToken);
+        {
+            EnsureArg.IsNotNull(code, nameof(code));
+            return this.runner.Wrap(code, cancellationToken);
+        }
 
         string ICodeGolfService.DebugCode(string code, CancellationToken cancellationToken)
-            => this.runner.DebugCode(code, cancellationToken);
+        {
+            EnsureArg.IsNotNull(code, nameof(code));
+            return this.runner.DebugCode(code, cancellationToken);
+        }
     }
 }

@@ -18,13 +18,13 @@ namespace CodeGolf.Web.Controllers
         [HttpGet("[action]")]
         public ActionResult<string> Preview(string code, CancellationToken cancellationToken)
         {
-            return this.codeGolfService.WrapCode(code, cancellationToken);
+            return this.codeGolfService.WrapCode(code ?? string.Empty, cancellationToken);
         }
 
         [HttpGet("[action]")]
         public ActionResult<string> Debug(string code, CancellationToken cancellationToken)
         {
-            return this.codeGolfService.DebugCode(code, cancellationToken);
+            return this.codeGolfService.DebugCode(code ?? string.Empty, cancellationToken);
         }
     }
 }
