@@ -5,7 +5,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 
-namespace CodeGolf.Integration.Test.Pages
+namespace CodeGolf.Integration.Test.Fixtures
 {
     public class ClientFixture : IDisposable
     {

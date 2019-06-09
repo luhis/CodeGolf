@@ -3,21 +3,21 @@ using System.Threading.Tasks;
 using CodeGolf.Integration.Test.Fixtures;
 using Xunit;
 
-namespace CodeGolf.Integration.Test.Pages
+namespace CodeGolf.Integration.Test.Controllers
 {
-    public class DemoPageShould : IClassFixture<ClientFixture>
+    public class CodeControllerShould : IClassFixture<ClientFixture>
     {
         private readonly HttpClient client;
 
-        public DemoPageShould(ClientFixture fixture)
+        public CodeControllerShould(ClientFixture fixture)
         {
             this.client = fixture.Client;
         }
 
         [Fact]
-        public async Task GetDemo()
+        public async Task GetCodeTemplate()
         {
-            var response = await this.client.GetAsync("/demo");
+            var response = await this.client.GetAsync("/code/preview");
             response.EnsureSuccessStatusCode();
         }
     }
