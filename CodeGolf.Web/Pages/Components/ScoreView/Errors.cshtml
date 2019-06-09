@@ -5,6 +5,12 @@
         <p>Error</p>
     </div>
     <div class="message-body">
-        @string.Join(", ", Model.Errors)
+        @foreach (var c in Model.Errors)
+        {
+            <p>
+                <i class="fas fa-exclamation-triangle"></i>
+                @c
+            </p>
+        }
     </div>
 </article>
