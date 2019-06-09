@@ -57,7 +57,7 @@ namespace CodeGolf.Domain
         public static string GetFuncTemplate(IChallengeSet set)
         {
             var paramPairs = set.Params.Zip(Enumerable.Range('a', 26).Select(a => (char)a), Tuple.Create).Select(t =>  $"{GetAlias(t.Item1)} {t.Item2}");
-            return $"{GetAlias(set.ReturnType)} Main({string.Join(", ", paramPairs)}) {{ return ... }}";
+            return $"{GetAlias(set.ReturnType)} Main({string.Join(", ", paramPairs)}) {{ return ...; }}";
         }
     }
 }
