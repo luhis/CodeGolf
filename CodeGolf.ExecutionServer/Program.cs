@@ -34,15 +34,7 @@ namespace CodeGolf.ExecutionServer
         private static IServiceCollection ConfigureServices(IServiceCollection services)
         {
             return services
-                .AddIpc(builder =>
-                {
-                    builder
-                        .AddNamedPipe(options =>
-                        {
-                            options.ThreadCount = 2;
-                        })
-                        .AddService<IExecutionService, ExecutionService>();
-                });
+                .AddIpc(builder => builder.AddService<IExecutionService, ExecutionService>());
         }
     }
 }

@@ -9,11 +9,11 @@
     <div class="message-body">
         @foreach (var c in Model.Item1.Where(a => a.Error.HasValue))
         {
-        <p>
-            <i class="fas fa-exclamation-triangle"></i>
-            @GenericPresentationHelpers.DisplayFunction(c.Challenge, Model.Item2.Params, Model.Item2.ReturnType):
-            @c.Error.ValueOrFailure()
-        </p>
+            <p>
+                <i class="fas fa-exclamation-triangle"></i>
+                @GenericPresentationHelpers.DisplayFunction(c.Challenge, Model.Item2.Params, Model.Item2.ReturnType):
+                <strong>@c.Error.ValueOrFailure()</strong>
+            </p>
         }
     </div>
 </article>
