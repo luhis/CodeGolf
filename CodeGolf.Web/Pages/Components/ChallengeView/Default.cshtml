@@ -2,16 +2,21 @@
 @model CodeGolf.Domain.IChallengeSet;
 
 
-<div class="panel">
-    <div class="panel-heading">
-        <p>@Model.Title</p>
-    </div>
-    <div class="panel-block">
-        <p>@Model.Description</p>
-    </div>
+    <div class="panel">
+        <div class="panel-heading">
+            <p>@Model.Title</p>
+        </div>
+        <div class="panel-block">
+            <p>@Model.Description</p>
+        </div>
 
-    @foreach (var a in Model.Challenges)
-    {
-        <div class="panel-block">@(GenericPresentationHelpers.DisplayFunction(a, Model.Params, Model.ReturnType))</div>
-    }
-</div>
+        @foreach (var a in Model.Challenges)
+        {
+            <div class="panel-block">@(GenericPresentationHelpers.DisplayFunction(a, Model.Params, Model.ReturnType))</div>
+        }
+
+    <div class="panel-block">
+        <i class="fas fa-info-circle"></i>&nbsp;
+        Create a function like '@GenericPresentationHelpers.GetFuncTemplate(Model)'
+    </div>
+    </div>

@@ -15,7 +15,6 @@
         <div asp-validation-summary="All"></div>
         <input type="hidden" id="g-recaptcha-site-key" value="@RecaptchaSettings.Value.SiteKey"/>
         <form method="post">
-            <vc:help-tool-tip-view cs="@Option.Some(Model.ChallengeSet)" />
             <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
             <div class="field">
                 <label class="label">Code</label>
