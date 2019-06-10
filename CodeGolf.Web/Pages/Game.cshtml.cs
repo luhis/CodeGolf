@@ -23,7 +23,7 @@ namespace CodeGolf.Web.Pages
 
         public Option<Option<int, IReadOnlyList<Domain.ChallengeResult>>, ErrorSet> Result { get; private set; }
 
-        public Option<IChallengeSet> Round { get; private set; }
+        public Option<IChallengeSet> Hole { get; private set; }
 
         public GameModel(IGameService gameService, IIdentityTools identityTools)
         {
@@ -33,14 +33,14 @@ namespace CodeGolf.Web.Pages
 
         public async Task OnGet(CancellationToken cancellationToken)
         {
-            this.Round = (await this.gameService.GetCurrentHole(cancellationToken)).Map(a => a.Hole.ChallengeSet);
+            this.Hole = (await this.gameService.GetCurrentHole(cancellationToken)).Map(a => a.Hole.ChallengeSet);
         }
 
         public async Task OnPost(CancellationToken cancellationToken)
         {
-            var round = await this.gameService.GetCurrentHole(cancellationToken);
-            this.Round = round.Map(a => a.Hole.ChallengeSet);
-            var gs = round.ValueOrFailure();
+            var hole = await this.gameService.GetCurrentHole(cancellationToken);
+            this.Hole = hole.Map(a => a.Hole.ChallengeSet);
+            var gs = hole.ValueOrFailure();
 
             this.Result = 
                 await this.gameService.Attempt(this.identityTools.GetIdentity(this.HttpContext).ValueOrFailure(), gs.Hole.HoleId, this.Code, gs.Hole.ChallengeSet, cancellationToken).ConfigureAwait(false);

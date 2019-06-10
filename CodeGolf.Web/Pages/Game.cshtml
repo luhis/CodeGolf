@@ -1,4 +1,5 @@
 ﻿@page
+@using Optional.Unsafe
 @model CodeGolf.Web.Pages.GameModel
 @{
     ViewData["Title"] = "Game";
@@ -7,9 +8,9 @@
 <section class="section">
     <h1 class="title">Game</h1>
 
-    @if (Model.Round.HasValue)
+    @if (Model.Hole.HasValue)
     {
-        <vc:challenge-view cs="@Model.Round" />
+        <vc:challenge-view cs="@Model.Hole" />
         <form method="post">
             <div class="field">
                 <label class="label">Code</label>
@@ -22,13 +23,15 @@
                     <button class="button is-primary" type="submit">Submit</button>
                 </div>
 
-                <div class="control">
+                <div class="buttons has-addons">
                     <button class="button" type="submit" asp-page-handler="ViewSource" formtarget="_blank">View .CS file</button>
+
+                    <button class="button" type="submit" asp-page-handler="ViewDebugSource" formtarget="_blank">View debug .CS file</button>
                 </div>
             </div>
         </form>
 
-        <vc:score-view p="@Model.Result" />
+        <vc:score-view p="@Model.Result" cs="@Model.Hole.ValueOrFailure()" />
     }
     else
     {
