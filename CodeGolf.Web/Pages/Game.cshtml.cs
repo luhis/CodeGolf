@@ -50,5 +50,10 @@ namespace CodeGolf.Web.Pages
         {
             return this.RedirectToAction("Preview", "Code", new { this.Code });
         }
+
+        public IActionResult OnPostViewDebugSource()
+        {
+            return this.RedirectToAction("Debug", "Code", new { this.Code });
+        }
     }
 }
