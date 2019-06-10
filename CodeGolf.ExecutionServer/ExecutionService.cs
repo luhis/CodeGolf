@@ -13,8 +13,6 @@ namespace CodeGolf.ExecutionServer
     {
         private const int ExecutionTimeoutMilliseconds = 1000;
 
-        public Task<bool> IsAlive() => Task.FromResult(true);
-
         public async Task<Tuple<T, string>> Execute<T>(byte[] assembly, string className, string funcName, object[] args,
             Type[] paramTypes)
         {

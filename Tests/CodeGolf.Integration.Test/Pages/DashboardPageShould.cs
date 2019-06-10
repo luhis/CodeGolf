@@ -1,6 +1,9 @@
-﻿using System.Net.Http;
+﻿using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using CodeGolf.Integration.Test.Fixtures;
+using CodeGolf.Integration.Test.Tooling;
+using FluentAssertions;
 using Xunit;
 
 namespace CodeGolf.Integration.Test.Pages
@@ -21,6 +24,13 @@ namespace CodeGolf.Integration.Test.Pages
             this.client.DefaultRequestHeaders.Add("Authorization", "Bearer Admin");
             var response = await this.client.GetAsync("/dashboard");
             response.EnsureSuccessStatusCode();
+        }
+
+        [Fact]
+        public async Task RequireAuth()
+        {
+            var response = await this.client.GetAsync("/dashboard");
+            response.StatusCode.Should().Be(HttpStatusCode.Redirect);
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace CodeGolf.Integration.Test.Pages
+namespace CodeGolf.Integration.Test.Tooling
 {
     public class AuthenticatedTestRequestMiddleware
     {

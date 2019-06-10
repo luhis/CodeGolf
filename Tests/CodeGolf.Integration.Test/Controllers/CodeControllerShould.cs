@@ -17,7 +17,14 @@ namespace CodeGolf.Integration.Test.Controllers
         [Fact]
         public async Task GetCodeTemplate()
         {
-            var response = await this.client.GetAsync("/code/preview");
+            var response = await this.client.GetAsync("/api/code/preview");
+            response.EnsureSuccessStatusCode();
+        }
+
+        [Fact]
+        public async Task GetDebugCode()
+        {
+            var response = await this.client.GetAsync("/api/code/debug");
             response.EnsureSuccessStatusCode();
         }
     }
