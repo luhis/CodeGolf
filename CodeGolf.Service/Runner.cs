@@ -10,7 +10,6 @@ using CodeGolf.Domain;
 using CodeGolf.ServiceInterfaces;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using OneOf;
 using Optional;
 using ResultOrError = Optional.Option<object, string>;
 

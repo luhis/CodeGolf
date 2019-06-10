@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using CodeGolf.ServiceInterfaces;
 using JKang.IpcServiceFramework;
-using Optional;
 
 namespace CodeGolf.Service
 {
