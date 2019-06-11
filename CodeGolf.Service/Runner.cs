@@ -147,7 +147,8 @@ namespace CodeGolf.Service
                                               + $"public class {ClassName}\n"
                                               + "{\n"
                                               + transformed
-                                              + "\n}", cancellationToken: cancellationToken);
+                                              + "\n}", cancellationToken: cancellationToken,
+                options: CSharpParseOptions.Default.WithLanguageVersion(LanguageVersion.Latest));
         }
 
         private static T UseTempFile<T>(Func<string> gen, Func<string, T> process)
