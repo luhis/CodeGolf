@@ -53,22 +53,24 @@ namespace CodeGolf.Domain
         async Task<IReadOnlyList<ChallengeResult>> IChallengeSet.GetResults(
             CompileResult t)
         {
-            return (await Task.WhenAll(this.Challenges.Select(async challenge =>
+            var reses = await t.Func(this.Challenges.Select(a => a.Args).ToArray());
+            var challRes = reses.Zip(this.Challenges, Tuple.Create);
+
+            return challRes.Select(challenge =>
             {
-                var r = await t.Func(challenge.Args);
-                var errors = r.Match(success =>
+                var errors = challenge.Item1.Match(success =>
                 {
                     var res = success;
-                    if (!AreEqual(challenge.ExpectedResult, res))
+                    if (!AreEqual(challenge.Item2.ExpectedResult, res))
                     {
                         return Option.Some(
-                            $"Return value incorrect. Expected: {GenericPresentationHelpers.WrapIfArray(challenge.ExpectedResult, typeof(T))}, Found: {GenericPresentationHelpers.WrapIfArray(res, typeof(T))}");
+                            $"Return value incorrect. Expected: {GenericPresentationHelpers.WrapIfArray(challenge.Item2.ExpectedResult, typeof(T))}, Found: {GenericPresentationHelpers.WrapIfArray(res, typeof(T))}");
                     }
 
                     return Option.None<string>();
                 }, Option.Some);
-                return new ChallengeResult(errors, challenge);
-            }))).ToList();
+                return new ChallengeResult(errors, challenge.Item2);
+            }).ToList();
         }
 
         private static bool AreEqual(object expect, object actual)

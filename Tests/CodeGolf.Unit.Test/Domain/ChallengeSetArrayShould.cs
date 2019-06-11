@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CodeGolf.Domain;
@@ -15,7 +16,9 @@ namespace CodeGolf.Unit.Test.Domain
             var a = (IChallengeSet) new ChallengeSetArray<string>("a", "b", new[] {typeof(string)},
                 new[] {new ChallengeArray<string>(new object[] {"test"}, new string[] {"a"})});
             var r = a.GetResults(new CompileResult(o =>
-                Task.FromResult(Option.Some<object, string>(new[] {"testXX"})))).Result;
+                    Task.FromResult<IReadOnlyList<Option<object, string>>>(
+                        new[] {Option.Some<object, string>(new[] {"testXX"})})))
+                .Result;
             r.Single().Error
                 .HasValue.Should().BeTrue();
         }
@@ -26,7 +29,11 @@ namespace CodeGolf.Unit.Test.Domain
             var a = (IChallengeSet) new ChallengeSetArray<string>("a", "b", new[] {typeof(string)},
                 new[] {new ChallengeArray<string>(new object[] {"test"}, new string[] {"a"}),});
             var r = a.GetResults(new CompileResult(o =>
-                Task.FromResult(Option.Some<object, string>(new string[] { })))).Result;
+                    Task.FromResult<IReadOnlyList<Option<object, string>>>(new[]
+                    {
+                        Option.Some<object, string>(new string[] { })
+                    })))
+                .Result;
             r.Single().Error
                 .HasValue.Should().BeTrue();
         }
@@ -37,7 +44,10 @@ namespace CodeGolf.Unit.Test.Domain
             var a = (IChallengeSet) new ChallengeSetArray<string>("a", "b", new[] {typeof(string)},
                 new[] {new ChallengeArray<string>(new object[] {"test"}, new string[] {"a"}),});
             var r = a.GetResults(new CompileResult(o =>
-                Task.FromResult(Option.Some<object, string>(new string[] {null})))).Result;
+                Task.FromResult<IReadOnlyList<Option<object, string>>>(new[]
+                {
+                    Option.Some<object, string>(new string[] {null})
+                }))).Result;
             r.Single().Error
                 .HasValue.Should().BeTrue();
         }
@@ -47,7 +57,9 @@ namespace CodeGolf.Unit.Test.Domain
         {
             var a = (IChallengeSet) new ChallengeSetArray<string>("a", "b", new[] {typeof(string)},
                 new[] {new ChallengeArray<string>(new object[] {"test"}, new string[] {"a"}),});
-            var r = a.GetResults(new CompileResult(o => Task.FromResult(Option.Some<object, string>(null)))).Result;
+            var r = a.GetResults(new CompileResult(o =>
+                    Task.FromResult<IReadOnlyList<Option<object, string>>>(new[] {Option.Some<object, string>(null)})))
+                .Result;
             r.Single().Error
                 .HasValue.Should().BeTrue();
         }

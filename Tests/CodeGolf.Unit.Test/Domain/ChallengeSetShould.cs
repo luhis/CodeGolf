@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CodeGolf.Domain;
@@ -32,7 +33,10 @@ namespace CodeGolf.Unit.Test.Domain
         {
             var a = (IChallengeSet) new ChallengeSet<string>("a", "b", new[] {typeof(string)},
                 new[] {new Challenge<string>(new object[] {"test"}, "test")});
-            var r = a.GetResults(new CompileResult(o => Task.FromResult(Option.Some<object, string>("test")))).Result;
+            var r = a.GetResults(new CompileResult(o =>
+                    Task.FromResult<IReadOnlyList<Option<object, string>>>(new[]
+                        {Option.Some<object, string>("test")})))
+                .Result;
             r.Single().Error
                 .HasValue.Should().BeFalse();
         }
@@ -40,9 +44,12 @@ namespace CodeGolf.Unit.Test.Domain
         [Fact]
         public void ReturnFalseResultWhenIncorrect()
         {
-            var a = (IChallengeSet)new ChallengeSet<string>("a", "b", new[] { typeof(string) },
-                new[] { new Challenge<string>(new object[] { "test" }, "test") });
-            var r = a.GetResults(new CompileResult(o => Task.FromResult(Option.Some< object, string >("testXX")))).Result;
+            var a = (IChallengeSet) new ChallengeSet<string>("a", "b", new[] {typeof(string)},
+                new[] {new Challenge<string>(new object[] {"test"}, "test")});
+            var r = a.GetResults(new CompileResult(o =>
+                    Task.FromResult<IReadOnlyList<Option<object, string>>>(
+                        new[] {Option.Some<object, string>("testXX")})))
+                .Result;
             r.Single().Error
                 .HasValue.Should().BeTrue();
         }

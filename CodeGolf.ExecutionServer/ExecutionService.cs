@@ -13,26 +13,30 @@ namespace CodeGolf.ExecutionServer
     {
         private const int ExecutionTimeoutMilliseconds = 1000;
 
-        public async Task<Tuple<T, string>> Execute<T>(byte[] assembly, string className, string funcName, object[] args,
+        public async Task<Tuple<T, string>[]> Execute<T>(byte[] assembly, string className, string funcName, object[][] argSets,
             Type[] paramTypes)
         {
-            var castArgs = CastArgs(args, paramTypes);
             var obj = Assembly.Load(assembly);
             var type = obj.GetType(className);
             var inst = Activator.CreateInstance(type);
             var fun = GetMethod(funcName, type);
-            var source = new CancellationTokenSource();
-            source.CancelAfter(TimeSpan.FromMilliseconds(ExecutionTimeoutMilliseconds));
-            try
+            return (await Task.WhenAll(argSets.Select(async a =>
             {
-                return Tuple.Create<T, string>(await Task<T>.Factory.StartNew(() => (T) fun.Invoke(inst,
-                    BindingFlags.Default | BindingFlags.InvokeMethod,
-                    null, castArgs.Append(source.Token).ToArray(), CultureInfo.InvariantCulture), source.Token), null);
-            }
-            catch (Exception e)
-            {
-                return Tuple.Create(default(T), e.InnerException != null ? e.InnerException.Message : e.Message);
-            }
+                var castArgs = CastArgs(a, paramTypes);
+                var source = new CancellationTokenSource();
+                source.CancelAfter(TimeSpan.FromMilliseconds(ExecutionTimeoutMilliseconds));
+                try
+                {
+                    return Tuple.Create<T, string>(await Task<T>.Factory.StartNew(() => (T) fun.Invoke(inst,
+                            BindingFlags.Default | BindingFlags.InvokeMethod,
+                            null, castArgs.Append(source.Token).ToArray(), CultureInfo.InvariantCulture), source.Token),
+                        null);
+                }
+                catch (Exception e)
+                {
+                    return Tuple.Create(default(T), e.InnerException != null ? e.InnerException.Message : e.Message);
+                }
+            }))).ToArray();
         }
 
         private static MethodInfo GetMethod(string funcName, IReflect type)

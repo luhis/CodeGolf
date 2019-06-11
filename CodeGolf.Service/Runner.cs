@@ -52,7 +52,7 @@ namespace CodeGolf.Service
                     return Option.None<CompileResult, ErrorSet>(validationFailures);
                 }
 
-                async Task<ResultOrError> Func(object[] args)
+                async Task<IReadOnlyList<ResultOrError>> Func(object[][] args)
                 {
                     try
                     {
@@ -60,7 +60,11 @@ namespace CodeGolf.Service
                     }
                     catch (Exception)
                     {
-                        return Option.None<object, string>("It looks like someone crashed the microservice. Give it a sec.");
+                        return new[]
+                        {
+                            Option.None<object, string>(
+                                "It looks like someone crashed the microservice. Give it a sec.")
+                        };
                     }
                 }
 
@@ -68,19 +72,19 @@ namespace CodeGolf.Service
             });
         }
 
-        private async Task<Option<object, string>> InvokeAsync(byte[] success, object[] args, Type[] paramTypes, Type returnType)
+        private async Task<IReadOnlyList<Option<object, string>>> InvokeAsync(byte[] success, object[][] args, Type[] paramTypes, Type returnType)
         {
             if (returnType == typeof(int[]))
             {
-                return ToOpt(await this.svc.Execute<int[]>(success, ClassName, FunctionName, args, paramTypes));
+                return (await this.svc.Execute<int[]>(success, ClassName, FunctionName, args, paramTypes)).Select(ToOpt).ToArray();
             }
             if (returnType.IsArray)
             {
-                return ToOpt(await this.svc.Execute<object[]>(success, ClassName, FunctionName, args, paramTypes));
+                return (await this.svc.Execute<object[]>(success, ClassName, FunctionName, args, paramTypes)).Select(ToOpt).ToArray();
             }
             else
             {
-                return ToOpt(await this.svc.Execute<object>(success, ClassName, FunctionName, args, paramTypes));
+                return (await this.svc.Execute<object>(success, ClassName, FunctionName, args, paramTypes)).Select(ToOpt).ToArray();
             }
         }
 
