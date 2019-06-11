@@ -23,6 +23,13 @@ namespace CodeGolf.Unit.Test
         }
 
         [Fact]
+        public void DealWithIntArrayNullResponses()
+        {
+            var r = GenericPresentationHelpers.DisplayFunction(new ChallengeArray<int>(new object[] { 1, "a" }, null), new[] { typeof(int), typeof(string) }, typeof(int[]));
+            r.Should().BeEquivalentTo("(1, \"a\") => null");
+        }
+
+        [Fact]
         public void DealWithStringArrayResponses()
         {
             var r = GenericPresentationHelpers.DisplayFunction(new ChallengeArray<string>(new object[] { 1, "a" }, new[] { "a", "b" }), new[] { typeof(int), typeof(string) }, typeof(string[]));

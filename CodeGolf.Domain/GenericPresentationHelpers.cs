@@ -12,7 +12,11 @@ namespace CodeGolf.Domain
 
         public static string WrapIfArray(object o, Type t)
         {
-            if (t.IsArray)
+            if (o == null)
+            {
+                return "null";
+            }
+            else if (t.IsArray)
             {
                 if (o is string[] stringArr)
                 {
