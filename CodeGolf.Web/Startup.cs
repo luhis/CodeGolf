@@ -118,7 +118,7 @@ namespace CodeGolf.Web
         };
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, CodeGolfContext codeGolfContext)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IRunner runner, CodeGolfContext codeGolfContext)
         {
             if (env.IsDevelopment())
             {
@@ -178,7 +178,7 @@ namespace CodeGolf.Web
             app.UseMvc();
 
             codeGolfContext.SeedDatabase().Wait();
-            app.ApplicationServices.GetService<IRunner>().WakeUpCompiler(CancellationToken.None);
+            runner.WakeUpCompiler(CancellationToken.None);
         }
     }
 }
