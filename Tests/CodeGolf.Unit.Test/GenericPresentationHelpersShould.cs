@@ -26,7 +26,7 @@ namespace CodeGolf.Unit.Test
         public void DealWithStringArrayResponses()
         {
             var r = GenericPresentationHelpers.DisplayFunction(new ChallengeArray<string>(new object[] { 1, "a" }, new[] { "a", "b" }), new[] { typeof(int), typeof(string) }, typeof(string[]));
-            r.Should().BeEquivalentTo("(1, \"a\") => [a, b]");
+            r.Should().BeEquivalentTo("(1, \"a\") => [\"a\", \"b\"]");
         }
 
         [Fact]

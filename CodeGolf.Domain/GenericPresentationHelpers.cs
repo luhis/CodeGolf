@@ -6,7 +6,7 @@ namespace CodeGolf.Domain
 {
     public static class GenericPresentationHelpers
     {
-        private static string ToCommaSep<T>(T[] arr) => arr == null ? "null": string.Join(", ", arr.Select(a => a == null ? "null" : a.ToString()));
+        private static string ToCommaSep<T>(T[] arr) => arr == null ? "null": string.Join(", ", arr.Select(a => a == null ? "null" : WrapIfString(a, typeof(T))));
 
         private static string WrapIfString(object o, Type t) => t == typeof(string) ? $"\"{o}\"" : o.ToString();
 
@@ -14,6 +14,10 @@ namespace CodeGolf.Domain
         {
             if (t.IsArray)
             {
+                if (o is string[] stringArr)
+                {
+                    return $"[{ToCommaSep(stringArr)}]";
+                }
                 if (o is object[] objArr)
                 {
                     return $"[{ToCommaSep(objArr)}]";
