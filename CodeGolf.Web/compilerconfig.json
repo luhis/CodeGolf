@@ -24,5 +24,9 @@
   {
     "outputFile": "wwwroot/js/recaptcha.es5.js",
     "inputFile": "wwwroot/js/recaptcha.js"
+  },
+  {
+    "outputFile": "wwwroot/js/signalR.es5.js",
+    "inputFile": "wwwroot/js/signalR.js"
   }
 ]
