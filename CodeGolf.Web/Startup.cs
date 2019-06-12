@@ -9,6 +9,7 @@ using CodeGolf.Persistence;
 using CodeGolf.Recaptcha;
 using CodeGolf.Service;
 using CodeGolf.Web.Attributes;
+using CodeGolf.Web.Hubs;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OAuth;
@@ -106,6 +107,8 @@ namespace CodeGolf.Web
                     }
                 };
             });
+
+            services.AddSignalR();
         }
 
         private static readonly IReadOnlyList<Action<IServiceCollection>> DiModules = new List<Action<IServiceCollection>>
@@ -174,7 +177,10 @@ namespace CodeGolf.Web
             app.UseAuthentication();
 
             app.UseCookiePolicy();
-
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<RefreshHub>("/refreshHub");
+            });
             app.UseMvc();
 
             codeGolfContext.SeedDatabase().Wait();

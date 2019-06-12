@@ -10,20 +10,38 @@
       ]
     },
     {
-      "library": "bulma-tooltip@2.0.2",
       "provider": "unpkg",
+      "library": "bulma-tooltip@2.0.2",
       "destination": "wwwroot/lib/bulma-tooltip",
-      "files": [ "dist/css/bulma-tooltip.min.css" ]
+      "files": [
+        "dist/css/bulma-tooltip.min.css"
+      ]
     },
     {
       "library": "codemirror@5.47.0",
       "destination": "wwwroot/lib/codemirror",
-      "files": [ "codemirror.min.js" , "mode/clike/clike.min.js", "codemirror.min.css"]
+      "files": [
+        "codemirror.min.js",
+        "mode/clike/clike.min.js",
+        "codemirror.min.css"
+      ]
     },
     {
       "library": "font-awesome@5.8.2",
       "destination": "wwwroot/lib/font-awesome",
-      "files": [ "css/solid.min.css", "css/fontawesome.min.css", "webfonts/fa-solid-900.woff2" ]
+      "files": [
+        "css/solid.min.css",
+        "css/fontawesome.min.css",
+        "webfonts/fa-solid-900.woff2"
+      ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "@aspnet/signalr@1",
+      "destination": "wwwroot/lib/signalr/",
+      "files": [
+        "dist/browser/signalr.min.js"
+      ]
     }
   ]
 }

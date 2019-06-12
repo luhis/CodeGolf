@@ -1,4 +1,6 @@
-﻿var element = document.getElementById("cookie-warning");
+﻿"use strict";
+
+var element = document.getElementById("cookie-warning");
 var cookieName = "accepted-cookies";
 
 function hasCookie() {

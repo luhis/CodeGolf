@@ -3,6 +3,7 @@ using System.Net;
 using CodeGolf.Persistence;
 using CodeGolf.ServiceInterfaces;
 using CodeGolf.Web.Attributes;
+using CodeGolf.Web.Hubs;
 using CodeGolf.Web.Tooling;
 using JKang.IpcServiceFramework;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,7 @@ namespace CodeGolf.Web
             collection.AddSingleton<DbContextOptions<CodeGolfContext>>(GetDbOptions);
             collection.AddSingleton<IIdentityTools, IdentityTools>();
             collection.AddSingleton<IGetIp, GetIp>();
+            collection.AddSingleton<ISignalRNotifier, SignalRNotifier>();
             collection.AddSingleton<RecaptchaAttribute>();
             collection.AddSingleton<GameAdminAuthAttribute>();
             collection.AddSingleton<IpcServiceClient<IExecutionService>>(a => new IpcServiceClientBuilder<IExecutionService>()

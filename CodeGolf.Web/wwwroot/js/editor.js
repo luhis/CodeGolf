@@ -1,4 +1,6 @@
-﻿CodeMirror.fromTextArea(document.getElementById("Code"),
+﻿"use strict";
+
+CodeMirror.fromTextArea(document.getElementById("Code"),
     {
         lineNumbers: true,
         matchBrackets: true,
