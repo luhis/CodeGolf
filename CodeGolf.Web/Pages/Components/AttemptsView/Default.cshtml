@@ -4,20 +4,17 @@
 
 <table class="table is-striped is-fullwidth">
     <thead>
-        <tr>
-            <th>Name</th>
-            <th>Score</th>
-            <th>Time</th>
-        </tr>
+    <tr>
+        <th>Name</th>
+        <th>Score</th>
+        <th>Time</th>
+    </tr>
     </thead>
-    <tbody>
-        @foreach (var attempt in Model)
-        {
-            <tr>
-                <td>@attempt.UserId</td>
-                <td>@attempt.Score</td>
-                <td>@attempt.TimeStamp</td>
-            </tr>
-        }
+    <tbody id="app">
+        <tr v-for="result in results" :key="result.id">
+            <td>{{result.userId}}</td>
+            <td>{{result.score}}</td>
+            <td>{{result.timeStamp}}</td>
+        </tr>
     </tbody>
 </table>

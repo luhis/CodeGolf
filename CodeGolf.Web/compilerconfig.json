@@ -28,5 +28,9 @@
   {
     "outputFile": "wwwroot/js/signalR.es5.js",
     "inputFile": "wwwroot/js/signalR.js"
+  },
+  {
+    "outputFile": "wwwroot/js/dashboard.es5.js",
+    "inputFile": "wwwroot/js/dashboard.js"
   }
 ]

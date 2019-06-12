@@ -13,8 +13,14 @@
             </div>
         </form>
     </div>
-    <vc:times-view hole="@Model.CurrentChallenge"/>
+    <vc:times-view hole="@Model.CurrentChallenge" />
 
     <vc:challenge-view cs="@Model.CurrentChallenge.Map(a => a.Hole.ChallengeSet)" />
     <vc:attempts-view cs="@Model.CurrentChallenge.Map(a => a.Attempts)" />
 </section>
+
+@section Scripts {
+    <script src="lib/signalr/dist/browser/signalr.min.js"></script>
+    <script src="lib/vue.min.js"></script>
+    <script src="js/dashboard.es5.min.js"></script>
+}
