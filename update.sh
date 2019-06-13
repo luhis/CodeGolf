@@ -2,6 +2,7 @@
 
 echo "Update Source"
 git pull
+yarn --cwd ./CodeGolf.Web/ install
 
 echo "Stop codegolf service"
 systemctl stop kestrel-codegolf.service

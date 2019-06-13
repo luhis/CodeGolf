@@ -19,7 +19,7 @@ namespace CodeGolf.ExecutionServer
             var host = new IpcServiceHostBuilder(services.BuildServiceProvider())
                 .AddTcpEndpoint<IExecutionService>(name: "endpoint2", ipEndpoint: IPAddress.Loopback, port: SharedSettings.PortNumber)
                 .Build();
-
+            Console.WriteLine("CodeGolf execution service");
             var source = new CancellationTokenSource();
             await Task.WhenAll(host.RunAsync(source.Token), Task.Run(() =>
             {

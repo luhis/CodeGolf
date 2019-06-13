@@ -34,21 +34,7 @@
       "files": [
         "dist/browser/signalr.min.js"
       ]
-    },
-    {
-      "library": "vue@2.6.10",
-      "destination": "wwwroot/lib/",
-      "files": [
-        "vue.min.js"
-      ]
-    },
-    {
-      "provider": "unpkg",
-      "library": "bulma-toast@1.5.1",
-      "destination": "wwwroot/lib/bulma-toast/",
-      "files": [
-        "dist/bulma-toast.min.js"
-      ]
+
     }
   ]
 }

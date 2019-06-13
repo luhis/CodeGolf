@@ -12,6 +12,7 @@ lib/
 *.sln.docstates
 appsettings.Development.json
 codeGolf.db
+dist/
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
