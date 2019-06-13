@@ -13,6 +13,7 @@ namespace CodeGolf.Web.Pages
 {
     [Authorize]
     [ServiceFilter(typeof(GameAdminAuthAttribute))]
+    [ValidateAntiForgeryToken]
     public class DashboardModel : PageModel
     {
         public Option<HoleDto> CurrentChallenge { get; private set; }
