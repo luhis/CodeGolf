@@ -14,6 +14,7 @@ using Optional.Unsafe;
 namespace CodeGolf.Web.Pages
 {
     [Authorize]
+    [ValidateAntiForgeryToken]
     public class GameModel : PageModel
     {
         private readonly IGameService gameService;

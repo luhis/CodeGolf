@@ -10,6 +10,7 @@ namespace CodeGolf.Web.Pages
 {
     [Authorize]
     [ServiceFilter(typeof(GameAdminAuthAttribute))]
+    [ValidateAntiForgeryToken]
     public class AdminModel : PageModel
     {
         private readonly IGameService gameService;

@@ -10,6 +10,7 @@ using Optional;
 
 namespace CodeGolf.Web.Pages
 {
+    [ValidateAntiForgeryToken]
     [ServiceFilter(typeof(RecaptchaAttribute))]
     public class DemoModel : PageModel
     {
