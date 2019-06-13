@@ -16,7 +16,7 @@
     <vc:times-view hole="@Model.CurrentChallenge" />
 
     <vc:challenge-view cs="@Model.CurrentChallenge.Map(a => a.Hole.ChallengeSet)" />
-    <vc:attempts-view cs="@Model.CurrentChallenge.Map(a => a.Attempts)" />
+    <vc:attempts-view />
 </section>
 
 @section Scripts {

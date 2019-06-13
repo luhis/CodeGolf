@@ -6,7 +6,6 @@ using CodeGolf.Service;
 using CodeGolf.Web.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Optional.Linq;
 
 namespace CodeGolf.Web.Controllers
 {
@@ -26,8 +25,7 @@ namespace CodeGolf.Web.Controllers
         [HttpGet("[action]")]
         public async Task<ActionResult<IReadOnlyList<Attempt>>> Results(CancellationToken cancellationToken)
         {
-            var r = (await this.gameService.GetCurrentHole(cancellationToken)).Select(a => a.Attempts);
-            return r.Match(some => new ActionResult<IReadOnlyList<Attempt>>(some), () => this.NotFound());
+            return (await this.gameService.GetAttempts(cancellationToken)).Match(some => new ActionResult<IReadOnlyList<Attempt>>(some), () => this.NotFound());
         }
     }
 }

@@ -17,5 +17,7 @@ namespace CodeGolf.Service
         Task NextRound();
 
         Task ResetGame();
+
+        Task<Option<IReadOnlyList<Attempt>>> GetAttempts(CancellationToken cancellationToken);
     }
 }

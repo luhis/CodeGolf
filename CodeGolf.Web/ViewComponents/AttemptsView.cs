@@ -1,13 +1,9 @@
-﻿using System.Collections.Generic;
-using CodeGolf.Domain;
-using Microsoft.AspNetCore.Mvc;
-using Optional;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace CodeGolf.Web.ViewComponents
 {
     public class AttemptsView : ViewComponent
     {
-        public IViewComponentResult Invoke(Option<IReadOnlyList<Attempt>> cs) =>
-            cs.Match(this.View, () => (IViewComponentResult)this.Content(string.Empty));
+        public IViewComponentResult Invoke() => this.View();
     }
 }

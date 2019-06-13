@@ -36,11 +36,11 @@ namespace CodeGolf.Service
 
         async Task<Option<HoleDto>> IGameService.GetCurrentHole(CancellationToken cancellationToken)
         {
-            var round = await this.holeRepository.GetCurrentHole();
-            return await round.MapAsync(async a =>
+            var hole = await this.holeRepository.GetCurrentHole();
+            return hole.Map(a =>
             {
                 var curr = this.gameRepository.GetGame().Holes.First(b => b.HoleId.Equals(a.HoleId));
-                return new HoleDto(curr, a.Start, a.End, await this.GetBestAttempts(curr.HoleId, cancellationToken));
+                return new HoleDto(curr, a.Start, a.End);
             });
         }
 
@@ -72,6 +72,12 @@ namespace CodeGolf.Service
         {
             await this.attemptRepository.ClearAll();
             await this.holeRepository.ClearAll();
+        }
+
+        async Task<Option<IReadOnlyList<Attempt>>> IGameService.GetAttempts(CancellationToken cancellationToken)
+        {
+            var hole = await this.holeRepository.GetCurrentHole();
+            return await hole.MapAsync(a => this.GetBestAttempts(a.HoleId, cancellationToken));
         }
     }
 }
