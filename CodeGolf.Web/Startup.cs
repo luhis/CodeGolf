@@ -61,7 +61,19 @@ namespace CodeGolf.Web
             services.Configure<RecaptchaSettings>(this.Configuration.GetSection("Recaptcha"));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddWebMarkupMin();
+            services.AddWebMarkupMin(options =>
+                {
+                    options.AllowMinificationInDevelopmentEnvironment = true;
+                    options.AllowCompressionInDevelopmentEnvironment = true;
+                })
+                .AddHtmlMinification(
+                    options =>
+                    {
+                        options.MinificationSettings.RemoveRedundantAttributes = true;
+                        options.MinificationSettings.RemoveHttpProtocolFromAttributes = true;
+                        options.MinificationSettings.RemoveHttpsProtocolFromAttributes = true;
+                    })
+                .AddHttpCompression();
 
             services.AddAuthentication(options =>
             {
