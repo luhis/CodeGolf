@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Linq;
+using WebMarkupMin.AspNetCore2;
 
 namespace CodeGolf.Web
 {
@@ -60,6 +61,7 @@ namespace CodeGolf.Web
             services.Configure<RecaptchaSettings>(this.Configuration.GetSection("Recaptcha"));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddWebMarkupMin();
 
             services.AddAuthentication(options =>
             {
@@ -175,6 +177,7 @@ namespace CodeGolf.Web
             });
 
             app.UseAuthentication();
+            app.UseWebMarkupMin();
 
             app.UseCookiePolicy();
             app.UseSignalR(routes =>
