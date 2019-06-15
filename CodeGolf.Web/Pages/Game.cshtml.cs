@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using CodeGolf.Domain;
 using CodeGolf.Service;
-using CodeGolf.Web.Hubs;
 using CodeGolf.Web.Tooling;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -48,6 +47,7 @@ namespace CodeGolf.Web.Pages
                 await this.gameService.Attempt(this.identityTools.GetIdentity(this.HttpContext).ValueOrFailure(), gs.Hole.HoleId, this.Code, gs.Hole.ChallengeSet, cancellationToken).ConfigureAwait(false);
 
             this.Result = res;
+            this.RedirectToPage();
         }
 
         public IActionResult OnPostViewSource()

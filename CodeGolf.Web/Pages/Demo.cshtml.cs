@@ -39,6 +39,7 @@ namespace CodeGolf.Web.Pages
             if (this.ModelState.IsValid)
             {
                 this.Result = await this.codeGolfService.Score(this.Code, this.ChallengeSet, cancellationToken).ConfigureAwait(false);
+                this.RedirectToPage();
             }
         }
 

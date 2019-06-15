@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using CodeGolf.Service;
 using CodeGolf.Service.Dtos;
 using CodeGolf.Web.Attributes;
-using CodeGolf.Web.Hubs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -34,7 +33,7 @@ namespace CodeGolf.Web.Pages
         public async Task<IActionResult> OnPostNextHole()
         {
             await this.gameService.NextRound();
-            return this.RedirectToPage("Dashboard");
+            return this.RedirectToPage();
         }
     }
 }
