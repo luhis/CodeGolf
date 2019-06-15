@@ -17,14 +17,16 @@ namespace CodeGolf.Service
         private readonly IAttemptRepository attemptRepository;
         private readonly IGameRepository gameRepository;
         private readonly IHoleRepository holeRepository;
+        private readonly ISignalRNotifier signalRNotifier;
 
         public GameService(ICodeGolfService codeGolfService, IAttemptRepository attemptRepository,
-            IGameRepository gameRepository, IHoleRepository holeRepository)
+            IGameRepository gameRepository, IHoleRepository holeRepository, ISignalRNotifier signalRNotifier)
         {
             this.codeGolfService = codeGolfService;
             this.attemptRepository = attemptRepository;
             this.gameRepository = gameRepository;
             this.holeRepository = holeRepository;
+            this.signalRNotifier = signalRNotifier;
         }
 
         private async Task<IReadOnlyList<Attempt>> GetBestAttempts(Guid holeId, CancellationToken cancellationToken)
@@ -49,9 +51,16 @@ namespace CodeGolf.Service
             IChallengeSet challengeSet, CancellationToken cancellationToken)
         {
             var res = await this.codeGolfService.Score(code, challengeSet, cancellationToken);
-            res.Map(success => success.Map(innerSuccess =>
-                this.attemptRepository.AddAttempt(new Attempt(Guid.NewGuid(), userId, holeId, code, innerSuccess,
-                    DateTime.UtcNow))));
+            await res.Match(success => success.Match(async score =>
+            {
+                await this.signalRNotifier.NewAnswer();
+                if (score < await this.attemptRepository.GetBestScore(holeId, cancellationToken))
+                {
+                    await this.signalRNotifier.NewTopScore(userId, score);
+                }
+                await this.attemptRepository.AddAttempt(new Attempt(Guid.NewGuid(), userId, holeId, code, score,
+                    DateTime.UtcNow));
+            }, _ => Task.CompletedTask), _ => Task.CompletedTask);
             return res;
         }
 
@@ -66,12 +75,14 @@ namespace CodeGolf.Service
                 () => this.gameRepository.GetGame().Holes.First());
             await this.holeRepository.AddHole(new HoleInstance(next.HoleId, DateTime.UtcNow,
                 DateTime.UtcNow.Add(next.Duration)));
+            await this.signalRNotifier.NewRound();
         }
 
         async Task IGameService.ResetGame()
         {
             await this.attemptRepository.ClearAll();
             await this.holeRepository.ClearAll();
+            await this.signalRNotifier.NewRound();
         }
 
         async Task<Option<IReadOnlyList<Attempt>>> IGameService.GetAttempts(CancellationToken cancellationToken)

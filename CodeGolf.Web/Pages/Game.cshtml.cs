@@ -19,7 +19,6 @@ namespace CodeGolf.Web.Pages
     {
         private readonly IGameService gameService;
         private readonly IIdentityTools identityTools;
-        private readonly ISignalRNotifier signalRNotifier;
 
         [BindProperty(BinderType = typeof(StringBinder))]
         public string Code { get; set; }
@@ -28,11 +27,10 @@ namespace CodeGolf.Web.Pages
 
         public Option<IChallengeSet> Hole { get; private set; }
 
-        public GameModel(ISignalRNotifier signalRNotifier, IGameService gameService, IIdentityTools identityTools)
+        public GameModel(IGameService gameService, IIdentityTools identityTools)
         {
             this.gameService = gameService;
             this.identityTools = identityTools;
-            this.signalRNotifier = signalRNotifier;
         }
 
         public async Task OnGet(CancellationToken cancellationToken)
@@ -50,7 +48,6 @@ namespace CodeGolf.Web.Pages
                 await this.gameService.Attempt(this.identityTools.GetIdentity(this.HttpContext).ValueOrFailure(), gs.Hole.HoleId, this.Code, gs.Hole.ChallengeSet, cancellationToken).ConfigureAwait(false);
 
             this.Result = res;
-            await res.Match(a => a.Match(_ => this.signalRNotifier.NewAnswer(), _ => Task.CompletedTask), _ => Task.CompletedTask);
         }
 
         public IActionResult OnPostViewSource()

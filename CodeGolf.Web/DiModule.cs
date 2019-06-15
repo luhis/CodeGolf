@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using CodeGolf.Persistence;
+using CodeGolf.Service;
 using CodeGolf.ServiceInterfaces;
 using CodeGolf.Web.Attributes;
 using CodeGolf.Web.Hubs;

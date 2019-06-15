@@ -12,5 +12,7 @@ namespace CodeGolf.Domain.Repositories
         Task<IReadOnlyList<Attempt>> GetAttempts(Guid holeId, CancellationToken cancellationToken);
 
         Task ClearAll();
+
+        Task<int> GetBestScore(Guid holeId, CancellationToken cancellationToken);
     }
 }

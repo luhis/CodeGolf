@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using CodeGolf.Domain;
 using CodeGolf.Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace CodeGolf.Persistence.Repositories
 {
@@ -32,6 +33,19 @@ namespace CodeGolf.Persistence.Repositories
         {
             this.context.Attempts.RemoveRange(this.context.Attempts);
             return this.context.SaveChangesAsync();
+        }
+
+        async Task<int> IAttemptRepository.GetBestScore(Guid holeId, CancellationToken cancellationToken)
+        {
+            var found = await this.context.Attempts.Where(a => a.HoleId == holeId).OrderBy(a => a.Score).FirstOrDefaultAsync(cancellationToken);
+            if (found != null)
+            {
+                return found.Score;
+            }
+            else
+            {
+                return int.MaxValue;
+            }
         }
     }
 }
