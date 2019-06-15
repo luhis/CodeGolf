@@ -1,5 +1,5 @@
 ﻿import * as signalR from '@aspnet/signalr';
-//import * as bulmaToast from 'bulma-toast';
+import * as bulmaToast from 'bulma-toast';
 
 const connection = new signalR.HubConnectionBuilder().withUrl("/refreshHub").build();
 
