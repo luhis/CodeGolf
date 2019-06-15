@@ -14,7 +14,12 @@ new Vue({
     },
     mounted(){
       const  updateUI = () => {
-          window.fetch('./api/Results/Results').then( (response) => {
+          window.fetch('./api/Results/Results').then(r => {
+              if (!r.ok) {
+                  throw Error(r.statusText);
+              }
+              return r;
+          }).then( (response) => {
               response.json().then((data) => {
                 this.data = data;
               });

@@ -13,8 +13,6 @@
       "library": "codemirror@5.47.0",
       "destination": "wwwroot/lib/codemirror",
       "files": [
-        "codemirror.min.js",
-        "mode/clike/clike.min.js",
         "codemirror.min.css"
       ]
     },
