@@ -148,6 +148,8 @@ namespace CodeGolf.Web
                 app.UseHsts();
             }
 
+            var minifiedGAScriptHash = "qEShyXJhwl9qHYlR7p7AwHlpnpEclnzFsPGivkRFOzM=";
+
             app.UseSecurityHeaders(policies =>
                     policies
                         .AddDefaultSecurityHeaders()
@@ -160,7 +162,7 @@ namespace CodeGolf.Web
                                 .From("https://www.googletagmanager.com")
                                 .From("https://www.gstatic.com")
                                 .From("https://www.google-analytics.com")
-                                .WithHash256("fJYxG/MUxs9b4moaAfLG0e5TxMp0nppc6ulRT3MfHLU=").UnsafeEval(); //todo fix this
+                                .WithHash256("fJYxG/MUxs9b4moaAfLG0e5TxMp0nppc6ulRT3MfHLU=").WithHash256(minifiedGAScriptHash).UnsafeEval(); //todo fix this
                             b.AddImgSrc().Self().From("https://www.google-analytics.com");
                             b.AddFrameSource().Self().From("https://www.google.com");
                             b.AddStyleSrc().Self().UnsafeInline();

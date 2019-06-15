@@ -10,14 +10,6 @@
       ]
     },
     {
-      "provider": "unpkg",
-      "library": "bulma-tooltip@2.0.2",
-      "destination": "wwwroot/lib/bulma-tooltip",
-      "files": [
-        "dist/css/bulma-tooltip.min.css"
-      ]
-    },
-    {
       "library": "codemirror@5.47.0",
       "destination": "wwwroot/lib/codemirror",
       "files": [
@@ -48,6 +40,14 @@
       "destination": "wwwroot/lib/",
       "files": [
         "vue.min.js"
+      ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "bulma-toast@1.5.1",
+      "destination": "wwwroot/lib/bulma-toast/",
+      "files": [
+        "dist/bulma-toast.min.js"
       ]
     }
   ]
