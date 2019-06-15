@@ -1,5 +1,6 @@
 ﻿import Vue from 'vue';
 import App from './Dashboard.vue';
+import * as signalR from '@aspnet/signalr';
 
 const connection = new signalR.HubConnectionBuilder().withUrl("/refreshHub").build();
 

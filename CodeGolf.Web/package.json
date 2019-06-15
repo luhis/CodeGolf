@@ -10,6 +10,9 @@
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "dependencies": {
+    "@aspnet/signalr": "^1.1.4",
+    "bulma-toast": "^1.5.1",
+    "codemirror": "^5.47.0",
     "vue": "^2.5.11"
   },
   "browserslist": [

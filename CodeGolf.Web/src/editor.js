@@ -1,4 +1,6 @@
-﻿"use strict";
+﻿import * as CodeMirror from 'codemirror';
+import 'codemirror/mode/clike/clike';
+import 'codemirror/theme/bespin.css';
 
 CodeMirror.fromTextArea(document.getElementById("Code"),
     {

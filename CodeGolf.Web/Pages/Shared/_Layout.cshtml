@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="~/lib/bulma/css/bulma.min.css" />
     <link rel="stylesheet" href="~/lib/font-awesome/css/solid.min.css" />
     <link rel="stylesheet" href="~/lib/font-awesome/css/fontawesome.min.css" />
-    <link rel="stylesheet" href="lib/codemirror/codemirror.min.css">
+    <link rel="stylesheet" href="lib/codemirror/codemirror.min.css"> @*todo this shouldn't be here*@
     <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     <!-- Global site tag (gtag.js) - Google Analytics -->
     @inject IOptions<WebSiteSettings> WebSiteSettings
@@ -64,8 +64,8 @@
     </div>
 </footer>
 
-    <script src="~/js/site.es5.min.js" asp-append-version="true"></script>
-    <script src="~/js/cookies.es5.js" asp-append-version="true"></script>
+    <script src="dist/site.js" asp-append-version="true"></script>
+    <script src="dist/cookies.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", required: false)
 </body>

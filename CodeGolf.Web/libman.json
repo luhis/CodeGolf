@@ -26,15 +26,15 @@
         "css/fontawesome.min.css",
         "webfonts/fa-solid-900.woff2"
       ]
-    },
-    {
-      "provider": "unpkg",
-      "library": "@aspnet/signalr@1",
-      "destination": "wwwroot/lib/signalr/",
-      "files": [
-        "dist/browser/signalr.min.js"
-      ]
-
     }
+  ,
+{
+  "provider": "unpkg",
+  "library": "bulma-toast@1.5.1",
+  "destination": "wwwroot/lib/bulma-toast/",
+  "files": [
+    "dist/bulma-toast.min.js"
   ]
+}
+]
 }

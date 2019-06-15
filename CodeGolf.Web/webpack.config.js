@@ -2,11 +2,18 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-    entry: './src/dashboard.js',
+    entry: {
+        dashboard: './src/dashboard.js',
+        game: './src/game.js',
+        cookies: './src/cookies.js',
+        editor: './src/editor.js',
+        recaptcha: './src/recaptcha.js',
+        site: './src/site.js'
+    },
     output: {
         path: path.resolve(__dirname, './wwwroot/dist'),
         publicPath: '/wwwroot/dist/',
-        filename: 'dashboard.js'
+        filename: '[name].js'
     },
     module: {
         rules: [
