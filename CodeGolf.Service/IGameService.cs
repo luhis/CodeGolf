@@ -21,5 +21,7 @@ namespace CodeGolf.Service
         Task<Option<IReadOnlyList<Attempt>>> GetAttempts(CancellationToken cancellationToken);
 
         Task<Attempt> GetAttemptById(Guid id, CancellationToken cancellationToken);
+
+        Task<IReadOnlyList<Hole>> GetAllHoles(CancellationToken cancellationToken);
     }
 }

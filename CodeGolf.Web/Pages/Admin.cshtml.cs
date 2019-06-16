@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using CodeGolf.Domain;
 using CodeGolf.Service;
 using CodeGolf.Web.Attributes;
 using Microsoft.AspNetCore.Authorization;
@@ -14,15 +17,22 @@ namespace CodeGolf.Web.Pages
     {
         private readonly IGameService gameService;
 
+        public IReadOnlyList<Hole> Holes { get; private set; }
+
         public AdminModel(IGameService gameService)
         {
             this.gameService = gameService;
         }
 
+        public async Task OnGet(CancellationToken cancellationToken)
+        {
+            this.Holes = await this.gameService.GetAllHoles(cancellationToken);
+        }
+
         public async Task<IActionResult> OnPostResetGame()
         {
             await this.gameService.ResetGame();
-            return this.RedirectToPage("Admin");
+            return this.RedirectToPage();
         }
     }
 }

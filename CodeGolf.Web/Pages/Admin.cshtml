@@ -7,6 +7,12 @@
 <section class="section">
     <h1 class="title">Admin</h1>
     <div>
+        <ol>
+            @foreach (var a in Model.Holes)
+            {
+                <li>@a.ChallengeSet.Title</li>
+            }
+        </ol>
         <form asp-page-handler="ResetGame" method="post">
             <div class="field">
                 <div class="control">

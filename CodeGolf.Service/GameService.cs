@@ -46,6 +46,11 @@ namespace CodeGolf.Service
             });
         }
 
+        Task<IReadOnlyList<Hole>> IGameService.GetAllHoles(CancellationToken cancellationToken)
+        {
+                return Task.FromResult<IReadOnlyList<Hole>>(this.gameRepository.GetGame().Holes);
+        }
+
         async Task<Option<Option<int, IReadOnlyList<ChallengeResult>>, ErrorSet>> IGameService.Attempt(string userId,
             Guid holeId, string code,
             IChallengeSet challengeSet, CancellationToken cancellationToken)
