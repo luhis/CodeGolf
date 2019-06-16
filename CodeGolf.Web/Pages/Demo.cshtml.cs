@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using CodeGolf.Domain;
@@ -41,6 +42,11 @@ namespace CodeGolf.Web.Pages
             {
                 this.Result = await this.codeGolfService.Score(this.Code, this.ChallengeSet, cancellationToken).ConfigureAwait(false);
                 this.RedirectToPage();
+            }
+            else
+            {
+                var errors = this.ModelState.Values.SelectMany(a => a.Errors.Select(b => b.ErrorMessage)).ToList();
+                this.Result = Option.None<Option<int, IReadOnlyList<Domain.ChallengeResult>>, ErrorSet>(new ErrorSet(errors));
             }
         }
 

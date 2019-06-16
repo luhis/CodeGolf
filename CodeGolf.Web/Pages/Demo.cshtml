@@ -12,7 +12,6 @@
         <h1 class="title">Demo</h1>
 
         <vc:challenge-view cs="@Option.Some(Model.ChallengeSet)" />
-        <div asp-validation-summary="All"></div>
         <input type="hidden" id="g-recaptcha-site-key" value="@RecaptchaSettings.Value.SiteKey"/>
         <form method="post">
             <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
