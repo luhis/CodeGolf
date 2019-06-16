@@ -6,6 +6,7 @@ using CodeGolf.ServiceInterfaces;
 using CodeGolf.Web.Attributes;
 using CodeGolf.Web.Hubs;
 using CodeGolf.Web.Tooling;
+using CodeGolf.Web.WebServices;
 using JKang.IpcServiceFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

@@ -1,7 +1,7 @@
 using System.Net;
 using Microsoft.AspNetCore.Http;
 
-namespace CodeGolf.Web
+namespace CodeGolf.Web.WebServices
 {
     public interface IGetIp
     {

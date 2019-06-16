@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace CodeGolf.Web
+namespace CodeGolf.Web.Tooling
 {
     public class StringBinder : IModelBinder
     {
