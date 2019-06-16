@@ -1,7 +1,9 @@
-﻿namespace CodeGolf.Web.Attributes
+﻿using System.Collections.Generic;
+
+namespace CodeGolf.Web.Attributes
 {
     public class GameAdminSettings
     {
-        public string AdminGithubName { get; set; }
+        public List<string> AdminGithubNames { get; set; }
     }
 }

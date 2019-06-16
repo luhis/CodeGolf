@@ -25,9 +25,9 @@ namespace CodeGolf.Web.Attributes
         void IPageFilter.OnPageHandlerExecuting(PageHandlerExecutingContext context)
         {
             var user = this.identityTools.GetIdentity(context.HttpContext);
-            user.Match(some =>
+            user.Match(currentUsername =>
             {
-                if (!some.Equals(this.gameAdminSettings.AdminGithubName))
+                if (!this.gameAdminSettings.AdminGithubNames.Contains(currentUsername))
                 {
                     context.Result = new ForbidResult();
                 }
