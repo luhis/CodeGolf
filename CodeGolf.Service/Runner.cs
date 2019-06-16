@@ -38,9 +38,9 @@ namespace CodeGolf.Service
         Option<CompileResult, ErrorSet> IRunner.Compile(
             string function, IReadOnlyList<Type> paramTypes, Type returnType, CancellationToken cancellationToken)
         {
-            var assembly = this.Compile(function, cancellationToken);
+            var compileResult = this.Compile(function, cancellationToken);
 
-            return assembly.FlatMap(success =>
+            return compileResult.FlatMap(success =>
             {
                 var ass = Assembly.Load(success);
                 var type = ass.GetType(ClassName);

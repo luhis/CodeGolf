@@ -1,4 +1,5 @@
-﻿using Optional;
+﻿using CodeGolf.Domain.ChallengeInterfaces;
+using Optional;
 
 namespace CodeGolf.Domain
 {

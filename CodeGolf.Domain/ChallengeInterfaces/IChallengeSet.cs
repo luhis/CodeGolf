@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace CodeGolf.Domain
+namespace CodeGolf.Domain.ChallengeInterfaces
 {
     public interface IChallengeSet
     {

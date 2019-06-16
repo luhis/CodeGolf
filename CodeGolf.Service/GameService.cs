@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using CodeGolf.Domain;
+using CodeGolf.Domain.ChallengeInterfaces;
 using CodeGolf.Domain.Repositories;
 using CodeGolf.Service.Dtos;
 using Optional;
@@ -48,7 +49,7 @@ namespace CodeGolf.Service
 
         Task<IReadOnlyList<Hole>> IGameService.GetAllHoles(CancellationToken cancellationToken)
         {
-                return Task.FromResult<IReadOnlyList<Hole>>(this.gameRepository.GetGame().Holes);
+                return Task.FromResult(this.gameRepository.GetGame().Holes);
         }
 
         async Task<Option<Option<int, IReadOnlyList<ChallengeResult>>, ErrorSet>> IGameService.Attempt(string userId,

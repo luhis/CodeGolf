@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CodeGolf.Domain;
+using CodeGolf.Domain.ChallengeInterfaces;
 using Microsoft.AspNetCore.Mvc;
 using Optional;
 

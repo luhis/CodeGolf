@@ -1,4 +1,5 @@
 ﻿using System;
+using CodeGolf.Domain.ChallengeInterfaces;
 using EnsureThat;
 
 namespace CodeGolf.Domain

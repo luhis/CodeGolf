@@ -1,4 +1,4 @@
-﻿namespace CodeGolf.Domain
+﻿namespace CodeGolf.Domain.ChallengeInterfaces
 {
     public interface IChallenge
     {

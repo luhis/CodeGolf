@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using CodeGolf.Domain;
+using CodeGolf.Domain.ChallengeInterfaces;
 using Optional;
 
 namespace CodeGolf.Service

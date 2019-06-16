@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using CodeGolf.Domain;
+using CodeGolf.Domain.ChallengeInterfaces;
 using CodeGolf.Service.Dtos;
 using Optional;
 

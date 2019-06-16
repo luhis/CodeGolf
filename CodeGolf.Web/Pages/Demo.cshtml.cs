@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using CodeGolf.Domain;
+using CodeGolf.Domain.ChallengeInterfaces;
 using CodeGolf.Service;
 using CodeGolf.Web.Attributes;
 using CodeGolf.Web.Tooling;
