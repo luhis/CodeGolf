@@ -1,8 +1,8 @@
-﻿import * as CodeMirror from 'codemirror';
+﻿import * as codeMirror from 'codemirror';
 import 'codemirror/mode/clike/clike';
 import 'codemirror/theme/bespin.css';
 
-const editor =  CodeMirror.fromTextArea(document.getElementById("Code"),
+const editor = codeMirror.fromTextArea(document.getElementById("Code"),
     {
         lineNumbers: true,
         matchBrackets: true,
