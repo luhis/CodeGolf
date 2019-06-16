@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
@@ -9,48 +9,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="src\cookies.js" />
-    <None Remove="src\editor.js" />
-    <None Remove="src\recaptcha.js" />
-    <None Remove="src\site.js" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="src\cookies.js">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="src\editor.js">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="src\recaptcha.js">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="src\site.js">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="JKang.IpcServiceFramework.Client" Version="2.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
     <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.0.48" />
     <PackageReference Include="NetEscapades.AspNetCore.SecurityHeaders" Version="0.9.0" />
     <PackageReference Include="WebMarkupMin.AspNetCore2" Version="2.5.0" />
     <PackageReference Include="Yarn.MSBuild" Version="1.15.2" />
   </ItemGroup>
 
-
   <ItemGroup>
-    <Folder Include="Pages\Shared\Components\" />
-    <Folder Include="wwwroot\dist\" />
-    <Folder Include="wwwroot\lib\" />
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <ProjectReference Include="..\CodeGolf.Persistence.Static\CodeGolf.Persistence.Static.csproj" />
+    <ProjectReference Include="..\CodeGolf.Domain\CodeGolf.Domain.csproj" />
     <ProjectReference Include="..\CodeGolf.Persistence\CodeGolf.Persistence.csproj" />
     <ProjectReference Include="..\CodeGolf.Recapcha\CodeGolf.Recaptcha.csproj" />
     <ProjectReference Include="..\CodeGolf.Service\CodeGolf.Service.csproj" />
