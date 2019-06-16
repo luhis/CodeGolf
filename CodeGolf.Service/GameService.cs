@@ -90,5 +90,10 @@ namespace CodeGolf.Service
             var hole = await this.holeRepository.GetCurrentHole();
             return await hole.MapAsync(a => this.GetBestAttempts(a.HoleId, cancellationToken));
         }
+
+        Task<Attempt> IGameService.GetAttemptById(Guid attemptId, CancellationToken cancellationToken)
+        {
+            return this.attemptRepository.GetAttempt(attemptId, cancellationToken);
+        }
     }
 }

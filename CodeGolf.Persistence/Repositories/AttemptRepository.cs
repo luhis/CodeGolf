@@ -47,5 +47,10 @@ namespace CodeGolf.Persistence.Repositories
                 return int.MaxValue;
             }
         }
+
+        Task<Attempt> IAttemptRepository.GetAttempt(Guid attemptId, CancellationToken cancellationToken)
+        {
+            return this.context.Attempts.SingleAsync(a => a.Id == attemptId, cancellationToken);
+        }
     }
 }

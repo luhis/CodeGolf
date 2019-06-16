@@ -1,18 +1,24 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using CodeGolf.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CodeGolf.Web.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CodeController : ControllerBase
     {
         private readonly ICodeGolfService codeGolfService;
+        private readonly IGameService gameService;
 
-        public CodeController(ICodeGolfService codeGolfService)
+        public CodeController(ICodeGolfService codeGolfService, IGameService gameService)
         {
             this.codeGolfService = codeGolfService;
+            this.gameService = gameService;
         }
 
         [HttpGet("[action]")]
@@ -25,6 +31,13 @@ namespace CodeGolf.Web.Controllers
         public ActionResult<string> Debug(string code, CancellationToken cancellationToken)
         {
             return this.codeGolfService.DebugCode(code ?? string.Empty, cancellationToken);
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult<string>> Attempt(Guid id, CancellationToken cancellationToken)
+        {
+            var attempt = await this.gameService.GetAttemptById(id, cancellationToken);
+            return attempt.Code;
         }
     }
 }

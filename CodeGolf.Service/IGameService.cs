@@ -19,5 +19,7 @@ namespace CodeGolf.Service
         Task ResetGame();
 
         Task<Option<IReadOnlyList<Attempt>>> GetAttempts(CancellationToken cancellationToken);
+
+        Task<Attempt> GetAttemptById(Guid id, CancellationToken cancellationToken);
     }
 }

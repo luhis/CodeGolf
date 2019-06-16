@@ -5,6 +5,7 @@
         <th>Name</th>
         <th>Score</th>
         <th>Time</th>
+        <th>Code</th>
       </tr>
     </thead>
     <tbody id="app">
@@ -12,6 +13,9 @@
         <td>{{result.userId}}</td>
         <td>{{result.score}}</td>
         <td>{{result.timeStamp}}</td>
+        <td>
+          <a target="_blank" :href="'/api/code/attempt?id=' + result.id"><i class="fas fa-code"></i></a>
+        </td>
       </tr>
     </tbody>
   </table>

@@ -14,5 +14,7 @@ namespace CodeGolf.Domain.Repositories
         Task ClearAll();
 
         Task<int> GetBestScore(Guid holeId, CancellationToken cancellationToken);
+
+        Task<Attempt> GetAttempt(Guid attemptId, CancellationToken cancellationToken);
     }
 }
