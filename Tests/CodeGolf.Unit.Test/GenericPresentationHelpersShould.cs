@@ -41,7 +41,7 @@ namespace CodeGolf.Unit.Test
         {
             var r = GenericPresentationHelpers.GetFuncTemplate(new ChallengeSet<string[]>("a", "b",
                 new List<Type>() { }, new Challenge<string[]>[] { }));
-            r.Should().BeEquivalentTo("string[] Main() { return ...; }");
+            r.Should().BeEquivalentTo("string[] Main() { return ... ; }");
         }
 
         [Fact]
@@ -49,7 +49,7 @@ namespace CodeGolf.Unit.Test
         {
             var r = GenericPresentationHelpers.GetFuncTemplate(new ChallengeSet<string[]>("a", "b",
                 new List<Type>() { typeof(int), typeof(string) }, new Challenge<string[]>[] { }));
-            r.Should().BeEquivalentTo("string[] Main(int a, string b) { return ...; }");
+            r.Should().BeEquivalentTo("string[] Main(int a, string b) { return ... ; }");
         }
     }
 }

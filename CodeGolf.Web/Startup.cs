@@ -166,8 +166,7 @@ namespace CodeGolf.Web
                             b.AddImgSrc().Self().From("https://www.google-analytics.com").From("https://*.githubusercontent.com");
                             b.AddFrameSource().Self().From("https://www.google.com");
                             b.AddStyleSrc().Self().UnsafeInline();
-                        })
-                );
+                        }));
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
@@ -181,7 +180,7 @@ namespace CodeGolf.Web
                     r =>
                     {
                         var path = r.File.PhysicalPath;
-                        var cacheExtensions = new[] { ".css", ".js", ".gif", ".jpg", ".png", ".svg" };
+                        var cacheExtensions = new[] { ".css", ".js", ".gif", ".jpg", ".png", ".svg", ".ico" };
                         if (cacheExtensions.Any(path.EndsWith))
                         {
                             var maxAge = TimeSpan.FromDays(7);
