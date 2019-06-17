@@ -23,9 +23,9 @@ namespace CodeGolf.Web.Hubs
             return this.hub.Clients.All.SendAsync("newAnswer");
         }
 
-        Task ISignalRNotifier.NewTopScore(string userName, int score)
+        Task ISignalRNotifier.NewTopScore(string userName, int score, string avatarUri)
         {
-            return this.hub.Clients.All.SendAsync("newTopScore", userName, score);
+            return this.hub.Clients.All.SendAsync("newTopScore", userName, score, avatarUri);
         }
     }
 }

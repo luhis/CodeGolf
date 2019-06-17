@@ -7,9 +7,9 @@ connection.on("newRound", function () {
     location.reload();
 });
 
-connection.on("newTopScore", function (name, score) {
+connection.on("newTopScore", function (name, score, avatarUri) {
     bulmaToast.toast({
-        message: `New Top Score! Name: ${name}, Score: ${score}`,
+        message: `New Top Score! <figure class="image is-48x48" src="${avatarUri}"><img/></figure> Name: ${name}, Score: ${score}`,
         type: "is-info",
         dismissible: true,
         pauseOnHover: true,

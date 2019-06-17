@@ -8,6 +8,6 @@ namespace CodeGolf.Service
 
         Task NewAnswer();
 
-        Task NewTopScore(string userName, int score);
+        Task NewTopScore(string userName, int score, string avatarUri);
     }
 }

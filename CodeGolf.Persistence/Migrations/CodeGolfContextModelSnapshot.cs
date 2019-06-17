@@ -49,7 +49,26 @@ namespace CodeGolf.Persistence.Migrations
 
                     b.HasKey("HoleId");
 
-                    b.ToTable("Hole");
+                    b.ToTable("Holes");
+                });
+
+            modelBuilder.Entity("CodeGolf.Domain.User", b =>
+                {
+                    b.Property<int>("UserId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AvatarUri")
+                        .IsRequired();
+
+                    b.Property<string>("LoginName")
+                        .IsRequired();
+
+                    b.HasKey("UserId");
+
+                    b.HasIndex("LoginName")
+                        .IsUnique();
+
+                    b.ToTable("Users");
                 });
 #pragma warning restore 612, 618
         }

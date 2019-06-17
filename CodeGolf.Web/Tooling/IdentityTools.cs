@@ -1,20 +1,28 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System;
+using System.Security.Claims;
+using CodeGolf.Domain;
+using Microsoft.AspNetCore.Http;
 using Optional;
 
 namespace CodeGolf.Web.Tooling
 {
     public class IdentityTools : IIdentityTools
     {
-        Option<string> IIdentityTools.GetIdentity(HttpContext hc)
+        private static string GetByKey(ClaimsPrincipal cp, string key) => cp.FindFirst(c => c.Type == key).Value;
+
+        Option<User> IIdentityTools.GetIdentity(HttpContext hc)
         {
             var user = hc.User;
             if (user.Identity.IsAuthenticated)
             {
-                var loginName = user.FindFirst(c => c.Type == "urn:github:login").Value;
-                return Option.Some(loginName);
+                var identifier = GetByKey(user, ClaimTypes.NameIdentifier);
+                var loginName = GetByKey(user, "urn:github:login");
+                var avatar = GetByKey(user, "urn:github:avatar");
+                var u = new User(int.Parse(identifier) ,loginName, avatar);
+                return Option.Some(u);
             }
 
-            return Option.None<string>();
+            return Option.None<User>();
         }
     }
 }

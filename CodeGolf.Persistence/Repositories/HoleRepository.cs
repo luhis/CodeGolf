@@ -19,9 +19,9 @@ namespace CodeGolf.Persistence.Repositories
 
         async Task<Option<HoleInstance>> IHoleRepository.GetCurrentHole()
         {
-            if (this.context.Hole.Any())
+            if (this.context.Holes.Any())
             {
-                return Option.Some(await this.context.Hole.LastAsync());
+                return Option.Some(await this.context.Holes.LastAsync());
             }
             else
             {
@@ -31,13 +31,13 @@ namespace CodeGolf.Persistence.Repositories
 
         Task IHoleRepository.AddHole(HoleInstance hole)
         {
-            this.context.Hole.Add(hole);
+            this.context.Holes.Add(hole);
             return this.context.SaveChangesAsync();
         }
 
         Task IHoleRepository.ClearAll()
         {
-            this.context.Hole.RemoveRange(this.context.Hole);
+            this.context.Holes.RemoveRange(this.context.Holes);
             return this.context.SaveChangesAsync();
         }
     }

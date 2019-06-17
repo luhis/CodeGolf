@@ -13,13 +13,13 @@ namespace CodeGolf.Service
     {
         Task<Option<HoleDto>> GetCurrentHole(CancellationToken cancellationToken);
 
-        Task<Option<Option<int, IReadOnlyList<ChallengeResult>>, ErrorSet>> Attempt(string userId, Guid holeId, string code, IChallengeSet challengeSet, CancellationToken cancellationToken);
+        Task<Option<Option<int, IReadOnlyList<ChallengeResult>>, ErrorSet>> Attempt(User user, Guid holeId, string code, IChallengeSet challengeSet, CancellationToken cancellationToken);
 
         Task NextRound();
 
         Task ResetGame();
 
-        Task<Option<IReadOnlyList<Attempt>>> GetAttempts(CancellationToken cancellationToken);
+        Task<Option<IReadOnlyList<AttemptDto>>> GetAttempts(CancellationToken cancellationToken);
 
         Task<Attempt> GetAttemptById(Guid id, CancellationToken cancellationToken);
 

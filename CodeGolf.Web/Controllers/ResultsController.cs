@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using CodeGolf.Domain;
 using CodeGolf.Service;
 using CodeGolf.Web.Attributes;
 using Microsoft.AspNetCore.Authorization;
@@ -9,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CodeGolf.Web.Controllers
 {
+    using CodeGolf.Service.Dtos;
+
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
@@ -23,9 +24,9 @@ namespace CodeGolf.Web.Controllers
         }
 
         [HttpGet("[action]")]
-        public async Task<ActionResult<IReadOnlyList<Attempt>>> Results(CancellationToken cancellationToken)
+        public async Task<ActionResult<IReadOnlyList<AttemptDto>>> Results(CancellationToken cancellationToken)
         {
-            return (await this.gameService.GetAttempts(cancellationToken)).Match(some => new ActionResult<IReadOnlyList<Attempt>>(some), () => this.NotFound());
+            return (await this.gameService.GetAttempts(cancellationToken)).Match(some => new ActionResult<IReadOnlyList<AttemptDto>>(some), () => this.NotFound());
         }
     }
 }

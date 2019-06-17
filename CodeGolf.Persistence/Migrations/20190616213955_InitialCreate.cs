@@ -24,7 +24,7 @@ namespace CodeGolf.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Hole",
+                name: "Holes",
                 columns: table => new
                 {
                     HoleId = table.Column<Guid>(nullable: false),
@@ -33,8 +33,28 @@ namespace CodeGolf.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Hole", x => x.HoleId);
+                    table.PrimaryKey("PK_Holes", x => x.HoleId);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    LoginName = table.Column<string>(nullable: false),
+                    AvatarUri = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.UserId);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_LoginName",
+                table: "Users",
+                column: "LoginName",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -43,7 +63,10 @@ namespace CodeGolf.Persistence.Migrations
                 name: "Attempts");
 
             migrationBuilder.DropTable(
-                name: "Hole");
+                name: "Holes");
+
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }

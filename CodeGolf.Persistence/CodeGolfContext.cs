@@ -15,11 +15,14 @@ namespace CodeGolf.Persistence
         {
             SetupHole.Setup(modelBuilder.Entity<HoleInstance>());
             SetupAttempt.Setup(modelBuilder.Entity<Attempt>());
+            SetupUser.Setup(modelBuilder.Entity<User>());
         }
 
         public DbSet<Attempt> Attempts { get; private set; }
 
-        public DbSet<HoleInstance> Hole { get; private set; }
+        public DbSet<HoleInstance> Holes { get; private set; }
+
+        public DbSet<User> Users { get; private set; }
 
         public Task SeedDatabase()
         {

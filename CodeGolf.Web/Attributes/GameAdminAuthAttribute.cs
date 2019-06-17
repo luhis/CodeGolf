@@ -27,7 +27,7 @@ namespace CodeGolf.Web.Attributes
             var user = this.identityTools.GetIdentity(context.HttpContext);
             user.Match(currentUsername =>
             {
-                if (!this.gameAdminSettings.AdminGithubNames.Contains(currentUsername))
+                if (!this.gameAdminSettings.AdminGithubNames.Contains(currentUsername.LoginName))
                 {
                     context.Result = new ForbidResult();
                 }
