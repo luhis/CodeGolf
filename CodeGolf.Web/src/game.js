@@ -7,13 +7,20 @@ connection.on("newRound", function () {
     location.reload();
 });
 
+const template = (name, score, avatarUri) =>
+    `<div>
+        <p>New Top Score!</p>
+        <figure class="image container is-48x48"><img src="${avatarUri}"><img/></figure>
+        <p>${name}, ${score} strokes</p>
+    </div>`;
+
 connection.on("newTopScore", function (name, score, avatarUri) {
     bulmaToast.toast({
-        message: `New Top Score! <figure class="image is-48x48" src="${avatarUri}"><img/></figure> Name: ${name}, Score: ${score}`,
+        message: template(name, score, avatarUri),
         type: "is-info",
         dismissible: true,
         pauseOnHover: true,
-        duration: 5000,
+        duration: 2000,
     });
 });
 
