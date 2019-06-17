@@ -35,11 +35,29 @@ namespace CodeGolf.Service
         private static T GetAfter<T>(IReadOnlyList<T> list, Func<T, bool> equals) =>
             list.SkipWhile(b => !equals(b)).SkipWhile(equals).ElementAt(0);
 
-        private async Task<IReadOnlyList<AttemptDto>> GetBestAttempts(Guid holeId, CancellationToken cancellationToken)
+        private async Task<IOrderedEnumerable<Attempt>> GetBestAttempts(Guid holeId, CancellationToken cancellationToken)
         {
             var attempts = await this.attemptRepository.GetAttempts(holeId, cancellationToken);
-            var rows = attempts.OrderBy(a => a.Score).GroupBy(a => a.UserId).Select(a => a.First())
+            return attempts.OrderBy(a => a.Score).GroupBy(a => a.UserId).Select(a => a.First())
                 .OrderByDescending(a => a.Score);
+        }
+
+        private async Task<bool> IsBestScore(Guid holeId, Guid attemptId, CancellationToken cancellationToken)
+        {
+            var bests = await this.GetBestAttempts(holeId, cancellationToken);
+            if (bests.Any())
+            {
+                return bests.First().Id == attemptId;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        private async Task<IReadOnlyList<AttemptDto>> GetBestAttemptDtos(Guid holeId, CancellationToken cancellationToken)
+        {
+            var rows = await this.GetBestAttempts(holeId, cancellationToken);
 
             return await Task.WhenAll(rows.Select(
                 async r =>
@@ -73,17 +91,19 @@ namespace CodeGolf.Service
                 success => success.Match(
                     async score =>
                         {
-                            //todo this order is a bit suspect
                             await this.userRepository.AddOrUpdate(user, cancellationToken);
-                            if (score < await this.attemptRepository.GetBestScore(holeId, cancellationToken))
+
+                            var newId = Guid.NewGuid();
+
+                            await this.attemptRepository.AddAttempt(new Attempt(newId, user.LoginName, holeId, code, score, DateTime.UtcNow));
+                            await this.signalRNotifier.NewAnswer();
+                            if (await this.IsBestScore(holeId, newId, cancellationToken))
                             {
                                 await this.signalRNotifier.NewTopScore(user.LoginName, score, user.AvatarUri);
                             }
-
-                            await this.attemptRepository.AddAttempt(new Attempt(Guid.NewGuid(), user.LoginName, holeId, code, score,
-                    DateTime.UtcNow));
-                            await this.signalRNotifier.NewAnswer();
-                        }, _ => Task.CompletedTask), _ => Task.CompletedTask);
+                        },
+                    _ => Task.CompletedTask),
+                _ => Task.CompletedTask);
             return res;
         }
 
@@ -109,7 +129,7 @@ namespace CodeGolf.Service
         async Task<Option<IReadOnlyList<AttemptDto>>> IGameService.GetAttempts(CancellationToken cancellationToken)
         {
             var hole = await this.holeRepository.GetCurrentHole();
-            return await hole.MapAsync(a => this.GetBestAttempts(a.HoleId, cancellationToken));
+            return await hole.MapAsync(a => this.GetBestAttemptDtos(a.HoleId, cancellationToken));
         }
 
         Task<Attempt> IGameService.GetAttemptById(Guid attemptId, CancellationToken cancellationToken)
