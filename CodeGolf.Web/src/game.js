@@ -4,7 +4,7 @@ import * as bulmaToast from 'bulma-toast';
 const connection = new signalR.HubConnectionBuilder().withUrl("/refreshHub").build();
 
 connection.on("newRound", function () {
-    location.reload();
+    window.location = window.location.href;
 });
 
 const template = (name, score, avatarUri) =>
