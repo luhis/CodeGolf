@@ -8,6 +8,8 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace CodeGolf.Service
 {
+    using System;
+
     public class CancellationTokenInjector : CSharpSyntaxRewriter
     {
         private const string TokenName = "cancellationToken";
@@ -44,7 +46,7 @@ namespace CodeGolf.Service
 
         public override SyntaxNode VisitWhileStatement(WhileStatementSyntax node)
         {
-            var statement = (BlockSyntax) node.Statement;
+            var statement = (BlockSyntax)node.Statement;
             var updated = statement.AddStatements(ThrowIfCancelled);
             return base.VisitWhileStatement(node.ReplaceNode(statement, updated));
         }
@@ -65,9 +67,9 @@ namespace CodeGolf.Service
 
         public override SyntaxNode VisitForEachStatement(ForEachStatementSyntax node)
         {
-            var statement = (BlockSyntax) node.Statement;
+            var statement = GetStatementsAsBlock(node);
             var updated = statement.AddStatements(ThrowIfCancelled);
-            return base.VisitForEachStatement(node.ReplaceNode(statement, updated));
+            return base.VisitForEachStatement(node.ReplaceNode(node.Statement, updated));
         }
 
         public override SyntaxNode VisitInvocationExpression(InvocationExpressionSyntax node)
@@ -82,6 +84,20 @@ namespace CodeGolf.Service
             {
                 return base.VisitInvocationExpression(node);
             }
+        }
+
+        private static BlockSyntax GetStatementsAsBlock(CommonForEachStatementSyntax node)
+        {
+            if (node.Statement is BlockSyntax)
+            {
+                return (BlockSyntax)node.Statement;
+            }
+            else if (node.Statement is ExpressionStatementSyntax)
+            {
+                return Block(node.Statement);
+            }
+
+            throw new Exception($"Unknown body type {node.Statement.GetType()}");
         }
     }
 }

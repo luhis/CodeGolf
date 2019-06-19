@@ -172,5 +172,33 @@ namespace CodeGolf.Unit.Test.SyntaxTreeModification
         }";
             newSource.ToFullString().Should().BeEquivalentToIgnoreWS(expect);
         }
+
+        [Fact]
+        public void WorkWithForEachStatements()
+        {
+            var code = @"public string Main(string s){
+            foreach(var x in new[] {1, 2, 3})
+                x++;
+            return s;
+        }";
+
+            var newSource = CompilationTooling.Transform(code);
+
+            var expect = @"public string Main(string s, System.Threading.CancellationToken cancellationToken){
+            if (cancellationToken.IsCancellationRequested)
+                {
+                    throw new System.Threading.Tasks.TaskCanceledException();
+                }
+            foreach(var x in new[] {1, 2, 3})
+                {x++;
+if (cancellationToken.IsCancellationRequested)
+                {
+                    throw new System.Threading.Tasks.TaskCanceledException();
+                }
+                }
+            return s;
+        }";
+            newSource.ToFullString().Should().BeEquivalentToIgnoreWS(expect);
+        }
     }
 }
