@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CodeGolf.Web.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CodeController : ControllerBase
@@ -33,6 +32,7 @@ namespace CodeGolf.Web.Controllers
             return this.codeGolfService.DebugCode(code ?? string.Empty, cancellationToken);
         }
 
+        [Authorize]
         [HttpGet("[action]")]
         public async Task<ActionResult<string>> Attempt(Guid id, CancellationToken cancellationToken)
         {
