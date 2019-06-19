@@ -82,6 +82,28 @@ namespace CodeGolf.Service
             return Task.FromResult(this.gameRepository.GetGame().Holes);
         }
 
+        private static int PosToPoints(int i)
+        {
+            switch (i)
+            {
+                case 1:
+                    return 3;
+                case 2:
+                    return 2;
+                case 3:
+                    return 1;
+                default:
+                    return 0;
+            }
+        }
+
+        async Task<IReadOnlyList<ResultDto>> IGameService.GetFinalScores(CancellationToken cancellationToken)
+        {
+            var holes = await Task.WhenAll(this.gameRepository.GetGame().Holes.Select(async h => (await this.GetBestAttempts(h.HoleId, cancellationToken)).Select((a, b) => Tuple.Create(b, a))));
+            var ranks = holes.SelectMany(a => a);
+            return ranks.GroupBy(a => a.Item2.UserId).Select(r => new ResultDto(r.Key, r.Sum(a => PosToPoints(a.Item1)))).ToList();
+        }
+
         async Task<Option<Option<int, IReadOnlyList<ChallengeResult>>, ErrorSet>> IGameService.Attempt(User user,
             Guid holeId, string code,
             IChallengeSet challengeSet, CancellationToken cancellationToken)
