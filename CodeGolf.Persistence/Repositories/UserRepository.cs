@@ -33,7 +33,7 @@ namespace CodeGolf.Persistence.Repositories
             else
             {
                 // todo this is busted
-                // this.context.Users.Update(new User(existing.UserId, user.LoginName, user.AvatarUri));
+                // this.context.Users.Update(new User(existing.LoginName, user.LoginName, user.AvatarUri));
             }
 
             await this.context.SaveChangesAsync(cancellationToken);

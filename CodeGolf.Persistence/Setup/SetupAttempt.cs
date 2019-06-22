@@ -11,7 +11,7 @@ namespace CodeGolf.Persistence.Setup
              entity.Property(e => e.HoleId).IsRequired();
              entity.Property(e => e.Score).IsRequired();
              entity.Property(e => e.TimeStamp).IsRequired();
-             entity.Property(e => e.UserId).IsRequired();
+             entity.Property(e => e.LoginName).IsRequired();
              entity.Property(e => e.Code).IsRequired();
         }
     }

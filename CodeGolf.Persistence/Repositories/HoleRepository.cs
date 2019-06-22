@@ -7,6 +7,8 @@ using Optional;
 
 namespace CodeGolf.Persistence.Repositories
 {
+    using System;
+
     public class HoleRepository : IHoleRepository
     {
         private readonly CodeGolfContext context;
@@ -16,10 +18,9 @@ namespace CodeGolf.Persistence.Repositories
             this.context = context;
         }
 
-
         async Task<Option<HoleInstance>> IHoleRepository.GetCurrentHole()
         {
-            if (this.context.Holes.Any())
+            if (await this.context.Holes.AnyAsync())
             {
                 return Option.Some(await this.context.Holes.LastAsync());
             }
@@ -27,6 +28,13 @@ namespace CodeGolf.Persistence.Repositories
             {
                 return Option.None<HoleInstance>();
             }
+        }
+
+        async Task IHoleRepository.EndHole(Guid holeId, DateTime closeTime)
+        {
+            var hole = await this.context.Holes.SingleAsync(a => a.HoleId == holeId);
+            this.context.Update(new HoleInstance(hole.HoleId, hole.Start, closeTime));
+            await this.context.SaveChangesAsync();
         }
 
         Task IHoleRepository.AddHole(HoleInstance hole)

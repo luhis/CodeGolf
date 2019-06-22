@@ -12,7 +12,7 @@ namespace CodeGolf.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    UserId = table.Column<string>(nullable: false),
+                    LoginName = table.Column<string>(nullable: false),
                     HoleId = table.Column<Guid>(nullable: false),
                     Code = table.Column<string>(nullable: false),
                     Score = table.Column<int>(nullable: false),
@@ -29,7 +29,7 @@ namespace CodeGolf.Persistence.Migrations
                 {
                     HoleId = table.Column<Guid>(nullable: false),
                     Start = table.Column<DateTime>(nullable: false),
-                    End = table.Column<DateTime>(nullable: false)
+                    End = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {

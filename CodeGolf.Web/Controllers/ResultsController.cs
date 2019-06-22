@@ -16,17 +16,17 @@ namespace CodeGolf.Web.Controllers
     [ServiceFilter(typeof(GameAdminAuthAttribute))]
     public class ResultsController : ControllerBase
     {
-        private readonly IGameService gameService;
+        private readonly IDashboardService dashboardService;
 
-        public ResultsController(IGameService gameService)
+        public ResultsController(IDashboardService dashboardService)
         {
-            this.gameService = gameService;
+            this.dashboardService = dashboardService;
         }
 
         [HttpGet("[action]")]
         public async Task<ActionResult<IReadOnlyList<AttemptDto>>> Results(CancellationToken cancellationToken)
         {
-            return (await this.gameService.GetAttempts(cancellationToken)).Match(some => new ActionResult<IReadOnlyList<AttemptDto>>(some), () => this.NotFound());
+            return (await this.dashboardService.GetAttempts(cancellationToken)).Match(some => new ActionResult<IReadOnlyList<AttemptDto>>(some), () => this.NotFound());
         }
     }
 }

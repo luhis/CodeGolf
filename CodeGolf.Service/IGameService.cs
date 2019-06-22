@@ -15,16 +15,5 @@ namespace CodeGolf.Service
 
         Task<Option<Option<int, IReadOnlyList<ChallengeResult>>, ErrorSet>> Attempt(User user, Guid holeId, string code, IChallengeSet challengeSet, CancellationToken cancellationToken);
 
-        Task NextRound();
-
-        Task ResetGame();
-
-        Task<Option<IReadOnlyList<AttemptDto>>> GetAttempts(CancellationToken cancellationToken);
-
-        Task<Attempt> GetAttemptById(Guid id, CancellationToken cancellationToken);
-
-        Task<IReadOnlyList<Hole>> GetAllHoles(CancellationToken cancellationToken);
-
-        Task<IReadOnlyList<ResultDto>> GetFinalScores(CancellationToken cancellationToken);
     }
 }

@@ -5,10 +5,10 @@ namespace CodeGolf.Domain
 {
     public class Attempt
     {
-        public Attempt(Guid id, string userId, Guid holeId, string code, int score, DateTime timeStamp)
+        public Attempt(Guid id, string loginName, Guid holeId, string code, int score, DateTime timeStamp)
         {
             this.Id = EnsureArg.IsNotEmpty(id, nameof(id));
-            this.UserId = EnsureArg.IsNotEmpty(userId, nameof(userId));
+            this.LoginName = EnsureArg.IsNotEmpty(loginName, nameof(loginName));
             this.HoleId = EnsureArg.IsNotEmpty(holeId, nameof(holeId));
             this.Code = EnsureArg.IsNotNull(code, nameof(code));
             this.Score = score;
@@ -17,7 +17,7 @@ namespace CodeGolf.Domain
 
         public Guid Id { get; private set; }
 
-        public string UserId { get; private set; }
+        public string LoginName { get; private set; }
 
         public Guid HoleId { get; private set; }
 

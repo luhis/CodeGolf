@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using CodeGolf.Domain;
-using CodeGolf.Domain.ChallengeInterfaces;
 using CodeGolf.Service;
 using CodeGolf.Web.Tooling;
 using Microsoft.AspNetCore.Authorization;
@@ -13,6 +12,8 @@ using Optional.Unsafe;
 
 namespace CodeGolf.Web.Pages
 {
+    using CodeGolf.Domain.ChallengeInterfaces;
+
     [Authorize]
     [ValidateAntiForgeryToken]
     public class GameModel : PageModel
@@ -44,8 +45,12 @@ namespace CodeGolf.Web.Pages
             this.Hole = hole.Map(a => a.Hole.ChallengeSet);
             var gs = hole.ValueOrFailure();
 
-            var res = 
-                await this.gameService.Attempt(this.identityTools.GetIdentity(this.HttpContext).ValueOrFailure(), gs.Hole.HoleId, this.Code, gs.Hole.ChallengeSet, cancellationToken).ConfigureAwait(false);
+            var res = await this.gameService.Attempt(
+                          this.identityTools.GetIdentity(this.HttpContext).ValueOrFailure(),
+                          gs.Hole.HoleId,
+                          this.Code,
+                          gs.Hole.ChallengeSet,
+                          cancellationToken).ConfigureAwait(false);
 
             this.Result = res;
             this.RedirectToPage();

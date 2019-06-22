@@ -15,23 +15,23 @@ namespace CodeGolf.Web.Pages
     [ValidateAntiForgeryToken]
     public class AdminModel : PageModel
     {
-        private readonly IGameService gameService;
+        private readonly IDashboardService dashboardService;
 
         public IReadOnlyList<Hole> Holes { get; private set; }
 
-        public AdminModel(IGameService gameService)
+        public AdminModel(IDashboardService dashboardService)
         {
-            this.gameService = gameService;
+            this.dashboardService = dashboardService;
         }
 
         public async Task OnGet(CancellationToken cancellationToken)
         {
-            this.Holes = await this.gameService.GetAllHoles(cancellationToken);
+            this.Holes = await this.dashboardService.GetAllHoles(cancellationToken);
         }
 
         public async Task<IActionResult> OnPostResetGame()
         {
-            await this.gameService.ResetGame();
+            await this.dashboardService.ResetGame();
             return this.RedirectToPage();
         }
     }

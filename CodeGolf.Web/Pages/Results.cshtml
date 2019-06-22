@@ -1,0 +1,27 @@
+﻿@page
+@model CodeGolf.Web.Pages.ResultsModel
+@{
+    ViewData["Title"] = "Results";
+}
+
+<section class="section">
+    <table class="table is-striped is-fullwidth">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Score</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var res in Model.Results)
+        {
+            <tr v-for="result in appData" :key="result.id">
+                <td><figure class="image is-48x48"><img :src="result.avatar"/></figure></td>
+                <td>@res.LoginName</td>
+                <td>@res.Score</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    </section>

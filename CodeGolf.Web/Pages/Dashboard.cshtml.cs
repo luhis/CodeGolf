@@ -6,10 +6,12 @@ using CodeGolf.Web.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Optional;
 
 namespace CodeGolf.Web.Pages
 {
+    using Optional;
+    using Optional.Unsafe;
+
     [Authorize]
     [ServiceFilter(typeof(GameAdminAuthAttribute))]
     [ValidateAntiForgeryToken]
@@ -17,9 +19,9 @@ namespace CodeGolf.Web.Pages
     {
         public Option<HoleDto> CurrentChallenge { get; private set; }
 
-        private readonly IGameService gameService;
+        private readonly IDashboardService gameService;
 
-        public DashboardModel(IGameService gameService)
+        public DashboardModel(IDashboardService gameService)
         {
             this.gameService = gameService;
         }
@@ -30,10 +32,17 @@ namespace CodeGolf.Web.Pages
             this.CurrentChallenge = curr;
         }
 
+        public async Task<IActionResult> OnPostEndHole(CancellationToken cancellationToken)
+        {
+            var curr = await this.gameService.GetCurrentHole(cancellationToken);
+            await this.gameService.EndHole(curr.ValueOrFailure().Hole.HoleId);
+            return this.RedirectToPage();
+        }
+
         public async Task<IActionResult> OnPostNextHole()
         {
-            await this.gameService.NextRound();
-            return this.RedirectToPage();
+            var holeId = await this.gameService.NextHole();
+            return holeId.Match(some => this.RedirectToPage(), () => this.RedirectToPage("Results"));
         }
     }
 }

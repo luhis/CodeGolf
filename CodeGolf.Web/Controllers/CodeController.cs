@@ -12,12 +12,12 @@ namespace CodeGolf.Web.Controllers
     public class CodeController : ControllerBase
     {
         private readonly ICodeGolfService codeGolfService;
-        private readonly IGameService gameService;
+        private readonly IDashboardService dashboardService;
 
-        public CodeController(ICodeGolfService codeGolfService, IGameService gameService)
+        public CodeController(ICodeGolfService codeGolfService, IDashboardService dashboardService)
         {
             this.codeGolfService = codeGolfService;
-            this.gameService = gameService;
+            this.dashboardService = dashboardService;
         }
 
         [HttpGet("[action]")]
@@ -36,7 +36,7 @@ namespace CodeGolf.Web.Controllers
         [HttpGet("[action]")]
         public async Task<ActionResult<string>> Attempt(Guid id, CancellationToken cancellationToken)
         {
-            var attempt = await this.gameService.GetAttemptById(id, cancellationToken);
+            var attempt = await this.dashboardService.GetAttemptById(id, cancellationToken);
             return attempt.Code;
         }
     }

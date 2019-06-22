@@ -8,7 +8,6 @@ using CodeGolf.Domain.ChallengeInterfaces;
 using CodeGolf.Domain.Repositories;
 using CodeGolf.Service.Dtos;
 using Optional;
-using Optional.Async;
 
 namespace CodeGolf.Service
 {
@@ -32,13 +31,10 @@ namespace CodeGolf.Service
             this.userRepository = userRepository;
         }
 
-        private static T GetAfter<T>(IReadOnlyList<T> list, Func<T, bool> equals) =>
-            list.SkipWhile(b => !equals(b)).SkipWhile(equals).ElementAt(0);
-
         private async Task<IOrderedEnumerable<Attempt>> GetBestAttempts(Guid holeId, CancellationToken cancellationToken)
         {
             var attempts = await this.attemptRepository.GetAttempts(holeId, cancellationToken);
-            return attempts.OrderBy(a => a.Score).GroupBy(a => a.UserId).Select(a => a.First())
+            return attempts.OrderBy(a => a.Score).GroupBy(a => a.LoginName).Select(a => a.First())
                 .OrderByDescending(a => a.Score);
         }
 
@@ -55,53 +51,22 @@ namespace CodeGolf.Service
             }
         }
 
-        private async Task<IReadOnlyList<AttemptDto>> GetBestAttemptDtos(Guid holeId, CancellationToken cancellationToken)
-        {
-            var rows = await this.GetBestAttempts(holeId, cancellationToken);
-
-            return await Task.WhenAll(rows.Select(
-                async r =>
-                    {
-                        var avatar = (await this.userRepository.GetByUserName(r.UserId, cancellationToken)).Map(a => a.AvatarUri).ValueOr(string.Empty);
-                        return new AttemptDto(r.Id, r.UserId, avatar, r.Score, r.TimeStamp);
-                    }));
-        }
-
         async Task<Option<HoleDto>> IGameService.GetCurrentHole(CancellationToken cancellationToken)
         {
             var hole = await this.holeRepository.GetCurrentHole();
-            return hole.Map(a =>
-            {
-                var curr = this.gameRepository.GetGame().Holes.First(b => b.HoleId.Equals(a.HoleId));
-                return new HoleDto(curr, a.Start, a.End);
-            });
-        }
-
-        Task<IReadOnlyList<Hole>> IGameService.GetAllHoles(CancellationToken cancellationToken)
-        {
-            return Task.FromResult(this.gameRepository.GetGame().Holes);
-        }
-
-        private static int PosToPoints(int i)
-        {
-            switch (i)
-            {
-                case 1:
-                    return 3;
-                case 2:
-                    return 2;
-                case 3:
-                    return 1;
-                default:
-                    return 0;
-            }
-        }
-
-        async Task<IReadOnlyList<ResultDto>> IGameService.GetFinalScores(CancellationToken cancellationToken)
-        {
-            var holes = await Task.WhenAll(this.gameRepository.GetGame().Holes.Select(async h => (await this.GetBestAttempts(h.HoleId, cancellationToken)).Select((a, b) => Tuple.Create(b, a))));
-            var ranks = holes.SelectMany(a => a);
-            return ranks.GroupBy(a => a.Item2.UserId).Select(r => new ResultDto(r.Key, r.Sum(a => PosToPoints(a.Item1)))).ToList();
+            return hole.Match(
+                a =>
+                    {
+                        if (!a.End.HasValue)
+                        {
+                            var curr = this.gameRepository.GetGame().Holes.First(b => b.HoleId.Equals(a.HoleId));
+                            return Option.Some(new HoleDto(curr, a.Start, a.Start.Add(curr.Duration), a.End));
+                        }
+                        else
+                        {
+                            return Option.None<HoleDto>();
+                        }
+                    }, () => Option.None<HoleDto>());
         }
 
         async Task<Option<Option<int, IReadOnlyList<ChallengeResult>>, ErrorSet>> IGameService.Attempt(User user,
@@ -127,36 +92,6 @@ namespace CodeGolf.Service
                     _ => Task.CompletedTask),
                 _ => Task.CompletedTask);
             return res;
-        }
-
-        async Task IGameService.NextRound()
-        {
-            var round = await this.holeRepository.GetCurrentHole();
-            var next = round.Match(
-                some => GetAfter(this.gameRepository.GetGame().Holes, item => item.HoleId.Equals(some.HoleId)),
-                () => this.gameRepository.GetGame().Holes.First());
-            await this.holeRepository.AddHole(new HoleInstance(next.HoleId, DateTime.UtcNow,
-                DateTime.UtcNow.Add(next.Duration)));
-            await this.signalRNotifier.NewRound();
-        }
-
-        async Task IGameService.ResetGame()
-        {
-            await this.attemptRepository.ClearAll();
-            await this.holeRepository.ClearAll();
-            await this.userRepository.ClearAll();
-            await this.signalRNotifier.NewRound();
-        }
-
-        async Task<Option<IReadOnlyList<AttemptDto>>> IGameService.GetAttempts(CancellationToken cancellationToken)
-        {
-            var hole = await this.holeRepository.GetCurrentHole();
-            return await hole.MapAsync(a => this.GetBestAttemptDtos(a.HoleId, cancellationToken));
-        }
-
-        Task<Attempt> IGameService.GetAttemptById(Guid attemptId, CancellationToken cancellationToken)
-        {
-            return this.attemptRepository.GetAttempt(attemptId, cancellationToken);
         }
     }
 }

@@ -1,0 +1,32 @@
+﻿@using CodeGolf.Web.ViewComponents
+@model CodeGolf.Web.ViewComponents.ButtonState
+
+<form method="post">
+    <div class="field">
+        <div class="control">
+            @switch (Model)
+            {
+                case ButtonState.StartGame:
+                    {
+                        <button asp-page-handler="NextHole" class="button">Start Game</button>
+                        break;
+                    }
+                case ButtonState.EndHole:
+                    {
+                        <button asp-page-handler="EndHole" class="button">End Hole</button>
+                        break;
+                    }
+                case ButtonState.NextHole:
+                    {
+                        <button asp-page-handler="NextHole" class="button">Next Hole</button>
+                        break;
+                    }
+                case ButtonState.EndGame:
+                    {
+                        <button asp-page-handler="EndGame" class="button">End Game</button>
+                        break;
+                    }
+            }
+        </div>
+    </div>
+</form>

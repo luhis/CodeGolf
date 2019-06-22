@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CodeGolf.Persistence.Migrations
 {
     [DbContext(typeof(CodeGolfContext))]
-    [Migration("20190616213955_InitialCreate")]
+    [Migration("20190619215131_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,12 +28,12 @@ namespace CodeGolf.Persistence.Migrations
 
                     b.Property<Guid>("HoleId");
 
+                    b.Property<string>("LoginName")
+                        .IsRequired();
+
                     b.Property<int>("Score");
 
                     b.Property<DateTime>("TimeStamp");
-
-                    b.Property<string>("UserId")
-                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -45,7 +45,7 @@ namespace CodeGolf.Persistence.Migrations
                     b.Property<Guid>("HoleId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("End");
+                    b.Property<DateTime?>("End");
 
                     b.Property<DateTime>("Start");
 

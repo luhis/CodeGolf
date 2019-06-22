@@ -4,19 +4,11 @@
     ViewData["Title"] = "Dashboard";
 }
 <section class="section">
-    <div>
-        <form asp-page-handler="NextHole" method="post">
-            <div class="field">
-                <div class="control">
-                    <button class="button">Next Hole</button>
-                </div>
-            </div>
-        </form>
-    </div>
-    <vc:times-view hole="@Model.CurrentChallenge" />
+    <vc:dashboard-buttons-view hole="@Model.CurrentChallenge" />
+    <vc:times-view hole="@Model.CurrentChallenge"/>
 
-    <vc:challenge-view cs="@Model.CurrentChallenge.Map(a => a.Hole.ChallengeSet)" />
-    <vc:attempts-view />
+    <vc:challenge-view cs="@Model.CurrentChallenge.Map(a => a.Hole.ChallengeSet)"/>
+    <vc:attempts-view/>
 </section>
 
 @section Scripts {

@@ -9,6 +9,7 @@ namespace CodeGolf.Persistence
     {
         public CodeGolfContext(DbContextOptions<CodeGolfContext> options) : base(options)
         {
+            this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
