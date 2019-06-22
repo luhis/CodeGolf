@@ -66,7 +66,7 @@ namespace CodeGolf.Service
                         {
                             return Option.None<HoleDto>();
                         }
-                    }, () => Option.None<HoleDto>());
+                    }, Option.None<HoleDto>);
         }
 
         async Task<Option<Option<int, IReadOnlyList<ChallengeResult>>, ErrorSet>> IGameService.Attempt(User user,

@@ -51,7 +51,6 @@ namespace CodeGolf.Domain
 
         IReadOnlyList<IChallenge> IChallengeSet.Challenges => this.Challenges;
 
-
         async Task<IReadOnlyList<ChallengeResult>> IChallengeSet.GetResults(
             CompileResult t)
         {
