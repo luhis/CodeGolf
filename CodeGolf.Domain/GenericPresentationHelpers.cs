@@ -7,7 +7,8 @@ namespace CodeGolf.Domain
 {
     public static class GenericPresentationHelpers
     {
-        private static string ToCommaSep<T>(T[] arr) => arr == null ? "null": string.Join(", ", arr.Select(a => a == null ? "null" : WrapIfString(a, typeof(T))));
+        private static string ToCommaSep<T>(T[] arr) =>
+            arr == null ? "null" : string.Join(", ", arr.Select(a => a == null ? "null" : WrapIfString(a, typeof(T))));
 
         private static string WrapIfString(object o, Type t) => t == typeof(string) ? $"\"{o}\"" : o.ToString();
 
@@ -23,6 +24,7 @@ namespace CodeGolf.Domain
                 {
                     return $"[{ToCommaSep(stringArr)}]";
                 }
+
                 if (o is object[] objArr)
                 {
                     return $"[{ToCommaSep(objArr)}]";
@@ -44,12 +46,11 @@ namespace CodeGolf.Domain
             return $"({string.Join(", ", zipped)}) => {WrapIfArray(challenge.ExpectedResult, returnType)}";
         }
 
-        private static readonly IReadOnlyDictionary<Type, string> Aliases = new Dictionary<Type, string>()
-        {
-            {typeof(string), "string" },
-            {typeof(string[]), "string[]" },
-            {typeof(int), "int" }
-        };
+        private static readonly IReadOnlyDictionary<Type, string> Aliases =
+            new Dictionary<Type, string>()
+                {
+                    { typeof(string), "string" }, { typeof(string[]), "string[]" }, { typeof(int), "int" }
+                };
 
         private static string GetAlias(Type t)
         {
@@ -65,7 +66,8 @@ namespace CodeGolf.Domain
 
         public static string GetFuncTemplate(IChallengeSet set)
         {
-            var paramPairs = set.Params.Zip(Enumerable.Range('a', 26).Select(a => (char)a), Tuple.Create).Select(t =>  $"{GetAlias(t.Item1)} {t.Item2}");
+            var paramPairs = set.Params.Zip(Enumerable.Range('a', set.Params.Count).Select(a => (char)a), Tuple.Create)
+                .Select(t => $"{GetAlias(t.Item1)} {t.Item2}");
             return $"{GetAlias(set.ReturnType)} Main({string.Join(", ", paramPairs)}) {{ return ... ; }}";
         }
     }
