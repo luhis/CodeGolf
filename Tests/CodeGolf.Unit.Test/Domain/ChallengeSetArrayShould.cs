@@ -21,7 +21,7 @@ namespace CodeGolf.Unit.Test.Domain
                 "a",
                 "b",
                 this.stringParam,
-                new[] { new ChallengeArray<string>(new object[] { "test" }, new string[] { "a" }) });
+                new[] { new Challenge<string[]>(new object[] { "test" }, new string[] { "a" }) });
             var r = a.GetResults(
                 new CompileResult(
                     o => Task.FromResult<IReadOnlyList<Option<object, string>>>(
@@ -36,7 +36,7 @@ namespace CodeGolf.Unit.Test.Domain
                 "a",
                 "b",
                 this.stringParam,
-                new[] { new ChallengeArray<string>(new object[] { "test" }, new string[] { "a" }), });
+                new[] { new Challenge<string[]>(new object[] { "test" }, new string[] { "a" }), });
             var r = a.GetResults(
                 new CompileResult(
                     o => Task.FromResult<IReadOnlyList<Option<object, string>>>(
@@ -51,7 +51,7 @@ namespace CodeGolf.Unit.Test.Domain
                 "a",
                 "b",
                 this.stringParam,
-                new[] { new ChallengeArray<string>(new object[] { "test" }, new string[] { "a" }), });
+                new[] { new Challenge<string[]>(new object[] { "test" }, new string[] { "a" }), });
             var r = a.GetResults(
                 new CompileResult(
                     o => Task.FromResult<IReadOnlyList<Option<object, string>>>(
@@ -66,7 +66,7 @@ namespace CodeGolf.Unit.Test.Domain
                 "a",
                 "b",
                 this.stringParam,
-                new[] { new ChallengeArray<string>(new object[] { "test" }, new string[] { "a" }), });
+                new[] { new Challenge<string[]>(new object[] { "test" }, new string[] { "a" }), });
             var r = a.GetResults(
                 new CompileResult(
                     o => Task.FromResult<IReadOnlyList<Option<object, string>>>(

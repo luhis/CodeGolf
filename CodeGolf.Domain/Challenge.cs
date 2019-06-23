@@ -10,10 +10,6 @@ namespace CodeGolf.Domain
         {
             this.Args = EnsureArg.IsNotNull(args, nameof(args));
             this.ExpectedResult = expectedResult;
-            if (typeof(T).IsArray)
-            {
-                throw new Exception("Challenge should not be used with challenges returning array types");
-            }
         }
 
         public object[] Args { get; }

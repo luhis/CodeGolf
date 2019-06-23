@@ -53,10 +53,10 @@ Swap all the vowels in the word with the corresponding:
             new[] { new ParamDescription(typeof(int), "i") },
             new[]
                 {
-                    new ChallengeArray<string>(
+                    new Challenge<string[]>(
                         new object[] { 10 },
                         new[] { "1", "2", "Fizz", "4", "Buzz", "Fizz", "7", "8", "Fizz", "Buzz", }),
-                    new ChallengeArray<string>(
+                    new Challenge<string[]>(
                         new object[] { 20 },
                         new[]
                             {

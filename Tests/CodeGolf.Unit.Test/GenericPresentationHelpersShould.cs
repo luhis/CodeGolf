@@ -28,7 +28,7 @@ namespace CodeGolf.Unit.Test
         public void DealWithIntArrayResponses()
         {
             var r = GenericPresentationHelpers.DisplayFunction(
-                new ChallengeArray<int>(new object[] { 1, "a" }, new[] { 1, 2, 3 }),
+                new Challenge<int[]>(new object[] { 1, "a" }, new[] { 1, 2, 3 }),
                 this.intAndString,
                 typeof(int[]));
             r.Should().BeEquivalentTo("(1, \"a\") => [1, 2, 3]");
@@ -38,7 +38,7 @@ namespace CodeGolf.Unit.Test
         public void DealWithIntArrayNullResponses()
         {
             var r = GenericPresentationHelpers.DisplayFunction(
-                new ChallengeArray<int>(new object[] { 1, "a" }, null),
+                new Challenge<int[]>(new object[] { 1, "a" }, null),
                 this.intAndString,
                 typeof(int[]));
             r.Should().BeEquivalentTo("(1, \"a\") => null");
@@ -48,7 +48,7 @@ namespace CodeGolf.Unit.Test
         public void DealWithStringArrayResponses()
         {
             var r = GenericPresentationHelpers.DisplayFunction(
-                new ChallengeArray<string>(new object[] { 1, "a" }, new[] { "a", "b" }),
+                new Challenge<string[]>(new object[] { 1, "a" }, new[] { "a", "b" }),
                 this.intAndString,
                 typeof(string[]));
             r.Should().BeEquivalentTo("(1, \"a\") => [\"a\", \"b\"]");

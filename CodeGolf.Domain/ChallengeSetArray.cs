@@ -11,7 +11,7 @@ namespace CodeGolf.Domain
     public class ChallengeSetArray<T> : IChallengeSet
     {
         public ChallengeSetArray(string title, string description, IReadOnlyList<ParamDescription> ps,
-            IReadOnlyList<ChallengeArray<T>> challenges)
+            IReadOnlyList<Challenge<T[]>> challenges)
         {
             this.Title = EnsureArg.IsNotNull(title, nameof(title));
             this.Description = EnsureArg.IsNotNull(description, nameof(description));
@@ -49,7 +49,7 @@ namespace CodeGolf.Domain
 
         Type IChallengeSet.ReturnType => typeof(T[]);
 
-        private IReadOnlyList<ChallengeArray<T>> Challenges { get; }
+        private IReadOnlyList<Challenge<T[]>> Challenges { get; }
 
         IReadOnlyList<IChallenge> IChallengeSet.Challenges => this.Challenges;
 
