@@ -27,13 +27,13 @@ namespace CodeGolf.Unit.Test.Services
 
         private readonly IDashboardService dashboardService;
 
+        private readonly IGameRepository gameRepository;
+
         private readonly Mock<IAttemptRepository> attemptRepository;
 
         private readonly Mock<IHoleRepository> holeRepository;
 
         private readonly Mock<IUserRepository> userRepository;
-
-        private readonly IGameRepository gameRepository;
 
         public DashboardServiceShould()
         {
@@ -64,8 +64,12 @@ namespace CodeGolf.Unit.Test.Services
             this.attemptRepository.Setup(a => a.GetAttempts(It.IsAny<Guid>(), CancellationToken.None)).Returns(
                 Task.FromResult<IReadOnlyList<Attempt>>(
                     new Attempt[] { new Attempt(Guid.NewGuid(), "matt", Guid.NewGuid(), "", 11, DateTime.UtcNow), }));
+            this.userRepository.Setup(a => a.GetByUserName("matt", CancellationToken.None))
+                .Returns(Task.FromResult(Option.Some(new User(1, "matt", "avatar.png"))));
+
             var scores = this.dashboardService.GetFinalScores(CancellationToken.None).Result;
-            scores.Should().BeEquivalentTo(new ResultDto("matt", "", 6));
+
+            scores.Should().BeEquivalentTo(new ResultDto("matt", "avatar.png", 6));
             this.mockRepository.VerifyAll();
         }
 
@@ -97,6 +101,10 @@ namespace CodeGolf.Unit.Test.Services
             var scores = this.dashboardService.GetAttempts(CancellationToken.None).Result;
             scores.HasValue.Should().BeTrue();
             scores.ValueOrFailure().Should().HaveCount(1);
+            var first = scores.ValueOrFailure().First();
+            first.LoginName.Should().Be("matt");
+            first.Avatar.Should().Be("avatar.png");
+            first.Score.Should().Be(11);
             this.mockRepository.VerifyAll();
         }
     }

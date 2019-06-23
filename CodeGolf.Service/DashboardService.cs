@@ -116,8 +116,13 @@
                                 async h => (await this.GetBestAttempts(h.HoleId, cancellationToken)).Select(
                                     (a, b) => Tuple.Create(b, a))));
             var ranks = holes.SelectMany(a => a);
-            return ranks.GroupBy(a => a.Item2.LoginName)
-                .Select(r => new ResultDto(r.Key, "", r.Sum(a => PosToPoints(a.Item1)))).ToList();
+            return (await Task.WhenAll(ranks.GroupBy(a => a.Item2.LoginName)
+                .Select(
+                    async r =>
+                    {
+                        var user = await this.userRepository.GetByUserName(r.Key, cancellationToken);
+                        return new ResultDto(r.Key, user.Match(a => a.AvatarUri, () => string.Empty), r.Sum(a => PosToPoints(a.Item1)));
+                    }))).ToList();
         }
 
         private async Task<IOrderedEnumerable<Attempt>> GetBestAttempts(
