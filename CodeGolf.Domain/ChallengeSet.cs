@@ -10,7 +10,10 @@ namespace CodeGolf.Domain
 {
     public class ChallengeSet<T> : IChallengeSet
     {
-        public ChallengeSet(string title, string description, IReadOnlyList<Type> ps,
+        public ChallengeSet(
+            string title,
+            string description,
+            IReadOnlyList<ParamDescription> ps,
             IReadOnlyList<Challenge<T>> challenges)
         {
             this.Title = EnsureArg.IsNotNull(title, nameof(title));
@@ -32,7 +35,7 @@ namespace CodeGolf.Domain
                 throw new Exception("Incorrect number of parameters");
             }
 
-            var misMatched = challenge.Args.Zip(this.Params, ValueTuple.Create).Where(IsMisMatched);
+            var misMatched = challenge.Args.Zip(this.Params.Select(a => a.Type), ValueTuple.Create).Where(IsMisMatched);
             if (misMatched.Any())
             {
                 throw new Exception("Mismatched parameters");
@@ -43,7 +46,7 @@ namespace CodeGolf.Domain
 
         public string Description { get; }
 
-        public IReadOnlyList<Type> Params { get; }
+        public IReadOnlyList<ParamDescription> Params { get; }
 
         Type IChallengeSet.ReturnType => typeof(T);
 
@@ -51,27 +54,29 @@ namespace CodeGolf.Domain
 
         IReadOnlyList<IChallenge> IChallengeSet.Challenges => this.Challenges;
 
-        async Task<IReadOnlyList<ChallengeResult>> IChallengeSet.GetResults(
-            CompileResult t)
+        async Task<IReadOnlyList<ChallengeResult>> IChallengeSet.GetResults(CompileResult t)
         {
             var reses = await t.Func(this.Challenges.Select(a => a.Args).ToArray());
             var challRes = reses.Zip(this.Challenges, Tuple.Create);
 
-            return challRes.Select(challenge =>
-            {
-                var errors = challenge.Item1.Match(success =>
-                {
-                    var res = success;
-                    if (!AreEqual(challenge.Item2.ExpectedResult, res))
+            return challRes.Select(
+                challenge =>
                     {
-                        return Option.Some(
-                            $"Return value incorrect. Expected: {GenericPresentationHelpers.WrapIfArray(challenge.Item2.ExpectedResult, typeof(T))}, Found: {GenericPresentationHelpers.WrapIfArray(res, typeof(T))}");
-                    }
+                        var errors = challenge.Item1.Match(
+                            success =>
+                                {
+                                    var res = success;
+                                    if (!AreEqual(challenge.Item2.ExpectedResult, res))
+                                    {
+                                        return Option.Some(
+                                            $"Return value incorrect. Expected: {GenericPresentationHelpers.WrapIfArray(challenge.Item2.ExpectedResult, typeof(T))}, Found: {GenericPresentationHelpers.WrapIfArray(res, typeof(T))}");
+                                    }
 
-                    return Option.None<string>();
-                }, Option.Some);
-                return new ChallengeResult(errors, challenge.Item2);
-            }).ToList();
+                                    return Option.None<string>();
+                                },
+                            Option.Some);
+                        return new ChallengeResult(errors, challenge.Item2);
+                    }).ToList();
         }
 
         private static bool AreEqual(object expect, object actual)

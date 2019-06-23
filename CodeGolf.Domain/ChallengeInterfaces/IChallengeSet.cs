@@ -8,7 +8,7 @@ namespace CodeGolf.Domain.ChallengeInterfaces
     {
         Task<IReadOnlyList<ChallengeResult>> GetResults(CompileResult t);
 
-        IReadOnlyList<Type> Params { get; }
+        IReadOnlyList<ParamDescription> Params { get; }
 
         Type ReturnType { get; }
 

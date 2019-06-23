@@ -8,48 +8,66 @@ namespace CodeGolf.Unit.Test
 {
     public class GenericPresentationHelpersShould
     {
+        private readonly IReadOnlyList<ParamDescription> intAndString =
+            new ParamDescription[]
+                {
+                    new ParamDescription(typeof(int), "i"), new ParamDescription(typeof(string), "s"),
+                };
+
         [Fact]
         public void DealWithBasicExample()
         {
-            var r = GenericPresentationHelpers.DisplayFunction(new Challenge<string>(new object[] {1, "a"}, "hello"), new[] { typeof(int), typeof(string)}, typeof(string));
+            var r = GenericPresentationHelpers.DisplayFunction(
+                new Challenge<string>(new object[] { 1, "a" }, "hello"),
+                this.intAndString,
+                typeof(string));
             r.Should().BeEquivalentTo("(1, \"a\") => \"hello\"");
         }
 
         [Fact]
         public void DealWithIntArrayResponses()
         {
-            var r = GenericPresentationHelpers.DisplayFunction(new ChallengeArray<int>(new object[] { 1, "a" }, new[] {1, 2, 3}), new[] { typeof(int), typeof(string) }, typeof(int[]));
+            var r = GenericPresentationHelpers.DisplayFunction(
+                new ChallengeArray<int>(new object[] { 1, "a" }, new[] { 1, 2, 3 }),
+                this.intAndString,
+                typeof(int[]));
             r.Should().BeEquivalentTo("(1, \"a\") => [1, 2, 3]");
         }
 
         [Fact]
         public void DealWithIntArrayNullResponses()
         {
-            var r = GenericPresentationHelpers.DisplayFunction(new ChallengeArray<int>(new object[] { 1, "a" }, null), new[] { typeof(int), typeof(string) }, typeof(int[]));
+            var r = GenericPresentationHelpers.DisplayFunction(
+                new ChallengeArray<int>(new object[] { 1, "a" }, null),
+                this.intAndString,
+                typeof(int[]));
             r.Should().BeEquivalentTo("(1, \"a\") => null");
         }
 
         [Fact]
         public void DealWithStringArrayResponses()
         {
-            var r = GenericPresentationHelpers.DisplayFunction(new ChallengeArray<string>(new object[] { 1, "a" }, new[] { "a", "b" }), new[] { typeof(int), typeof(string) }, typeof(string[]));
+            var r = GenericPresentationHelpers.DisplayFunction(
+                new ChallengeArray<string>(new object[] { 1, "a" }, new[] { "a", "b" }),
+                this.intAndString,
+                typeof(string[]));
             r.Should().BeEquivalentTo("(1, \"a\") => [\"a\", \"b\"]");
         }
 
         [Fact]
         public void GetFunctionTemplateNoParams()
         {
-            var r = GenericPresentationHelpers.GetFuncTemplate(new ChallengeSet<string[]>("a", "b",
-                new List<Type>() { }, new Challenge<string[]>[] { }));
+            var r = GenericPresentationHelpers.GetFuncTemplate(
+                new ChallengeSet<string[]>("a", "b", new List<ParamDescription>() { }, new Challenge<string[]>[] { }));
             r.Should().BeEquivalentTo("string[] Main() { return ... ; }");
         }
 
         [Fact]
         public void GetFunctionTemplateWithParams()
         {
-            var r = GenericPresentationHelpers.GetFuncTemplate(new ChallengeSet<string[]>("a", "b",
-                new List<Type>() { typeof(int), typeof(string) }, new Challenge<string[]>[] { }));
-            r.Should().BeEquivalentTo("string[] Main(int a, string b) { return ... ; }");
+            var r = GenericPresentationHelpers.GetFuncTemplate(
+                new ChallengeSet<string[]>("a", "b", this.intAndString, new Challenge<string[]>[] { }));
+            r.Should().BeEquivalentTo("string[] Main(int i, string s) { return ... ; }");
         }
     }
 }

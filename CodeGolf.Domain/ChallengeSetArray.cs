@@ -10,7 +10,7 @@ namespace CodeGolf.Domain
 {
     public class ChallengeSetArray<T> : IChallengeSet
     {
-        public ChallengeSetArray(string title, string description, IReadOnlyList<Type> ps,
+        public ChallengeSetArray(string title, string description, IReadOnlyList<ParamDescription> ps,
             IReadOnlyList<ChallengeArray<T>> challenges)
         {
             this.Title = EnsureArg.IsNotNull(title, nameof(title));
@@ -32,7 +32,7 @@ namespace CodeGolf.Domain
                 throw new Exception("Incorrect number of parameters");
             }
 
-            var misMatched = challenge.Args.Zip(this.Params, ValueTuple.Create).Where(IsMisMatched);
+            var misMatched = challenge.Args.Zip(this.GetParams(), ValueTuple.Create).Where(IsMisMatched);
             if (misMatched.Any())
             {
                 throw new Exception("Mismatched parameters");
@@ -43,7 +43,9 @@ namespace CodeGolf.Domain
 
         public string Description { get; }
 
-        public IReadOnlyList<Type> Params { get; }
+        public IReadOnlyList<ParamDescription> Params { get; }
+
+        private IReadOnlyList<Type> GetParams() => this.Params.Select(a => a.Type).ToArray();
 
         Type IChallengeSet.ReturnType => typeof(T[]);
 

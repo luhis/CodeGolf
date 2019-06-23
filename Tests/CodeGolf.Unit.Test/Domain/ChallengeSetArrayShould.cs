@@ -11,58 +11,67 @@ namespace CodeGolf.Unit.Test.Domain
 {
     public class ChallengeSetArrayShould
     {
+        private readonly IReadOnlyList<ParamDescription> stringParam =
+            new ParamDescription[] { new ParamDescription(typeof(string), "s"), };
+
         [Fact]
         public void ReturnFalseResultWhenIncorrectWithArray()
         {
-            var a = (IChallengeSet) new ChallengeSetArray<string>("a", "b", new[] {typeof(string)},
-                new[] {new ChallengeArray<string>(new object[] {"test"}, new string[] {"a"})});
-            var r = a.GetResults(new CompileResult(o =>
-                    Task.FromResult<IReadOnlyList<Option<object, string>>>(
-                        new[] {Option.Some<object, string>(new[] {"testXX"})})))
-                .Result;
-            r.Single().Error
-                .HasValue.Should().BeTrue();
+            var a = (IChallengeSet)new ChallengeSetArray<string>(
+                "a",
+                "b",
+                this.stringParam,
+                new[] { new ChallengeArray<string>(new object[] { "test" }, new string[] { "a" }) });
+            var r = a.GetResults(
+                new CompileResult(
+                    o => Task.FromResult<IReadOnlyList<Option<object, string>>>(
+                        new[] { Option.Some<object, string>(new[] { "testXX" }) }))).Result;
+            r.Single().Error.HasValue.Should().BeTrue();
         }
 
         [Fact]
         public void ReturnFalseResultWhenIncorrectWithEmptyArray()
         {
-            var a = (IChallengeSet) new ChallengeSetArray<string>("a", "b", new[] {typeof(string)},
-                new[] {new ChallengeArray<string>(new object[] {"test"}, new string[] {"a"}),});
-            var r = a.GetResults(new CompileResult(o =>
-                    Task.FromResult<IReadOnlyList<Option<object, string>>>(new[]
-                    {
-                        Option.Some<object, string>(new string[] { })
-                    })))
-                .Result;
-            r.Single().Error
-                .HasValue.Should().BeTrue();
+            var a = (IChallengeSet)new ChallengeSetArray<string>(
+                "a",
+                "b",
+                this.stringParam,
+                new[] { new ChallengeArray<string>(new object[] { "test" }, new string[] { "a" }), });
+            var r = a.GetResults(
+                new CompileResult(
+                    o => Task.FromResult<IReadOnlyList<Option<object, string>>>(
+                        new[] { Option.Some<object, string>(new string[] { }) }))).Result;
+            r.Single().Error.HasValue.Should().BeTrue();
         }
 
         [Fact]
         public void ReturnFalseResultWhenIncorrectWithNullInArray()
         {
-            var a = (IChallengeSet) new ChallengeSetArray<string>("a", "b", new[] {typeof(string)},
-                new[] {new ChallengeArray<string>(new object[] {"test"}, new string[] {"a"}),});
-            var r = a.GetResults(new CompileResult(o =>
-                Task.FromResult<IReadOnlyList<Option<object, string>>>(new[]
-                {
-                    Option.Some<object, string>(new string[] {null})
-                }))).Result;
-            r.Single().Error
-                .HasValue.Should().BeTrue();
+            var a = (IChallengeSet)new ChallengeSetArray<string>(
+                "a",
+                "b",
+                this.stringParam,
+                new[] { new ChallengeArray<string>(new object[] { "test" }, new string[] { "a" }), });
+            var r = a.GetResults(
+                new CompileResult(
+                    o => Task.FromResult<IReadOnlyList<Option<object, string>>>(
+                        new[] { Option.Some<object, string>(new string[] { null }) }))).Result;
+            r.Single().Error.HasValue.Should().BeTrue();
         }
 
         [Fact]
         public void ReturnFalseResultWhenIncorrectWithNull()
         {
-            var a = (IChallengeSet) new ChallengeSetArray<string>("a", "b", new[] {typeof(string)},
-                new[] {new ChallengeArray<string>(new object[] {"test"}, new string[] {"a"}),});
-            var r = a.GetResults(new CompileResult(o =>
-                    Task.FromResult<IReadOnlyList<Option<object, string>>>(new[] {Option.Some<object, string>(null)})))
-                .Result;
-            r.Single().Error
-                .HasValue.Should().BeTrue();
+            var a = (IChallengeSet)new ChallengeSetArray<string>(
+                "a",
+                "b",
+                this.stringParam,
+                new[] { new ChallengeArray<string>(new object[] { "test" }, new string[] { "a" }), });
+            var r = a.GetResults(
+                new CompileResult(
+                    o => Task.FromResult<IReadOnlyList<Option<object, string>>>(
+                        new[] { Option.Some<object, string>(null) }))).Result;
+            r.Single().Error.HasValue.Should().BeTrue();
         }
     }
 }

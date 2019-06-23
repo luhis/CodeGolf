@@ -25,7 +25,7 @@ namespace CodeGolf.Service
             IChallengeSet challenge,
             CancellationToken cancellationToken)
         {
-            var compileResult = this.runner.Compile(code, challenge.Params, challenge.ReturnType, cancellationToken);
+            var compileResult = this.runner.Compile(code, challenge.Params.Select(a => a.Type).ToArray(), challenge.ReturnType, cancellationToken);
             return compileResult.Match(async compiled =>
             {
                 var fails = (await challenge.GetResults(compiled))

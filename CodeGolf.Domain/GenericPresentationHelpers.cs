@@ -40,9 +40,9 @@ namespace CodeGolf.Domain
             }
         }
 
-        public static string DisplayFunction(IChallenge challenge, IReadOnlyList<Type> paramTypes, Type returnType)
+        public static string DisplayFunction(IChallenge challenge, IReadOnlyList<ParamDescription> paramTypes, Type returnType)
         {
-            var zipped = challenge.Args.Zip(paramTypes, Tuple.Create).Select(a => WrapIfString(a.Item1, a.Item2));
+            var zipped = challenge.Args.Zip(paramTypes, Tuple.Create).Select(a => WrapIfString(a.Item1, a.Item2.Type));
             return $"({string.Join(", ", zipped)}) => {WrapIfArray(challenge.ExpectedResult, returnType)}";
         }
 
@@ -66,8 +66,8 @@ namespace CodeGolf.Domain
 
         public static string GetFuncTemplate(IChallengeSet set)
         {
-            var paramPairs = set.Params.Zip(Enumerable.Range('a', set.Params.Count).Select(a => (char)a), Tuple.Create)
-                .Select(t => $"{GetAlias(t.Item1)} {t.Item2}");
+            var paramPairs = set.Params
+                .Select(t => $"{GetAlias(t.Type)} {t.SuggestedName}");
             return $"{GetAlias(set.ReturnType)} Main({string.Join(", ", paramPairs)}) {{ return ... ; }}";
         }
     }

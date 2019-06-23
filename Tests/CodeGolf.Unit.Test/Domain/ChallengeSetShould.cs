@@ -12,47 +12,59 @@ namespace CodeGolf.Unit.Test.Domain
 {
     public class ChallengeSetShould
     {
+        private readonly IReadOnlyList<ParamDescription> stringParam =
+            new ParamDescription[] { new ParamDescription(typeof(string), "s"), };
+
         [Fact]
         public void ThrowWhenTheChallengeParamsAreMismatched()
         {
-            Action a = () =>
-                new ChallengeSet<string>("a", "b", new[] {typeof(string)},
-                    new[] {new Challenge<string>(new object[] {42}, "test")});
+            Action a = () => new ChallengeSet<string>(
+                "a",
+                "b",
+                this.stringParam,
+                new[] { new Challenge<string>(new object[] { 42 }, "test") });
             a.Should().Throw<Exception>().WithMessage("Mismatched parameters");
         }
 
         [Fact]
         public void NotThrowWhenTheChallengeParamsAreNotMismatched()
         {
-            var a = new ChallengeSet<string>("a", "b", new[] {typeof(string)},
-                new[] {new Challenge<string>(new object[] {"test"}, "test")});
+            var a = new ChallengeSet<string>(
+                "a",
+                "b",
+                this.stringParam,
+                new[] { new Challenge<string>(new object[] { "test" }, "test") });
             a.Should().NotBeNull();
         }
 
         [Fact]
         public void ReturnTrueResultWhenCorrect()
         {
-            var a = (IChallengeSet) new ChallengeSet<string>("a", "b", new[] {typeof(string)},
-                new[] {new Challenge<string>(new object[] {"test"}, "test")});
-            var r = a.GetResults(new CompileResult(o =>
-                    Task.FromResult<IReadOnlyList<Option<object, string>>>(new[]
-                        {Option.Some<object, string>("test")})))
-                .Result;
-            r.Single().Error
-                .HasValue.Should().BeFalse();
+            var a = (IChallengeSet)new ChallengeSet<string>(
+                "a",
+                "b",
+                this.stringParam,
+                new[] { new Challenge<string>(new object[] { "test" }, "test") });
+            var r = a.GetResults(
+                new CompileResult(
+                    o => Task.FromResult<IReadOnlyList<Option<object, string>>>(
+                        new[] { Option.Some<object, string>("test") }))).Result;
+            r.Single().Error.HasValue.Should().BeFalse();
         }
 
         [Fact]
         public void ReturnFalseResultWhenIncorrect()
         {
-            var a = (IChallengeSet) new ChallengeSet<string>("a", "b", new[] {typeof(string)},
-                new[] {new Challenge<string>(new object[] {"test"}, "test")});
-            var r = a.GetResults(new CompileResult(o =>
-                    Task.FromResult<IReadOnlyList<Option<object, string>>>(
-                        new[] {Option.Some<object, string>("testXX")})))
-                .Result;
-            r.Single().Error
-                .HasValue.Should().BeTrue();
+            var a = (IChallengeSet)new ChallengeSet<string>(
+                "a",
+                "b",
+                this.stringParam,
+                new[] { new Challenge<string>(new object[] { "test" }, "test") });
+            var r = a.GetResults(
+                new CompileResult(
+                    o => Task.FromResult<IReadOnlyList<Option<object, string>>>(
+                        new[] { Option.Some<object, string>("testXX") }))).Result;
+            r.Single().Error.HasValue.Should().BeTrue();
         }
     }
 }

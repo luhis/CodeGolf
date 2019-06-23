@@ -7,7 +7,7 @@ namespace CodeGolf.Persistence.Static
     {
         public static readonly ChallengeSet<string> HelloWorld = new ChallengeSet<string>("Hello World",
             "Write a function that returns 'Hello World'",
-            new Type[] { },
+            new ParamDescription[] { },
             new[] {new Challenge<string>(new object[0], "Hello World")});
 
         public static readonly ChallengeSet<string> AlienSpeak = new ChallengeSet<string>("English to Alien translator",
@@ -22,7 +22,7 @@ namespace CodeGolf.Persistence.Static
             i | ini
             o | api
             u | iki",
-            new[] {typeof(string)},
+            new[] {new ParamDescription( typeof(string), "s")},
             new[]
             {
                 new Challenge<string>(new object[] {"Shaun"}, "Shoboikin"),
@@ -34,7 +34,7 @@ namespace CodeGolf.Persistence.Static
 
         public static readonly ChallengeSet<string> Calculator = new ChallengeSet<string>("Basic Calculator",
             @"You must write a program to evaluate a string that would be entered into a calculator.",
-            new[] {typeof(string)},
+            new[] {new ParamDescription( typeof(string), "s")},
             new[]
             {
                 new Challenge<string>(new object[] {"-4 + 5"}, "1"),
@@ -44,7 +44,7 @@ namespace CodeGolf.Persistence.Static
 
         public static readonly ChallengeSetArray<string> FizzBuzz = new ChallengeSetArray<string>("Fizzbuzz",
             "Write a program that prints the integer numbers from 1 to i inclusive. But for multiples of three print \"Fizz\" instead of the number and for the multiples of five print \"Buzz\". For numbers which are multiples of both three and five print \"FizzBuzz\".",
-            new[] {typeof(int)},
+            new[] {new ParamDescription( typeof(int), "i")},
             new[]
             {
                 new ChallengeArray<string>(new object[] {10}, new[]
