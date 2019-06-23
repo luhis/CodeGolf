@@ -25,11 +25,6 @@
 
 <script>
 export default {
-  props: ["appData"],
-  watch: {
-    stuff() {
-      console.log("changed");
-    }
-  }
+  props: ["appData"]
 };
 </script>
