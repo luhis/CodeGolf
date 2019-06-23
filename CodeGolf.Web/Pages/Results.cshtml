@@ -17,7 +17,7 @@
         @foreach (var res in Model.Results)
         {
             <tr v-for="result in appData" :key="result.id">
-                <td><figure class="image is-48x48"><img :src="result.avatar"/></figure></td>
+                <td><figure class="image is-48x48"><img src="@res.AvatarUri"/></figure></td>
                 <td>@res.LoginName</td>
                 <td>@res.Score</td>
             </tr>
