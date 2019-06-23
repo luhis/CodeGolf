@@ -152,7 +152,7 @@
                                    var avatar =
                                        (await this.userRepository.GetByUserName(r.LoginName, cancellationToken))
                                        .Map(a => a.AvatarUri).ValueOr(string.Empty);
-                                   return new AttemptDto(i + 1, r.Id, r.LoginName, avatar, r.Score, r.TimeStamp);
+                                   return new AttemptDto(i + 1, r.Id, r.LoginName, avatar, r.Score, r.TimeStamp.ToLocalTime().ToString());
                                }));
         }
 

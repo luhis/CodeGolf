@@ -4,14 +4,14 @@
     <div class="control">
         <div class="tags has-addons">
             <span class="tag is-dark">start</span>
-            <span class="tag is-success">@Model.Start</span>
+            <span class="tag is-success">@Model.Start.ToLocalTime()</span>
         </div>
     </div>
 
     <div class="control">
         <div class="tags has-addons">
             <span class="tag is-dark">end</span>
-            <span class="tag is-info">@Model.End</span>
+            <span class="tag is-info">@Model.End.ToLocalTime()</span>
         </div>
     </div>
 </div>
