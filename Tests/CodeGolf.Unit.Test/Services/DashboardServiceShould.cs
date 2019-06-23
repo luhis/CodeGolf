@@ -2,6 +2,7 @@ namespace CodeGolf.Unit.Test.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -15,21 +16,37 @@ namespace CodeGolf.Unit.Test.Services
 
     using Moq;
 
+    using Optional;
+    using Optional.Unsafe;
+
     using Xunit;
 
     public class DashboardServiceShould
     {
         private readonly MockRepository mockRepository = new MockRepository(MockBehavior.Strict);
-        private readonly IGameRepository gameRepository;
+
         private readonly IDashboardService dashboardService;
 
         private readonly Mock<IAttemptRepository> attemptRepository;
 
+        private readonly Mock<IHoleRepository> holeRepository;
+
+        private readonly Mock<IUserRepository> userRepository;
+
+        private readonly IGameRepository gameRepository;
+
         public DashboardServiceShould()
         {
-            this.gameRepository = new GameRepository();
             this.attemptRepository = this.mockRepository.Create<IAttemptRepository>();
-            this.dashboardService = new DashboardService(this.gameRepository, null, null, this.attemptRepository.Object, null);
+            this.holeRepository = this.mockRepository.Create<IHoleRepository>();
+            this.userRepository = this.mockRepository.Create<IUserRepository>();
+            this.gameRepository = new GameRepository();
+            this.dashboardService = new DashboardService(
+                this.gameRepository,
+                this.holeRepository.Object,
+                null,
+                this.attemptRepository.Object,
+                this.userRepository.Object);
         }
 
         [Fact]
@@ -44,10 +61,43 @@ namespace CodeGolf.Unit.Test.Services
         [Fact]
         public void GetFinalScoresOneUser()
         {
-            this.attemptRepository.Setup(a => a.GetAttempts(It.IsAny<Guid>(), CancellationToken.None))
-                .Returns(Task.FromResult<IReadOnlyList<Attempt>>(new Attempt[] { new Attempt(Guid.NewGuid(), "matt", Guid.NewGuid(), "", 11, DateTime.UtcNow),  }));
+            this.attemptRepository.Setup(a => a.GetAttempts(It.IsAny<Guid>(), CancellationToken.None)).Returns(
+                Task.FromResult<IReadOnlyList<Attempt>>(
+                    new Attempt[] { new Attempt(Guid.NewGuid(), "matt", Guid.NewGuid(), "", 11, DateTime.UtcNow), }));
             var scores = this.dashboardService.GetFinalScores(CancellationToken.None).Result;
-            scores.Should().BeEquivalentTo( new ResultDto("matt", "", 6));
+            scores.Should().BeEquivalentTo(new ResultDto("matt", "", 6));
+            this.mockRepository.VerifyAll();
+        }
+
+        [Fact]
+        public void GetAttemptsNone()
+        {
+            var hole = this.gameRepository.GetGame().Holes.First();
+            this.holeRepository.Setup(a => a.GetCurrentHole()).Returns(
+                Task.FromResult(Option.Some(new HoleInstance(hole.HoleId, DateTime.UtcNow, null))));
+            this.attemptRepository.Setup(a => a.GetAttempts(It.IsAny<Guid>(), CancellationToken.None))
+                .Returns(Task.FromResult<IReadOnlyList<Attempt>>(new Attempt[] { }));
+            var scores = this.dashboardService.GetAttempts(CancellationToken.None).Result;
+            scores.HasValue.Should().BeTrue();
+            scores.ValueOrFailure().Should().HaveCount(0);
+            this.mockRepository.VerifyAll();
+        }
+
+        [Fact]
+        public void GetAttemptsSome()
+        {
+            var hole = this.gameRepository.GetGame().Holes.First();
+            this.holeRepository.Setup(a => a.GetCurrentHole()).Returns(
+                Task.FromResult(Option.Some(new HoleInstance(hole.HoleId, DateTime.UtcNow, null))));
+            this.attemptRepository.Setup(a => a.GetAttempts(It.IsAny<Guid>(), CancellationToken.None)).Returns(
+                Task.FromResult<IReadOnlyList<Attempt>>(
+                    new Attempt[] { new Attempt(Guid.NewGuid(), "matt", Guid.NewGuid(), "", 11, DateTime.UtcNow), }));
+            this.userRepository.Setup(a => a.GetByUserName("matt", CancellationToken.None))
+                .Returns(Task.FromResult(Option.Some(new User(1, "matt", "avatar.png"))));
+            var scores = this.dashboardService.GetAttempts(CancellationToken.None).Result;
+            scores.HasValue.Should().BeTrue();
+            scores.ValueOrFailure().Should().HaveCount(1);
+            this.mockRepository.VerifyAll();
         }
     }
 }
