@@ -78,6 +78,10 @@ namespace CodeGolf.Service
             {
                 return (await this.svc.Execute<int[]>(success, ClassName, FunctionName, args, paramTypes)).Select(ToOpt).ToArray();
             }
+            if (returnType == typeof(string[]))
+            {
+                return (await this.svc.Execute<string[]>(success, ClassName, FunctionName, args, paramTypes)).Select(ToOpt).ToArray();
+            }
             if (returnType.IsArray)
             {
                 return (await this.svc.Execute<object[]>(success, ClassName, FunctionName, args, paramTypes)).Select(ToOpt).ToArray();
