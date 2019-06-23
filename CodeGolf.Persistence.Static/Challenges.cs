@@ -6,22 +6,24 @@ namespace CodeGolf.Persistence.Static
     public static class Challenges
     {
         public static readonly ChallengeSet<string> HelloWorld = new ChallengeSet<string>("Hello World",
-            "Write a function that returns 'Hello World'",
+            "Write a function that returns *'Hello World'*",
             new ParamDescription[] { },
             new[] {new Challenge<string>(new object[0], "Hello World")});
 
         public static readonly ChallengeSet<string> AlienSpeak = new ChallengeSet<string>("English to Alien translator",
             @"Take a string and output the alien's language equivalent. The translation works as such:
 
-        Swap all the vowels in the word with the corresponding:
 
-        Vowel | With
-        -------- + --------
-        a | obo
-            e | unu
-            i | ini
-            o | api
-            u | iki",
+Swap all the vowels in the word with the corresponding:
+
+
+| Vowel | With |
+|---|----|
+| a | obo |
+| e | unu |
+| i | ini |
+| o | api |
+| u | iki |",
             new[] {new ParamDescription( typeof(string), "s")},
             new[]
             {
@@ -42,7 +44,7 @@ namespace CodeGolf.Persistence.Static
                 new Challenge<string>(new object[] {"-2 + 6 / 2 * 8 - 1 / 2.5 - 18"}, "-12"),
             });
 
-        public static readonly ChallengeSetArray<string> FizzBuzz = new ChallengeSetArray<string>("Fizzbuzz",
+        public static readonly ChallengeSetArray<string> FizzBuzz = new ChallengeSetArray<string>("FizzBuzz",
             "Write a program that prints the integer numbers from 1 to i inclusive. But for multiples of three print \"Fizz\" instead of the number and for the multiples of five print \"Buzz\". For numbers which are multiples of both three and five print \"FizzBuzz\".",
             new[] {new ParamDescription( typeof(int), "i")},
             new[]

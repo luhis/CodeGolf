@@ -26,6 +26,11 @@ using WebMarkupMin.AspNetCore2;
 
 namespace CodeGolf.Web
 {
+    using Markdig;
+    using Markdig.Extensions.Tables;
+
+    using Westwind.AspNetCore.Markdown;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -60,6 +65,7 @@ namespace CodeGolf.Web
             services.Configure<GameAdminSettings>(this.Configuration);
             services.Configure<RecaptchaSettings>(this.Configuration.GetSection("Recaptcha"));
 
+            services.AddMarkdown();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddWebMarkupMin(options =>
                 {
@@ -192,6 +198,7 @@ namespace CodeGolf.Web
             app.UseAuthentication();
             app.UseWebMarkupMin();
 
+            app.UseMarkdown();
             app.UseCookiePolicy();
             app.UseSignalR(routes =>
             {
