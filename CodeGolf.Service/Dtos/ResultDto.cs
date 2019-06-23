@@ -4,12 +4,15 @@
 
     public class ResultDto
     {
-        public ResultDto(string loginName, string avatarUri, int score)
+        public ResultDto(int rank, string loginName, string avatarUri, int score)
         {
+            this.Rank = rank;
             this.LoginName = EnsureArg.IsNotEmpty(loginName, nameof(loginName));
             this.Score = score;
             this.AvatarUri = EnsureArg.IsNotNull(avatarUri, nameof(avatarUri));
         }
+
+        public int Rank { get; }
 
         public string LoginName { get; }
 

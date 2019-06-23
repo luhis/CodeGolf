@@ -69,7 +69,7 @@ namespace CodeGolf.Unit.Test.Services
 
             var scores = this.dashboardService.GetFinalScores(CancellationToken.None).Result;
 
-            scores.Should().BeEquivalentTo(new ResultDto("matt", "avatar.png", 6));
+            scores.Should().BeEquivalentTo(new ResultDto(1, "matt", "avatar.png", 6));
             this.mockRepository.VerifyAll();
         }
 

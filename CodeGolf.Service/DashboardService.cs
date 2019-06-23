@@ -23,6 +23,7 @@
         private readonly ISignalRNotifier signalRNotifier;
 
         private readonly IAttemptRepository attemptRepository;
+
         private readonly IUserRepository userRepository;
 
         public DashboardService(
@@ -38,16 +39,17 @@
             this.attemptRepository = attemptRepository;
             this.userRepository = userRepository;
         }
-        
+
         async Task<Option<Guid>> IDashboardService.NextHole()
         {
             var next = await this.GetNextHole();
             var id = await next.MapAsync(
                          async some =>
-                    {
-                        await this.holeRepository.AddHole(new HoleInstance(some.HoleId, DateTime.UtcNow, null));
-                        return some.HoleId;
-                    });
+                             {
+                                 await this.holeRepository.AddHole(
+                                     new HoleInstance(some.HoleId, DateTime.UtcNow, null));
+                                 return some.HoleId;
+                             });
             await this.signalRNotifier.NewRound();
             return id;
         }
@@ -58,16 +60,15 @@
             await this.signalRNotifier.NewRound();
         }
 
-        async Task<Option<HoleDto>> IDashboardService.GetCurrentHole(
-            CancellationToken cancellationToken)
+        async Task<Option<HoleDto>> IDashboardService.GetCurrentHole(CancellationToken cancellationToken)
         {
             var hole = await this.holeRepository.GetCurrentHole();
             return hole.Map(
-                       a =>
-                           {
-                               var curr = this.gameRepository.GetGame().Holes.First(b => b.HoleId.Equals(a.HoleId));
-                               return new HoleDto(curr, a.Start, a.Start.Add(curr.Duration), a.End);
-                           });
+                a =>
+                    {
+                        var curr = this.gameRepository.GetGame().Holes.First(b => b.HoleId.Equals(a.HoleId));
+                        return new HoleDto(curr, a.Start, a.Start.Add(curr.Duration), a.End);
+                    });
         }
 
         Task<IReadOnlyList<Hole>> IDashboardService.GetAllHoles(CancellationToken cancellationToken)
@@ -116,13 +117,17 @@
                                 async h => (await this.GetBestAttempts(h.HoleId, cancellationToken)).Select(
                                     (a, b) => Tuple.Create(b, a))));
             var ranks = holes.SelectMany(a => a);
-            return (await Task.WhenAll(ranks.GroupBy(a => a.Item2.LoginName)
-                .Select(
-                    async r =>
-                    {
-                        var user = await this.userRepository.GetByUserName(r.Key, cancellationToken);
-                        return new ResultDto(r.Key, user.Match(a => a.AvatarUri, () => string.Empty), r.Sum(a => PosToPoints(a.Item1)));
-                    }))).ToList();
+            return (await Task.WhenAll(
+                        ranks.GroupBy(a => a.Item2.LoginName).Select(
+                            async (r, i) =>
+                                {
+                                    var user = await this.userRepository.GetByUserName(r.Key, cancellationToken);
+                                    return new ResultDto(
+                                        i + 1,
+                                        r.Key,
+                                        user.Match(a => a.AvatarUri, () => string.Empty),
+                                        r.Sum(a => PosToPoints(a.Item1)));
+                                }))).ToList();
         }
 
         private async Task<IOrderedEnumerable<Attempt>> GetBestAttempts(
@@ -134,16 +139,21 @@
                 .OrderByDescending(a => a.Score);
         }
 
-        private async Task<IReadOnlyList<AttemptDto>> GetBestAttemptDtos(Guid holeId, CancellationToken cancellationToken)
+        private async Task<IReadOnlyList<AttemptDto>> GetBestAttemptDtos(
+            Guid holeId,
+            CancellationToken cancellationToken)
         {
             var rows = await this.GetBestAttempts(holeId, cancellationToken);
 
-            return await Task.WhenAll(rows.Select(
-                       async r =>
-                           {
-                               var avatar = (await this.userRepository.GetByUserName(r.LoginName, cancellationToken)).Map(a => a.AvatarUri).ValueOr(string.Empty);
-                               return new AttemptDto(r.Id, r.LoginName, avatar, r.Score, r.TimeStamp);
-                           }));
+            return await Task.WhenAll(
+                       rows.Select(
+                           async (r, i) =>
+                               {
+                                   var avatar =
+                                       (await this.userRepository.GetByUserName(r.LoginName, cancellationToken))
+                                       .Map(a => a.AvatarUri).ValueOr(string.Empty);
+                                   return new AttemptDto(i + 1, r.Id, r.LoginName, avatar, r.Score, r.TimeStamp);
+                               }));
         }
 
         Task<Attempt> IDashboardService.GetAttemptById(Guid attemptId, CancellationToken cancellationToken)
