@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using CodeGolf.Domain;
 using CodeGolf.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +7,7 @@ using Optional;
 namespace CodeGolf.Persistence.Repositories
 {
     using System;
+    using System.Threading;
 
     public class HoleRepository : IHoleRepository
     {
@@ -18,11 +18,11 @@ namespace CodeGolf.Persistence.Repositories
             this.context = context;
         }
 
-        async Task<Option<HoleInstance>> IHoleRepository.GetCurrentHole()
+        async Task<Option<HoleInstance>> IHoleRepository.GetCurrentHole(CancellationToken cancellationToken)
         {
-            if (await this.context.Holes.AnyAsync())
+            if (await this.context.Holes.AnyAsync(cancellationToken))
             {
-                return Option.Some(await this.context.Holes.LastAsync());
+                return Option.Some(await this.context.Holes.LastAsync(cancellationToken));
             }
             else
             {

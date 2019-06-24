@@ -15,7 +15,14 @@
                     {
                         if (isHole.ClosedAt.HasValue)
                         {
-                            return ButtonState.NextHole;
+                            if (isHole.HasNext)
+                            {
+                                return ButtonState.NextHole;
+                            }
+                            else
+                            {
+                                return ButtonState.EndGame;
+                            }
                         }
                         else
                         {

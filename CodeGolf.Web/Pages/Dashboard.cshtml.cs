@@ -39,9 +39,9 @@ namespace CodeGolf.Web.Pages
             return this.RedirectToPage();
         }
 
-        public async Task<IActionResult> OnPostNextHole()
+        public async Task<IActionResult> OnPostNextHole(CancellationToken cancellationToken)
         {
-            var holeId = await this.gameService.NextHole();
+            var holeId = await this.gameService.NextHole(cancellationToken);
             return holeId.Match(some => this.RedirectToPage(), () => this.RedirectToPage("Results"));
         }
     }

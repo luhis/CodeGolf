@@ -13,6 +13,7 @@
     using Optional;
     using Optional.Async;
     using Optional.Collections;
+    using Optional.Unsafe;
 
     public class DashboardService : IDashboardService
     {
@@ -40,9 +41,9 @@
             this.userRepository = userRepository;
         }
 
-        async Task<Option<Guid>> IDashboardService.NextHole()
+        async Task<Option<Guid>> IDashboardService.NextHole(CancellationToken cancellationToken)
         {
-            var next = await this.GetNextHole();
+            var next = await this.GetNextHole(cancellationToken);
             var id = await next.MapAsync(
                          async some =>
                              {
@@ -62,12 +63,13 @@
 
         async Task<Option<HoleDto>> IDashboardService.GetCurrentHole(CancellationToken cancellationToken)
         {
-            var hole = await this.holeRepository.GetCurrentHole();
+            var hole = await this.holeRepository.GetCurrentHole(cancellationToken);
             return hole.Map(
                 a =>
                     {
-                        var curr = this.gameRepository.GetGame().Holes.First(b => b.HoleId.Equals(a.HoleId));
-                        return new HoleDto(curr, a.Start, a.Start.Add(curr.Duration), a.End);
+                        var curr = this.gameRepository.GetById(a.HoleId);
+                        var next = this.gameRepository.GetAfter(curr.ValueOrDefault().HoleId);
+                        return new HoleDto(curr.ValueOrFailure(), a.Start, a.Start.Add(curr.ValueOrFailure().Duration), a.End, next.HasValue);
                     });
         }
 
@@ -84,16 +86,13 @@
             await this.signalRNotifier.NewRound();
         }
 
-        private async Task<Option<Hole>> GetNextHole()
+        private async Task<Option<Hole>> GetNextHole(CancellationToken cancellationToken)
         {
-            var currentHole = await this.holeRepository.GetCurrentHole();
+            var currentHole = await this.holeRepository.GetCurrentHole(cancellationToken);
             return currentHole.Match(
-                some => GetAfter(this.gameRepository.GetGame().Holes, item => item.HoleId.Equals(some.HoleId)),
+                some => this.gameRepository.GetAfter(some.HoleId),
                 () => this.gameRepository.GetGame().Holes.FirstOrNone());
         }
-
-        private static Option<T> GetAfter<T>(IReadOnlyList<T> list, Func<T, bool> equals) =>
-            list.SkipWhile(b => !equals(b)).SkipWhile(equals).SingleOrNone();
 
         private static int PosToPoints(int i)
         {
@@ -163,7 +162,7 @@
 
         async Task<Option<IReadOnlyList<AttemptDto>>> IDashboardService.GetAttempts(CancellationToken cancellationToken)
         {
-            var hole = await this.holeRepository.GetCurrentHole();
+            var hole = await this.holeRepository.GetCurrentHole(cancellationToken);
             return await hole.MapAsync(a => this.GetBestAttemptDtos(a.HoleId, cancellationToken));
         }
     }

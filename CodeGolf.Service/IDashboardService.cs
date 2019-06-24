@@ -14,7 +14,7 @@
     {
         Task<Option<HoleDto>> GetCurrentHole(CancellationToken cancellationToken);
 
-        Task<Option<Guid>> NextHole();
+        Task<Option<Guid>> NextHole(CancellationToken cancellationToken);
 
         Task EndHole(Guid holeId);
 

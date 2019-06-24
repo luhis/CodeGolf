@@ -53,14 +53,19 @@ namespace CodeGolf.Service
 
         async Task<Option<HoleDto>> IGameService.GetCurrentHole(CancellationToken cancellationToken)
         {
-            var hole = await this.holeRepository.GetCurrentHole();
+            var hole = await this.holeRepository.GetCurrentHole(cancellationToken);
             return hole.Match(
                 a =>
                     {
                         if (!a.End.HasValue)
                         {
-                            var curr = this.gameRepository.GetGame().Holes.First(b => b.HoleId.Equals(a.HoleId));
-                            return Option.Some(new HoleDto(curr, a.Start, a.Start.Add(curr.Duration), a.End));
+                            var curr = this.gameRepository.GetById(a.HoleId);
+
+                           return curr.Map(x =>
+                               {
+                                   var next = this.gameRepository.GetAfter(x.HoleId);
+                                   return new HoleDto(x, a.Start, a.Start.Add(x.Duration), a.End, next.HasValue);
+                               });
                         }
                         else
                         {

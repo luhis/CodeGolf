@@ -4,6 +4,12 @@ using CodeGolf.Domain.Repositories;
 
 namespace CodeGolf.Persistence.Static
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Optional;
+    using Optional.Collections;
+
     public class GameRepository : IGameRepository
     {
         private static readonly Game Game = new Game(
@@ -23,5 +29,18 @@ namespace CodeGolf.Persistence.Static
         {
             return Game;
         }
+
+        Option<Hole> IGameRepository.GetById(Guid id)
+        {
+            return Game.Holes.SingleOrNone(b => b.HoleId.Equals(id));
+        }
+
+        Option<Hole> IGameRepository.GetAfter(Guid id)
+        {
+            return GetAfter(Game.Holes, item => item.HoleId.Equals(id));
+        }
+
+        private static Option<T> GetAfter<T>(IReadOnlyList<T> list, Func<T, bool> equals) =>
+            list.SkipWhile(b => !equals(b)).SkipWhile(equals).SingleOrNone();
     }
 }

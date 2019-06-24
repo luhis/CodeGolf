@@ -77,7 +77,7 @@ namespace CodeGolf.Unit.Test.Services
         public void GetAttemptsNone()
         {
             var hole = this.gameRepository.GetGame().Holes.First();
-            this.holeRepository.Setup(a => a.GetCurrentHole()).Returns(
+            this.holeRepository.Setup(a => a.GetCurrentHole(CancellationToken.None)).Returns(
                 Task.FromResult(Option.Some(new HoleInstance(hole.HoleId, DateTime.UtcNow, null))));
             this.attemptRepository.Setup(a => a.GetAttempts(It.IsAny<Guid>(), CancellationToken.None))
                 .Returns(Task.FromResult<IReadOnlyList<Attempt>>(new Attempt[] { }));
@@ -91,7 +91,7 @@ namespace CodeGolf.Unit.Test.Services
         public void GetAttemptsSome()
         {
             var hole = this.gameRepository.GetGame().Holes.First();
-            this.holeRepository.Setup(a => a.GetCurrentHole()).Returns(
+            this.holeRepository.Setup(a => a.GetCurrentHole(CancellationToken.None)).Returns(
                 Task.FromResult(Option.Some(new HoleInstance(hole.HoleId, DateTime.UtcNow, null))));
             this.attemptRepository.Setup(a => a.GetAttempts(It.IsAny<Guid>(), CancellationToken.None)).Returns(
                 Task.FromResult<IReadOnlyList<Attempt>>(
