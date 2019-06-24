@@ -18,7 +18,7 @@
         <td>{{result.score}}</td>
         <td>{{result.timeStamp}}</td>
         <td>
-          <a target="_blank" :href="'/api/code/attempt?id=' + result.id"><i class="fas fa-code"></i></a>
+          <a target="_blank" :href="'/attempt?id=' + result.id" class="button"><i class="fas fa-code"></i>View Code</a>
         </td>
       </tr>
     </tbody>

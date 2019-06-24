@@ -1,0 +1,10 @@
+﻿@page
+@model CodeGolf.Web.Pages.AttemptModel
+
+<section class="section">
+    <textarea class="textarea" asp-for="Code" rows="10" cols="50">@Model.Code</textarea>
+</section>
+
+@section Scripts {
+    <partial name="~/Partials/EditorScripts.cshtml" />
+}

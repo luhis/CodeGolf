@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGolf.ExecutionServer", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGolf.ServiceInterfaces", "CodeGolf.ServiceInterfaces\CodeGolf.ServiceInterfaces.csproj", "{6E811EA9-027F-4E70-B05B-F92483327BD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGolf.Web", "CodeGolf.Web\CodeGolf.Web.csproj", "{A82107B6-B0F3-476B-A146-446831E4F19D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGolf.Web", "CodeGolf.Web\CodeGolf.Web.csproj", "{A82107B6-B0F3-476B-A146-446831E4F19D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

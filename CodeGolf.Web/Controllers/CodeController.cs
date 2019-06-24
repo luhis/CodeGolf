@@ -31,13 +31,5 @@ namespace CodeGolf.Web.Controllers
         {
             return this.codeGolfService.DebugCode(code ?? string.Empty, cancellationToken);
         }
-
-        [Authorize]
-        [HttpGet("[action]")]
-        public async Task<ActionResult<string>> Attempt(Guid id, CancellationToken cancellationToken)
-        {
-            var attempt = await this.dashboardService.GetAttemptById(id, cancellationToken);
-            return attempt.Code;
-        }
     }
 }
