@@ -8,7 +8,7 @@ using Optional;
 
 namespace CodeGolf.Persistence.Repositories
 {
-    public class UserRepository: IUserRepository
+    public class UserRepository : IUserRepository
     {
         private readonly CodeGolfContext context;
 

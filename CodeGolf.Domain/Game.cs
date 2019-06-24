@@ -10,6 +10,6 @@ namespace CodeGolf.Domain
             this.Holes = EnsureArg.IsNotNull(slots, nameof(slots));
         }
 
-        public  IReadOnlyList<Hole> Holes { get; }
+        public IReadOnlyList<Hole> Holes { get; }
     }
 }

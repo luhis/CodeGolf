@@ -1,8 +1,7 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading;
+
 using CodeGolf.Service;
-using Microsoft.AspNetCore.Authorization;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace CodeGolf.Web.Controllers
