@@ -135,7 +135,7 @@
         {
             var attempts = await this.attemptRepository.GetAttempts(holeId, cancellationToken);
             return attempts.OrderBy(a => a.Score).GroupBy(a => a.LoginName).Select(a => a.First())
-                .OrderByDescending(a => a.Score);
+                .OrderBy(a => a.Score);
         }
 
         private async Task<IReadOnlyList<AttemptDto>> GetBestAttemptDtos(
