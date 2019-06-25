@@ -26,6 +26,8 @@ using WebMarkupMin.AspNetCore2;
 
 namespace CodeGolf.Web
 {
+    using System.Threading.Tasks;
+
     using Markdig;
     using Markdig.Extensions.Tables;
 
@@ -87,7 +89,11 @@ namespace CodeGolf.Web
                 options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = "GitHub";
             })
-            .AddCookie()
+            .AddCookie(configureOptions: cookieAuthenticationOptions => cookieAuthenticationOptions.Events.OnRedirectToAccessDenied = context =>
+                {
+                    context.Response.StatusCode = 403;
+                    return Task.CompletedTask;
+                })
             .AddOAuth("GitHub", options =>
             {
                 options.ClientId = this.Configuration["GitHub:ClientId"];
