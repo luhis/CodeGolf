@@ -11,12 +11,10 @@ namespace CodeGolf.Web.Controllers
     public class CodeController : ControllerBase
     {
         private readonly ICodeGolfService codeGolfService;
-        private readonly IDashboardService dashboardService;
 
-        public CodeController(ICodeGolfService codeGolfService, IDashboardService dashboardService)
+        public CodeController(ICodeGolfService codeGolfService)
         {
             this.codeGolfService = codeGolfService;
-            this.dashboardService = dashboardService;
         }
 
         [HttpGet("[action]")]
