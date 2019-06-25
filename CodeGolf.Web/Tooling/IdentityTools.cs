@@ -1,11 +1,12 @@
-﻿using System;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using CodeGolf.Domain;
 using Microsoft.AspNetCore.Http;
 using Optional;
 
 namespace CodeGolf.Web.Tooling
 {
+    using System.Security.Principal;
+
     public class IdentityTools : IIdentityTools
     {
         private static string GetByKey(ClaimsPrincipal cp, string key) => cp.FindFirst(c => c.Type == key).Value;
@@ -18,7 +19,7 @@ namespace CodeGolf.Web.Tooling
                 var identifier = GetByKey(user, ClaimTypes.NameIdentifier);
                 var loginName = GetByKey(user, "urn:github:login");
                 var avatar = GetByKey(user, "urn:github:avatar");
-                var u = new User(int.Parse(identifier) ,loginName, avatar);
+                var u = new User(int.Parse(identifier), loginName, avatar);
                 return Option.Some(u);
             }
 

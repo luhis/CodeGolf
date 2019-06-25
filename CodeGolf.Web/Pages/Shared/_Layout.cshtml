@@ -1,4 +1,5 @@
-﻿@using Microsoft.Extensions.Options
+﻿@using CodeGolf.Web.Tooling
+@using Microsoft.Extensions.Options
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,6 +16,7 @@
     <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     <!-- Global site tag (gtag.js) - Google Analytics -->
     @inject IOptions<WebSiteSettings> WebSiteSettings
+    @inject IGameAdminChecker AdminChecker
     <script async src="https://www.googletagmanager.com/gtag/js?id=@WebSiteSettings.Value.GoogleAnalyticsKey"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -39,12 +41,19 @@
             <div class="navbar-start">
                 <a class="navbar-item" asp-page="/Index">Home</a>
                 <a class="navbar-item" asp-page="/Demo">Demo</a>
-                <a class="navbar-item" asp-page="/Dashboard">Dashboard</a>
-                <a class="navbar-item" asp-page="/Admin">Admin</a>
-                <a class="navbar-item" asp-page="/Game">Game</a>
                 @if (this.User.Identity.IsAuthenticated)
                 {
+                    <a class="navbar-item" asp-page="/Game">Game</a>
+                    if (AdminChecker.IsAdmin(this.Context))
+                    {
+                        <a class="navbar-item" asp-page="/Dashboard">Dashboard</a>
+                        <a class="navbar-item" asp-page="/Admin">Admin</a>
+                    }
                     <a class="navbar-item" asp-page="/SignOut">Sign Out</a>
+                }
+                else
+                {
+                    <a asp-action="SignIn" asp-controller="Account" class="navbar-item">Sign In with GitHub</a>
                 }
             </div>
         </div>

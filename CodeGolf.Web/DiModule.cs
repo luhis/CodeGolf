@@ -25,6 +25,7 @@ namespace CodeGolf.Web
             collection.AddSingleton<IIdentityTools, IdentityTools>();
             collection.AddSingleton<IGetIp, GetIp>();
             collection.AddSingleton<ISignalRNotifier, SignalRNotifier>();
+            collection.AddSingleton<IGameAdminChecker, GameAdminChecker>();
             collection.AddSingleton<RecaptchaAttribute>();
             collection.AddSingleton<GameAdminAuthAttribute>();
             collection.AddSingleton<IpcServiceClient<IExecutionService>>(a => new IpcServiceClientBuilder<IExecutionService>()
