@@ -136,5 +136,36 @@ namespace CodeGolf.Unit.Test.Services
             second.LoginName.Should().Be("matt2");
             this.mockRepository.VerifyAll();
         }
+
+        [Fact]
+        public void GetAttemptsOrderedByTime()
+        {
+            var hole = this.gameRepository.GetGame().Holes.First();
+            this.holeRepository.Setup(a => a.GetCurrentHole(CancellationToken.None)).Returns(
+                Task.FromResult(Option.Some(new HoleInstance(hole.HoleId, DateTime.UtcNow, null))));
+            this.attemptRepository.Setup(a => a.GetAttempts(It.IsAny<Guid>(), CancellationToken.None)).Returns(
+                Task.FromResult<IReadOnlyList<Attempt>>(
+                    new[]
+                        {
+                            new Attempt(Guid.NewGuid(), "matt", Guid.NewGuid(), "", 11, new DateTime(2000, 1, 1, 2, 0, 0)),
+                            new Attempt(Guid.NewGuid(), "matt2", Guid.NewGuid(), "", 11, new DateTime(2000, 1, 1, 1, 0, 0)),
+                        }));
+            this.userRepository.Setup(a => a.GetByUserName("matt", CancellationToken.None))
+                .Returns(Task.FromResult(Option.Some(new User(1, "matt", "avatar.png"))));
+            this.userRepository.Setup(a => a.GetByUserName("matt2", CancellationToken.None))
+                .Returns(Task.FromResult(Option.Some(new User(2, "matt2", "avatar2.png"))));
+
+            var scores = this.dashboardService.GetAttempts(CancellationToken.None).Result;
+
+            scores.HasValue.Should().BeTrue();
+            scores.ValueOrFailure().Should().HaveCount(2);
+            var first = scores.ValueOrFailure().First();
+            first.LoginName.Should().Be("matt2");
+            first.Avatar.Should().Be("avatar2.png");
+            first.Score.Should().Be(11);
+            var second = scores.ValueOrFailure()[1];
+            second.LoginName.Should().Be("matt");
+            this.mockRepository.VerifyAll();
+        }
     }
 }
