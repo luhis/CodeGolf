@@ -1,4 +1,3 @@
-using System;
 using System.Threading;
 using CodeGolf.Domain;
 using CodeGolf.ExecutionServer;

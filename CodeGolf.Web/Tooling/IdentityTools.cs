@@ -5,8 +5,6 @@ using Optional;
 
 namespace CodeGolf.Web.Tooling
 {
-    using System.Security.Principal;
-
     public class IdentityTools : IIdentityTools
     {
         private static string GetByKey(ClaimsPrincipal cp, string key) => cp.FindFirst(c => c.Type == key).Value;

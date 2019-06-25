@@ -28,9 +28,6 @@ namespace CodeGolf.Web
 {
     using System.Threading.Tasks;
 
-    using Markdig;
-    using Markdig.Extensions.Tables;
-
     using Westwind.AspNetCore.Markdown;
 
     public class Startup
