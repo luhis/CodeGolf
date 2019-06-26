@@ -7,13 +7,24 @@
         <p>Error</p>
     </div>
     <div class="message-body">
-        @foreach (var c in Model.Item1.Where(a => a.Error.HasValue))
+        @foreach (var c in Model.Item1)
         {
-            <p>
-                <i class="fas fa-exclamation-triangle"></i>
-                @GenericPresentationHelpers.DisplayFunction(c.Challenge, Model.Item2.Params, Model.Item2.ReturnType):
-                <strong>@c.Error.ValueOrFailure()</strong>
-            </p>
+            @if (c.Error.HasValue)
+            {
+                <p>
+                    <i class="fas fa-exclamation-triangle"></i>
+                    @GenericPresentationHelpers.DisplayFunction(c.Challenge, Model.Item2.Params, Model.Item2.ReturnType)
+                    <strong>@c.Error.ValueOrFailure()</strong>
+                </p>
+            }
+            else
+            {
+                <p class="has-text-success has-background-white">
+                    <i class="fas fa-check-circle"></i>
+                    @GenericPresentationHelpers.DisplayFunction(c.Challenge, Model.Item2.Params, Model.Item2.ReturnType)
+                    <strong>Pass</strong>
+                </p>
+            }
         }
     </div>
 </article>

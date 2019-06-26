@@ -13,6 +13,7 @@ namespace CodeGolf.Service
     public class CodeGolfService : ICodeGolfService
     {
         private readonly IRunner runner;
+
         private readonly IScorer scorer;
 
         public CodeGolfService(IRunner runner, IScorer scorer)
@@ -21,32 +22,32 @@ namespace CodeGolf.Service
             this.scorer = scorer;
         }
 
-        Task<Option<Option<int, IReadOnlyList<ChallengeResult>>, ErrorSet>> ICodeGolfService.Score(string code,
+        Task<Option<Option<int, IReadOnlyList<ChallengeResult>>, ErrorSet>> ICodeGolfService.Score(
+            string code,
             IChallengeSet challenge,
             CancellationToken cancellationToken)
         {
-            var compileResult = this.runner.Compile(code, challenge.Params.Select(a => a.Type).ToArray(), challenge.ReturnType, cancellationToken);
-            return compileResult.Match(async compiled =>
-            {
-                var fails = (await challenge.GetResults(compiled))
-                    .Where(this.IsFailure);
-                if (fails.Any())
-                {
-                    return Option.Some<Option<int, IReadOnlyList<ChallengeResult>>, ErrorSet>(
-                        Option.None<int, IReadOnlyList<ChallengeResult>>(
-                            fails.ToList()));
-                }
-                else
-                {
-                    return Option.Some<Option<int, IReadOnlyList<ChallengeResult>>, ErrorSet>(
-                        Option.Some<int, IReadOnlyList<ChallengeResult>>(this.scorer.Score(code)));
-                }
-            }, err => Task.FromResult(Option.None<Option<int, IReadOnlyList<ChallengeResult>>, ErrorSet>(err)));
-        }
-
-        private bool IsFailure(ChallengeResult tuple)
-        {
-            return tuple.Error.HasValue;
+            var compileResult = this.runner.Compile(
+                code,
+                challenge.Params.Select(a => a.Type).ToArray(),
+                challenge.ReturnType,
+                cancellationToken);
+            return compileResult.Match(
+                async compiled =>
+                    {
+                        var results = await challenge.GetResults(compiled);
+                        if (results.Any(a => a.Error.HasValue))
+                        {
+                            return Option.Some<Option<int, IReadOnlyList<ChallengeResult>>, ErrorSet>(
+                                Option.None<int, IReadOnlyList<ChallengeResult>>(results.ToList()));
+                        }
+                        else
+                        {
+                            return Option.Some<Option<int, IReadOnlyList<ChallengeResult>>, ErrorSet>(
+                                Option.Some<int, IReadOnlyList<ChallengeResult>>(this.scorer.Score(code)));
+                        }
+                    },
+                err => Task.FromResult(Option.None<Option<int, IReadOnlyList<ChallengeResult>>, ErrorSet>(err)));
         }
 
         IChallengeSet ICodeGolfService.GetDemoChallenge()

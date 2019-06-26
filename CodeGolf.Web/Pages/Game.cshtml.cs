@@ -53,7 +53,6 @@ namespace CodeGolf.Web.Pages
                           cancellationToken).ConfigureAwait(false);
 
             this.Result = res;
-            this.RedirectToPage();
         }
 
         public IActionResult OnPostViewSource()

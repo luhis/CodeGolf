@@ -63,13 +63,34 @@ namespace CodeGolf.Unit.Test.Services
         {
             this.attemptRepository.Setup(a => a.GetAttempts(It.IsAny<Guid>(), CancellationToken.None)).Returns(
                 Task.FromResult<IReadOnlyList<Attempt>>(
-                    new Attempt[] { new Attempt(Guid.NewGuid(), "matt", Guid.NewGuid(), "", 11, DateTime.UtcNow), }));
+                    new[] { new Attempt(Guid.NewGuid(), "matt", Guid.NewGuid(), string.Empty, 11, DateTime.UtcNow), }));
             this.userRepository.Setup(a => a.GetByUserName("matt", CancellationToken.None))
                 .Returns(Task.FromResult(Option.Some(new User(1, "matt", "avatar.png"))));
 
             var scores = this.dashboardService.GetFinalScores(CancellationToken.None).Result;
 
             scores.Should().BeEquivalentTo(new ResultDto(1, "matt", "avatar.png", 6));
+            this.mockRepository.VerifyAll();
+        }
+
+        [Fact]
+        public void GetFinalScoresTwoUsers()
+        {
+            this.attemptRepository.Setup(a => a.GetAttempts(It.IsAny<Guid>(), CancellationToken.None)).Returns(
+                Task.FromResult<IReadOnlyList<Attempt>>(
+                    new[]
+                        {
+                            new Attempt(Guid.NewGuid(), "matt", Guid.NewGuid(), string.Empty, 11, DateTime.UtcNow),
+                            new Attempt(Guid.NewGuid(), "matt2", Guid.NewGuid(), string.Empty, 12, DateTime.UtcNow),
+                        }));
+            this.userRepository.Setup(a => a.GetByUserName("matt", CancellationToken.None))
+                .Returns(Task.FromResult(Option.Some(new User(1, "matt", "avatar.png"))));
+            this.userRepository.Setup(a => a.GetByUserName("matt2", CancellationToken.None))
+                .Returns(Task.FromResult(Option.Some(new User(2, "matt2", "avatar2.png"))));
+
+            var scores = this.dashboardService.GetFinalScores(CancellationToken.None).Result;
+
+            scores.Should().BeEquivalentTo(new ResultDto(1, "matt", "avatar.png", 6), new ResultDto(2, "matt2", "avatar2.png", 4));
             this.mockRepository.VerifyAll();
         }
 
@@ -90,21 +111,19 @@ namespace CodeGolf.Unit.Test.Services
         [Fact]
         public void GetAttemptsSome()
         {
+            var id = Guid.NewGuid();
             var hole = this.gameRepository.GetGame().Holes.First();
             this.holeRepository.Setup(a => a.GetCurrentHole(CancellationToken.None)).Returns(
                 Task.FromResult(Option.Some(new HoleInstance(hole.HoleId, DateTime.UtcNow, null))));
             this.attemptRepository.Setup(a => a.GetAttempts(It.IsAny<Guid>(), CancellationToken.None)).Returns(
                 Task.FromResult<IReadOnlyList<Attempt>>(
-                    new Attempt[] { new Attempt(Guid.NewGuid(), "matt", Guid.NewGuid(), "", 11, DateTime.UtcNow), }));
+                    new Attempt[] { new Attempt(id, "matt", Guid.NewGuid(), string.Empty, 11, new DateTime(2010, 1, 1)), }));
             this.userRepository.Setup(a => a.GetByUserName("matt", CancellationToken.None))
                 .Returns(Task.FromResult(Option.Some(new User(1, "matt", "avatar.png"))));
+
             var scores = this.dashboardService.GetAttempts(CancellationToken.None).Result;
-            scores.HasValue.Should().BeTrue();
-            scores.ValueOrFailure().Should().HaveCount(1);
-            var first = scores.ValueOrFailure().First();
-            first.LoginName.Should().Be("matt");
-            first.Avatar.Should().Be("avatar.png");
-            first.Score.Should().Be(11);
+
+            scores.ValueOrFailure().Should().BeEquivalentTo(new AttemptDto(1, id, "matt", "avatar.png", 11, "01/01/2010 00:00:00"));
             this.mockRepository.VerifyAll();
         }
 
@@ -118,8 +137,8 @@ namespace CodeGolf.Unit.Test.Services
                 Task.FromResult<IReadOnlyList<Attempt>>(
                     new[]
                         {
-                            new Attempt(Guid.NewGuid(), "matt", Guid.NewGuid(), "", 11, DateTime.UtcNow),
-                            new Attempt(Guid.NewGuid(), "matt2", Guid.NewGuid(), "", 12, DateTime.UtcNow),
+                            new Attempt(Guid.NewGuid(), "matt", Guid.NewGuid(), string.Empty, 11, DateTime.UtcNow),
+                            new Attempt(Guid.NewGuid(), "matt2", Guid.NewGuid(), string.Empty, 12, DateTime.UtcNow),
                         }));
             this.userRepository.Setup(a => a.GetByUserName("matt", CancellationToken.None))
                 .Returns(Task.FromResult(Option.Some(new User(1, "matt", "avatar.png"))));
@@ -147,8 +166,8 @@ namespace CodeGolf.Unit.Test.Services
                 Task.FromResult<IReadOnlyList<Attempt>>(
                     new[]
                         {
-                            new Attempt(Guid.NewGuid(), "matt", Guid.NewGuid(), "", 11, new DateTime(2000, 1, 1, 2, 0, 0)),
-                            new Attempt(Guid.NewGuid(), "matt2", Guid.NewGuid(), "", 11, new DateTime(2000, 1, 1, 1, 0, 0)),
+                            new Attempt(Guid.NewGuid(), "matt", Guid.NewGuid(), string.Empty, 11, new DateTime(2000, 1, 1, 2, 0, 0)),
+                            new Attempt(Guid.NewGuid(), "matt2", Guid.NewGuid(), string.Empty, 11, new DateTime(2000, 1, 1, 1, 0, 0)),
                         }));
             this.userRepository.Setup(a => a.GetByUserName("matt", CancellationToken.None))
                 .Returns(Task.FromResult(Option.Some(new User(1, "matt", "avatar.png"))));
