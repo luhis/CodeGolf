@@ -2,14 +2,11 @@
 
 namespace CodeGolf.Service
 {
+    using System.Collections.Generic;
+
     public class Scorer : IScorer
     {
-        private static string TrimLines(string s)
-        {
-            return string.Join("\n", s.Split('\n').Select(a => a.Trim()));
-        }
-
-        private static string CleanSource(string s) => TrimLines(s).Replace("\n", "").Replace(" ", "");
+        private static string CleanSource(string s) => string.Concat(s.Where(a => !char.IsWhiteSpace(a)));
 
         int IScorer.Score(string code)
         {
