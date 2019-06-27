@@ -1,6 +1,6 @@
-﻿import * as codeMirror from 'codemirror';
-import 'codemirror/mode/clike/clike';
-import 'codemirror/theme/bespin.css';
+﻿import * as codeMirror from "codemirror";
+import "codemirror/mode/clike/clike";
+import "codemirror/theme/bespin.css";
 
 const editor = codeMirror.fromTextArea(document.getElementById("Code"),
     {
@@ -9,14 +9,17 @@ const editor = codeMirror.fromTextArea(document.getElementById("Code"),
         mode: "text/x-csharp"
     });
 
-const codeSamples = document.getElementById('codeSample');
-const codeInputs = document.getElementById('Code');
+const codeSamples = document.getElementById("codeSample");
+const codeInputs = document.getElementById("Code");
 
 if (codeSamples && codeInputs) {
-    codeSamples.addEventListener('click', () => {
+    codeSamples.addEventListener("click", () => {
         const doc = editor.getDoc();
-        if (doc.getValue() === '') {
+        if (doc.getValue() === "") {
             doc.setValue(codeSamples.innerText);
         }
     });
 }
+
+const count = document.getElementById("Count");
+editor.on("change", a => count.innerText = a.getDoc().getValue().replace(/\s/g, "").length);
