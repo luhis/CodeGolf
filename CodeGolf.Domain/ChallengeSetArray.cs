@@ -59,7 +59,7 @@ namespace CodeGolf.Domain
         async Task<IReadOnlyList<ChallengeResult>> IChallengeSet.GetResults(CompileResult t)
         {
             var reses = await t.Func(this.Challenges.Select(a => a.Args).ToArray());
-            var challRes = reses.Zip(this.Challenges, Tuple.Create);
+            var challRes = reses.Zip(this.Challenges, ValueTuple.Create);
 
             return challRes.Select(
                 challenge =>
@@ -94,7 +94,7 @@ namespace CodeGolf.Domain
                 return false;
             }
 
-            return expect.Zip(actual, Tuple.Create).All(t => string.Equals(t.Item1, t.Item2));
+            return expect.Zip(actual, ValueTuple.Create).All(t => string.Equals(t.Item1, t.Item2));
         }
     }
 }

@@ -92,7 +92,7 @@ namespace CodeGolf.Service
             }
         }
 
-        private static Option<object, string> ToOpt<T>(Tuple<T, string> t) => t.Item2 == null
+        private static Option<object, string> ToOpt<T>(ValueTuple<T, string> t) => t.Item2 == null
             ? Option.Some<object, string>(t.Item1)
             : Option.None<object, string>(t.Item2);
 

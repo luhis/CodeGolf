@@ -14,11 +14,11 @@ namespace CodeGolf.Web.ViewComponents
         {
             return p.Match(
                 score => score.Match(num => this.View("Score", num),
-                    err => this.View("ChallengeErrors", Tuple.Create(err, cs))), errors =>
+                    err => this.View("ChallengeErrors", ValueTuple.Create(err, cs))), errors =>
                 {
                     if (errors == null)
                     {
-                        return (IViewComponentResult) this.Content(string.Empty);
+                        return (IViewComponentResult)this.Content(string.Empty);
                     }
                     else
                     {

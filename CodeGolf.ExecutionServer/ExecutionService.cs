@@ -13,7 +13,7 @@ namespace CodeGolf.ExecutionServer
     {
         private const int ExecutionTimeoutMilliseconds = 1000;
 
-        public async Task<Tuple<T, string>[]> Execute<T>(byte[] assembly, string className, string funcName, object[][] argSets,
+        public async Task<ValueTuple<T, string>[]> Execute<T>(byte[] assembly, string className, string funcName, object[][] argSets,
             Type[] paramTypes)
         {
             var obj = Assembly.Load(assembly);
@@ -27,14 +27,14 @@ namespace CodeGolf.ExecutionServer
                 source.CancelAfter(TimeSpan.FromMilliseconds(ExecutionTimeoutMilliseconds));
                 try
                 {
-                    return Tuple.Create<T, string>(await Task<T>.Factory.StartNew(() => (T) fun.Invoke(inst,
+                    return ValueTuple.Create<T, string>(await Task<T>.Factory.StartNew(() => (T) fun.Invoke(inst,
                             BindingFlags.Default | BindingFlags.InvokeMethod,
                             null, castArgs.Append(source.Token).ToArray(), CultureInfo.InvariantCulture), source.Token),
                         null);
                 }
                 catch (Exception e)
                 {
-                    return Tuple.Create(default(T), e.InnerException != null ? e.InnerException.Message : e.Message);
+                    return ValueTuple.Create(default(T), e.InnerException != null ? e.InnerException.Message : e.Message);
                 }
             }))).ToArray();
         }
@@ -47,7 +47,7 @@ namespace CodeGolf.ExecutionServer
 
         private static IEnumerable<object> CastArgs(IEnumerable<object> args, IEnumerable<Type> paramTypes)
         {
-            return paramTypes.Zip(args, Tuple.Create).Select(a => Convert.ChangeType(a.Item2, a.Item1));
+            return paramTypes.Zip(args, ValueTuple.Create).Select(a => Convert.ChangeType(a.Item2, a.Item1));
         }
     }
 }

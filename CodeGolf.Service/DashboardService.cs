@@ -114,7 +114,7 @@
             var holes = await Task.WhenAll(
                             this.gameRepository.GetGame().Holes.Select(
                                 async h => (await this.GetBestAttempts(h.HoleId, cancellationToken)).Select(
-                                    (a, b) => Tuple.Create(b, a))));
+                                    (a, b) => ValueTuple.Create(b, a))));
             var ranks = holes.SelectMany(a => a);
             return (await Task.WhenAll(
                         ranks.GroupBy(a => a.Item2.LoginName).Select(

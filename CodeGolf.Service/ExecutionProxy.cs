@@ -14,7 +14,7 @@ namespace CodeGolf.Service
             this.svc = svc;
         }
 
-        Task<Tuple<T, string>[]> IExecutionService.Execute<T>(byte[] assembly, string className, string funcName,
+        Task<ValueTuple<T, string>[]> IExecutionService.Execute<T>(byte[] assembly, string className, string funcName,
             object[][] args, Type[] paramTypes)
         {
             return this.svc.InvokeAsync(
