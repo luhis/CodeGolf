@@ -35,7 +35,9 @@ namespace CodeGolf.Web.Pages
         public async Task<IActionResult> OnPostEndHole(CancellationToken cancellationToken)
         {
             var curr = await this.gameService.GetCurrentHole(cancellationToken);
-            await this.gameService.EndHole(curr.ValueOrFailure().Hole.HoleId);
+            await curr.Match(
+                some => this.gameService.EndHole(some.Hole.HoleId),
+                () => Task.CompletedTask);
             return this.RedirectToPage();
         }
 

@@ -67,9 +67,9 @@
             return hole.Map(
                 a =>
                     {
-                        var curr = this.gameRepository.GetById(a.HoleId);
-                        var next = this.gameRepository.GetAfter(curr.ValueOrDefault().HoleId);
-                        return new HoleDto(curr.ValueOrFailure(), a.Start, a.Start.Add(curr.ValueOrFailure().Duration), a.End, next.HasValue);
+                        var curr = this.gameRepository.GetById(a.HoleId).ValueOrFailure();
+                        var next = this.gameRepository.GetAfter(curr.HoleId);
+                        return new HoleDto(curr, a.Start, a.Start.Add(curr.Duration), a.End, next.HasValue);
                     });
         }
 
