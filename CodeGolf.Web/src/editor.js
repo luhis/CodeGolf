@@ -22,4 +22,6 @@ if (codeSamples && codeInputs) {
 }
 
 const count = document.getElementById("Count");
-editor.on("change", a => count.innerText = a.getDoc().getValue().replace(/\s/g, "").length);
+const updateCount = a => count.innerText = a.getDoc().getValue().replace(/\s/g, "").length;
+editor.on("changes", updateCount);
+updateCount(editor);
