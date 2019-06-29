@@ -19,6 +19,7 @@ if (codeSamples && codeInputs) {
             doc.setValue(codeSamples.innerText);
         }
     });
+    codeSamples.classList.add("is-clickable");
 }
 
 const count = document.getElementById("Count");
