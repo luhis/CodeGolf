@@ -9,9 +9,8 @@ namespace CodeGolf.Recaptcha
 {
     public class RecaptchaVerifier : IRecaptchaVerifier
     {
-        private readonly RecaptchaSettings settings;
-
         private static readonly string Api = "https://www.google.com/recaptcha/api/siteverify";
+        private readonly RecaptchaSettings settings;
 
         public RecaptchaVerifier(IOptions<RecaptchaSettings> settings)
         {

@@ -14,11 +14,14 @@ namespace CodeGolf.Service
             this.svc = svc;
         }
 
-        Task<ValueTuple<T, string>[]> IExecutionService.Execute<T>(byte[] assembly, string className, string funcName,
-            object[][] args, Type[] paramTypes)
+        Task<ValueTuple<T, string>[]> IExecutionService.Execute<T>(
+            byte[] assembly,
+            string className,
+            string funcName,
+            object[][] args,
+            Type[] paramTypes)
         {
-            return this.svc.InvokeAsync(
-                a => a.Execute<T>(assembly, className, funcName, args, paramTypes));
+            return this.svc.InvokeAsync(a => a.Execute<T>(assembly, className, funcName, args, paramTypes));
         }
     }
 }
