@@ -1,4 +1,3 @@
-using System;
 using CodeGolf.Domain;
 
 namespace CodeGolf.Persistence.Static
@@ -53,6 +52,9 @@ Swap all the vowels in the word with the corresponding:
             new[] { new ParamDescription(typeof(int), "i") },
             new[]
                 {
+                    new Challenge<string[]>(
+                        new object[] { 3 },
+                        new[] { "1", "2", "Fizz", }),
                     new Challenge<string[]>(
                         new object[] { 10 },
                         new[] { "1", "2", "Fizz", "4", "Buzz", "Fizz", "7", "8", "Fizz", "Buzz", }),
