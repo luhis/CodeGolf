@@ -32,7 +32,6 @@ namespace CodeGolf.Persistence.Repositories
             }
             else
             {
-                // todo this is busted
                 this.context.Users.Update(new User(user.UserId, user.LoginName, user.AvatarUri));
             }
 
