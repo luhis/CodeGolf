@@ -48,7 +48,9 @@ namespace CodeGolf.ExecutionServer
                                     {
                                         return ValueTuple.Create(
                                             default(T),
-                                            e.InnerException != null ? e.InnerException.Message : e.Message);
+                                            "Runtime Error - " + e.InnerException != null
+                                                ? e.InnerException.Message
+                                                : e.Message);
                                     }
                                 }))).ToArray();
         }
