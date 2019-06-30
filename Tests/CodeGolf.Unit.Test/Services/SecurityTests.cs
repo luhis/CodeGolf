@@ -13,7 +13,7 @@ namespace CodeGolf.Unit.Test.Services
     public class SecurityTests
     {
         private readonly ICodeGolfService codeGolfService = new CodeGolfService(
-            new Runner(new SyntaxTreeTransformer(new CancellationTokenInjector()), new ExecutionService()),
+            new Runner(new SyntaxTreeTransformer(new CancellationTokenInjector()), new ExecutionService(), new ErrorMessageTransformer()),
             new Scorer());
 
         private readonly IReadOnlyList<ParamDescription> noParams = new ParamDescription[] { };
@@ -30,7 +30,7 @@ namespace CodeGolf.Unit.Test.Services
                     new[] { new Challenge<string>(new object[0], "Hello World") }),
                 CancellationToken.None).Result;
             r.ExtractErrors().Should().BeEquivalentTo(
-                "(7,26): error CS0234: The type or namespace name 'File' does not exist in the namespace 'System.IO' (are you missing an assembly reference?)");
+                "(1,21): error CS0234: The type or namespace name 'File' does not exist in the namespace 'System.IO' (are you missing an assembly reference?)");
         }
 
         [Fact]
@@ -47,8 +47,8 @@ namespace CodeGolf.Unit.Test.Services
                     new[] { new Challenge<string>(new object[0], "Hello World") }),
                 CancellationToken.None).Result;
             r.ExtractErrors().Should().BeEquivalentTo(
-                "(8,5): error CS0246: The type or namespace name 'Assembly' could not be found (are you missing a using directive or an assembly reference?)",
-                "(8,25): error CS0103: The name 'Assembly' does not exist in the current context");
+                "(2,0): error CS0246: The type or namespace name 'Assembly' could not be found (are you missing a using directive or an assembly reference?)",
+                "(2,20): error CS0103: The name 'Assembly' does not exist in the current context");
         }
 
         [Fact]
@@ -66,11 +66,11 @@ namespace CodeGolf.Unit.Test.Services
                     new[] { new Challenge<string>(new object[0], "Hello World") }),
                 CancellationToken.None).Result;
             r.ExtractErrors().Should().BeEquivalentTo(
-                "(6,2): error CS1513: } expected",
-                "(7,5): error CS1529: A using clause must precede all other elements defined in the namespace except extern alias declarations",
-                "(8,1): error CS1022: Type or namespace definition, or end-of-file expected",
-                "(7,50): error CS0246: The type or namespace name 'Assembly' could not be found (are you missing a using directive or an assembly reference?)",
-                "(7,70): error CS0103: The name 'Assembly' does not exist in the current context");
+                "(0,-3): error CS1513: } expected",
+                "(1,0): error CS1529: A using clause must precede all other elements defined in the namespace except extern alias declarations",
+                "(2,-4): error CS1022: Type or namespace definition, or end-of-file expected",
+                "(1,45): error CS0246: The type or namespace name 'Assembly' could not be found (are you missing a using directive or an assembly reference?)",
+                "(1,65): error CS0103: The name 'Assembly' does not exist in the current context");
         }
 
         [Fact]
@@ -87,7 +87,7 @@ namespace CodeGolf.Unit.Test.Services
                     new[] { new Challenge<string>(new object[0], "Hello World") }),
                 CancellationToken.None).Result;
             r.ExtractErrors().Should().BeEquivalentTo(
-                "(7,6): error CS1529: A using clause must precede all other elements defined in the namespace except extern alias declarations");
+                "(1,1): error CS1529: A using clause must precede all other elements defined in the namespace except extern alias declarations");
         }
     }
 }

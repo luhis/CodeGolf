@@ -12,7 +12,7 @@
         <h1 class="title">Demo</h1>
 
         <vc:challenge-view cs="@Option.Some(Model.ChallengeSet)" />
-        <input type="hidden" id="g-recaptcha-site-key" value="@RecaptchaSettings.Value.SiteKey"/>
+        <input type="hidden" id="g-recaptcha-site-key" value="@RecaptchaSettings.Value.SiteKey" />
         <form method="post">
             <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
             <div class="field">
@@ -41,6 +41,7 @@
         </form>
 
         <vc:score-view p="@Model.Result" cs="@Model.ChallengeSet" />
+        <input type="hidden" asp-for="CodeErrorLocations">
     </section>
 
 @section Scripts {

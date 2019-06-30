@@ -22,9 +22,12 @@ namespace CodeGolf.Web.Pages
         [BindProperty(BinderType = typeof(StringBinder))]
         public string Code { get; set; }
 
+        //this should be a one of
         public Option<Option<int, IReadOnlyList<Domain.ChallengeResult>>, ErrorSet> Result { get; private set; }
 
         public IChallengeSet ChallengeSet { get; }
+
+        public string CodeErrorLocations { get; private set; }
 
         public DemoModel(ICodeGolfService codeGolfService)
         {
@@ -40,12 +43,18 @@ namespace CodeGolf.Web.Pages
         {
             if (this.ModelState.IsValid)
             {
-                this.Result = await this.codeGolfService.Score(this.Code, this.ChallengeSet, cancellationToken).ConfigureAwait(false);
+                var r = await this.codeGolfService.Score(this.Code, this.ChallengeSet, cancellationToken)
+                            .ConfigureAwait(false);
+                this.CodeErrorLocations = r.Match(
+                    a => string.Empty,
+                    a => string.Join(",", a.Errors.Select(ErrorMessageParser.Parse).Select(e => $"{e.Line}:{e.Col}")));
+                this.Result = r;
             }
             else
             {
                 var errors = this.ModelState.Values.SelectMany(a => a.Errors.Select(b => b.ErrorMessage)).ToList();
-                this.Result = Option.None<Option<int, IReadOnlyList<Domain.ChallengeResult>>, ErrorSet>(new ErrorSet(errors));
+                this.Result =
+                    Option.None<Option<int, IReadOnlyList<Domain.ChallengeResult>>, ErrorSet>(new ErrorSet(errors));
             }
         }
 

@@ -12,6 +12,8 @@ using Optional.Unsafe;
 
 namespace CodeGolf.Web.Pages
 {
+    using System.Linq;
+
     using CodeGolf.Domain.ChallengeInterfaces;
 
     [Authorize]
@@ -27,6 +29,8 @@ namespace CodeGolf.Web.Pages
         public Option<Option<int, IReadOnlyList<Domain.ChallengeResult>>, ErrorSet> Result { get; private set; }
 
         public Option<IChallengeSet> Hole { get; private set; }
+
+        public string CodeErrorLocations { get; private set; }
 
         public GameModel(IGameService gameService, IIdentityTools identityTools)
         {
@@ -51,6 +55,9 @@ namespace CodeGolf.Web.Pages
                           this.Code,
                           gs.Hole.ChallengeSet,
                           cancellationToken).ConfigureAwait(false);
+            this.CodeErrorLocations = res.Match(
+                a => string.Empty,
+                a => string.Join(",", a.Errors.Select(ErrorMessageParser.Parse).Select(e => $"{e.Line}:{e.Col}")));
 
             this.Result = res;
         }

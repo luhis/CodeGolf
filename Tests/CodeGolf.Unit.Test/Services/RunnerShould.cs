@@ -12,7 +12,7 @@ namespace CodeGolf.Unit.Test.Services
     {
         private readonly IRunner runner = new Runner(
             new SyntaxTreeTransformer(new CancellationTokenInjector()),
-            new ExecutionService());
+            new ExecutionService(), new ErrorMessageTransformer());
 
         [Fact]
         public void ReturnHelloWorld()
@@ -183,7 +183,7 @@ namespace CodeGolf.Unit.Test.Services
             return s;
         }";
             this.runner.Compile(code, new[] { typeof(string) }, typeof(string), CancellationToken.None).ExtractErrors()
-                .Should().BeEquivalentTo("(9,34): error CS0122: 'Thread' is inaccessible due to its protection level");
+                .Should().BeEquivalentTo("(3,29): error CS0122: 'Thread' is inaccessible due to its protection level");
         }
 
         [Fact(Skip = "One day")]

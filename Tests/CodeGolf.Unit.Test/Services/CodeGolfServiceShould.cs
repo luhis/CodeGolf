@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Threading;
 using CodeGolf.Domain;
@@ -16,7 +15,7 @@ namespace CodeGolf.Unit.Test.Services
     public class CodeGolfServiceShould
     {
         private readonly ICodeGolfService codeGolfService = new CodeGolfService(
-            new Runner(new SyntaxTreeTransformer(new CancellationTokenInjector()), new ExecutionService()),
+            new Runner(new SyntaxTreeTransformer(new CancellationTokenInjector()), new ExecutionService(), new ErrorMessageTransformer()),
             new Scorer());
 
         private readonly IReadOnlyList<ParamDescription> noParams =
@@ -48,7 +47,7 @@ namespace CodeGolf.Unit.Test.Services
                     new[] { new Challenge<string>(new object[0], "Hello World") }),
                 CancellationToken.None).Result;
             r.ExtractErrors().Should().BeEquivalentTo(
-                "(7,43): error CS1519: Invalid token ';' in class, struct, or interface member declaration");
+                "(1,38): error CS1519: Invalid token ';' in class, struct, or interface member declaration");
         }
 
         [Fact]

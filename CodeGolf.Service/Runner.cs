@@ -22,6 +22,8 @@ namespace CodeGolf.Service
         private readonly ISyntaxTreeTransformer syntaxTreeTransformer;
         private readonly IExecutionService svc;
 
+        private readonly IErrorMessageTransformer errorMessageTransformer;
+
         private static readonly MetadataReference[] MetadataReferences =
         {
             MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
@@ -29,10 +31,11 @@ namespace CodeGolf.Service
             MetadataReference.CreateFromFile(typeof(AssemblyTargetedPatchBandAttribute).Assembly.Location)
         };
 
-        public Runner(ISyntaxTreeTransformer syntaxTreeTransformer, IExecutionService svc)
+        public Runner(ISyntaxTreeTransformer syntaxTreeTransformer, IExecutionService svc, IErrorMessageTransformer errorMessageTransformer)
         {
             this.syntaxTreeTransformer = syntaxTreeTransformer;
             this.svc = svc;
+            this.errorMessageTransformer = errorMessageTransformer;
         }
 
         Option<CompileResult, ErrorSet> IRunner.Compile(
@@ -181,34 +184,40 @@ namespace CodeGolf.Service
             });
         }
 
-        private static Option<byte[], ErrorSet> TryCompile(SyntaxTree syntaxTree, CancellationToken cancellationToken)
+        private Option<byte[], ErrorSet> TryCompile(SyntaxTree syntaxTree, CancellationToken cancellationToken)
         {
-            return UseTempFile(Path.GetRandomFileName, assemblyName =>
-            {
-                var compilation = CSharpCompilation.Create(
-                    assemblyName,
-                    syntaxTrees: new[] {syntaxTree},
-                    references: MetadataReferences,
-                    options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, warningLevel: 4,
-                        reportSuppressedDiagnostics: true, allowUnsafe: false));
-
-                using (var ms = new MemoryStream())
-                {
-                    var result = compilation.Emit(ms, cancellationToken: cancellationToken);
-
-                    if (result.Diagnostics.Any(IsStoppable))
+            return UseTempFile(
+                Path.GetRandomFileName,
+                assemblyName =>
                     {
-                        var failures = result.Diagnostics.Where(IsStoppable).Select(a => a.ToString());
+                        var compilation = CSharpCompilation.Create(
+                            assemblyName,
+                            syntaxTrees: new[] { syntaxTree },
+                            references: MetadataReferences,
+                            options: new CSharpCompilationOptions(
+                                OutputKind.DynamicallyLinkedLibrary,
+                                warningLevel: 4,
+                                reportSuppressedDiagnostics: true,
+                                allowUnsafe: false));
 
-                        return Option.None<byte[], ErrorSet>(new ErrorSet(failures.ToList()));
-                    }
-                    else
-                    {
-                        ms.Seek(0, SeekOrigin.Begin);
-                        return Option.Some<byte[], ErrorSet>(ms.ToArray());
-                    }
-                }
-            });
+                        using (var ms = new MemoryStream())
+                        {
+                            var result = compilation.Emit(ms, cancellationToken: cancellationToken);
+
+                            if (result.Diagnostics.Any(IsStoppable))
+                            {
+                                var failures = result.Diagnostics.Where(IsStoppable).Select(a => a.ToString())
+                                    .Select(ErrorMessageParser.Parse).Select(this.errorMessageTransformer.Transform).Select(a => a.GetString());
+
+                                return Option.None<byte[], ErrorSet>(new ErrorSet(failures.ToList()));
+                            }
+                            else
+                            {
+                                ms.Seek(0, SeekOrigin.Begin);
+                                return Option.Some<byte[], ErrorSet>(ms.ToArray());
+                            }
+                        }
+                    });
         }
     }
 }

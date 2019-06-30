@@ -2,8 +2,6 @@
 
 namespace CodeGolf.Service
 {
-    using System.Collections.Generic;
-
     public class Scorer : IScorer
     {
         private static string CleanSource(string s) => string.Concat(s.Where(a => !char.IsWhiteSpace(a)));
