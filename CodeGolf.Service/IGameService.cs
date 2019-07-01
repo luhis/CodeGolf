@@ -9,11 +9,13 @@ using Optional;
 
 namespace CodeGolf.Service
 {
+    using OneOf;
+
     public interface IGameService
     {
         Task<Option<HoleDto>> GetCurrentHole(CancellationToken cancellationToken);
 
-        Task<Option<Option<int, IReadOnlyList<ChallengeResult>>, ErrorSet>> Attempt(User user, Guid holeId, string code, IChallengeSet challengeSet, CancellationToken cancellationToken);
+        Task<OneOf<int, IReadOnlyList<ChallengeResult>, ErrorSet>> Attempt(User user, Guid holeId, string code, IChallengeSet challengeSet, CancellationToken cancellationToken);
 
     }
 }

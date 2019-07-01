@@ -13,6 +13,8 @@ using Optional;
 
 namespace CodeGolf.Web.Pages
 {
+    using OneOf;
+
     [ValidateAntiForgeryToken]
     [ServiceFilter(typeof(RecaptchaAttribute))]
     public class DemoModel : PageModel
@@ -22,8 +24,7 @@ namespace CodeGolf.Web.Pages
         [BindProperty(BinderType = typeof(StringBinder))]
         public string Code { get; set; }
 
-        //this should be a one of
-        public Option<Option<int, IReadOnlyList<Domain.ChallengeResult>>, ErrorSet> Result { get; private set; }
+        public OneOf<int, IReadOnlyList<Domain.ChallengeResult>, ErrorSet> Result { get; private set; }
 
         public IChallengeSet ChallengeSet { get; }
 
@@ -47,6 +48,7 @@ namespace CodeGolf.Web.Pages
                             .ConfigureAwait(false);
                 this.CodeErrorLocations = r.Match(
                     a => string.Empty,
+                    a => string.Empty,
                     a => string.Join(",", a.Errors.Select(ErrorMessageParser.Parse).Select(e => $"{e.Line}:{e.Col}")));
                 this.Result = r;
             }
@@ -54,7 +56,7 @@ namespace CodeGolf.Web.Pages
             {
                 var errors = this.ModelState.Values.SelectMany(a => a.Errors.Select(b => b.ErrorMessage)).ToList();
                 this.Result =
-                    Option.None<Option<int, IReadOnlyList<Domain.ChallengeResult>>, ErrorSet>(new ErrorSet(errors));
+                    (OneOf<int, IReadOnlyList<Domain.ChallengeResult>, ErrorSet>)new ErrorSet(errors);
             }
         }
 

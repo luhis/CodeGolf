@@ -200,9 +200,9 @@ namespace CodeGolf.Service
                                 reportSuppressedDiagnostics: true,
                                 allowUnsafe: false));
 
-                        using (var ms = new MemoryStream())
+                        using (var dll = new MemoryStream())
                         {
-                            var result = compilation.Emit(ms, cancellationToken: cancellationToken);
+                            var result = compilation.Emit(dll, cancellationToken: cancellationToken);
 
                             if (result.Diagnostics.Any(IsStoppable))
                             {
@@ -213,8 +213,8 @@ namespace CodeGolf.Service
                             }
                             else
                             {
-                                ms.Seek(0, SeekOrigin.Begin);
-                                return Option.Some<byte[], ErrorSet>(ms.ToArray());
+                                dll.Seek(0, SeekOrigin.Begin);
+                                return Option.Some<byte[], ErrorSet>(dll.ToArray());
                             }
                         }
                     });

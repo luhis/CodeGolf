@@ -26,7 +26,7 @@ namespace CodeGolf.Web.Pages
         [BindProperty(BinderType = typeof(StringBinder))]
         public string Code { get; set; }
 
-        public Option<Option<int, IReadOnlyList<Domain.ChallengeResult>>, ErrorSet> Result { get; private set; }
+        public OneOf.OneOf<int, IReadOnlyList<Domain.ChallengeResult>, ErrorSet> Result { get; private set; }
 
         public Option<IChallengeSet> Hole { get; private set; }
 
@@ -56,6 +56,7 @@ namespace CodeGolf.Web.Pages
                           gs.Hole.ChallengeSet,
                           cancellationToken).ConfigureAwait(false);
             this.CodeErrorLocations = res.Match(
+                a => string.Empty,
                 a => string.Empty,
                 a => string.Join(",", a.Errors.Select(ErrorMessageParser.Parse).Select(e => $"{e.Line}:{e.Col}")));
 

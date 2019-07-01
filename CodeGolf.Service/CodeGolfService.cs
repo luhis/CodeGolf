@@ -6,10 +6,11 @@ using CodeGolf.Domain;
 using CodeGolf.Domain.ChallengeInterfaces;
 using CodeGolf.Persistence.Static;
 using EnsureThat;
-using Optional;
 
 namespace CodeGolf.Service
 {
+    using OneOf;
+
     public class CodeGolfService : ICodeGolfService
     {
         private readonly IRunner runner;
@@ -22,7 +23,7 @@ namespace CodeGolf.Service
             this.scorer = scorer;
         }
 
-        Task<Option<Option<int, IReadOnlyList<ChallengeResult>>, ErrorSet>> ICodeGolfService.Score(
+        Task<OneOf<int, IReadOnlyList<ChallengeResult>, ErrorSet>> ICodeGolfService.Score(
             string code,
             IChallengeSet challenge,
             CancellationToken cancellationToken)
@@ -38,16 +39,14 @@ namespace CodeGolf.Service
                         var results = await challenge.GetResults(compiled);
                         if (results.Any(a => a.Error.HasValue))
                         {
-                            return Option.Some<Option<int, IReadOnlyList<ChallengeResult>>, ErrorSet>(
-                                Option.None<int, IReadOnlyList<ChallengeResult>>(results.ToList()));
+                            return (OneOf<int, IReadOnlyList<ChallengeResult>, ErrorSet>)results.ToList();
                         }
                         else
                         {
-                            return Option.Some<Option<int, IReadOnlyList<ChallengeResult>>, ErrorSet>(
-                                Option.Some<int, IReadOnlyList<ChallengeResult>>(this.scorer.Score(code)));
+                            return (OneOf<int, IReadOnlyList<ChallengeResult>, ErrorSet>)this.scorer.Score(code);
                         }
                     },
-                err => Task.FromResult(Option.None<Option<int, IReadOnlyList<ChallengeResult>>, ErrorSet>(err)));
+                err => Task.FromResult((OneOf<int, IReadOnlyList<ChallengeResult>, ErrorSet>)err));
         }
 
         IChallengeSet ICodeGolfService.GetDemoChallenge()

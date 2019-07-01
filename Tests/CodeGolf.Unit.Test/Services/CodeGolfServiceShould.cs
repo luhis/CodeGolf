@@ -1,16 +1,18 @@
-using System.Linq;
 using System.Threading;
 using CodeGolf.Domain;
 using CodeGolf.ExecutionServer;
 using CodeGolf.Service;
-using CodeGolf.Unit.Test.Tooling;
+
 using FluentAssertions;
-using Optional.Unsafe;
+
 using Xunit;
 
 namespace CodeGolf.Unit.Test.Services
 {
     using System.Collections.Generic;
+    using System.Linq;
+
+    using Optional.Unsafe;
 
     public class CodeGolfServiceShould
     {
@@ -32,7 +34,7 @@ namespace CodeGolf.Unit.Test.Services
                     this.noParams,
                     new[] { new Challenge<string>(new object[0], "Hello World") }),
                 CancellationToken.None).Result;
-            r.ExtractSuccess().ExtractSuccess().Should().Be(33);
+            r.AsT0.Should().Be(33);
         }
 
         [Fact]
@@ -46,7 +48,7 @@ namespace CodeGolf.Unit.Test.Services
                     this.noParams,
                     new[] { new Challenge<string>(new object[0], "Hello World") }),
                 CancellationToken.None).Result;
-            r.ExtractErrors().Should().BeEquivalentTo(
+            r.AsT2.Errors.Should().BeEquivalentTo(
                 "(1,38): error CS1519: Invalid token ';' in class, struct, or interface member declaration");
         }
 
@@ -61,7 +63,7 @@ namespace CodeGolf.Unit.Test.Services
                     this.noParams,
                     new[] { new Challenge<string>(new object[0], "Hello World") }),
                 CancellationToken.None).Result;
-            r.ExtractSuccess().ExtractErrors().First().Error.ValueOrFailure().Should().BeEquivalentTo(
+            r.AsT1.First().Error.ValueOrFailure().Should().BeEquivalentTo(
                 "Return value incorrect. Expected: \"Hello World\", Found: \"Hello X World\"");
         }
     }

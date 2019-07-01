@@ -3,13 +3,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using CodeGolf.Domain;
 using CodeGolf.Domain.ChallengeInterfaces;
-using Optional;
 
 namespace CodeGolf.Service
 {
+    using OneOf;
+
     public interface ICodeGolfService
     {
-        Task<Option<Option<int, IReadOnlyList<ChallengeResult>>, ErrorSet>> Score(string code, IChallengeSet challenge, CancellationToken cancellationToken);
+        Task<OneOf<int, IReadOnlyList<ChallengeResult>, ErrorSet>> Score(string code, IChallengeSet challenge, CancellationToken cancellationToken);
 
         IChallengeSet GetDemoChallenge();
 
