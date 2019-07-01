@@ -16,6 +16,9 @@ namespace CodeGolf.Web.Pages
 
     using CodeGolf.Domain.ChallengeInterfaces;
 
+    using OneOf;
+    using OneOf.Types;
+
     [Authorize]
     [ValidateAntiForgeryToken]
     public class GameModel : PageModel
@@ -26,7 +29,7 @@ namespace CodeGolf.Web.Pages
         [BindProperty(BinderType = typeof(StringBinder))]
         public string Code { get; set; }
 
-        public OneOf.OneOf<int, IReadOnlyList<Domain.ChallengeResult>, ErrorSet> Result { get; private set; }
+        public OneOf.OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, ErrorSet> Result { get; private set; }
 
         public Option<IChallengeSet> Hole { get; private set; }
 
@@ -41,6 +44,7 @@ namespace CodeGolf.Web.Pages
         public async Task OnGet(CancellationToken cancellationToken)
         {
             this.Hole = (await this.gameService.GetCurrentHole(cancellationToken)).Map(a => a.Hole.ChallengeSet);
+            this.Result = new None();
         }
 
         public async Task OnPost(CancellationToken cancellationToken)
@@ -60,7 +64,10 @@ namespace CodeGolf.Web.Pages
                 a => string.Empty,
                 a => string.Join(",", a.Errors.Select(ErrorMessageParser.Parse).Select(e => $"{e.Line}:{e.Col}")));
 
-            this.Result = res;
+            this.Result = res.Match(
+                a => (OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, ErrorSet>)a,
+                a => (OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, ErrorSet>)a.ToList(),
+                a => (OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, ErrorSet>)a);
         }
 
         public IActionResult OnPostViewSource()

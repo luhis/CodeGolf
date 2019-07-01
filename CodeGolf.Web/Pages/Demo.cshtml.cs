@@ -14,6 +14,7 @@ using Optional;
 namespace CodeGolf.Web.Pages
 {
     using OneOf;
+    using OneOf.Types;
 
     [ValidateAntiForgeryToken]
     [ServiceFilter(typeof(RecaptchaAttribute))]
@@ -24,7 +25,7 @@ namespace CodeGolf.Web.Pages
         [BindProperty(BinderType = typeof(StringBinder))]
         public string Code { get; set; }
 
-        public OneOf<int, IReadOnlyList<Domain.ChallengeResult>, ErrorSet> Result { get; private set; }
+        public OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, ErrorSet> Result { get; private set; }
 
         public IChallengeSet ChallengeSet { get; }
 
@@ -50,13 +51,16 @@ namespace CodeGolf.Web.Pages
                     a => string.Empty,
                     a => string.Empty,
                     a => string.Join(",", a.Errors.Select(ErrorMessageParser.Parse).Select(e => $"{e.Line}:{e.Col}")));
-                this.Result = r;
+                this.Result = r.Match(
+                    a => (OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, ErrorSet>)a,
+                    a => (OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, ErrorSet>)a.ToList(),
+                    a => (OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, ErrorSet>)a);
             }
             else
             {
                 var errors = this.ModelState.Values.SelectMany(a => a.Errors.Select(b => b.ErrorMessage)).ToList();
                 this.Result =
-                    (OneOf<int, IReadOnlyList<Domain.ChallengeResult>, ErrorSet>)new ErrorSet(errors);
+                    (OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, ErrorSet>)new ErrorSet(errors);
             }
         }
 

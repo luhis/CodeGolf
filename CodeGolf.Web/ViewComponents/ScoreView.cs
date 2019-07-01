@@ -7,14 +7,16 @@ using Microsoft.AspNetCore.Mvc;
 namespace CodeGolf.Web.ViewComponents
 {
     using OneOf;
+    using OneOf.Types;
 
     public class ScoreView : ViewComponent
     {
         public IViewComponentResult Invoke(
-            OneOf<int, IReadOnlyList<Domain.ChallengeResult>, ErrorSet> p,
+            OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, ErrorSet> p,
             IChallengeSet cs)
         {
             return p.Match(
+                _ => this.Content(string.Empty),
                 num => this.View("Score", num),
                 err => this.View("ChallengeErrors", ValueTuple.Create(err, cs)),
                 errors =>
