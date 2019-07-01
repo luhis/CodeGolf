@@ -117,13 +117,13 @@
                                     (a, b) => ValueTuple.Create(b, a))));
             var ranks = holes.SelectMany(a => a);
             return (await Task.WhenAll(
-                        ranks.GroupBy(a => a.Item2.LoginName).Select(
+                        ranks.GroupBy(a => a.Item2.UserId).Select(
                             async (r, i) =>
                                 {
-                                    var user = await this.userRepository.GetByUserName(r.Key, cancellationToken);
+                                    var user = await this.userRepository.GetByUserId(r.Key, cancellationToken);
                                     return new ResultDto(
                                         i + 1,
-                                        r.Key,
+                                        user.Map(a => a.LoginName).ValueOrDefault(),
                                         user.Match(a => a.AvatarUri, () => string.Empty),
                                         r.Sum(a => PosToPoints(a.Item1)));
                                 }))).ToList();
@@ -134,7 +134,7 @@
             CancellationToken cancellationToken)
         {
             var attempts = await this.attemptRepository.GetAttempts(holeId, cancellationToken);
-            return attempts.OrderBy(a => a.Score).GroupBy(a => a.LoginName).Select(a => a.First())
+            return attempts.OrderBy(a => a.Score).GroupBy(a => a.UserId).Select(a => a.First())
                 .OrderBy(a => a.Score).ThenBy(a => a.TimeStamp);
         }
 
@@ -149,9 +149,9 @@
                            async (r, i) =>
                                {
                                    var avatar =
-                                       (await this.userRepository.GetByUserName(r.LoginName, cancellationToken))
+                                       (await this.userRepository.GetByUserId(r.UserId, cancellationToken))
                                        .Map(a => a.AvatarUri).ValueOr(string.Empty);
-                                   return new AttemptDto(i + 1, r.Id, r.LoginName, avatar, r.Score, r.TimeStamp.ToLocalTime().ToString());
+                                   return new AttemptDto(i + 1, r.Id, r.UserId, avatar, r.Score, r.TimeStamp.ToLocalTime().ToString());
                                }));
         }
 

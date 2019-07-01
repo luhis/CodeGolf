@@ -48,7 +48,7 @@ namespace CodeGolf.Service
             CancellationToken cancellationToken)
         {
             var attempts = await this.attemptRepository.GetAttempts(holeId, cancellationToken);
-            return attempts.OrderBy(a => a.Score).GroupBy(a => a.LoginName).Select(a => a.First())
+            return attempts.OrderBy(a => a.Score).GroupBy(a => a.UserId).Select(a => a.First())
                 .OrderByDescending(a => a.Score);
         }
 
@@ -106,7 +106,7 @@ namespace CodeGolf.Service
                         var newId = Guid.NewGuid();
 
                         await this.attemptRepository.AddAttempt(
-                            new Attempt(newId, user.LoginName, holeId, code, score, DateTime.UtcNow));
+                            new Attempt(newId, user.UserId, holeId, code, score, DateTime.UtcNow));
                         await this.signalRNotifier.NewAnswer();
                         if (await this.IsBestScore(holeId, newId, cancellationToken))
                         {

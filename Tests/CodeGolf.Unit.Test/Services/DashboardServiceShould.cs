@@ -148,11 +148,11 @@ namespace CodeGolf.Unit.Test.Services
             scores.HasValue.Should().BeTrue();
             scores.ValueOrFailure().Should().HaveCount(2);
             var first = scores.ValueOrFailure().First();
-            first.LoginName.Should().Be("matt");
+            first.UserId.Should().Be("matt");
             first.Avatar.Should().Be("avatar.png");
             first.Score.Should().Be(11);
             var second = scores.ValueOrFailure()[1];
-            second.LoginName.Should().Be("matt2");
+            second.UserId.Should().Be("matt2");
             this.mockRepository.VerifyAll();
         }
 
@@ -179,11 +179,11 @@ namespace CodeGolf.Unit.Test.Services
             scores.HasValue.Should().BeTrue();
             scores.ValueOrFailure().Should().HaveCount(2);
             var first = scores.ValueOrFailure().First();
-            first.LoginName.Should().Be("matt2");
+            first.UserId.Should().Be("matt2");
             first.Avatar.Should().Be("avatar2.png");
             first.Score.Should().Be(11);
             var second = scores.ValueOrFailure()[1];
-            second.LoginName.Should().Be("matt");
+            second.UserId.Should().Be("matt");
             this.mockRepository.VerifyAll();
         }
     }

@@ -22,6 +22,11 @@ namespace CodeGolf.Persistence.Repositories
             return this.context.Users.SingleOrNone(a => a.LoginName == userName, cancellationToken);
         }
 
+        Task<Option<User>> IUserRepository.GetByUserId(int userId, CancellationToken cancellationToken)
+        {
+            return this.context.Users.SingleOrNone(a => a.UserId == userId, cancellationToken);
+        }
+
         async Task IUserRepository.AddOrUpdate(User user, CancellationToken cancellationToken)
         {
             var existing = await this.context.Users.Where(a => a.UserId == user.UserId)

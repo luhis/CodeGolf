@@ -3,26 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CodeGolf.Persistence.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Attempts",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    LoginName = table.Column<string>(nullable: false),
-                    HoleId = table.Column<Guid>(nullable: false),
-                    Code = table.Column<string>(nullable: false),
-                    Score = table.Column<int>(nullable: false),
-                    TimeStamp = table.Column<DateTime>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Attempts", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Holes",
                 columns: table => new
@@ -49,6 +33,44 @@ namespace CodeGolf.Persistence.Migrations
                 {
                     table.PrimaryKey("PK_Users", x => x.UserId);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "Attempts",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
+                    HoleId = table.Column<Guid>(nullable: false),
+                    Code = table.Column<string>(nullable: false),
+                    Score = table.Column<int>(nullable: false),
+                    TimeStamp = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Attempts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Attempts_Holes_HoleId",
+                        column: x => x.HoleId,
+                        principalTable: "Holes",
+                        principalColumn: "HoleId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Attempts_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Attempts_HoleId",
+                table: "Attempts",
+                column: "HoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Attempts_UserId",
+                table: "Attempts",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_LoginName",

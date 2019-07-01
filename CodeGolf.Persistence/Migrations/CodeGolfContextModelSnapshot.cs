@@ -26,14 +26,17 @@ namespace CodeGolf.Persistence.Migrations
 
                     b.Property<Guid>("HoleId");
 
-                    b.Property<string>("LoginName")
-                        .IsRequired();
-
                     b.Property<int>("Score");
 
                     b.Property<DateTime>("TimeStamp");
 
+                    b.Property<int>("UserId");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("HoleId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Attempts");
                 });
@@ -69,6 +72,19 @@ namespace CodeGolf.Persistence.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("CodeGolf.Domain.Attempt", b =>
+                {
+                    b.HasOne("CodeGolf.Domain.HoleInstance")
+                        .WithMany()
+                        .HasForeignKey("HoleId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CodeGolf.Domain.User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }
