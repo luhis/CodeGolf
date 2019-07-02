@@ -62,7 +62,10 @@ namespace CodeGolf.Web.Pages
             this.CodeErrorLocations = res.Match(
                 a => string.Empty,
                 a => string.Empty,
-                a => string.Join(",", a.Errors.Select(ErrorMessageParser.Parse).Select(e => $"{e.Line}:{e.Col}")));
+                a => string.Join(
+                    ",",
+                    a.Errors.Select(ErrorMessageParser.Parse).Select(
+                        e => e.Match(some => $"{some.Line}:{some.Col}", () => string.Empty))));
 
             this.Result = res.Match(
                 a => (OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, ErrorSet>)a,

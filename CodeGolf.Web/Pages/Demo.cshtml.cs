@@ -9,7 +9,6 @@ using CodeGolf.Web.Attributes;
 using CodeGolf.Web.Tooling;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Optional;
 
 namespace CodeGolf.Web.Pages
 {
@@ -50,7 +49,7 @@ namespace CodeGolf.Web.Pages
                 this.CodeErrorLocations = r.Match(
                     a => string.Empty,
                     a => string.Empty,
-                    a => string.Join(",", a.Errors.Select(ErrorMessageParser.Parse).Select(e => $"{e.Line}:{e.Col}")));
+                    a => string.Join(",", a.Errors.Select(ErrorMessageParser.Parse).Select(e => e.Match(some => $"{some.Line}:{some.Col}", () => string.Empty))));
                 this.Result = r.Match(
                     a => (OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, ErrorSet>)a,
                     a => (OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, ErrorSet>)a.ToList(),

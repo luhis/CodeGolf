@@ -207,7 +207,13 @@ namespace CodeGolf.Service
                             if (result.Diagnostics.Any(IsStoppable))
                             {
                                 var failures = result.Diagnostics.Where(IsStoppable).Select(a => a.ToString())
-                                    .Select(ErrorMessageParser.Parse).Select(this.errorMessageTransformer.Transform).Select(a => a.GetString());
+                                    .Select(a =>
+                                        {
+                                            var parsed = ErrorMessageParser.Parse(a);
+                                            return parsed.Match(
+                                                some => this.errorMessageTransformer.Transform(some).GetString(),
+                                                () => a);
+                                        });
 
                                 return Option.None<byte[], ErrorSet>(new ErrorSet(failures.ToList()));
                             }
