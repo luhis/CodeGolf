@@ -5,11 +5,11 @@ namespace CodeGolf.Service.Dtos
 {
     public class AttemptDto
     {
-        public AttemptDto(int rank, Guid id, int userId, string avatar, int score, string timeStamp)
+        public AttemptDto(int rank, Guid id, string loginName, string avatar, int score, string timeStamp)
         {
             this.Rank = rank;
             this.Id = EnsureArg.IsNotEmpty(id, nameof(id));
-            this.UserId = EnsureArg.IsNotDefault(userId, nameof(userId));
+            this.LoginName = EnsureArg.IsNotEmpty(loginName, nameof(loginName));
             this.Score = score;
             this.Avatar = EnsureArg.IsNotEmpty(avatar, nameof(avatar));
             this.TimeStamp = EnsureArg.IsNotNull(timeStamp, nameof(timeStamp));
@@ -19,7 +19,7 @@ namespace CodeGolf.Service.Dtos
 
         public Guid Id { get; }
 
-        public int UserId { get; }
+        public string LoginName { get; }
 
         public string Avatar { get; }
 

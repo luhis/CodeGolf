@@ -148,10 +148,8 @@
                        rows.Select(
                            async (r, i) =>
                                {
-                                   var avatar =
-                                       (await this.userRepository.GetByUserId(r.UserId, cancellationToken))
-                                       .Map(a => a.AvatarUri).ValueOr(string.Empty);
-                                   return new AttemptDto(i + 1, r.Id, r.UserId, avatar, r.Score, r.TimeStamp.ToLocalTime().ToString());
+                                   var user = await this.userRepository.GetByUserId(r.UserId, cancellationToken);
+                                   return new AttemptDto(i + 1, r.Id, user.Map(a => a.LoginName).ValueOrDefault(), user.Map(a => a.AvatarUri).ValueOrDefault(), r.Score, r.TimeStamp.ToLocalTime().ToString());
                                }));
         }
 

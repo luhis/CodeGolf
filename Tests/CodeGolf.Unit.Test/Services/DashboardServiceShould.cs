@@ -123,13 +123,16 @@ namespace CodeGolf.Unit.Test.Services
 
             var scores = this.dashboardService.GetAttempts(CancellationToken.None).Result;
 
-            scores.ValueOrFailure().Should().BeEquivalentTo(new AttemptDto(1, id, 1, "avatar.png", 11, "01/01/2010 00:00:00"));
+            scores.ValueOrFailure().Should().BeEquivalentTo(new AttemptDto(1, id, "matt", "avatar.png", 11, "01/01/2010 00:00:00"));
             this.mockRepository.VerifyAll();
         }
 
         [Fact]
         public void GetAttemptsOrderedByScore()
         {
+            var id1 = Guid.NewGuid();
+            var id2 = Guid.NewGuid();
+            var now = DateTime.UtcNow;
             var hole = this.gameRepository.GetGame().Holes.First();
             this.holeRepository.Setup(a => a.GetCurrentHole(CancellationToken.None)).Returns(
                 Task.FromResult(Option.Some(new HoleInstance(hole.HoleId, DateTime.UtcNow, null))));
@@ -137,28 +140,31 @@ namespace CodeGolf.Unit.Test.Services
                 Task.FromResult<IReadOnlyList<Attempt>>(
                     new[]
                         {
-                            new Attempt(Guid.NewGuid(), 1, Guid.NewGuid(), string.Empty, 11, DateTime.UtcNow),
-                            new Attempt(Guid.NewGuid(), 2, Guid.NewGuid(), string.Empty, 12, DateTime.UtcNow),
+                            new Attempt(id1, 1, Guid.NewGuid(), string.Empty, 11, now),
+                            new Attempt(id2, 2, Guid.NewGuid(), string.Empty, 12, now),
                         }));
             this.userRepository.Setup(a => a.GetByUserId(1, CancellationToken.None))
                 .Returns(Task.FromResult(Option.Some(new User(1, "matt", "avatar.png"))));
             this.userRepository.Setup(a => a.GetByUserId(2, CancellationToken.None))
                 .Returns(Task.FromResult(Option.Some(new User(2, "matt2", "avatar2.png"))));
+
             var scores = this.dashboardService.GetAttempts(CancellationToken.None).Result;
+
             scores.HasValue.Should().BeTrue();
             scores.ValueOrFailure().Should().HaveCount(2);
-            var first = scores.ValueOrFailure().First();
-            first.UserId.Should().Be(1);
-            first.Avatar.Should().Be("avatar.png");
-            first.Score.Should().Be(11);
-            var second = scores.ValueOrFailure()[1];
-            second.UserId.Should().Be(2);
+            scores.ValueOrFailure().Should().BeEquivalentTo(
+                new AttemptDto(1, id1, "matt", "avatar.png", 11, now.ToLocalTime().ToString()),
+                new AttemptDto(2, id2, "matt2", "avatar2.png", 12, now.ToLocalTime().ToString()));
             this.mockRepository.VerifyAll();
         }
 
         [Fact]
         public void GetAttemptsOrderedByTime()
         {
+            var id1 = Guid.NewGuid();
+            var id2 = Guid.NewGuid();
+            var date1 = new DateTime(2000, 1, 1, 2, 0, 0);
+            var date2 = new DateTime(2000, 1, 1, 1, 0, 0);
             var hole = this.gameRepository.GetGame().Holes.First();
             this.holeRepository.Setup(a => a.GetCurrentHole(CancellationToken.None)).Returns(
                 Task.FromResult(Option.Some(new HoleInstance(hole.HoleId, DateTime.UtcNow, null))));
@@ -166,8 +172,8 @@ namespace CodeGolf.Unit.Test.Services
                 Task.FromResult<IReadOnlyList<Attempt>>(
                     new[]
                         {
-                            new Attempt(Guid.NewGuid(), 1, Guid.NewGuid(), string.Empty, 11, new DateTime(2000, 1, 1, 2, 0, 0)),
-                            new Attempt(Guid.NewGuid(), 2, Guid.NewGuid(), string.Empty, 11, new DateTime(2000, 1, 1, 1, 0, 0)),
+                            new Attempt(id1, 1, Guid.NewGuid(), string.Empty, 11, date1),
+                            new Attempt(id2, 2, Guid.NewGuid(), string.Empty, 11, date2),
                         }));
             this.userRepository.Setup(a => a.GetByUserId(1, CancellationToken.None))
                 .Returns(Task.FromResult(Option.Some(new User(1, "matt", "avatar.png"))));
@@ -177,13 +183,10 @@ namespace CodeGolf.Unit.Test.Services
             var scores = this.dashboardService.GetAttempts(CancellationToken.None).Result;
 
             scores.HasValue.Should().BeTrue();
-            scores.ValueOrFailure().Should().HaveCount(2);
-            var first = scores.ValueOrFailure().First();
-            first.UserId.Should().Be(2);
-            first.Avatar.Should().Be("avatar2.png");
-            first.Score.Should().Be(11);
-            var second = scores.ValueOrFailure()[1];
-            second.UserId.Should().Be(1);
+            scores.ValueOrFailure().Should().BeEquivalentTo(
+                new AttemptDto(1, id2, "matt2", "avatar2.png", 11, date2.ToLocalTime().ToString()),
+                new AttemptDto(2, id1, "matt", "avatar.png", 11, date1.ToLocalTime().ToString()));
+
             this.mockRepository.VerifyAll();
         }
     }
