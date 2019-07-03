@@ -56,6 +56,7 @@ namespace CodeGolf.Unit.Test.Services
                 .Returns(Task.FromResult<IReadOnlyList<Attempt>>(new Attempt[] { }));
             var scores = this.dashboardService.GetFinalScores(CancellationToken.None).Result;
             scores.Should().BeEquivalentTo();
+            this.mockRepository.VerifyAll();
         }
 
         [Fact]
