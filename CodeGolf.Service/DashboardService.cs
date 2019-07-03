@@ -133,9 +133,13 @@
             Guid holeId,
             CancellationToken cancellationToken)
         {
+            IOrderedEnumerable<Attempt> Order(IEnumerable<Attempt> e)
+            {
+                return e.OrderBy(x => x.Score).ThenBy(a => a.TimeStamp);
+            }
+
             var attempts = await this.attemptRepository.GetAttempts(holeId, cancellationToken);
-            return attempts.OrderBy(a => a.Score).GroupBy(a => a.UserId).Select(a => a.First())
-                .OrderBy(a => a.Score).ThenBy(a => a.TimeStamp);
+            return Order(attempts.OrderBy(a => a.Score).GroupBy(a => a.UserId).Select(a => Order(a).First()));
         }
 
         private async Task<IReadOnlyList<AttemptDto>> GetBestAttemptDtos(

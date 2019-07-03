@@ -190,5 +190,33 @@ namespace CodeGolf.Unit.Test.Services
 
             this.mockRepository.VerifyAll();
         }
+
+        [Fact]
+        public void ReturnEldestWhenUserHasIdenticalScores()
+        {
+            var id1 = Guid.NewGuid();
+            var date1 = new DateTime(2000, 1, 1, 2, 0, 0);
+            var date2 = new DateTime(2000, 1, 1, 1, 0, 0);
+            var hole = this.gameRepository.GetGame().Holes.First();
+            this.holeRepository.Setup(a => a.GetCurrentHole(CancellationToken.None)).Returns(
+                Task.FromResult(Option.Some(new HoleInstance(hole.HoleId, DateTime.UtcNow, null))));
+            this.attemptRepository.Setup(a => a.GetAttempts(It.IsAny<Guid>(), CancellationToken.None)).Returns(
+                Task.FromResult<IReadOnlyList<Attempt>>(
+                    new[]
+                        {
+                            new Attempt(id1, 1, Guid.NewGuid(), string.Empty, 11, date1),
+                            new Attempt(id1, 1, Guid.NewGuid(), string.Empty, 11, date2),
+                        }));
+            this.userRepository.Setup(a => a.GetByUserId(1, CancellationToken.None))
+                .Returns(Task.FromResult(Option.Some(new User(1, "matt", "avatar.png"))));
+
+            var scores = this.dashboardService.GetAttempts(CancellationToken.None).Result;
+
+            scores.HasValue.Should().BeTrue();
+            scores.ValueOrFailure().Should().BeEquivalentTo(
+                new AttemptDto(1, id1, "matt", "avatar.png", 11, date2.ToLocalTime().ToString()));
+
+            this.mockRepository.VerifyAll();
+        }
     }
 }
