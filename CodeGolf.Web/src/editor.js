@@ -1,4 +1,4 @@
-﻿import * as codeMirror from "codemirror";
+import * as codeMirror from "codemirror";
 import "codemirror/mode/clike/clike";
 import "codemirror/theme/bespin.css";
 
@@ -11,7 +11,6 @@ const editor = codeMirror.fromTextArea(document.getElementById("Code"),
 
 const codeSamples = document.getElementById("codeSample");
 const codeInputs = document.getElementById("Code");
-
 
 if (codeSamples && codeInputs) {
     codeSamples.addEventListener("click", () => {
@@ -33,6 +32,8 @@ if (codeErrorLocations && codeErrorLocations.value) {
 }
 
 const count = document.getElementById("Count");
-const updateCount = a => count.innerText = a.getDoc().getValue().replace(/\s/g, "").length;
-editor.on("changes", updateCount);
+if (count) {
+    const updateCount = a => count.innerText = a.getDoc().getValue().replace(/\s/g, "").length;
+    editor.on("changes", updateCount);
+}
 updateCount(editor);
