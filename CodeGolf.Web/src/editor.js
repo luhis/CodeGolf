@@ -28,12 +28,12 @@ if (codeErrorLocations && codeErrorLocations.value) {
         var s = a.split(":");
         return { line: parseInt(s[0]), ch: parseInt(s[1]) };
     });
-    t.map(error =>  editor.addLineClass(error.line - 1, "gutter", "line-error"));
+    t.map(error => editor.addLineClass(error.line - 1, "gutter", "line-error"));
 }
 
 const count = document.getElementById("Count");
 if (count) {
     const updateCount = a => count.innerText = a.getDoc().getValue().replace(/\s/g, "").length;
     editor.on("changes", updateCount);
+    updateCount(editor);
 }
-updateCount(editor);
