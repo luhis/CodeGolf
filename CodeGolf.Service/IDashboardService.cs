@@ -20,7 +20,5 @@
         Task<Option<AttemptCodeDto>> GetAttemptById(Guid id, CancellationToken cancellationToken);
 
         Task<Option<IReadOnlyList<AttemptDto>>> GetAttempts(CancellationToken cancellationToken);
-
-        Task<IReadOnlyList<ResultDto>> GetFinalScores(CancellationToken cancellationToken);
     }
 }

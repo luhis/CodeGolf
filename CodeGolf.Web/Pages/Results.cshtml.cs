@@ -19,16 +19,16 @@ namespace CodeGolf.Web.Pages
     {
         public IReadOnlyList<ResultDto> Results { get; private set; }
 
-        private readonly IDashboardService gameService;
+        private readonly IResultsService resultsService;
 
-        public ResultsModel(IDashboardService gameService)
+        public ResultsModel(IResultsService resultsService)
         {
-            this.gameService = gameService;
+            this.resultsService = resultsService;
         }
 
         public async Task OnGet(CancellationToken cancellationToken)
         {
-            this.Results = await this.gameService.GetFinalScores(cancellationToken);
+            this.Results = await this.resultsService.GetFinalScores(cancellationToken);
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace CodeGolf.Domain.Repositories
 {
+
     using Optional;
 
     public interface IAttemptRepository

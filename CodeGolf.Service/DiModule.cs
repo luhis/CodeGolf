@@ -16,6 +16,8 @@ namespace CodeGolf.Service
             collection.AddTransient<ISyntaxTreeTransformer, SyntaxTreeTransformer>();
             collection.AddTransient<IErrorMessageTransformer, ErrorMessageTransformer>();
             collection.AddTransient<IAdminService, AdminService>();
+            collection.AddTransient<IBestAttemptsService, BestAttemptsService>();
+            collection.AddTransient<IResultsService, ResultsService>();
             collection.AddTransient<CancellationTokenInjector>();
         }
     }
