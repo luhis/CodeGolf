@@ -73,19 +73,6 @@
                     });
         }
 
-        Task<IReadOnlyList<Hole>> IDashboardService.GetAllHoles(CancellationToken cancellationToken)
-        {
-            return Task.FromResult(this.gameRepository.GetGame().Holes);
-        }
-
-        async Task IDashboardService.ResetGame()
-        {
-            await this.attemptRepository.ClearAll();
-            await this.holeRepository.ClearAll();
-            await this.userRepository.ClearAll();
-            await this.signalRNotifier.NewRound();
-        }
-
         private async Task<Option<Hole>> GetNextHole(CancellationToken cancellationToken)
         {
             var currentHole = await this.holeRepository.GetCurrentHole(cancellationToken);

@@ -5,7 +5,6 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    using CodeGolf.Domain;
     using CodeGolf.Service.Dtos;
 
     using Optional;
@@ -17,10 +16,6 @@
         Task<Option<Guid>> NextHole(CancellationToken cancellationToken);
 
         Task EndHole(Guid holeId);
-
-        Task<IReadOnlyList<Hole>> GetAllHoles(CancellationToken cancellationToken);
-
-        Task ResetGame();
 
         Task<Option<AttemptCodeDto>> GetAttemptById(Guid id, CancellationToken cancellationToken);
 
