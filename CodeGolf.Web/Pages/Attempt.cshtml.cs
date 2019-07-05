@@ -7,6 +7,7 @@ namespace CodeGolf.Web.Pages
     using System.Threading.Tasks;
 
     using CodeGolf.Service;
+    using CodeGolf.Service.Dtos;
     using CodeGolf.Web.Attributes;
 
     using Microsoft.AspNetCore.Authorization;
@@ -23,11 +24,18 @@ namespace CodeGolf.Web.Pages
             this.dashboardService = dashboardService;
         }
 
-        public string Code { get; private set; }
+        public AttemptCodeDto Code { get; private set; }
 
-        public async Task OnGet(Guid id, CancellationToken cancellationToken)
+        public async Task<IActionResult> OnGet(Guid id, CancellationToken cancellationToken)
         {
-            this.Code = (await this.dashboardService.GetAttemptById(id, cancellationToken)).Code;
+            var res = await this.dashboardService.GetAttemptById(id, cancellationToken);
+            return res.Match(
+                some =>
+                    {
+                        this.Code = some;
+                        return (IActionResult)this.Page();
+                    },
+                this.NotFound);
         }
     }
 }

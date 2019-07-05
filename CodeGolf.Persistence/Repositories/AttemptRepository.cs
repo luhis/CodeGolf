@@ -5,10 +5,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using CodeGolf.Domain;
 using CodeGolf.Domain.Repositories;
-using Microsoft.EntityFrameworkCore;
 
 namespace CodeGolf.Persistence.Repositories
 {
+    using Optional;
+
     public class AttemptRepository : IAttemptRepository
     {
         private readonly CodeGolfContext context;
@@ -35,9 +36,9 @@ namespace CodeGolf.Persistence.Repositories
             return this.context.SaveChangesAsync();
         }
 
-        Task<Attempt> IAttemptRepository.GetAttempt(Guid attemptId, CancellationToken cancellationToken)
+        Task<Option<Attempt>> IAttemptRepository.GetAttempt(Guid attemptId, CancellationToken cancellationToken)
         {
-            return this.context.Attempts.SingleAsync(a => a.Id == attemptId, cancellationToken);
+            return this.context.Attempts.SingleOrNone(a => a.Id == attemptId, cancellationToken);
         }
     }
 }

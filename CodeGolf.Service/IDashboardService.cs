@@ -22,7 +22,7 @@
 
         Task ResetGame();
 
-        Task<Attempt> GetAttemptById(Guid id, CancellationToken cancellationToken);
+        Task<Option<AttemptCodeDto>> GetAttemptById(Guid id, CancellationToken cancellationToken);
 
         Task<Option<IReadOnlyList<AttemptDto>>> GetAttempts(CancellationToken cancellationToken);
 

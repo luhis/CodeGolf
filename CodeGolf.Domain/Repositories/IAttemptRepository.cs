@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 
 namespace CodeGolf.Domain.Repositories
 {
+    using Optional;
+
     public interface IAttemptRepository
     {
         Task AddAttempt(Attempt attempt);
@@ -13,6 +15,6 @@ namespace CodeGolf.Domain.Repositories
 
         Task ClearAll();
 
-        Task<Attempt> GetAttempt(Guid attemptId, CancellationToken cancellationToken);
+        Task<Option<Attempt>> GetAttempt(Guid attemptId, CancellationToken cancellationToken);
     }
 }

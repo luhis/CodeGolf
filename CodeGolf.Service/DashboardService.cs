@@ -157,9 +157,15 @@
                                }));
         }
 
-        Task<Attempt> IDashboardService.GetAttemptById(Guid attemptId, CancellationToken cancellationToken)
+        async Task<Option<AttemptCodeDto>> IDashboardService.GetAttemptById(Guid attemptId, CancellationToken cancellationToken)
         {
-            return this.attemptRepository.GetAttempt(attemptId, cancellationToken);
+            var attempt = await this.attemptRepository.GetAttempt(attemptId, cancellationToken);
+            return await attempt.MapAsync(
+                async a =>
+                    {
+                        var user = await this.userRepository.GetByUserId(a.UserId, cancellationToken);
+                        return new AttemptCodeDto(a.Id, user.Map(x => x.LoginName).ValueOrDefault(), user.Map(x => x.AvatarUri).ValueOrDefault(), a.Score, a.TimeStamp.ToLocalTime().ToString(), a.Code);
+                    });
         }
 
         async Task<Option<IReadOnlyList<AttemptDto>>> IDashboardService.GetAttempts(CancellationToken cancellationToken)
