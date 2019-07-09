@@ -42,6 +42,7 @@
 
         <vc:score-view p="@Model.Result" cs="@Model.ChallengeSet" />
         <input type="hidden" asp-for="CodeErrorLocations">
+        <input id="ChallengeSetId" type="hidden" asp-for="ChallengeSet.Id">
     </section>
 
 @section Scripts {

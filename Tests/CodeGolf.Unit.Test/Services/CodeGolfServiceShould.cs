@@ -9,8 +9,11 @@ using Xunit;
 
 namespace CodeGolf.Unit.Test.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+
+    using CodeGolf.Persistence.Static;
 
     using Optional.Unsafe;
 
@@ -18,7 +21,7 @@ namespace CodeGolf.Unit.Test.Services
     {
         private readonly ICodeGolfService codeGolfService = new CodeGolfService(
             new Runner(new SyntaxTreeTransformer(new CancellationTokenInjector()), new ExecutionService(), new ErrorMessageTransformer()),
-            new Scorer());
+            new Scorer(), new ChallengeRepository());
 
         private readonly IReadOnlyList<ParamDescription> noParams =
             new ParamDescription[] { };
@@ -29,6 +32,7 @@ namespace CodeGolf.Unit.Test.Services
             var r = this.codeGolfService.Score(
                 "public string Main() => \"Hello World\";",
                 new ChallengeSet<string>(
+                    Guid.NewGuid(),
                     "a",
                     "b",
                     this.noParams,
@@ -43,6 +47,7 @@ namespace CodeGolf.Unit.Test.Services
             var r = this.codeGolfService.Score(
                 "public string Main() => \"Hello World\";;",
                 new ChallengeSet<string>(
+                    Guid.NewGuid(),
                     "a",
                     "b",
                     this.noParams,
@@ -58,6 +63,7 @@ namespace CodeGolf.Unit.Test.Services
             var r = this.codeGolfService.Score(
                 "public string Main() => \"Hello X World\";",
                 new ChallengeSet<string>(
+                    Guid.NewGuid(),
                     "a",
                     "b",
                     this.noParams,

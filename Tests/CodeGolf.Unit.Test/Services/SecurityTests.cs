@@ -7,13 +7,16 @@ using Xunit;
 
 namespace CodeGolf.Unit.Test.Services
 {
+    using System;
     using System.Collections.Generic;
+
+    using CodeGolf.Persistence.Static;
 
     public class SecurityTests
     {
         private readonly ICodeGolfService codeGolfService = new CodeGolfService(
             new Runner(new SyntaxTreeTransformer(new CancellationTokenInjector()), new ExecutionService(), new ErrorMessageTransformer()),
-            new Scorer());
+            new Scorer(), new ChallengeRepository());
 
         private readonly IReadOnlyList<ParamDescription> noParams = new ParamDescription[] { };
 
@@ -23,6 +26,7 @@ namespace CodeGolf.Unit.Test.Services
             var r = this.codeGolfService.Score(
                 "public string Main(){System.IO.File.ReadAllBytes(\"a.txt\");return \"a\";}",
                 new ChallengeSet<string>(
+                    Guid.NewGuid(),
                     "a",
                     "b",
                     this.noParams,
@@ -40,6 +44,7 @@ namespace CodeGolf.Unit.Test.Services
             var r = this.codeGolfService.Score(
                 code,
                 new ChallengeSet<string>(
+                    Guid.NewGuid(),
                     "a",
                     "b",
                     this.noParams,
@@ -59,6 +64,7 @@ namespace CodeGolf.Unit.Test.Services
             var r = this.codeGolfService.Score(
                 code,
                 new ChallengeSet<string>(
+                    Guid.NewGuid(),
                     "a",
                     "b",
                     this.noParams,
@@ -80,6 +86,7 @@ namespace CodeGolf.Unit.Test.Services
             var r = this.codeGolfService.Score(
                 code,
                 new ChallengeSet<string>(
+                    Guid.NewGuid(),
                     "a",
                     "b",
                     this.noParams,

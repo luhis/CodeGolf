@@ -9,6 +9,8 @@ using Xunit;
 
 namespace CodeGolf.Unit.Test.Domain
 {
+    using System;
+
     public class ChallengeSetArrayShould
     {
         private readonly IReadOnlyList<ParamDescription> stringParam =
@@ -18,6 +20,7 @@ namespace CodeGolf.Unit.Test.Domain
         public void ReturnFalseResultWhenIncorrectWithArray()
         {
             var a = (IChallengeSet)new ChallengeSetArray<string>(
+                Guid.NewGuid(),
                 "a",
                 "b",
                 this.stringParam,
@@ -33,6 +36,7 @@ namespace CodeGolf.Unit.Test.Domain
         public void ReturnFalseResultWhenIncorrectWithEmptyArray()
         {
             var a = (IChallengeSet)new ChallengeSetArray<string>(
+                Guid.NewGuid(),
                 "a",
                 "b",
                 this.stringParam,
@@ -48,6 +52,7 @@ namespace CodeGolf.Unit.Test.Domain
         public void ReturnFalseResultWhenIncorrectWithNullInArray()
         {
             var a = (IChallengeSet)new ChallengeSetArray<string>(
+                Guid.NewGuid(),
                 "a",
                 "b",
                 this.stringParam,
@@ -63,6 +68,7 @@ namespace CodeGolf.Unit.Test.Domain
         public void ReturnFalseResultWhenIncorrectWithNull()
         {
             var a = (IChallengeSet)new ChallengeSetArray<string>(
+                Guid.NewGuid(),
                 "a",
                 "b",
                 this.stringParam,

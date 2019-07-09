@@ -39,6 +39,7 @@
 
             <vc:score-view p="@Model.Result" cs="@Model.Hole.ValueOrFailure()" />
             <input type="hidden" asp-for="CodeErrorLocations">
+            <input type="hidden"  id="ChallengeSetId" value="@Model.Hole.ValueOrFailure().Id">
         }
         else
         {

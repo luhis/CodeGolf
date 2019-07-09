@@ -9,7 +9,14 @@ using EnsureThat;
 
 namespace CodeGolf.Service
 {
+    using System;
+
+    using CodeGolf.Domain.Repositories;
+
     using OneOf;
+
+    using Optional;
+    using Optional.Unsafe;
 
     public class CodeGolfService : ICodeGolfService
     {
@@ -17,10 +24,13 @@ namespace CodeGolf.Service
 
         private readonly IScorer scorer;
 
-        public CodeGolfService(IRunner runner, IScorer scorer)
+        private readonly IChallengeRepository gameRepository;
+
+        public CodeGolfService(IRunner runner, IScorer scorer, IChallengeRepository gameRepository)
         {
             this.runner = runner;
             this.scorer = scorer;
+            this.gameRepository = gameRepository;
         }
 
         Task<OneOf<int, IReadOnlyList<ChallengeResult>, ErrorSet>> ICodeGolfService.Score(
@@ -64,6 +74,16 @@ namespace CodeGolf.Service
         {
             EnsureArg.IsNotNull(code, nameof(code));
             return this.runner.DebugCode(code, cancellationToken);
+        }
+
+        Option<ErrorSet> ICodeGolfService.TryCompile(Guid challengeId, string code, in CancellationToken cancellationToken)
+        {
+            var challenge = this.gameRepository.GetById(challengeId).ValueOrFailure();
+            return this.runner.TryCompile(
+                code,
+                challenge.Params.Select(a => a.Type).ToArray(),
+                challenge.ReturnType,
+                cancellationToken);
         }
     }
 }

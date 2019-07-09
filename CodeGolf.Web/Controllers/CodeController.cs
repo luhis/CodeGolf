@@ -6,6 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CodeGolf.Web.Controllers
 {
+    using System;
+
+    using CodeGolf.Domain;
+    using CodeGolf.Web.Tooling;
+
     [Route("api/[controller]")]
     [ApiController]
     public class CodeController : ControllerBase
@@ -27,6 +32,15 @@ namespace CodeGolf.Web.Controllers
         public ActionResult<string> Debug(string code, CancellationToken cancellationToken)
         {
             return this.codeGolfService.DebugCode(code ?? string.Empty, cancellationToken);
+        }
+
+        [HttpPost("[action]/{id}")]
+        public ActionResult<string> TryCompile(Guid id, [FromBody] string code, CancellationToken cancellationToken)
+        {
+            return new ActionResult<string>(
+                this.codeGolfService.TryCompile(id, code ?? string.Empty, cancellationToken).Match(
+                    ErrorSetSerialiser.Serialise,
+                    () => string.Empty));
         }
     }
 }

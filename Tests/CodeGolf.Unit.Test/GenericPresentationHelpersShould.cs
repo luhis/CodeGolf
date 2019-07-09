@@ -58,7 +58,8 @@ namespace CodeGolf.Unit.Test
         public void GetFunctionTemplateNoParams()
         {
             var r = GenericPresentationHelpers.GetFuncTemplate(
-                new ChallengeSet<string[]>("a", "b", new List<ParamDescription>() { }, new Challenge<string[]>[] { }));
+                new ChallengeSet<string[]>(
+                    Guid.NewGuid(), "a", "b", new List<ParamDescription>() { }, new Challenge<string[]>[] { }));
             r.Should().BeEquivalentTo("string[] Main() { return ... ; }");
         }
 
@@ -66,7 +67,8 @@ namespace CodeGolf.Unit.Test
         public void GetFunctionTemplateWithParams()
         {
             var r = GenericPresentationHelpers.GetFuncTemplate(
-                new ChallengeSet<string[]>("a", "b", this.intAndString, new Challenge<string[]>[] { }));
+                new ChallengeSet<string[]>(
+                    Guid.NewGuid(), "a", "b", this.intAndString, new Challenge<string[]>[] { }));
             r.Should().BeEquivalentTo("string[] Main(int i, string s) { return ... ; }");
         }
     }

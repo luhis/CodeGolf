@@ -19,6 +19,7 @@ namespace CodeGolf.Unit.Test.Domain
         public void ThrowWhenTheChallengeParamsAreMismatched()
         {
             Action a = () => new ChallengeSet<string>(
+                Guid.NewGuid(),
                 "a",
                 "b",
                 this.stringParam,
@@ -30,6 +31,7 @@ namespace CodeGolf.Unit.Test.Domain
         public void NotThrowWhenTheChallengeParamsAreNotMismatched()
         {
             var a = new ChallengeSet<string>(
+                Guid.NewGuid(),
                 "a",
                 "b",
                 this.stringParam,
@@ -41,6 +43,7 @@ namespace CodeGolf.Unit.Test.Domain
         public void ReturnTrueResultWhenCorrect()
         {
             var a = (IChallengeSet)new ChallengeSet<string>(
+                Guid.NewGuid(),
                 "a",
                 "b",
                 this.stringParam,
@@ -56,6 +59,7 @@ namespace CodeGolf.Unit.Test.Domain
         public void ReturnFalseResultWhenIncorrect()
         {
             var a = (IChallengeSet)new ChallengeSet<string>(
+                Guid.NewGuid(),
                 "a",
                 "b",
                 this.stringParam,

@@ -6,6 +6,8 @@ namespace CodeGolf.Domain.ChallengeInterfaces
 {
     public interface IChallengeSet
     {
+        Guid Id { get; }
+
         Task<IReadOnlyList<ChallengeResult>> GetResults(CompileResult t);
 
         IReadOnlyList<ParamDescription> Params { get; }

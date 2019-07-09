@@ -8,6 +8,7 @@ namespace CodeGolf.Persistence.Static
         public static void Add(IServiceCollection services)
         {
             services.AddScoped<IGameRepository, GameRepository>();
+            services.AddScoped<IChallengeRepository, ChallengeRepository>();
         }
     }
 }

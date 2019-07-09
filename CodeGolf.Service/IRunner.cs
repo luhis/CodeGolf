@@ -10,6 +10,8 @@ namespace CodeGolf.Service
     {
         Option<CompileResult, ErrorSet> Compile(string function, IReadOnlyList<Type> paramTypes, Type returnType, CancellationToken cancellationToken);
 
+        Option<ErrorSet> TryCompile(string function, IReadOnlyList<Type> paramTypes, Type returnType, CancellationToken cancellationToken);
+
         string Wrap(string function, CancellationToken cancellationToken);
 
         string DebugCode(string function, CancellationToken cancellationToken);

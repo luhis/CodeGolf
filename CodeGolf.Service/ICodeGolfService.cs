@@ -6,7 +6,11 @@ using CodeGolf.Domain.ChallengeInterfaces;
 
 namespace CodeGolf.Service
 {
+    using System;
+
     using OneOf;
+
+    using Optional;
 
     public interface ICodeGolfService
     {
@@ -17,5 +21,7 @@ namespace CodeGolf.Service
         string WrapCode(string code, CancellationToken cancellationToken);
 
         string DebugCode(string code, CancellationToken cancellationToken);
+
+        Option<ErrorSet> TryCompile(Guid challengeId, string code, in CancellationToken cancellationToken);
     }
 }

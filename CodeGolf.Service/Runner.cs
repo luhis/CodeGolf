@@ -18,20 +18,26 @@ namespace CodeGolf.Service
     public class Runner : IRunner
     {
         private const string ClassName = "CodeGolf";
+
         private const string FunctionName = "Main";
+
         private readonly ISyntaxTreeTransformer syntaxTreeTransformer;
+
         private readonly IExecutionService svc;
 
         private readonly IErrorMessageTransformer errorMessageTransformer;
 
         private static readonly MetadataReference[] MetadataReferences =
-        {
-            MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
-            MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location),
-            MetadataReference.CreateFromFile(typeof(AssemblyTargetedPatchBandAttribute).Assembly.Location)
-        };
+            {
+                MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
+                MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location),
+                MetadataReference.CreateFromFile(typeof(AssemblyTargetedPatchBandAttribute).Assembly.Location)
+            };
 
-        public Runner(ISyntaxTreeTransformer syntaxTreeTransformer, IExecutionService svc, IErrorMessageTransformer errorMessageTransformer)
+        public Runner(
+            ISyntaxTreeTransformer syntaxTreeTransformer,
+            IExecutionService svc,
+            IErrorMessageTransformer errorMessageTransformer)
         {
             this.syntaxTreeTransformer = syntaxTreeTransformer;
             this.svc = svc;
@@ -39,67 +45,94 @@ namespace CodeGolf.Service
         }
 
         Option<CompileResult, ErrorSet> IRunner.Compile(
-            string function, IReadOnlyList<Type> paramTypes, Type returnType, CancellationToken cancellationToken)
+            string function,
+            IReadOnlyList<Type> paramTypes,
+            Type returnType,
+            CancellationToken cancellationToken)
         {
             var compileResult = this.Compile(function, cancellationToken);
 
-            return compileResult.FlatMap(success =>
-            {
-                var ass = Assembly.Load(success);
-                var type = ass.GetType(ClassName);
-                var fun = type.GetMethod(FunctionName,
-                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                var validationFailures = ValidateCompiledFunction(fun, returnType, paramTypes);
-                if (validationFailures.Errors.Any())
-                {
-                    return Option.None<CompileResult, ErrorSet>(validationFailures);
-                }
-
-                async Task<IReadOnlyList<ResultOrError>> Func(object[][] args)
-                {
-                    try
+            return compileResult.FlatMap(
+                success =>
                     {
-                        return await this.InvokeAsync(success, args, paramTypes.ToArray(), returnType);
-                    }
-                    catch (Exception)
-                    {
-                        return new[]
+                        var ass = Assembly.Load(success);
+                        var type = ass.GetType(ClassName);
+                        var fun = type.GetMethod(
+                            FunctionName,
+                            BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                        var validationFailures = ValidateCompiledFunction(fun, returnType, paramTypes);
+                        if (validationFailures.Errors.Any())
                         {
-                            Option.None<object, string>(
-                                "It looks like someone crashed the microservice. Give it a sec.")
-                        };
-                    }
-                }
+                            return Option.None<CompileResult, ErrorSet>(validationFailures);
+                        }
 
-                return Option.Some<CompileResult, ErrorSet>(new CompileResult(Func));
-            });
+                        async Task<IReadOnlyList<ResultOrError>> Func(object[][] args)
+                        {
+                            try
+                            {
+                                return await this.InvokeAsync(success, args, paramTypes.ToArray(), returnType);
+                            }
+                            catch (Exception)
+                            {
+                                return new[]
+                                           {
+                                               Option.None<object, string>(
+                                                   "It looks like someone crashed the microservice. Give it a sec.")
+                                           };
+                            }
+                        }
+
+                        return Option.Some<CompileResult, ErrorSet>(new CompileResult(Func));
+                    });
         }
 
-        private async Task<IReadOnlyList<Option<object, string>>> InvokeAsync(byte[] success, object[][] args, Type[] paramTypes, Type returnType)
+        Option<ErrorSet> IRunner.TryCompile(
+            string function,
+            IReadOnlyList<Type> paramTypes,
+            Type returnType,
+            CancellationToken cancellationToken)
+        {
+            var compileResult = this.Compile(function, cancellationToken);
+
+            return compileResult.Match(_ => Option.None<ErrorSet>(), Option.Some);
+        }
+
+        private async Task<IReadOnlyList<Option<object, string>>> InvokeAsync(
+            byte[] success,
+            object[][] args,
+            Type[] paramTypes,
+            Type returnType)
         {
             if (returnType == typeof(int[]))
             {
-                return (await this.svc.Execute<int[]>(success, ClassName, FunctionName, args, paramTypes)).Select(ToOpt).ToArray();
+                return (await this.svc.Execute<int[]>(success, ClassName, FunctionName, args, paramTypes)).Select(ToOpt)
+                    .ToArray();
             }
+
             if (returnType == typeof(string[]))
             {
-                return (await this.svc.Execute<string[]>(success, ClassName, FunctionName, args, paramTypes)).Select(ToOpt).ToArray();
+                return (await this.svc.Execute<string[]>(success, ClassName, FunctionName, args, paramTypes))
+                    .Select(ToOpt).ToArray();
             }
+
             if (returnType.IsArray)
             {
-                return (await this.svc.Execute<object[]>(success, ClassName, FunctionName, args, paramTypes)).Select(ToOpt).ToArray();
+                return (await this.svc.Execute<object[]>(success, ClassName, FunctionName, args, paramTypes))
+                    .Select(ToOpt).ToArray();
             }
             else
             {
-                return (await this.svc.Execute<object>(success, ClassName, FunctionName, args, paramTypes)).Select(ToOpt).ToArray();
+                return (await this.svc.Execute<object>(success, ClassName, FunctionName, args, paramTypes))
+                    .Select(ToOpt).ToArray();
             }
         }
 
-        private static Option<object, string> ToOpt<T>(ValueTuple<T, string> t) => t.Item2 == null
-            ? Option.Some<object, string>(t.Item1)
-            : Option.None<object, string>(t.Item2);
+        private static Option<object, string> ToOpt<T>(ValueTuple<T, string> t) =>
+            t.Item2 == null ? Option.Some<object, string>(t.Item1) : Option.None<object, string>(t.Item2);
 
-        private static ErrorSet ValidateCompiledFunction(MethodInfo fun, Type expectedReturn,
+        private static ErrorSet ValidateCompiledFunction(
+            MethodInfo fun,
+            Type expectedReturn,
             IReadOnlyCollection<Type> paramTypes)
         {
             if (fun == null)
@@ -119,8 +152,8 @@ namespace CodeGolf.Service
                 return new ErrorSet($"Return type incorrect expected {expectedReturn}");
             }
 
-            var missMatches = compiledParams.Select(a => a.ParameterType)
-                .Zip(paramTypes, ValueTuple.Create).Where(a => a.Item1 != a.Item2);
+            var missMatches = compiledParams.Select(a => a.ParameterType).Zip(paramTypes, ValueTuple.Create)
+                .Where(a => a.Item1 != a.Item2);
             if (missMatches.Any())
             {
                 return new ErrorSet("Parameter type mismatch");
@@ -142,19 +175,16 @@ namespace CodeGolf.Service
 
         void IRunner.WakeUpCompiler(CancellationToken cancellationToken)
         {
-            TryCompile(WrapInClass(string.Empty, cancellationToken), cancellationToken);
+            this.TryCompile(WrapInClass(string.Empty, cancellationToken), cancellationToken);
         }
 
         private static SyntaxTree WrapInClass(string function, CancellationToken cancellationToken)
         {
             var transformed = string.Join("\n", function.Split('\n').Select(s => "    " + s));
-            return CSharpSyntaxTree.ParseText("using System;\n"
-                                              + "using System.Collections.Generic;\n"
-                                              + "using System.Linq;\n\n"
-                                              + $"public class {ClassName}\n"
-                                              + "{\n"
-                                              + transformed
-                                              + "\n}", cancellationToken: cancellationToken,
+            return CSharpSyntaxTree.ParseText(
+                "using System;\n" + "using System.Collections.Generic;\n" + "using System.Linq;\n\n"
+                + $"public class {ClassName}\n" + "{\n" + transformed + "\n}",
+                cancellationToken: cancellationToken,
                 options: CSharpParseOptions.Default.WithLanguageVersion(LanguageVersion.Latest));
         }
 
@@ -176,12 +206,13 @@ namespace CodeGolf.Service
             var syntaxTree = WrapInClass(function, cancellationToken);
 
             // compile the basic source first, then the modified source to keep the error messages readable
-            return TryCompile(syntaxTree, cancellationToken).FlatMap(_ =>
-            {
-                var transformed = this.syntaxTreeTransformer.Transform(syntaxTree);
+            return this.TryCompile(syntaxTree, cancellationToken).FlatMap(
+                _ =>
+                    {
+                        var transformed = this.syntaxTreeTransformer.Transform(syntaxTree);
 
-                return TryCompile(transformed, cancellationToken);
-            });
+                        return this.TryCompile(transformed, cancellationToken);
+                    });
         }
 
         private Option<byte[], ErrorSet> TryCompile(SyntaxTree syntaxTree, CancellationToken cancellationToken)
@@ -206,8 +237,8 @@ namespace CodeGolf.Service
 
                             if (result.Diagnostics.Any(IsStoppable))
                             {
-                                var failures = result.Diagnostics.Where(IsStoppable).Select(a => a.ToString())
-                                    .Select(a =>
+                                var failures = result.Diagnostics.Where(IsStoppable).Select(a => a.ToString()).Select(
+                                    a =>
                                         {
                                             var parsed = ErrorMessageParser.Parse(a);
                                             return parsed.Match(

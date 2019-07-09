@@ -11,11 +11,13 @@ namespace CodeGolf.Domain
     public class ChallengeSet<T> : IChallengeSet
     {
         public ChallengeSet(
+            Guid id,
             string title,
             string description,
             IReadOnlyList<ParamDescription> ps,
             IReadOnlyList<Challenge<T>> challenges)
         {
+            this.Id = EnsureArg.IsNotEmpty(id, nameof(id));
             this.Title = EnsureArg.IsNotNull(title, nameof(title));
             this.Description = EnsureArg.IsNotNull(description, nameof(description));
             this.Params = EnsureArg.IsNotNull(ps, nameof(ps));
@@ -53,6 +55,8 @@ namespace CodeGolf.Domain
         private IReadOnlyList<Challenge<T>> Challenges { get; }
 
         IReadOnlyList<IChallenge> IChallengeSet.Challenges => this.Challenges;
+
+        public Guid Id { get; }
 
         async Task<IReadOnlyList<ChallengeResult>> IChallengeSet.GetResults(CompileResult t)
         {
