@@ -49,7 +49,7 @@ const count = document.getElementById("Count");
 const challengeSetId = document.getElementById("ChallengeSetId");
 if (count) {
     const updateCount = a => count.innerText = a.getDoc().getValue().replace(/\s/g, "").length;
-    editor.on("changes", updateCount);
+    editor.on("changes", debounce(updateCount, 500));
     const updateCodeErrors = a => window.fetch(`./api/code/TryCompile/${challengeSetId.value}`,
         {
             method: "POST",
