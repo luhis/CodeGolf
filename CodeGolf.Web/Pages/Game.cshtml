@@ -1,4 +1,5 @@
 ﻿@page
+@using Newtonsoft.Json
 @using Optional.Unsafe
 @model CodeGolf.Web.Pages.GameModel
 @{
@@ -38,7 +39,7 @@
             </form>
 
             <vc:score-view p="@Model.Result" cs="@Model.Hole.ValueOrFailure()" />
-            <input type="hidden" asp-for="CodeErrorLocations">
+            <input id="CodeErrorLocations" type="hidden" value="@JsonConvert.SerializeObject(Model.CodeErrorLocations)">
             <input type="hidden"  id="ChallengeSetId" value="@Model.Hole.ValueOrFailure().Id">
         }
         else

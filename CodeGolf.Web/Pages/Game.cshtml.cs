@@ -15,6 +15,7 @@ namespace CodeGolf.Web.Pages
     using System.Linq;
 
     using CodeGolf.Domain.ChallengeInterfaces;
+    using CodeGolf.Web.Models;
 
     using OneOf;
     using OneOf.Types;
@@ -33,7 +34,7 @@ namespace CodeGolf.Web.Pages
 
         public Option<IChallengeSet> Hole { get; private set; }
 
-        public string CodeErrorLocations { get; private set; }
+        public ErrorItem[] CodeErrorLocations { get; private set; } = new ErrorItem[0];
 
         public GameModel(IGameService gameService, IIdentityTools identityTools)
         {
@@ -60,9 +61,14 @@ namespace CodeGolf.Web.Pages
                           gs.ChallengeSet,
                           cancellationToken).ConfigureAwait(false);
             this.CodeErrorLocations = res.Match(
-                a => string.Empty,
-                a => string.Empty,
-                ErrorSetSerialiser.Serialise);
+                _ => new ErrorItem[0],
+                _ => new ErrorItem[0],
+                a => a.Errors.Select(ErrorMessageParser.Parse).Where(x => x.HasValue).Select(
+                    b =>
+                        {
+                            var z = b.ValueOrFailure();
+                            return new ErrorItem(z.Line, z.Col);
+                        }).ToArray());
 
             this.Result = res.Match(
                 a => (OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, ErrorSet>)a,

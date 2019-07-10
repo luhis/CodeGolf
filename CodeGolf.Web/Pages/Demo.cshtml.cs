@@ -12,8 +12,13 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace CodeGolf.Web.Pages
 {
+    using CodeGolf.Web.Controllers;
+    using CodeGolf.Web.Models;
+
     using OneOf;
     using OneOf.Types;
+
+    using Optional.Unsafe;
 
     [ValidateAntiForgeryToken]
     [ServiceFilter(typeof(RecaptchaAttribute))]
@@ -28,7 +33,7 @@ namespace CodeGolf.Web.Pages
 
         public IChallengeSet ChallengeSet { get; }
 
-        public string CodeErrorLocations { get; private set; }
+        public ErrorItem[] CodeErrorLocations { get; private set; } = new ErrorItem[0];
 
         public DemoModel(ICodeGolfService codeGolfService)
         {
@@ -47,9 +52,14 @@ namespace CodeGolf.Web.Pages
                 var r = await this.codeGolfService.Score(this.Code, this.ChallengeSet, cancellationToken)
                             .ConfigureAwait(false);
                 this.CodeErrorLocations = r.Match(
-                    a => string.Empty,
-                    a => string.Empty,
-                    ErrorSetSerialiser.Serialise);
+                    _ => new ErrorItem[0],
+                    _ => new ErrorItem[0],
+                    a => a.Errors.Select(ErrorMessageParser.Parse).Where(x => x.HasValue).Select(
+                        b =>
+                            {
+                                var z = b.ValueOrFailure();
+                                return new ErrorItem(z.Line, z.Col);
+                            }).ToArray());
                 this.Result = r.Match(
                     a => (OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, ErrorSet>)a,
                     a => (OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, ErrorSet>)a.ToList(),

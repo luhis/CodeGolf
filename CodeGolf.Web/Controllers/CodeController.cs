@@ -7,9 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 namespace CodeGolf.Web.Controllers
 {
     using System;
+    using System.Linq;
 
     using CodeGolf.Domain;
+    using CodeGolf.Web.Models;
     using CodeGolf.Web.Tooling;
+
+    using Optional.Unsafe;
 
     [Route("api/[controller]")]
     [ApiController]
@@ -35,12 +39,17 @@ namespace CodeGolf.Web.Controllers
         }
 
         [HttpPost("[action]/{id}")]
-        public ActionResult<string> TryCompile(Guid id, [FromBody] string code, CancellationToken cancellationToken)
+        public JsonResult TryCompile(Guid id, [FromBody] string code, CancellationToken cancellationToken)
         {
-            return new ActionResult<string>(
+            return new JsonResult(
                 this.codeGolfService.TryCompile(id, code ?? string.Empty, cancellationToken).Match(
-                    ErrorSetSerialiser.Serialise,
-                    () => string.Empty));
+                    a => a.Errors.Select(ErrorMessageParser.Parse).Where(x => x.HasValue).Select(
+                        b =>
+                            {
+                                var z = b.ValueOrFailure();
+                                return new ErrorItem(z.Line, z.Col);
+                            }).ToArray(),
+                    () => new ErrorItem[0]));
         }
     }
 }

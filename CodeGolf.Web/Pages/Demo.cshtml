@@ -1,6 +1,7 @@
 ﻿@page
 @using CodeGolf.Recaptcha
 @using Microsoft.Extensions.Options
+@using Newtonsoft.Json
 @using Optional
 @model CodeGolf.Web.Pages.DemoModel
 @inject IOptions<RecaptchaSettings> RecaptchaSettings;
@@ -41,7 +42,7 @@
         </form>
 
         <vc:score-view p="@Model.Result" cs="@Model.ChallengeSet" />
-        <input type="hidden" asp-for="CodeErrorLocations">
+        <input id="CodeErrorLocations" type="hidden" value="@JsonConvert.SerializeObject(Model.CodeErrorLocations)">
         <input id="ChallengeSetId" type="hidden" asp-for="ChallengeSet.Id">
     </section>
 

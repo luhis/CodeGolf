@@ -24,17 +24,13 @@ if (codeSamples && codeInputs) {
 }
 
 const setCodeErrors = errors => {
-    const locs = errors.split(",").filter(a => a !== "");
-    const t = locs.map(a => {
-        var s = a.split(":");
-        return { line: parseInt(s[0]), ch: parseInt(s[1]) };
-    });
+
 
     const clear = () => editor.getDoc().getAllMarks().map(a => a.clear());
     
-    if (t.length > 0) {
+    if (errors.length > 0) {
         clear();
-        t.map(error => editor.getDoc().markText({ line: error.line - 1, ch: error.ch }, { line: error.line - 1, ch: 50 },
+        errors.map(error => editor.getDoc().markText({ line: error.line - 1, ch: error.ch }, { line: error.line - 1, ch: 50 },
             { css: "background-color : red" }));
     } else {
         clear();
@@ -43,7 +39,7 @@ const setCodeErrors = errors => {
 
 const codeErrorLocations = document.getElementById("CodeErrorLocations");
 if (codeErrorLocations && codeErrorLocations.value) {
-    setCodeErrors(codeErrorLocations.value);
+    setCodeErrors(JSON.parse(codeErrorLocations.value));
 }
 
 const count = document.getElementById("Count");
@@ -64,7 +60,7 @@ if (count) {
         }
         return r;
     }).then(response => {
-        response.text().then(data => {
+        response.json().then(data => {
             setCodeErrors(data);
         });
     });
