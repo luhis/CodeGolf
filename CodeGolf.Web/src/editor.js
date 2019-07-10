@@ -29,14 +29,15 @@ const setCodeErrors = errors => {
         var s = a.split(":");
         return { line: parseInt(s[0]), ch: parseInt(s[1]) };
     });
+
+    const clear = () => editor.getDoc().getAllMarks().map(a => a.clear());
     
     if (t.length > 0) {
-        [...Array(editor.lineCount()).keys()].map(i => {
-            editor.removeLineClass(i, "gutter");
-        });
-        t.map(error => editor.addLineClass(error.line - 1, "gutter", "line-error"));
+        clear();
+        t.map(error => editor.getDoc().markText({ line: error.line - 1, ch: error.ch }, { line: error.line - 1, ch: 50 },
+            { css: "background-color : red" }));
     } else {
-        [...Array(editor.lineCount()).keys()].map(i => editor.removeLineClass(i, "gutter"));
+        clear();
     }
 };
 
