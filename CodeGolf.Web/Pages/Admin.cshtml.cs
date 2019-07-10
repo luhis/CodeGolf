@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using CodeGolf.Domain;
 using CodeGolf.Service;
 using CodeGolf.Web.Attributes;
 using Microsoft.AspNetCore.Authorization;
@@ -10,6 +9,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace CodeGolf.Web.Pages
 {
+    using CodeGolf.Domain.ChallengeInterfaces;
+
     [Authorize]
     [ServiceFilter(typeof(GameAdminAuthAttribute))]
     [ValidateAntiForgeryToken]
@@ -17,7 +18,7 @@ namespace CodeGolf.Web.Pages
     {
         private readonly IAdminService adminService;
 
-        public IReadOnlyList<Hole> Holes { get; private set; }
+        public IReadOnlyList<IChallengeSet> Holes { get; private set; }
 
         public AdminModel(IAdminService adminService)
         {

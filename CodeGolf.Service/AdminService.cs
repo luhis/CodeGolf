@@ -4,12 +4,12 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    using CodeGolf.Domain;
+    using CodeGolf.Domain.ChallengeInterfaces;
     using CodeGolf.Domain.Repositories;
 
     public class AdminService : IAdminService
     {
-        private readonly IGameRepository gameRepository;
+        private readonly IChallengeRepository challengeRepository;
 
         private readonly IHoleRepository holeRepository;
 
@@ -19,13 +19,13 @@
 
         private readonly IUserRepository userRepository;
 
-        public AdminService(IHoleRepository holeRepository, ISignalRNotifier signalRNotifier, IAttemptRepository attemptRepository, IUserRepository userRepository, IGameRepository gameRepository)
+        public AdminService(IHoleRepository holeRepository, ISignalRNotifier signalRNotifier, IAttemptRepository attemptRepository, IUserRepository userRepository, IChallengeRepository challengeRepository)
         {
             this.holeRepository = holeRepository;
             this.signalRNotifier = signalRNotifier;
             this.attemptRepository = attemptRepository;
             this.userRepository = userRepository;
-            this.gameRepository = gameRepository;
+            this.challengeRepository = challengeRepository;
         }
 
         async Task IAdminService.ResetGame()
@@ -36,9 +36,10 @@
             await this.signalRNotifier.NewRound();
         }
 
-        Task<IReadOnlyList<Hole>> IAdminService.GetAllHoles(CancellationToken cancellationToken)
+        Task<IReadOnlyList<IChallengeSet>> IAdminService.GetAllHoles(CancellationToken cancellationToken)
         {
-            return Task.FromResult(this.gameRepository.GetGame().Holes);
+            var holes = this.challengeRepository.GetAll();
+            return Task.FromResult(holes);
         }
     }
 }

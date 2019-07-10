@@ -46,8 +46,9 @@ namespace CodeGolf.Unit.Test.Services
                 this.holeRepository.Object,
                 null,
                 this.attemptRepository.Object,
-                this.userRepository.Object, 
-                new BestAttemptsService(this.attemptRepository.Object));
+                this.userRepository.Object,
+                new BestAttemptsService(this.attemptRepository.Object),
+                new ChallengeRepository());
         }
 
         [Fact]

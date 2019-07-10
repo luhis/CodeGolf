@@ -7,7 +7,7 @@
     <vc:dashboard-buttons-view hole="@Model.CurrentChallenge" />
     <vc:times-view hole="@Model.CurrentChallenge"/>
 
-    <vc:challenge-view cs="@Model.CurrentChallenge.Map(a => a.Hole.ChallengeSet)"/>
+    <vc:challenge-view cs="@Model.CurrentChallenge.Map(a => a.ChallengeSet)"/>
     <vc:attempts-view/>
 </section>
 

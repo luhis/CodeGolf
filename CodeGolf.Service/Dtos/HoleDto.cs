@@ -4,15 +4,18 @@ using EnsureThat;
 
 namespace CodeGolf.Service.Dtos
 {
+    using CodeGolf.Domain.ChallengeInterfaces;
+
     public class HoleDto
     {
-        public HoleDto(Hole hole, DateTime start, DateTime end, DateTime? closedAt, bool hasNext)
+        public HoleDto(Hole hole, DateTime start, DateTime end, DateTime? closedAt, bool hasNext, IChallengeSet challengeSet)
         {
             this.Hole = EnsureArg.IsNotNull(hole, nameof(hole));
             this.Start = start;
             this.End = end;
             this.ClosedAt = closedAt;
             this.HasNext = hasNext;
+            this.ChallengeSet = EnsureArg.IsNotNull(challengeSet, nameof(challengeSet));
         }
 
         public Hole Hole { get; }
@@ -24,5 +27,7 @@ namespace CodeGolf.Service.Dtos
         public DateTime? ClosedAt { get; }
 
         public bool HasNext { get; }
+
+        public IChallengeSet ChallengeSet { get; }
     }
 }

@@ -1,21 +1,20 @@
 ﻿using System;
-using CodeGolf.Domain.ChallengeInterfaces;
 using EnsureThat;
 
 namespace CodeGolf.Domain
 {
     public class Hole
     {
-        public Hole(Guid holeId, IChallengeSet challengeSet, TimeSpan duration)
+        public Hole(Guid holeId, Guid challengeId, TimeSpan duration)
         {
             this.HoleId = EnsureArg.IsNotEmpty(holeId, nameof(holeId));
-            this.ChallengeSet = EnsureArg.IsNotNull(challengeSet, nameof(challengeSet));
+            this.ChallengeId = EnsureArg.IsNotEmpty(challengeId, nameof(challengeId));
             this.Duration = duration;
         }
 
         public Guid HoleId { get; }
 
-        public IChallengeSet ChallengeSet { get; }
+        public Guid ChallengeId { get; }
 
         public TimeSpan Duration { get; }
     }

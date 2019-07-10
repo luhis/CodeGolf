@@ -7,8 +7,6 @@ namespace CodeGolf.Persistence.Static
     using System.Collections.Generic;
     using System.Linq;
 
-    using CodeGolf.Domain.ChallengeInterfaces;
-
     using Optional;
     using Optional.Collections;
 
@@ -19,11 +17,11 @@ namespace CodeGolf.Persistence.Static
                 {
                     new Hole(
                         Guid.Parse("5ccbb74c-1972-47cd-9c5c-f2f512ad95e5"),
-                        Challenges.HelloWorld,
+                        Challenges.HelloWorld.Id,
                         TimeSpan.FromMinutes(5)),
                     new Hole(
                         Guid.Parse("d44ee76a-ccde-4006-aa83-86578296a886"),
-                        Challenges.AlienSpeak,
+                        Challenges.AlienSpeak.Id,
                         TimeSpan.FromMinutes(5)),
                 });
 
@@ -44,19 +42,5 @@ namespace CodeGolf.Persistence.Static
 
         private static Option<T> GetAfter<T>(IReadOnlyList<T> list, Func<T, bool> equals) =>
             list.SkipWhile(b => !equals(b)).SkipWhile(equals).SingleOrNone();
-    }
-
-    public class ChallengeRepository : IChallengeRepository
-    {
-        private readonly static IReadOnlyList<IChallengeSet> Cs = new IChallengeSet[] { Challenges.HelloWorld, Challenges.AlienSpeak, Challenges.FizzBuzz, Challenges.Calculator };
-
-        public Option<IChallengeSet> GetById(Guid id)
-        {
-            return Cs.SingleOrNone(a => a.Id == id);
-        }
-    }
-
-    public interface IChallengeRepository
-    { Option<IChallengeSet> GetById(Guid id);
     }
 }

@@ -4,12 +4,12 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    using CodeGolf.Domain;
+    using CodeGolf.Domain.ChallengeInterfaces;
 
     public interface IAdminService
     {
         Task ResetGame();
 
-        Task<IReadOnlyList<Hole>> GetAllHoles(CancellationToken cancellationToken);
+        Task<IReadOnlyList<IChallengeSet>> GetAllHoles(CancellationToken cancellationToken);
     }
 }

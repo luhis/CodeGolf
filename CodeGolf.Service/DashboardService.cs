@@ -27,6 +27,8 @@
 
         private readonly IUserRepository userRepository;
 
+        private readonly IChallengeRepository challengeRepository;
+
         private readonly IBestAttemptsService bestAttemptsService;
 
         public DashboardService(
@@ -35,7 +37,8 @@
             ISignalRNotifier signalRNotifier,
             IAttemptRepository attemptRepository,
             IUserRepository userRepository,
-            IBestAttemptsService bestAttemptsService)
+            IBestAttemptsService bestAttemptsService,
+            IChallengeRepository challengeRepository)
         {
             this.gameRepository = gameRepository;
             this.holeRepository = holeRepository;
@@ -43,6 +46,7 @@
             this.attemptRepository = attemptRepository;
             this.userRepository = userRepository;
             this.bestAttemptsService = bestAttemptsService;
+            this.challengeRepository = challengeRepository;
         }
 
         async Task<Option<Guid>> IDashboardService.NextHole(CancellationToken cancellationToken)
@@ -73,7 +77,8 @@
                     {
                         var curr = this.gameRepository.GetById(a.HoleId).ValueOrFailure();
                         var next = this.gameRepository.GetAfter(curr.HoleId);
-                        return new HoleDto(curr, a.Start, a.Start.Add(curr.Duration), a.End, next.HasValue);
+                        var chal = this.challengeRepository.GetById(curr.ChallengeId).ValueOrFailure();
+                        return new HoleDto(curr, a.Start, a.Start.Add(curr.Duration), a.End, next.HasValue, chal);
                     });
         }
 

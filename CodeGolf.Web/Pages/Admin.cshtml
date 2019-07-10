@@ -10,7 +10,7 @@
         <ol>
             @foreach (var a in Model.Holes)
             {
-                <li>@a.ChallengeSet.Title</li>
+                <li>@a.Title</li>
             }
         </ol>
         <form asp-page-handler="ResetGame" method="post">

@@ -43,21 +43,21 @@ namespace CodeGolf.Web.Pages
 
         public async Task OnGet(CancellationToken cancellationToken)
         {
-            this.Hole = (await this.gameService.GetCurrentHole(cancellationToken)).Map(a => a.Hole.ChallengeSet);
+            this.Hole = (await this.gameService.GetCurrentHole(cancellationToken)).Map(a => a.ChallengeSet);
             this.Result = new None();
         }
 
         public async Task OnPost(CancellationToken cancellationToken)
         {
             var hole = await this.gameService.GetCurrentHole(cancellationToken);
-            this.Hole = hole.Map(a => a.Hole.ChallengeSet);
+            this.Hole = hole.Map(a => a.ChallengeSet);
             var gs = hole.ValueOrFailure();
 
             var res = await this.gameService.Attempt(
                           this.identityTools.GetIdentity(this.HttpContext).ValueOrFailure(),
                           gs.Hole.HoleId,
                           this.Code,
-                          gs.Hole.ChallengeSet,
+                          gs.ChallengeSet,
                           cancellationToken).ConfigureAwait(false);
             this.CodeErrorLocations = res.Match(
                 a => string.Empty,

@@ -13,6 +13,8 @@ namespace CodeGolf.Service
 {
     using OneOf;
 
+    using Optional.Unsafe;
+
     public class GameService : IGameService
     {
         private readonly ICodeGolfService codeGolfService;
@@ -25,6 +27,8 @@ namespace CodeGolf.Service
 
         private readonly IUserRepository userRepository;
 
+        private readonly IChallengeRepository challengeRepository;
+
         private readonly ISignalRNotifier signalRNotifier;
 
         public GameService(
@@ -33,7 +37,8 @@ namespace CodeGolf.Service
             IGameRepository gameRepository,
             IHoleRepository holeRepository,
             ISignalRNotifier signalRNotifier,
-            IUserRepository userRepository)
+            IUserRepository userRepository,
+            IChallengeRepository challengeRepository)
         {
             this.codeGolfService = codeGolfService;
             this.attemptRepository = attemptRepository;
@@ -41,6 +46,7 @@ namespace CodeGolf.Service
             this.holeRepository = holeRepository;
             this.signalRNotifier = signalRNotifier;
             this.userRepository = userRepository;
+            this.challengeRepository = challengeRepository;
         }
 
         private async Task<IOrderedEnumerable<Attempt>> GetBestAttempts(
@@ -77,9 +83,10 @@ namespace CodeGolf.Service
 
                             return curr.Map(
                                 x =>
-                                    {
-                                        var next = this.gameRepository.GetAfter(x.HoleId);
-                                        return new HoleDto(x, a.Start, a.Start.Add(x.Duration), a.End, next.HasValue);
+                                {
+                                    var chal = this.challengeRepository.GetById(x.ChallengeId).ValueOrFailure();
+                                    var next = this.gameRepository.GetAfter(x.HoleId);
+                                        return new HoleDto(x, a.Start, a.Start.Add(x.Duration), a.End, next.HasValue, chal);
                                     });
                         }
                         else
