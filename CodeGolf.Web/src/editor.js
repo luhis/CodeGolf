@@ -24,8 +24,6 @@ if (codeSamples && codeInputs) {
 }
 
 const setCodeErrors = errors => {
-
-
     const clear = () => editor.getDoc().getAllMarks().map(a => a.clear());
     
     if (errors.length > 0) {
