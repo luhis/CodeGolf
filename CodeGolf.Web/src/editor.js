@@ -31,7 +31,7 @@ const setCodeErrors = errors => {
     if (errors.length > 0) {
         clear();
         errors.map(error => editor.getDoc().markText({ line: error.line - 1, ch: error.ch }, { line: error.line - 1, ch: 50 },
-            { css: "background-color : red" }));
+            { css: "text-decoration: underline; text-decoration-style: wavy" }));
     } else {
         clear();
     }
