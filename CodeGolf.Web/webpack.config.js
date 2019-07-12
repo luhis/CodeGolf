@@ -8,12 +8,12 @@ module.exports = {
         new VueLoaderPlugin()
     ],
     entry: {
-        dashboard: './src/dashboard.js',
-        game: './src/game.js',
-        cookies: './src/cookies.js',
-        editor: './src/editor.js',
-        recaptcha: './src/recaptcha.js',
-        site: './src/site.js'
+        dashboard: './src/dashboard.ts',
+        game: './src/game.ts',
+        cookies: './src/cookies.ts',
+        editor: './src/editor.ts',
+        recaptcha: './src/recaptcha.ts',
+        site: './src/site.ts'
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -36,6 +36,22 @@ module.exports = {
                 use: {
                     loader: "babel-loader"
                 }
+            },
+            {
+                test: /\.ts(x?)$/,
+                exclude: /node_modules/,
+                use: [                    
+                    {
+                        loader: 'babel-loader'
+                    },
+                    {
+                        loader: "ts-loader",
+                        options: {
+                            appendTsSuffixTo: [/\.ts\.vue$/],
+                            appendTsxSuffixTo: [/\.tsx\.vue$/]
+                        }
+                    }
+                ]
             },
             {
                 test: /\.vue$/,

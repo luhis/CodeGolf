@@ -25,7 +25,7 @@
   </table>
 </template>
 
-<script>
+<script lang="tsx">
 export default {
   props: ["appData"]
 };

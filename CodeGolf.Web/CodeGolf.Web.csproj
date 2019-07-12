@@ -10,6 +10,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="src\editor.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
@@ -25,6 +29,10 @@
     <ProjectReference Include="..\CodeGolf.Persistence\CodeGolf.Persistence.csproj" />
     <ProjectReference Include="..\CodeGolf.Recapcha\CodeGolf.Recaptcha.csproj" />
     <ProjectReference Include="..\CodeGolf.Service\CodeGolf.Service.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="src\editor.ts" />
   </ItemGroup>
 
 </Project>

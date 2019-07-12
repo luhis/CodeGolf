@@ -3,10 +3,9 @@ import "codemirror/mode/clike/clike";
 import "codemirror/theme/bespin.css";
 import { debounce } from "lodash";
 
-const editor = codeMirror.fromTextArea(document.getElementById("Code"),
+const editor = codeMirror.fromTextArea(document.getElementById("Code") as HTMLTextAreaElement,
     {
         lineNumbers: true,
-        matchBrackets: true,
         mode: "text/x-csharp"
     });
 
@@ -23,7 +22,7 @@ if (codeSamples && codeInputs) {
     codeSamples.classList.add("is-clickable");
 }
 
-const setCodeErrors = errors => {
+const setCodeErrors = (errors: ReadonlyArray<Error>) => {
     const clear = () => editor.getDoc().getAllMarks().map(a => a.clear());
     
     if (errors.length > 0) {
@@ -35,17 +34,19 @@ const setCodeErrors = errors => {
     }
 };
 
-const codeErrorLocations = document.getElementById("CodeErrorLocations");
+const codeErrorLocations = document.getElementById("CodeErrorLocations") as HTMLInputElement;
 if (codeErrorLocations && codeErrorLocations.value) {
     setCodeErrors(JSON.parse(codeErrorLocations.value));
 }
 
-const count = document.getElementById("Count");
-const challengeSetId = document.getElementById("ChallengeSetId");
+interface Error {line: number, ch: number};
+
+const count = document.getElementById("Count") as HTMLInputElement;
+const challengeSetId = document.getElementById("ChallengeSetId") as HTMLInputElement;
 if (count) {
-    const updateCount = a => count.innerText = a.getDoc().getValue().replace(/\s/g, "").length;
+    const updateCount = (a: CodeMirror.Editor) => count.innerText = a.getDoc().getValue().replace(/\s/g, "").length.toString();
     editor.on("changes", debounce(updateCount, 500));
-    const updateCodeErrors = a => window.fetch(`./api/code/TryCompile/${challengeSetId.value}`,
+    const updateCodeErrors = (a: CodeMirror.Editor) => window.fetch(`./api/code/TryCompile/${challengeSetId.value}`,
         {
             method: "POST",
             body: JSON.stringify(a.getDoc().getValue()),
@@ -58,7 +59,7 @@ if (count) {
         }
         return r;
     }).then(response => {
-        response.json().then(data => {
+        response.json().then((data: ReadonlyArray<Error>) => {
             setCodeErrors(data);
         });
     });
