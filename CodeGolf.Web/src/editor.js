@@ -28,8 +28,8 @@ const setCodeErrors = errors => {
     
     if (errors.length > 0) {
         clear();
-        errors.map(error => editor.getDoc().markText({ line: error.line - 1, ch: error.ch }, { line: error.line - 1, ch: 50 },
-            { css: "text-decoration: underline; text-decoration-color: red; text-decoration-style: wavy" }));
+        errors.map(error => editor.getDoc().markText({ line: error.line - 1, ch: error.ch }, { line: error.line - 1, ch: error.ch + 10 },
+            { className: "underline" }));
     } else {
         clear();
     }
