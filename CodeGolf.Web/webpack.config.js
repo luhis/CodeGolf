@@ -1,11 +1,14 @@
 // webpack v4
 const path = require('path');
-// update from 23.12.2018
-const nodeExternals = require('webpack-node-externals');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 module.exports = {
     plugins: [
-        new VueLoaderPlugin()
+        new VueLoaderPlugin(),
+        new MiniCssExtractPlugin({
+            filename: '[name].css',
+            chunkFilename: '[id].css'
+        })
     ],
     entry: {
         dashboard: './src/dashboard.ts',
@@ -13,7 +16,8 @@ module.exports = {
         cookies: './src/cookies.ts',
         editor: './src/editor.ts',
         recaptcha: './src/recaptcha.ts',
-        site: './src/site.ts'
+        site: './src/site.ts',
+        siteCss: './src/site.scss',
     },
     output: {
         path: path.resolve(__dirname, './wwwroot/dist'),
@@ -21,6 +25,19 @@ module.exports = {
     },
     module: {
         rules: [
+            {
+                test: /\.s(a|c)ss$/,
+                loader: [
+                    MiniCssExtractPlugin.loader,
+                    'css-loader',
+                    {
+                        loader: 'sass-loader',
+                        options: {
+                            sourceMap: false
+                        }
+                    }
+                ]
+            },
             {
                 test: /\.css$/,
                 use: [
@@ -38,7 +55,7 @@ module.exports = {
             {
                 test: /\.ts(x?)$/,
                 exclude: /node_modules/,
-                use: [                    
+                use: [
                     {
                         loader: 'babel-loader'
                     },
