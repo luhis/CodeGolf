@@ -1,15 +1,15 @@
 ﻿import Vue from 'vue';
-import App from './DashboardVue.ts.vue';
 import * as signalR from '@aspnet/signalr';
 
-const connection = new signalR.HubConnectionBuilder().withUrl("/refreshHub").build();
+import App from './DashboardVue.ts.vue';
+import ResultType from './types/result';
 
-interface Result {Rank: number, Id: string, LoginName: string , Avatar: string, Score: number, TimeStamp: string}
+const connection = new signalR.HubConnectionBuilder().withUrl("/refreshHub").build();
 
 new Vue({
     el:"#dashboard",
     data: {
-      data: [] as ReadonlyArray<Result>
+      data: [] as ReadonlyArray<ResultType>
     },
     render(h) {
         return h(App, { props: { appData: this.data } });
@@ -22,7 +22,7 @@ new Vue({
               }
               return r;
           }).then( (response) => {
-              response.json().then((data: ReadonlyArray<Result>) => {
+              response.json().then((data: ReadonlyArray<ResultType>) => {
                 this.data = [...data];
               });
           });

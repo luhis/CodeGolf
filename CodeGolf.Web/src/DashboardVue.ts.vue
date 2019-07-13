@@ -26,7 +26,12 @@
 </template>
 
 <script lang="tsx">
+import ResultType from './types/result';
 export default {
-  props: ["appData"]
+  props: {
+    propExample: {
+      type: Object as () => ReadonlyArray<ResultType>
+    }
+  }
 };
 </script>
