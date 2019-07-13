@@ -29,8 +29,9 @@
 import ResultType from './types/result';
 export default {
   props: {
-    propExample: {
-      type: Object as () => ReadonlyArray<ResultType>
+    appData: {
+      type: Array as () => ReadonlyArray<ResultType>,
+      default: []
     }
   }
 };

@@ -19,8 +19,6 @@ module.exports = {
         path: path.resolve(__dirname, './wwwroot/dist'),
         filename: '[name].js'
     },
-    target: 'node', // update from 23.12.2018
-   // externals: [nodeExternals()], // update from 23.12.2018
     module: {
         rules: [
             {

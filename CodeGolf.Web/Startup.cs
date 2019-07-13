@@ -164,12 +164,17 @@ namespace CodeGolf.Web
                         .AddContentSecurityPolicy(b =>
                         {
                             b.AddDefaultSrc().Self();
-                            b.AddScriptSrc().Self()
+                            var scripts = b.AddScriptSrc().Self()
                                 .From("https://www.google.com")
                                 .From("https://www.googletagmanager.com")
                                 .From("https://www.gstatic.com")
                                 .From("https://www.google-analytics.com")
                                 .WithHash256("fJYxG/MUxs9b4moaAfLG0e5TxMp0nppc6ulRT3MfHLU=").WithHash256(minifiedGAScriptHash);
+                            if (env.IsDevelopment())
+                            {
+                                scripts.UnsafeEval();
+                            }
+
                             b.AddImgSrc().Self().From("https://www.google-analytics.com").From("https://*.githubusercontent.com");
                             b.AddFrameSource().Self().From("https://www.google.com");
                             b.AddStyleSrc().Self().UnsafeInline();

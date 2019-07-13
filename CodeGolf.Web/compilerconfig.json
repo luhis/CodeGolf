@@ -8,29 +8,5 @@
     "options": {
       "sourceMap": true
     }
-  },
-  {
-    "outputFile": "wwwroot/js/site.es5.js",
-    "inputFile": "wwwroot/js/site.js"
-  },
-  {
-    "outputFile": "wwwroot/js/editor.es5.js",
-    "inputFile": "wwwroot/js/editor.js"
-  },
-  {
-    "outputFile": "wwwroot/js/cookies.es5.js",
-    "inputFile": "wwwroot/js/cookies.js"
-  },
-  {
-    "outputFile": "wwwroot/js/recaptcha.es5.js",
-    "inputFile": "wwwroot/js/recaptcha.js"
-  },
-  {
-    "outputFile": "wwwroot/js/signalR.es5.js",
-    "inputFile": "wwwroot/js/signalR.js"
-  },
-  {
-    "outputFile": "wwwroot/js/dashboard.es5.js",
-    "inputFile": "wwwroot/js/dashboard.js"
   }
 ]

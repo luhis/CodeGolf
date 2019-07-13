@@ -15,7 +15,7 @@ new Vue({
         return h(App, { props: { appData: this.data } });
     },
     mounted(){
-      const  updateUI = () => {
+      const updateUI = () => {
           window.fetch('./api/Results/Results').then(r => {
               if (!r.ok) {
                   throw Error(r.statusText);
