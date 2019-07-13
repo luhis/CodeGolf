@@ -97,7 +97,7 @@ namespace CodeGolf.Service
                 Option.None<HoleDto>);
         }
 
-        async Task<OneOf<int, IReadOnlyList<ChallengeResult>, ErrorSet>> IGameService.Attempt(
+        async Task<OneOf<int, IReadOnlyList<ChallengeResult>, IReadOnlyList<CompileErrorMessage>>> IGameService.Attempt(
             User user,
             Guid holeId,
             string code,

@@ -12,13 +12,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace CodeGolf.Web.Pages
 {
-    using CodeGolf.Web.Controllers;
+    using CodeGolf.Service.Dtos;
     using CodeGolf.Web.Models;
 
     using OneOf;
     using OneOf.Types;
-
-    using Optional.Unsafe;
 
     [ValidateAntiForgeryToken]
     [ServiceFilter(typeof(RecaptchaAttribute))]
@@ -29,7 +27,7 @@ namespace CodeGolf.Web.Pages
         [BindProperty(BinderType = typeof(StringBinder))]
         public string Code { get; set; }
 
-        public OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, ErrorSet> Result { get; private set; }
+        public OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, IReadOnlyList<CompileErrorMessage>> Result { get; private set; }
 
         public IChallengeSet ChallengeSet { get; }
 
@@ -54,22 +52,18 @@ namespace CodeGolf.Web.Pages
                 this.CodeErrorLocations = r.Match(
                     _ => new ErrorItem[0],
                     _ => new ErrorItem[0],
-                    a => a.Errors.Select(ErrorMessageParser.Parse).Where(x => x.HasValue).Select(
-                        b =>
-                            {
-                                var z = b.ValueOrFailure();
-                                return new ErrorItem(z.Line, z.Col);
-                            }).ToArray());
+                    a => a.Where(x => true).Select(
+                        b => new ErrorItem(b.Line, b.Col, b.EndCol)).ToArray());
                 this.Result = r.Match(
-                    a => (OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, ErrorSet>)a,
-                    a => (OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, ErrorSet>)a.ToList(),
-                    a => (OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, ErrorSet>)a);
+                    a => (OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, IReadOnlyList<CompileErrorMessage>>)a,
+                    a => (OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, IReadOnlyList<CompileErrorMessage>>)a.ToList(),
+                    a => (OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, IReadOnlyList<CompileErrorMessage>>)a.ToArray());
             }
             else
             {
-                var errors = this.ModelState.Values.SelectMany(a => a.Errors.Select(b => b.ErrorMessage)).ToList();
+                var errors = this.ModelState.Values.SelectMany(a => a.Errors.Select(b => b.ErrorMessage));
                 this.Result =
-                    (OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, ErrorSet>)new ErrorSet(errors);
+                    (OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, IReadOnlyList<CompileErrorMessage>>)errors.Select(a => new CompileErrorMessage(a)).ToArray();
             }
         }
 

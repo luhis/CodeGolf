@@ -43,12 +43,8 @@ namespace CodeGolf.Web.Controllers
         {
             return new JsonResult(
                 this.codeGolfService.TryCompile(id, code ?? string.Empty, cancellationToken).Match(
-                    a => a.Errors.Select(ErrorMessageParser.Parse).Where(x => x.HasValue).Select(
-                        b =>
-                            {
-                                var z = b.ValueOrFailure();
-                                return new ErrorItem(z.Line, z.Col);
-                            }).ToArray(),
+                    a => a.Where(x => true).Select(
+                        b => new ErrorItem(b.Line, b.Col, b.EndCol)).ToArray(),
                     () => new ErrorItem[0]));
         }
     }

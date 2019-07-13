@@ -6,11 +6,13 @@ using Optional;
 
 namespace CodeGolf.Service
 {
+    using CodeGolf.Service.Dtos;
+
     public interface IRunner
     {
-        Option<CompileResult, ErrorSet> Compile(string function, IReadOnlyList<Type> paramTypes, Type returnType, CancellationToken cancellationToken);
+        Option<CompileResult, IReadOnlyList<CompileErrorMessage>> Compile(string function, IReadOnlyList<Type> paramTypes, Type returnType, CancellationToken cancellationToken);
 
-        Option<ErrorSet> TryCompile(string function, IReadOnlyList<Type> paramTypes, Type returnType, CancellationToken cancellationToken);
+        Option<IReadOnlyList<CompileErrorMessage>> TryCompile(string function, IReadOnlyList<Type> paramTypes, Type returnType, CancellationToken cancellationToken);
 
         string Wrap(string function, CancellationToken cancellationToken);
 

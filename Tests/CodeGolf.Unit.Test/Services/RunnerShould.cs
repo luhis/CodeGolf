@@ -8,11 +8,12 @@ using Xunit;
 
 namespace CodeGolf.Unit.Test.Services
 {
+    using CodeGolf.Service.Dtos;
+
     public class RunnerShould
     {
-        private readonly IRunner runner = new Runner(
-            new SyntaxTreeTransformer(new CancellationTokenInjector()),
-            new ExecutionService(), new ErrorMessageTransformer());
+        private readonly IRunner runner = 
+            new Runner(new SyntaxTreeTransformer(new CancellationTokenInjector()), new ExecutionService(), new ErrorMessageTransformer());
 
         [Fact]
         public void ReturnHelloWorld()
@@ -45,7 +46,7 @@ namespace CodeGolf.Unit.Test.Services
                 "public string MainXXX(string s){ return \"not \" + s;}",
                 new[] { typeof(string) },
                 typeof(string),
-                CancellationToken.None).ExtractErrors().Should().BeEquivalentTo("Function 'Main' missing");
+                CancellationToken.None).ExtractErrors().Should().BeEquivalentTo(new CompileErrorMessage("Function 'Main' missing"));
         }
 
         [Fact]
@@ -55,7 +56,7 @@ namespace CodeGolf.Unit.Test.Services
                 "public string Main(string s){ return \"not \" + s;}",
                 new[] { typeof(string), typeof(int) },
                 typeof(string),
-                CancellationToken.None).ExtractErrors().Should().BeEquivalentTo("Incorrect parameter count expected 2");
+                CancellationToken.None).ExtractErrors().Should().BeEquivalentTo(new CompileErrorMessage("Incorrect parameter count expected 2"));
         }
 
         [Fact]
@@ -66,7 +67,7 @@ namespace CodeGolf.Unit.Test.Services
                     new[] { typeof(string) },
                     typeof(string),
                     CancellationToken.None).ExtractErrors().Should()
-                .BeEquivalentTo("Return type incorrect expected System.String");
+                .BeEquivalentTo(new CompileErrorMessage("Return type incorrect expected System.String"));
         }
 
         [Fact]
@@ -76,7 +77,7 @@ namespace CodeGolf.Unit.Test.Services
                 "public string Main(int i){ return \"not \";}",
                 new[] { typeof(string) },
                 typeof(string),
-                CancellationToken.None).ExtractErrors().Should().BeEquivalentTo("Parameter type mismatch");
+                CancellationToken.None).ExtractErrors().Should().BeEquivalentTo(new CompileErrorMessage("Parameter type mismatch"));
         }
 
         [Fact]
@@ -183,7 +184,7 @@ namespace CodeGolf.Unit.Test.Services
             return s;
         }";
             this.runner.Compile(code, new[] { typeof(string) }, typeof(string), CancellationToken.None).ExtractErrors()
-                .Should().BeEquivalentTo("(3,29): error CS0122: 'Thread' is inaccessible due to its protection level");
+                .Should().BeEquivalentTo(new CompileErrorMessage(2, 29, 35, "'Thread' is inaccessible due to its protection level"));
         }
 
         [Fact(Skip = "One day")]

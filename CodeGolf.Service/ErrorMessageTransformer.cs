@@ -4,9 +4,9 @@
 
     public class ErrorMessageTransformer : IErrorMessageTransformer
     {
-        ErrorMessage IErrorMessageTransformer.Transform(ErrorMessage msg)
+        CompileErrorMessage IErrorMessageTransformer.Transform(CompileErrorMessage msg)
         {
-            return new ErrorMessage(msg.Line - 6, msg.Col - 5, msg.Message);
+            return new CompileErrorMessage(msg.Line - 6, msg.Col - 4, msg.EndCol - 4, msg.Message);
         }
     }
 }

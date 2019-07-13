@@ -4,6 +4,6 @@
 
     public interface IErrorMessageTransformer
     {
-        ErrorMessage Transform(ErrorMessage msg);
+        CompileErrorMessage Transform(CompileErrorMessage msg);
     }
 }

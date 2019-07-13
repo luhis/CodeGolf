@@ -6,13 +6,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CodeGolf.Web.ViewComponents
 {
+    using CodeGolf.Service.Dtos;
+
     using OneOf;
     using OneOf.Types;
 
     public class ScoreView : ViewComponent
     {
         public IViewComponentResult Invoke(
-            OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, ErrorSet> p,
+            OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, IReadOnlyList<CompileErrorMessage>> p,
             IChallengeSet cs)
         {
             return p.Match(

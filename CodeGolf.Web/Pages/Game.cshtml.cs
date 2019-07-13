@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using CodeGolf.Domain;
 using CodeGolf.Service;
 using CodeGolf.Web.Tooling;
 using Microsoft.AspNetCore.Authorization;
@@ -15,6 +14,7 @@ namespace CodeGolf.Web.Pages
     using System.Linq;
 
     using CodeGolf.Domain.ChallengeInterfaces;
+    using CodeGolf.Service.Dtos;
     using CodeGolf.Web.Models;
 
     using OneOf;
@@ -30,7 +30,7 @@ namespace CodeGolf.Web.Pages
         [BindProperty(BinderType = typeof(StringBinder))]
         public string Code { get; set; }
 
-        public OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, ErrorSet> Result { get; private set; }
+        public OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, IReadOnlyList<CompileErrorMessage>> Result { get; private set; }
 
         public Option<IChallengeSet> Hole { get; private set; }
 
@@ -63,17 +63,13 @@ namespace CodeGolf.Web.Pages
             this.CodeErrorLocations = res.Match(
                 _ => new ErrorItem[0],
                 _ => new ErrorItem[0],
-                a => a.Errors.Select(ErrorMessageParser.Parse).Where(x => x.HasValue).Select(
-                    b =>
-                        {
-                            var z = b.ValueOrFailure();
-                            return new ErrorItem(z.Line, z.Col);
-                        }).ToArray());
+                a => a.Where(x => true).Select( //todo
+                    b => new ErrorItem(b.Line, b.Col, b.EndCol)).ToArray());
 
             this.Result = res.Match(
-                a => (OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, ErrorSet>)a,
-                a => (OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, ErrorSet>)a.ToList(),
-                a => (OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, ErrorSet>)a);
+                a => (OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, IReadOnlyList<CompileErrorMessage>>)a,
+                a => (OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, IReadOnlyList<CompileErrorMessage>>)a.ToList(),
+                a => (OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, IReadOnlyList<CompileErrorMessage>>)a.ToArray());
         }
 
         public IActionResult OnPostViewSource()

@@ -9,6 +9,9 @@ systemctl stop kestrel-codegolf.service
 systemctl stop execution-codegolf.service
 sleep 5
 
+echo "Client Build"
+yarn --cwd ./CodeGolf.Web/ build
+
 echo "Run build"
 dotnet publish ./CodeGolf.Web -o ../publish -c Release
 dotnet publish ./CodeGolf.ExecutionServer -o ../executionServer -c Release

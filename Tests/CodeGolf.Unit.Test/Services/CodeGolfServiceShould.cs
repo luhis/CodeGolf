@@ -14,6 +14,7 @@ namespace CodeGolf.Unit.Test.Services
     using System.Linq;
 
     using CodeGolf.Persistence.Static;
+    using CodeGolf.Service.Dtos;
 
     using Optional.Unsafe;
 
@@ -53,8 +54,8 @@ namespace CodeGolf.Unit.Test.Services
                     this.noParams,
                     new[] { new Challenge<string>(new object[0], "Hello World") }),
                 CancellationToken.None).Result;
-            r.AsT2.Errors.Should().BeEquivalentTo(
-                "(1,38): error CS1519: Invalid token ';' in class, struct, or interface member declaration");
+            r.AsT2.Should().BeEquivalentTo(new CompileErrorMessage(0, 38, 39,
+                "Invalid token ';' in class, struct, or interface member declaration"));
         }
 
         [Fact]

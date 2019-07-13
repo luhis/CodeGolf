@@ -8,13 +8,15 @@ namespace CodeGolf.Service
 {
     using System;
 
+    using CodeGolf.Service.Dtos;
+
     using OneOf;
 
     using Optional;
 
     public interface ICodeGolfService
     {
-        Task<OneOf<int, IReadOnlyList<ChallengeResult>, ErrorSet>> Score(string code, IChallengeSet challenge, CancellationToken cancellationToken);
+        Task<OneOf<int, IReadOnlyList<ChallengeResult>, IReadOnlyList<CompileErrorMessage>>> Score(string code, IChallengeSet challenge, CancellationToken cancellationToken);
 
         IChallengeSet GetDemoChallenge();
 
@@ -22,6 +24,6 @@ namespace CodeGolf.Service
 
         string DebugCode(string code, CancellationToken cancellationToken);
 
-        Option<ErrorSet> TryCompile(Guid challengeId, string code, in CancellationToken cancellationToken);
+        Option<IReadOnlyList<CompileErrorMessage>> TryCompile(Guid challengeId, string code, CancellationToken cancellationToken);
     }
 }

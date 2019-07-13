@@ -12,6 +12,7 @@ namespace CodeGolf.Service
     using System;
 
     using CodeGolf.Domain.Repositories;
+    using CodeGolf.Service.Dtos;
 
     using OneOf;
 
@@ -33,7 +34,7 @@ namespace CodeGolf.Service
             this.gameRepository = gameRepository;
         }
 
-        Task<OneOf<int, IReadOnlyList<ChallengeResult>, ErrorSet>> ICodeGolfService.Score(
+        Task<OneOf<int, IReadOnlyList<ChallengeResult>, IReadOnlyList<CompileErrorMessage>>> ICodeGolfService.Score(
             string code,
             IChallengeSet challenge,
             CancellationToken cancellationToken)
@@ -49,14 +50,14 @@ namespace CodeGolf.Service
                         var results = await challenge.GetResults(compiled);
                         if (results.Any(a => a.Error.HasValue))
                         {
-                            return (OneOf<int, IReadOnlyList<ChallengeResult>, ErrorSet>)results.ToList();
+                            return (OneOf<int, IReadOnlyList<ChallengeResult>, IReadOnlyList<CompileErrorMessage>>)results.ToList();
                         }
                         else
                         {
-                            return (OneOf<int, IReadOnlyList<ChallengeResult>, ErrorSet>)this.scorer.Score(code);
+                            return (OneOf<int, IReadOnlyList<ChallengeResult>, IReadOnlyList<CompileErrorMessage>>)this.scorer.Score(code);
                         }
                     },
-                err => Task.FromResult((OneOf<int, IReadOnlyList<ChallengeResult>, ErrorSet>)err));
+                err => Task.FromResult((OneOf<int, IReadOnlyList<ChallengeResult>, IReadOnlyList<CompileErrorMessage>>)err.ToArray()));
         }
 
         IChallengeSet ICodeGolfService.GetDemoChallenge()
@@ -76,7 +77,7 @@ namespace CodeGolf.Service
             return this.runner.DebugCode(code, cancellationToken);
         }
 
-        Option<ErrorSet> ICodeGolfService.TryCompile(Guid challengeId, string code, in CancellationToken cancellationToken)
+        Option<IReadOnlyList<CompileErrorMessage>> ICodeGolfService.TryCompile(Guid challengeId, string code, CancellationToken cancellationToken)
         {
             var challenge = this.gameRepository.GetById(challengeId).ValueOrFailure();
             return this.runner.TryCompile(

@@ -15,6 +15,8 @@ using ResultOrError = Optional.Option<object, string>;
 
 namespace CodeGolf.Service
 {
+    using CodeGolf.Service.Dtos;
+
     public class Runner : IRunner
     {
         private const string ClassName = "CodeGolf";
@@ -44,7 +46,7 @@ namespace CodeGolf.Service
             this.errorMessageTransformer = errorMessageTransformer;
         }
 
-        Option<CompileResult, ErrorSet> IRunner.Compile(
+        Option<CompileResult, IReadOnlyList<CompileErrorMessage>> IRunner.Compile(
             string function,
             IReadOnlyList<Type> paramTypes,
             Type returnType,
@@ -63,7 +65,7 @@ namespace CodeGolf.Service
                         var validationFailures = ValidateCompiledFunction(fun, returnType, paramTypes);
                         if (validationFailures.Errors.Any())
                         {
-                            return Option.None<CompileResult, ErrorSet>(validationFailures);
+                            return Option.None<CompileResult, IReadOnlyList<CompileErrorMessage>>(validationFailures.Errors.Select(a => new CompileErrorMessage(a)).ToArray());
                         }
 
                         async Task<IReadOnlyList<ResultOrError>> Func(object[][] args)
@@ -82,11 +84,11 @@ namespace CodeGolf.Service
                             }
                         }
 
-                        return Option.Some<CompileResult, ErrorSet>(new CompileResult(Func));
+                        return Option.Some<CompileResult, IReadOnlyList<CompileErrorMessage>>(new CompileResult(Func));
                     });
         }
 
-        Option<ErrorSet> IRunner.TryCompile(
+        Option<IReadOnlyList<CompileErrorMessage>> IRunner.TryCompile(
             string function,
             IReadOnlyList<Type> paramTypes,
             Type returnType,
@@ -94,7 +96,7 @@ namespace CodeGolf.Service
         {
             var compileResult = this.Compile(function, cancellationToken);
 
-            return compileResult.Match(_ => Option.None<ErrorSet>(), Option.Some);
+            return compileResult.Match(_ => Option.None<IReadOnlyList<CompileErrorMessage>>(), Option.Some);
         }
 
         private async Task<IReadOnlyList<Option<object, string>>> InvokeAsync(
@@ -201,7 +203,7 @@ namespace CodeGolf.Service
 
         private static bool IsStoppable(Diagnostic a) => a.Severity > DiagnosticSeverity.Warning;
 
-        private Option<byte[], ErrorSet> Compile(string function, CancellationToken cancellationToken)
+        private Option<byte[], IReadOnlyList<CompileErrorMessage>> Compile(string function, CancellationToken cancellationToken)
         {
             var syntaxTree = WrapInClass(function, cancellationToken);
 
@@ -215,7 +217,7 @@ namespace CodeGolf.Service
                     });
         }
 
-        private Option<byte[], ErrorSet> TryCompile(SyntaxTree syntaxTree, CancellationToken cancellationToken)
+        private Option<byte[], IReadOnlyList<CompileErrorMessage>> TryCompile(SyntaxTree syntaxTree, CancellationToken cancellationToken)
         {
             return UseTempFile(
                 Path.GetRandomFileName,
@@ -237,21 +239,22 @@ namespace CodeGolf.Service
 
                             if (result.Diagnostics.Any(IsStoppable))
                             {
-                                var failures = result.Diagnostics.Where(IsStoppable).Select(a => a.ToString()).Select(
-                                    a =>
-                                        {
-                                            var parsed = ErrorMessageParser.Parse(a);
-                                            return parsed.Match(
-                                                some => this.errorMessageTransformer.Transform(some).GetString(),
-                                                () => a);
-                                        });
+                                var failures = result.Diagnostics.Where(IsStoppable).Select(a =>
+                                    {
+                                        var ls = a.Location.GetMappedLineSpan();
+                                        return this.errorMessageTransformer.Transform(new CompileErrorMessage(
+                                            ls.StartLinePosition.Line,
+                                            ls.Span.Start.Character,
+                                            ls.Span.End.Character,
+                                            a.GetMessage()));
+                                    });
 
-                                return Option.None<byte[], ErrorSet>(new ErrorSet(failures.ToList()));
+                                return Option.None<byte[], IReadOnlyList<CompileErrorMessage>>(failures.ToList());
                             }
                             else
                             {
                                 dll.Seek(0, SeekOrigin.Begin);
-                                return Option.Some<byte[], ErrorSet>(dll.ToArray());
+                                return Option.Some<byte[], IReadOnlyList<CompileErrorMessage>>(dll.ToArray());
                             }
                         }
                     });

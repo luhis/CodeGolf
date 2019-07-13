@@ -27,7 +27,7 @@ const setCodeErrors = (errors: ReadonlyArray<Error>) => {
     
     if (errors.length > 0) {
         clear();
-        errors.map(error => editor.getDoc().markText({ line: error.line - 1, ch: error.ch }, { line: error.line - 1, ch: error.ch + 10 },
+        errors.map(error => editor.getDoc().markText({ line: error.line, ch: error.ch }, { line: error.line, ch: error.endCh },
             { className: "underline" }));
     } else {
         clear();
@@ -39,7 +39,7 @@ if (codeErrorLocations && codeErrorLocations.value) {
     setCodeErrors(JSON.parse(codeErrorLocations.value));
 }
 
-interface Error {line: number, ch: number};
+interface Error {line: number, ch: number, endCh: number};
 
 const count = document.getElementById("Count") as HTMLInputElement;
 const challengeSetId = document.getElementById("ChallengeSetId") as HTMLInputElement;

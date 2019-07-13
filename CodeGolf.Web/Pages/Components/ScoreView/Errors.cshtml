@@ -1,15 +1,15 @@
-﻿@model CodeGolf.Domain.ErrorSet;
+﻿@model IReadOnlyList<CodeGolf.Service.Dtos.CompileErrorMessage>;
 
 <article class="message is-danger">
     <div class="message-header">
         <p>Error</p>
     </div>
     <div class="message-body">
-        @foreach (var c in Model.Errors)
+        @foreach (var c in Model)
         {
             <p>
                 <i class="fas fa-exclamation-triangle"></i>
-                @c
+                @($"({c.Line},{c.Col}) {c.Message}")
             </p>
         }
     </div>

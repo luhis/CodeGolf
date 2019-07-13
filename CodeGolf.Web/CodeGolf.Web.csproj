@@ -6,7 +6,6 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <TieredCompilation>true</TieredCompilation>
-    <YarnBuildCommand Condition="'$(Configuration)' == 'Release'">run build</YarnBuildCommand>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,7 +20,6 @@
     <PackageReference Include="NetEscapades.AspNetCore.SecurityHeaders" Version="0.9.0" />
     <PackageReference Include="WebMarkupMin.AspNetCore2" Version="2.5.0" />
     <PackageReference Include="Westwind.AspNetCore.Markdown" Version="3.2.5" />
-    <PackageReference Include="Yarn.MSBuild" Version="1.16.0" />
   </ItemGroup>
 
   <ItemGroup>
