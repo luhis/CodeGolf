@@ -6,7 +6,8 @@ namespace CodeGolf.ServiceInterfaces
     public interface IExecutionService
     {
         Task<ValueTuple<T, string>[]> Execute<T>(
-            byte[] assembly,
+            byte[] dll,
+            byte[] pdb,
             string className,
             string funcName,
             object[][] args,

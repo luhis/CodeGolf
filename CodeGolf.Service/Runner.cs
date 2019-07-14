@@ -57,7 +57,7 @@ namespace CodeGolf.Service
             return compileResult.FlatMap(
                 success =>
                     {
-                        var ass = Assembly.Load(success);
+                        var ass = Assembly.Load(success.Item1);
                         var type = ass.GetType(ClassName);
                         var fun = type.GetMethod(
                             FunctionName,
@@ -72,7 +72,7 @@ namespace CodeGolf.Service
                         {
                             try
                             {
-                                return await this.InvokeAsync(success, args, paramTypes.ToArray(), returnType);
+                                return await this.InvokeAsync(success.Item1, success.Item2, args, paramTypes.ToArray(), returnType);
                             }
                             catch (Exception)
                             {
@@ -96,37 +96,38 @@ namespace CodeGolf.Service
         {
             var syntaxTree = WrapInClass(function, cancellationToken);
 
-            var compileResult = this.TryCompile(syntaxTree, _ => true, cancellationToken);
+            var compileResult = this.TryCompile(syntaxTree, (_, __) => true, cancellationToken);
 
             return compileResult.Match(_ => Option.None<IReadOnlyList<CompileErrorMessage>>(), Option.Some);
         }
 
         private async Task<IReadOnlyList<Option<object, string>>> InvokeAsync(
-            byte[] success,
+            byte[] dll,
+            byte[] pdb,
             object[][] args,
             Type[] paramTypes,
             Type returnType)
         {
             if (returnType == typeof(int[]))
             {
-                return (await this.svc.Execute<int[]>(success, ClassName, FunctionName, args, paramTypes)).Select(ToOpt)
+                return (await this.svc.Execute<int[]>(dll, pdb, ClassName, FunctionName, args, paramTypes)).Select(ToOpt)
                     .ToArray();
             }
 
             if (returnType == typeof(string[]))
             {
-                return (await this.svc.Execute<string[]>(success, ClassName, FunctionName, args, paramTypes))
+                return (await this.svc.Execute<string[]>(dll, pdb, ClassName, FunctionName, args, paramTypes))
                     .Select(ToOpt).ToArray();
             }
 
             if (returnType.IsArray)
             {
-                return (await this.svc.Execute<object[]>(success, ClassName, FunctionName, args, paramTypes))
+                return (await this.svc.Execute<object[]>(dll, pdb, ClassName, FunctionName, args, paramTypes))
                     .Select(ToOpt).ToArray();
             }
             else
             {
-                return (await this.svc.Execute<object>(success, ClassName, FunctionName, args, paramTypes))
+                return (await this.svc.Execute<object>(dll, pdb, ClassName, FunctionName, args, paramTypes))
                     .Select(ToOpt).ToArray();
             }
         }
@@ -179,7 +180,7 @@ namespace CodeGolf.Service
 
         void IRunner.WakeUpCompiler(CancellationToken cancellationToken)
         {
-            this.TryCompile(WrapInClass(string.Empty, cancellationToken), _ => true, cancellationToken);
+            this.TryCompile(WrapInClass(string.Empty, cancellationToken), (_, __) => true, cancellationToken);
         }
 
         private static SyntaxTree WrapInClass(string function, CancellationToken cancellationToken)
@@ -205,27 +206,28 @@ namespace CodeGolf.Service
 
         private static bool IsStoppable(Diagnostic a) => a.Severity > DiagnosticSeverity.Warning;
 
-        private Option<byte[], IReadOnlyList<CompileErrorMessage>> Compile(string function, CancellationToken cancellationToken)
+        private Option<(byte[], byte[]), IReadOnlyList<CompileErrorMessage>> Compile(string function, CancellationToken cancellationToken)
         {
             var syntaxTree = WrapInClass(function, cancellationToken);
 
             // compile the basic source first, then the modified source to keep the error messages readable
-            return this.TryCompile(syntaxTree, _ => true, cancellationToken).FlatMap(
+            return this.TryCompile(syntaxTree, (_, __) => true, cancellationToken).FlatMap(
                 _ =>
                     {
                         var transformed = this.syntaxTreeTransformer.Transform(syntaxTree);
 
                         return this.TryCompile(
                             transformed,
-                            dll => 
+                            (dll, pdb) => 
                                 {
                                     dll.Seek(0, SeekOrigin.Begin);
-                                    return dll.ToArray();
+                                    pdb.Seek(0, SeekOrigin.Begin);
+                                    return (dll.ToArray(), pdb.ToArray());
                             }, cancellationToken);
                     });
         }
 
-        private Option<T, IReadOnlyList<CompileErrorMessage>> TryCompile<T>(SyntaxTree syntaxTree, Func<MemoryStream, T> onSuccess, CancellationToken cancellationToken)
+        private Option<T, IReadOnlyList<CompileErrorMessage>> TryCompile<T>(SyntaxTree syntaxTree, Func<MemoryStream, MemoryStream, T> onSuccess, CancellationToken cancellationToken)
         {
             return UseTempFile(
                 Path.GetRandomFileName,
@@ -243,25 +245,30 @@ namespace CodeGolf.Service
 
                         using (var dll = new MemoryStream())
                         {
-                            var result = compilation.Emit(dll, cancellationToken: cancellationToken);
-
-                            if (result.Diagnostics.Any(IsStoppable))
+                            using (var pdb = new MemoryStream())
                             {
-                                var failures = result.Diagnostics.Where(IsStoppable).Select(a =>
-                                    {
-                                        var ls = a.Location.GetMappedLineSpan();
-                                        return this.errorMessageTransformer.Transform(new CompileErrorMessage(
-                                            ls.StartLinePosition.Line,
-                                            ls.Span.Start.Character,
-                                            ls.Span.End.Character,
-                                            a.GetMessage()));
-                                    });
+                                var result = compilation.Emit(dll, pdb, cancellationToken: cancellationToken);
 
-                                return Option.None<T, IReadOnlyList<CompileErrorMessage>>(failures.ToList());
-                            }
-                            else
-                            {
-                                return Option.Some<T, IReadOnlyList<CompileErrorMessage>>(onSuccess(dll));
+                                if (result.Diagnostics.Any(IsStoppable))
+                                {
+                                    var failures = result.Diagnostics.Where(IsStoppable).Select(
+                                        a =>
+                                            {
+                                                var ls = a.Location.GetMappedLineSpan();
+                                                return this.errorMessageTransformer.Transform(
+                                                    new CompileErrorMessage(
+                                                        ls.StartLinePosition.Line,
+                                                        ls.Span.Start.Character,
+                                                        ls.Span.End.Character,
+                                                        a.GetMessage()));
+                                            });
+
+                                    return Option.None<T, IReadOnlyList<CompileErrorMessage>>(failures.ToList());
+                                }
+                                else
+                                {
+                                    return Option.Some<T, IReadOnlyList<CompileErrorMessage>>(onSuccess(dll, pdb));
+                                }
                             }
                         }
                     });

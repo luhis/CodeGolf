@@ -9,18 +9,21 @@ using CodeGolf.ServiceInterfaces;
 
 namespace CodeGolf.ExecutionServer
 {
+    using System.Diagnostics;
+
     public class ExecutionService : IExecutionService
     {
         private const int ExecutionTimeoutMilliseconds = 1000;
 
         public async Task<ValueTuple<T, string>[]> Execute<T>(
-            byte[] assembly,
+            byte[] dll,
+            byte[] pdb,
             string className,
             string funcName,
             object[][] argSets,
             Type[] paramTypes)
         {
-            var obj = Assembly.Load(assembly);
+            var obj = Assembly.Load(dll, pdb);
             var type = obj.GetType(className);
             var inst = Activator.CreateInstance(type);
             var fun = GetMethod(funcName, type);
@@ -46,14 +49,16 @@ namespace CodeGolf.ExecutionServer
                                     }
                                     catch (Exception e)
                                     {
+                                        var final = GetFinalException(e);
+                                        var line = (new StackTrace(final, true)).GetFrame(0).GetFileLineNumber();
                                         return ValueTuple.Create(
                                             default(T),
-                                            "Runtime Error - " + e.InnerException != null
-                                                ? e.InnerException.Message
-                                                : e.Message);
+                                            $"Runtime Error line {line} - {final.Message}");
                                     }
                                 }))).ToArray();
         }
+
+        private static Exception GetFinalException(Exception e) => e.InnerException == null ? e : GetFinalException(e.InnerException);
 
         private static MethodInfo GetMethod(string funcName, IReflect type)
         {

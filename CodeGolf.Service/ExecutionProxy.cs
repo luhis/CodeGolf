@@ -15,13 +15,14 @@ namespace CodeGolf.Service
         }
 
         Task<ValueTuple<T, string>[]> IExecutionService.Execute<T>(
-            byte[] assembly,
+            byte[] dll,
+            byte[] pdb,
             string className,
             string funcName,
             object[][] args,
             Type[] paramTypes)
         {
-            return this.svc.InvokeAsync(a => a.Execute<T>(assembly, className, funcName, args, paramTypes));
+            return this.svc.InvokeAsync(a => a.Execute<T>(dll, pdb, className, funcName, args, paramTypes));
         }
     }
 }
