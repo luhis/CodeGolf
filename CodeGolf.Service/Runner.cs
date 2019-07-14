@@ -94,7 +94,9 @@ namespace CodeGolf.Service
             Type returnType,
             CancellationToken cancellationToken)
         {
-            var compileResult = this.Compile(function, cancellationToken);
+            var syntaxTree = WrapInClass(function, cancellationToken);
+
+            var compileResult = this.TryCompile(syntaxTree, _ => true, cancellationToken);
 
             return compileResult.Match(_ => Option.None<IReadOnlyList<CompileErrorMessage>>(), Option.Some);
         }
@@ -177,7 +179,7 @@ namespace CodeGolf.Service
 
         void IRunner.WakeUpCompiler(CancellationToken cancellationToken)
         {
-            this.TryCompile(WrapInClass(string.Empty, cancellationToken), cancellationToken);
+            this.TryCompile(WrapInClass(string.Empty, cancellationToken), _ => true, cancellationToken);
         }
 
         private static SyntaxTree WrapInClass(string function, CancellationToken cancellationToken)
@@ -208,16 +210,22 @@ namespace CodeGolf.Service
             var syntaxTree = WrapInClass(function, cancellationToken);
 
             // compile the basic source first, then the modified source to keep the error messages readable
-            return this.TryCompile(syntaxTree, cancellationToken).FlatMap(
+            return this.TryCompile(syntaxTree, _ => true, cancellationToken).FlatMap(
                 _ =>
                     {
                         var transformed = this.syntaxTreeTransformer.Transform(syntaxTree);
 
-                        return this.TryCompile(transformed, cancellationToken);
+                        return this.TryCompile(
+                            transformed,
+                            dll => 
+                                {
+                                    dll.Seek(0, SeekOrigin.Begin);
+                                    return dll.ToArray();
+                            }, cancellationToken);
                     });
         }
 
-        private Option<byte[], IReadOnlyList<CompileErrorMessage>> TryCompile(SyntaxTree syntaxTree, CancellationToken cancellationToken)
+        private Option<T, IReadOnlyList<CompileErrorMessage>> TryCompile<T>(SyntaxTree syntaxTree, Func<MemoryStream, T> onSuccess, CancellationToken cancellationToken)
         {
             return UseTempFile(
                 Path.GetRandomFileName,
@@ -249,12 +257,11 @@ namespace CodeGolf.Service
                                             a.GetMessage()));
                                     });
 
-                                return Option.None<byte[], IReadOnlyList<CompileErrorMessage>>(failures.ToList());
+                                return Option.None<T, IReadOnlyList<CompileErrorMessage>>(failures.ToList());
                             }
                             else
                             {
-                                dll.Seek(0, SeekOrigin.Begin);
-                                return Option.Some<byte[], IReadOnlyList<CompileErrorMessage>>(dll.ToArray());
+                                return Option.Some<T, IReadOnlyList<CompileErrorMessage>>(onSuccess(dll));
                             }
                         }
                     });
