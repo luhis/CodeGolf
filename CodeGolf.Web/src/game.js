@@ -13,7 +13,7 @@ connection.on("newTopScore", function (name, score, avatarUri) {
         type: "is-info",
         dismissible: true,
         pauseOnHover: true,
-        duration: 2000,
+        duration: 4000,
     });
 });
 connection.start().catch(function (err) {
