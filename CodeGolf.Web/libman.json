@@ -10,14 +10,14 @@
       ]
     },
     {
-      "library": "codemirror@5.47.0",
+      "library": "codemirror@5.48.0",
       "destination": "wwwroot/lib/codemirror",
       "files": [
         "codemirror.min.css"
       ]
     },
     {
-      "library": "font-awesome@5.8.2",
+      "library": "font-awesome@5.9.0",
       "destination": "wwwroot/lib/font-awesome",
       "files": [
         "css/solid.min.css",
