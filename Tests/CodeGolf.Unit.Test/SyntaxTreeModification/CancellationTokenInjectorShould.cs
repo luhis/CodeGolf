@@ -97,11 +97,11 @@ namespace CodeGolf.Unit.Test.SyntaxTreeModification
             var i = 0;
             while (true)
             {
-                i++;
                 if (cancellationToken.IsCancellationRequested)
                 {
                     throw new System.Threading.Tasks.TaskCanceledException();
                 }
+                i++;
             }    
             return ""Hello World"";
         }
@@ -190,11 +190,12 @@ namespace CodeGolf.Unit.Test.SyntaxTreeModification
                     throw new System.Threading.Tasks.TaskCanceledException();
                 }
             foreach(var x in new[] {1, 2, 3})
-                {x++;
+                {
 if (cancellationToken.IsCancellationRequested)
                 {
                     throw new System.Threading.Tasks.TaskCanceledException();
                 }
+                x++;
                 }
             return s;
         }";

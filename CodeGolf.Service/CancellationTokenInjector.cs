@@ -22,9 +22,11 @@ namespace CodeGolf.Service
 
         private IList<string> ModifiedFuncs { get; } = new List<string>();
 
+        private static int GetLineNumber(CSharpSyntaxNode n) => n.SyntaxTree.GetLineSpan(n.Span).StartLinePosition.Line;
+
         public override SyntaxNode VisitLabeledStatement(LabeledStatementSyntax node)
         {
-            var statement = (GotoStatementSyntax) node.Statement;
+            var statement = (GotoStatementSyntax)node.Statement;
             var updated = Block(ThrowIfCancelled, statement);
             return base.VisitLabeledStatement(node.ReplaceNode(node.Statement, updated));
         }
@@ -32,13 +34,13 @@ namespace CodeGolf.Service
         public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax node)
         {
             var statements = node.Body != null
-                ? node.Body.Statements.ToArray()
-                : new[] {ReturnStatement(node.ExpressionBody.Expression)};
-            var updated = node.AddParameterListParameters(Parameter(Identifier(TokenName))
-                    .WithType(ParseTypeName(typeof(CancellationToken).FullName)))
-                .WithBody(Block(new[] {ThrowIfCancelled}.Concat(statements)))
-                .WithExpressionBody(null)
-                .WithoutTrivia().WithSemicolonToken(Token(SyntaxKind.None));
+                                 ? node.Body.Statements.ToArray()
+                                 : new[] { ReturnStatement(node.ExpressionBody.Expression) };
+            var updated = node
+                .AddParameterListParameters(
+                    Parameter(Identifier(TokenName)).WithType(ParseTypeName(typeof(CancellationToken).FullName)))
+                .WithBody(Block(new[] { ThrowIfCancelled }.Concat(statements))).WithExpressionBody(null).WithoutTrivia()
+                .WithSemicolonToken(Token(SyntaxKind.None));
 
             this.ModifiedFuncs.Add(node.Identifier.ValueText);
             return base.VisitMethodDeclaration(node.ReplaceNode(node, updated));
@@ -47,28 +49,30 @@ namespace CodeGolf.Service
         public override SyntaxNode VisitWhileStatement(WhileStatementSyntax node)
         {
             var statement = (BlockSyntax)node.Statement;
-            var updated = statement.AddStatements(ThrowIfCancelled);
+            //var line = GetLineNumber(statement);
+            // .WithLeadingTrivia(Trivia(LineDirectiveTrivia(Literal(line.ToString(), line), false)))
+            var updated = Block(new[] { ThrowIfCancelled }.Concat(statement.Statements));
             return base.VisitWhileStatement(node.ReplaceNode(statement, updated));
         }
 
         public override SyntaxNode VisitForStatement(ForStatementSyntax node)
         {
-            var statement = (BlockSyntax) node.Statement;
-            var updated = statement.AddStatements(ThrowIfCancelled);
+            var statement = (BlockSyntax)node.Statement;
+            var updated = Block(new[] { ThrowIfCancelled }.Concat(statement.Statements));
             return base.VisitForStatement(node.ReplaceNode(statement, updated));
         }
 
         public override SyntaxNode VisitDoStatement(DoStatementSyntax node)
         {
-            var statement = (BlockSyntax) node.Statement;
-            var updated = statement.AddStatements(ThrowIfCancelled);
+            var statement = (BlockSyntax)node.Statement;
+            var updated = Block(new[] { ThrowIfCancelled }.Concat(statement.Statements));
             return base.VisitDoStatement(node.ReplaceNode(statement, updated));
         }
 
         public override SyntaxNode VisitForEachStatement(ForEachStatementSyntax node)
         {
             var statement = GetStatementsAsBlock(node);
-            var updated = statement.AddStatements(ThrowIfCancelled);
+            var updated = Block(new[] { ThrowIfCancelled }.Concat(statement.Statements));
             return base.VisitForEachStatement(node.ReplaceNode(node.Statement, updated));
         }
 
@@ -76,8 +80,7 @@ namespace CodeGolf.Service
         {
             if (node.Expression is IdentifierNameSyntax ins && this.ModifiedFuncs.Contains(ins.Identifier.ValueText))
             {
-                var updated = node.AddArgumentListArguments(Argument(
-                    IdentifierName(TokenName)));
+                var updated = node.AddArgumentListArguments(Argument(IdentifierName(TokenName)));
                 return base.VisitInvocationExpression(node.ReplaceNode(node, updated).NormalizeWhitespace());
             }
             else
