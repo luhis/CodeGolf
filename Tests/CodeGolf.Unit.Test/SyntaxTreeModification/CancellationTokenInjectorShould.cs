@@ -26,6 +26,7 @@ namespace CodeGolf.Unit.Test.SyntaxTreeModification
                                 {
                                     throw new System.Threading.Tasks.TaskCanceledException();
                                 }
+                                #line 4
                                 return ""Hello World"";
                             }
                         }";
@@ -55,12 +56,14 @@ namespace CodeGolf.Unit.Test.SyntaxTreeModification
             {
                 throw new System.Threading.Tasks.TaskCanceledException();
             }
+            #line 4
             while (true)
             {
                 if (cancellationToken.IsCancellationRequested)
                 {
                     throw new System.Threading.Tasks.TaskCanceledException();
                 }
+                #line 5
             }    
             return ""Hello World"";
         }    
@@ -94,6 +97,7 @@ namespace CodeGolf.Unit.Test.SyntaxTreeModification
             {
                 throw new System.Threading.Tasks.TaskCanceledException();
             }
+            #line 4
             var i = 0;
             while (true)
             {
@@ -101,6 +105,7 @@ namespace CodeGolf.Unit.Test.SyntaxTreeModification
                 {
                     throw new System.Threading.Tasks.TaskCanceledException();
                 }
+                #line 6
                 i++;
             }    
             return ""Hello World"";
@@ -131,6 +136,7 @@ namespace CodeGolf.Unit.Test.SyntaxTreeModification
                 {
                     throw new System.Threading.Tasks.TaskCanceledException();
                 }
+            #line 0
             return 42;
         }
 
@@ -140,6 +146,7 @@ namespace CodeGolf.Unit.Test.SyntaxTreeModification
             {
                 throw new System.Threading.Tasks.TaskCanceledException();
             }
+            #line 6
             return s + X(cancellationToken);
         }
     }";
@@ -162,11 +169,13 @@ namespace CodeGolf.Unit.Test.SyntaxTreeModification
                 {
                     throw new System.Threading.Tasks.TaskCanceledException();
                 }
+                #line 1
             forever:
                 {if (cancellationToken.IsCancellationRequested)
                 {
                     throw new System.Threading.Tasks.TaskCanceledException();
                 }
+                #line 4
                 goto forever;}
             return s;
         }";
@@ -189,12 +198,14 @@ namespace CodeGolf.Unit.Test.SyntaxTreeModification
                 {
                     throw new System.Threading.Tasks.TaskCanceledException();
                 }
+                #line 1
             foreach(var x in new[] {1, 2, 3})
                 {
 if (cancellationToken.IsCancellationRequested)
                 {
                     throw new System.Threading.Tasks.TaskCanceledException();
                 }
+                #line 0
                 x++;
                 }
             return s;

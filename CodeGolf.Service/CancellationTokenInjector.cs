@@ -24,10 +24,14 @@ namespace CodeGolf.Service
 
         private static int GetLineNumber(CSharpSyntaxNode n) => n.SyntaxTree.GetLineSpan(n.Span).StartLinePosition.Line;
 
+        private static SyntaxTrivia GetLineDirective(int line) =>
+            Trivia(LineDirectiveTrivia(Literal(line), true));
+
         public override SyntaxNode VisitLabeledStatement(LabeledStatementSyntax node)
         {
             var statement = (GotoStatementSyntax)node.Statement;
-            var updated = Block(ThrowIfCancelled, statement);
+            var line = GetLineNumber(statement);
+            var updated = Block(ThrowIfCancelled.WithTrailingTrivia(GetLineDirective(line)), statement);
             return base.VisitLabeledStatement(node.ReplaceNode(node.Statement, updated));
         }
 
@@ -36,11 +40,26 @@ namespace CodeGolf.Service
             var statements = node.Body != null
                                  ? node.Body.Statements.ToArray()
                                  : new[] { ReturnStatement(node.ExpressionBody.Expression) };
-            var updated = node
-                .AddParameterListParameters(
-                    Parameter(Identifier(TokenName)).WithType(ParseTypeName(typeof(CancellationToken).FullName)))
-                .WithBody(Block(new[] { ThrowIfCancelled }.Concat(statements))).WithExpressionBody(null).WithoutTrivia()
-                .WithSemicolonToken(Token(SyntaxKind.None));
+            var line = GetLineNumber(
+                node.Body != null ? node.Body.Statements.First() : ReturnStatement(node.ExpressionBody.Expression));
+            var ps = node.AddParameterListParameters(
+                Parameter(Identifier(TokenName)).WithType(ParseTypeName(typeof(CancellationToken).FullName)));
+            var updated = statements.Length > 1
+                              ? ps.WithBody(
+                                      Block(
+                                          new[]
+                                              {
+                                                  ThrowIfCancelled,
+                                                  statements.First().WithLeadingTrivia(
+                                                      statements.First().GetLeadingTrivia()
+                                                          .Concat(new[] { GetLineDirective(line) }))
+                                              }.Concat(statements.Skip(1)))).WithExpressionBody(null).WithoutTrivia()
+                                  .WithSemicolonToken(Token(SyntaxKind.None))
+                              : ps.WithBody(
+                                      Block(
+                                          new[] { ThrowIfCancelled.WithTrailingTrivia(GetLineDirective(line)) }.Concat(
+                                              statements))).WithExpressionBody(null).WithoutTrivia()
+                                  .WithSemicolonToken(Token(SyntaxKind.None));
 
             this.ModifiedFuncs.Add(node.Identifier.ValueText);
             return base.VisitMethodDeclaration(node.ReplaceNode(node, updated));
@@ -49,30 +68,32 @@ namespace CodeGolf.Service
         public override SyntaxNode VisitWhileStatement(WhileStatementSyntax node)
         {
             var statement = (BlockSyntax)node.Statement;
-            //var line = GetLineNumber(statement);
-            // .WithLeadingTrivia(Trivia(LineDirectiveTrivia(Literal(line.ToString(), line), false)))
-            var updated = Block(new[] { ThrowIfCancelled }.Concat(statement.Statements));
+            var line = GetLineNumber(statement);
+            var updated = Block(new[] { ThrowIfCancelled.WithTrailingTrivia(GetLineDirective(line)) }.Concat(statement.Statements));
             return base.VisitWhileStatement(node.ReplaceNode(statement, updated));
         }
 
         public override SyntaxNode VisitForStatement(ForStatementSyntax node)
         {
             var statement = (BlockSyntax)node.Statement;
-            var updated = Block(new[] { ThrowIfCancelled }.Concat(statement.Statements));
+            var line = GetLineNumber(statement);
+            var updated = Block(new[] { ThrowIfCancelled.WithTrailingTrivia(GetLineDirective(line)) }.Concat(statement.Statements));
             return base.VisitForStatement(node.ReplaceNode(statement, updated));
         }
 
         public override SyntaxNode VisitDoStatement(DoStatementSyntax node)
         {
             var statement = (BlockSyntax)node.Statement;
-            var updated = Block(new[] { ThrowIfCancelled }.Concat(statement.Statements));
+            var line = GetLineNumber(statement);
+            var updated = Block(new[] { ThrowIfCancelled.WithTrailingTrivia(GetLineDirective(line)) }.Concat(statement.Statements));
             return base.VisitDoStatement(node.ReplaceNode(statement, updated));
         }
 
         public override SyntaxNode VisitForEachStatement(ForEachStatementSyntax node)
         {
             var statement = GetStatementsAsBlock(node);
-            var updated = Block(new[] { ThrowIfCancelled }.Concat(statement.Statements));
+            var line = GetLineNumber(statement);
+            var updated = Block(new[] { ThrowIfCancelled.WithTrailingTrivia(GetLineDirective(line)) }.Concat(statement.Statements));
             return base.VisitForEachStatement(node.ReplaceNode(node.Statement, updated));
         }
 
@@ -91,9 +112,9 @@ namespace CodeGolf.Service
 
         private static BlockSyntax GetStatementsAsBlock(CommonForEachStatementSyntax node)
         {
-            if (node.Statement is BlockSyntax)
+            if (node.Statement is BlockSyntax syntax)
             {
-                return (BlockSyntax)node.Statement;
+                return syntax;
             }
             else if (node.Statement is ExpressionStatementSyntax)
             {
