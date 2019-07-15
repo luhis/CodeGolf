@@ -54,7 +54,7 @@ namespace CodeGolf.Unit.Test.Services
                     this.noParams,
                     new[] { new Challenge<string>(new object[0], "Hello World") }),
                 CancellationToken.None).Result;
-            r.AsT2.Should().BeEquivalentTo(new CompileErrorMessage(0, 38, 39,
+            r.AsT2.Should().BeEquivalentTo(new CompileErrorMessage(1, 38, 39,
                 "Invalid token ';' in class, struct, or interface member declaration"));
         }
 

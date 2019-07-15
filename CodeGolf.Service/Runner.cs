@@ -188,7 +188,9 @@ namespace CodeGolf.Service
             var transformed = string.Join("\n", function.Split('\n').Select(s => "    " + s));
             return CSharpSyntaxTree.ParseText(
                 "using System;\n" + "using System.Collections.Generic;\n" + "using System.Linq;\n\n"
-                + $"public class {ClassName}\n" + "{\n" + transformed + "\n}",
+                + $"public class {ClassName}\n" + "{\n" + 
+                "#line 1\n" + 
+                transformed + "\n}",
                 cancellationToken: cancellationToken,
                 options: CSharpParseOptions.Default.WithLanguageVersion(LanguageVersion.Latest));
         }
@@ -257,7 +259,7 @@ namespace CodeGolf.Service
                                                 var ls = a.Location.GetMappedLineSpan();
                                                 return this.errorMessageTransformer.Transform(
                                                     new CompileErrorMessage(
-                                                        ls.StartLinePosition.Line,
+                                                        ls.StartLinePosition.Line + 1,
                                                         ls.Span.Start.Character,
                                                         ls.Span.End.Character,
                                                         a.GetMessage()));

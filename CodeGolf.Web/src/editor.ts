@@ -27,7 +27,7 @@ const setCodeErrors = (errors: ReadonlyArray<Error>) => {
     
     if (errors.length > 0) {
         clear();
-        errors.map(error => editor.getDoc().markText({ line: error.line, ch: error.ch }, { line: error.line, ch: error.endCh },
+        errors.map(error => editor.getDoc().markText({ line: error.line - 1, ch: error.ch }, { line: error.line - 1, ch: error.endCh },
             { className: "underline" }));
     } else {
         clear();

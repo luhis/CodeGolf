@@ -101,7 +101,7 @@ namespace CodeGolf.Unit.Test.Services
         }";
             this.runner.Compile(code, new[] { typeof(string) }, typeof(string), CancellationToken.None).ExtractSuccess()
                 .Func(new[] { new object[] { "Hello world" } }).Result.First().ExtractErrors().Should()
-                .BeEquivalentTo("Runtime Error line 8 - Index was outside the bounds of the array.");
+                .BeEquivalentTo("Runtime Error line 3 - Index was outside the bounds of the array.");
         }
 
         [Fact]
@@ -116,7 +116,7 @@ namespace CodeGolf.Unit.Test.Services
         }";
             this.runner.Compile(code, new[] { typeof(string) }, typeof(string), CancellationToken.None).ExtractSuccess()
                 .Func(new[] { new object[] { "Hello world" } }).Result.First().ExtractErrors().Should()
-                .BeEquivalentTo("Runtime Error line 4 - A task was canceled.");
+                .BeEquivalentTo("Runtime Error line 1 - A task was canceled.");
         }
 
         [Fact]
@@ -131,7 +131,7 @@ namespace CodeGolf.Unit.Test.Services
         }";
             this.runner.Compile(code, new[] { typeof(string) }, typeof(string), CancellationToken.None).ExtractSuccess()
                 .Func(new[] { new object[] { "Hello world" } }).Result.First().ExtractErrors().Should()
-                .BeEquivalentTo("Runtime Error line 4 - A task was canceled.");
+                .BeEquivalentTo("Runtime Error line 1 - A task was canceled.");
         }
 
         [Fact]
@@ -146,7 +146,7 @@ namespace CodeGolf.Unit.Test.Services
         }";
             this.runner.Compile(code, new[] { typeof(string) }, typeof(string), CancellationToken.None).ExtractSuccess()
                 .Func(new[] { new object[] { "Hello world" } }).Result.First().ExtractErrors().Should()
-                .BeEquivalentTo("Runtime Error line 4 - A task was canceled.");
+                .BeEquivalentTo("Runtime Error line 1 - A task was canceled.");
         }
 
         [Fact]
@@ -160,7 +160,7 @@ namespace CodeGolf.Unit.Test.Services
         }";
             this.runner.Compile(code, new[] { typeof(string) }, typeof(string), CancellationToken.None).ExtractSuccess()
                 .Func(new[] { new object[] { "Hello world" } }).Result.First().ExtractErrors().Should()
-                .BeEquivalentTo("Runtime Error line 5 - A task was canceled.");
+                .BeEquivalentTo("Runtime Error line 2 - A task was canceled.");
         }
 
         [Fact(Skip = "soon")]
@@ -184,7 +184,7 @@ namespace CodeGolf.Unit.Test.Services
             return s;
         }";
             this.runner.Compile(code, new[] { typeof(string) }, typeof(string), CancellationToken.None).ExtractErrors()
-                .Should().BeEquivalentTo(new CompileErrorMessage(2, 29, 35, "'Thread' is inaccessible due to its protection level"));
+                .Should().BeEquivalentTo(new CompileErrorMessage(3, 29, 35, "'Thread' is inaccessible due to its protection level"));
         }
 
         [Fact(Skip = "One day")]

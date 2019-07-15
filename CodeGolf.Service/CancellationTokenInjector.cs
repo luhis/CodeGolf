@@ -14,15 +14,28 @@ namespace CodeGolf.Service
     {
         private const string TokenName = "cancellationToken";
 
-        private static readonly StatementSyntax ThrowIfCancelled = ParseStatement(
-            @"if (" + TokenName + @".IsCancellationRequested)
-                {
-                    throw new System.Threading.Tasks.TaskCanceledException();
-                }").NormalizeWhitespace();
+        private static readonly StatementSyntax ThrowIfCancelled = IfStatement(
+            MemberAccessExpression(
+                SyntaxKind.SimpleMemberAccessExpression,
+                IdentifierName(TokenName),
+                IdentifierName("IsCancellationRequested")),
+            Block(
+                SingletonList<StatementSyntax>(
+                    ThrowStatement(
+                        ObjectCreationExpression(
+                                QualifiedName(
+                                    QualifiedName(
+                                        QualifiedName(
+                                            IdentifierName("System"),
+                                            IdentifierName("Threading")),
+                                        IdentifierName("Tasks")),
+                                    IdentifierName("TaskCanceledException")))
+                            .WithArgumentList(
+                                ArgumentList()))))).NormalizeWhitespace();
 
         private IList<string> ModifiedFuncs { get; } = new List<string>();
 
-        private static int GetLineNumber(CSharpSyntaxNode n) => n.SyntaxTree.GetLineSpan(n.Span).StartLinePosition.Line;
+        private static int GetLineNumber(CSharpSyntaxNode n) => n.GetLocation().GetLineSpan().StartLinePosition.Line - 5;
 
         private static SyntaxTrivia GetLineDirective(int line) =>
             Trivia(LineDirectiveTrivia(Literal(line), true));
@@ -40,11 +53,12 @@ namespace CodeGolf.Service
             var statements = node.Body != null
                                  ? node.Body.Statements.ToArray()
                                  : new[] { ReturnStatement(node.ExpressionBody.Expression) };
-            var line = GetLineNumber(
-                node.Body != null ? node.Body.Statements.First() : ReturnStatement(node.ExpressionBody.Expression));
+            var line = GetLineNumber(node.Body != null
+                                         ? node.Body
+                                         : (CSharpSyntaxNode)node.ExpressionBody);
             var ps = node.AddParameterListParameters(
                 Parameter(Identifier(TokenName)).WithType(ParseTypeName(typeof(CancellationToken).FullName)));
-            var updated = statements.Length > 1
+            var updated = (statements.Length > 1
                               ? ps.WithBody(
                                       Block(
                                           new[]
@@ -59,7 +73,7 @@ namespace CodeGolf.Service
                                       Block(
                                           new[] { ThrowIfCancelled.WithTrailingTrivia(GetLineDirective(line)) }.Concat(
                                               statements))).WithExpressionBody(null).WithoutTrivia()
-                                  .WithSemicolonToken(Token(SyntaxKind.None));
+                                  .WithSemicolonToken(Token(SyntaxKind.None))).WithLeadingTrivia(node.GetLeadingTrivia());
 
             this.ModifiedFuncs.Add(node.Identifier.ValueText);
             return base.VisitMethodDeclaration(node.ReplaceNode(node, updated));

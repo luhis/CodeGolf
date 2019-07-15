@@ -26,7 +26,7 @@ namespace CodeGolf.Unit.Test.SyntaxTreeModification
                                 {
                                     throw new System.Threading.Tasks.TaskCanceledException();
                                 }
-                                #line 4
+                                #line -2
                                 return ""Hello World"";
                             }
                         }";
@@ -56,14 +56,14 @@ namespace CodeGolf.Unit.Test.SyntaxTreeModification
             {
                 throw new System.Threading.Tasks.TaskCanceledException();
             }
-            #line 4
+            #line -2
             while (true)
             {
                 if (cancellationToken.IsCancellationRequested)
                 {
                     throw new System.Threading.Tasks.TaskCanceledException();
                 }
-                #line 5
+                #line 0
             }    
             return ""Hello World"";
         }    
@@ -97,7 +97,7 @@ namespace CodeGolf.Unit.Test.SyntaxTreeModification
             {
                 throw new System.Threading.Tasks.TaskCanceledException();
             }
-            #line 4
+            #line -2
             var i = 0;
             while (true)
             {
@@ -105,7 +105,7 @@ namespace CodeGolf.Unit.Test.SyntaxTreeModification
                 {
                     throw new System.Threading.Tasks.TaskCanceledException();
                 }
-                #line 6
+                #line 1
                 i++;
             }    
             return ""Hello World"";
@@ -136,7 +136,7 @@ namespace CodeGolf.Unit.Test.SyntaxTreeModification
                 {
                     throw new System.Threading.Tasks.TaskCanceledException();
                 }
-            #line 0
+            #line -3
             return 42;
         }
 
@@ -146,7 +146,7 @@ namespace CodeGolf.Unit.Test.SyntaxTreeModification
             {
                 throw new System.Threading.Tasks.TaskCanceledException();
             }
-            #line 6
+            #line 0
             return s + X(cancellationToken);
         }
     }";
@@ -169,13 +169,13 @@ namespace CodeGolf.Unit.Test.SyntaxTreeModification
                 {
                     throw new System.Threading.Tasks.TaskCanceledException();
                 }
-                #line 1
+                #line -5
             forever:
                 {if (cancellationToken.IsCancellationRequested)
                 {
                     throw new System.Threading.Tasks.TaskCanceledException();
                 }
-                #line 4
+                #line -1
                 goto forever;}
             return s;
         }";
@@ -198,14 +198,14 @@ namespace CodeGolf.Unit.Test.SyntaxTreeModification
                 {
                     throw new System.Threading.Tasks.TaskCanceledException();
                 }
-                #line 1
+                #line -5
             foreach(var x in new[] {1, 2, 3})
                 {
 if (cancellationToken.IsCancellationRequested)
                 {
                     throw new System.Threading.Tasks.TaskCanceledException();
                 }
-                #line 0
+                #line -5
                 x++;
                 }
             return s;

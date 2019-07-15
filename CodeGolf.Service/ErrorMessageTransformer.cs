@@ -6,7 +6,7 @@
     {
         CompileErrorMessage IErrorMessageTransformer.Transform(CompileErrorMessage msg)
         {
-            return new CompileErrorMessage(msg.Line - 6, msg.Col - 4, msg.EndCol - 4, msg.Message);
+            return new CompileErrorMessage(msg.Line, msg.Col - 4, msg.EndCol - 4, msg.Message);
         }
     }
 }
