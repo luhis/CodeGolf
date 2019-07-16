@@ -9,7 +9,9 @@
     "dev": "webpack --mode development",
     "build": "webpack --mode production"
   },
-  "dependencies": {},
+  "dependencies": {
+    "vue-codemirror": "^4.0.6"
+  },
   "browserslist": [
     "> 1%",
     "last 2 versions",

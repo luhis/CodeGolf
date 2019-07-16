@@ -17,6 +17,7 @@ module.exports = {
         editor: './src/editor.ts',
         recaptcha: './src/recaptcha.ts',
         site: './src/site.ts',
+        demo: './src/demo.ts',
         siteCss: './src/site.scss',
     },
     output: {
