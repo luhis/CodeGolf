@@ -2,13 +2,20 @@
 @model CodeGolf.Web.Pages.DashboardModel
 @{
     ViewData["Title"] = "Dashboard";
+    Layout = "Shared/_LayoutFluid";
 }
 <section class="section">
-    <vc:dashboard-buttons-view hole="@Model.CurrentChallenge" />
-    <vc:times-view hole="@Model.CurrentChallenge"/>
+    <div class="columns">
+        <div class="column">
+            <vc:attempts-view />
+        </div>
+        <div class="column">
+            <vc:dashboard-buttons-view hole="@Model.CurrentChallenge" />
+            <vc:times-view hole="@Model.CurrentChallenge" />
 
-    <vc:challenge-view cs="@Model.CurrentChallenge.Map(a => a.ChallengeSet)"/>
-    <vc:attempts-view/>
+            <vc:challenge-view cs="@Model.CurrentChallenge.Map(a => a.ChallengeSet)" />
+        </div>
+    </div>
 </section>
 
 @section Scripts {

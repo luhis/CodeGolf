@@ -4,6 +4,7 @@
 @model CodeGolf.Web.Pages.GameModel
 @{
     ViewData["Title"] = "Game";
+    Layout = "Shared/_LayoutFluid";
 }
 
     <section class="section">
@@ -11,36 +12,41 @@
 
         @if (Model.Hole.HasValue)
         {
-            <vc:challenge-view cs="@Model.Hole" />
-            <form method="post">
-                <div class="field">
-                    <label class="label">Code</label>
-                    <div class="control">
-                        <textarea class="textarea" asp-for="Code" rows="10" cols="50"></textarea>
-                    </div>
-                </div>
-                <div class="field">
-                    <label class="label">Count</label>
-                    <div class="control">
-                        <label id="Count">0</label>
-                    </div>
-                </div>
-                <div class="field is-grouped">
-                    <div class="control">
-                        <button class="button is-primary" type="submit">Submit</button>
-                    </div>
+            <div class="columns">
+                <div class="column">
+                    <form method="post">
+                        <div class="field">
+                            <label class="label">Code</label>
+                            <div class="control">
+                                <textarea class="textarea" asp-for="Code" rows="10" cols="50"></textarea>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Count</label>
+                            <div class="control">
+                                <label id="Count">0</label>
+                            </div>
+                        </div>
+                        <div class="field is-grouped">
+                            <div class="control">
+                                <button class="button is-primary" type="submit">Submit</button>
+                            </div>
 
-                    <div class="buttons has-addons">
-                        <button class="button" type="submit" asp-page-handler="ViewSource" formtarget="_blank">View .CS file</button>
+                            <div class="buttons has-addons">
+                                <button class="button" type="submit" asp-page-handler="ViewSource" formtarget="_blank">View .CS file</button>
 
-                        <button class="button" type="submit" asp-page-handler="ViewDebugSource" formtarget="_blank">View debug .CS file</button>
-                    </div>
+                                <button class="button" type="submit" asp-page-handler="ViewDebugSource" formtarget="_blank">View debug .CS file</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-            </form>
-
-            <vc:score-view p="@Model.Result" cs="@Model.Hole.ValueOrFailure()" />
-            <input id="CodeErrorLocations" type="hidden" value="@JsonConvert.SerializeObject(Model.CodeErrorLocations)">
-            <input type="hidden"  id="ChallengeSetId" value="@Model.Hole.ValueOrFailure().Id">
+                <div class="column">
+                    <vc:challenge-view cs="@Model.Hole" />
+                    <vc:score-view p="@Model.Result" cs="@Model.Hole.ValueOrFailure()" />
+                    <input id="CodeErrorLocations" type="hidden" value="@JsonConvert.SerializeObject(Model.CodeErrorLocations)">
+                    <input type="hidden"  id="ChallengeSetId" value="@Model.Hole.ValueOrFailure().Id">
+                </div>
+            </div>
         }
         else
         {

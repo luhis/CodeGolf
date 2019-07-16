@@ -7,43 +7,49 @@
 @inject IOptions<RecaptchaSettings> RecaptchaSettings;
 @{
     ViewData["Title"] = "Demo";
+    Layout = "Shared/_LayoutFluid";
 }
 
     <section class="section">
         <h1 class="title">Demo</h1>
+        <div class="columns">
+            <div class="column">
+                <form method="post">
+                    <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
+                    <div class="field">
+                        <label class="label">Code</label>
+                        <div class="control">
+                            <textarea class="textarea" asp-for="Code" rows="10" cols="50"></textarea>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Count</label>
+                        <div class="control">
+                            <label id="Count">0</label>
+                        </div>
+                    </div>
+                    <div class="field is-grouped">
+                        <div class="control">
+                            <button class="button is-primary" type="submit">Submit</button>
+                        </div>
 
-        <vc:challenge-view cs="@Option.Some(Model.ChallengeSet)" />
-        <input type="hidden" id="g-recaptcha-site-key" value="@RecaptchaSettings.Value.SiteKey" />
-        <form method="post">
-            <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
-            <div class="field">
-                <label class="label">Code</label>
-                <div class="control">
-                    <textarea class="textarea" asp-for="Code" rows="10" cols="50"></textarea>
-                </div>
+                        <div class="buttons has-addons">
+                            <button class="button" type="submit" asp-page-handler="ViewSource" formtarget="_blank">View .CS file</button>
+
+                            <button class="button" type="submit" asp-page-handler="ViewDebugSource" formtarget="_blank">View debug .CS file</button>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div class="field">
-                <label class="label">Count</label>
-                <div class="control">
-                    <label id="Count">0</label>
-                </div>
+            <div class="column">
+                <vc:challenge-view cs="@Option.Some(Model.ChallengeSet)" />
+                <vc:score-view p="@Model.Result" cs="@Model.ChallengeSet" />
+                <input id="CodeErrorLocations" type="hidden" value="@JsonConvert.SerializeObject(Model.CodeErrorLocations)">
+                <input id="ChallengeSetId" type="hidden" asp-for="ChallengeSet.Id">
+                <input type="hidden" id="g-recaptcha-site-key" value="@RecaptchaSettings.Value.SiteKey" />
             </div>
-            <div class="field is-grouped">
-                <div class="control">
-                    <button class="button is-primary" type="submit">Submit</button>
-                </div>
-
-                <div class="buttons has-addons">
-                    <button class="button" type="submit" asp-page-handler="ViewSource" formtarget="_blank">View .CS file</button>
-
-                    <button class="button" type="submit" asp-page-handler="ViewDebugSource" formtarget="_blank">View debug .CS file</button>
-                </div>
-            </div>
-        </form>
-
-        <vc:score-view p="@Model.Result" cs="@Model.ChallengeSet" />
-        <input id="CodeErrorLocations" type="hidden" value="@JsonConvert.SerializeObject(Model.CodeErrorLocations)">
-        <input id="ChallengeSetId" type="hidden" asp-for="ChallengeSet.Id">
+        </div>
+       
     </section>
 
 @section Scripts {
