@@ -58,7 +58,7 @@ namespace CodeGolf.Domain
 
         public Guid Id { get; }
 
-        async Task<IReadOnlyList<ChallengeResult>> IChallengeSet.GetResults(CompileResult t)
+        async Task<IReadOnlyList<ChallengeResult>> IChallengeSet.GetResults(CompileRunner t)
         {
             var reses = await t.Func(this.Challenges.Select(a => a.Args).ToArray());
             var challRes = reses.Zip(this.Challenges, ValueTuple.Create);

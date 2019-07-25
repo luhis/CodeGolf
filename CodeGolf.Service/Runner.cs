@@ -17,6 +17,9 @@ namespace CodeGolf.Service
 {
     using CodeGolf.Service.Dtos;
 
+    using System.Runtime.Loader;
+    using EnsureThat;
+
     public class Runner : IRunner
     {
         private const string ClassName = "CodeGolf";
@@ -46,7 +49,7 @@ namespace CodeGolf.Service
             this.errorMessageTransformer = errorMessageTransformer;
         }
 
-        Option<CompileResult, IReadOnlyList<CompileErrorMessage>> IRunner.Compile(
+        Option<CompileRunner, IReadOnlyList<CompileErrorMessage>> IRunner.Compile(
             string function,
             IReadOnlyList<Type> paramTypes,
             Type returnType,
@@ -57,7 +60,7 @@ namespace CodeGolf.Service
             return compileResult.FlatMap(
                 success =>
                     {
-                        var ass = Assembly.Load(success.Item1);
+                        var ass = AssemblyLoadContext.Default.LoadFromStream(new MemoryStream(success.Dll));
                         var type = ass.GetType(ClassName);
                         var fun = type.GetMethod(
                             FunctionName,
@@ -65,14 +68,14 @@ namespace CodeGolf.Service
                         var validationFailures = ValidateCompiledFunction(fun, returnType, paramTypes);
                         if (validationFailures.Errors.Any())
                         {
-                            return Option.None<CompileResult, IReadOnlyList<CompileErrorMessage>>(validationFailures.Errors.Select(a => new CompileErrorMessage(a)).ToArray());
+                            return Option.None<CompileRunner, IReadOnlyList<CompileErrorMessage>>(validationFailures.Errors.Select(a => new CompileErrorMessage(a)).ToArray());
                         }
 
                         async Task<IReadOnlyList<ResultOrError>> Func(object[][] args)
                         {
                             try
                             {
-                                return await this.InvokeAsync(success.Item1, success.Item2, args, paramTypes.ToArray(), returnType);
+                                return await this.InvokeAsync(success, args, paramTypes.ToArray(), returnType);
                             }
                             catch (Exception)
                             {
@@ -84,7 +87,7 @@ namespace CodeGolf.Service
                             }
                         }
 
-                        return Option.Some<CompileResult, IReadOnlyList<CompileErrorMessage>>(new CompileResult(Func));
+                        return Option.Some<CompileRunner, IReadOnlyList<CompileErrorMessage>>(new CompileRunner(Func));
                     });
         }
 
@@ -102,32 +105,31 @@ namespace CodeGolf.Service
         }
 
         private async Task<IReadOnlyList<Option<object, string>>> InvokeAsync(
-            byte[] dll,
-            byte[] pdb,
+            CompileResult compileResult,
             object[][] args,
             Type[] paramTypes,
             Type returnType)
         {
             if (returnType == typeof(int[]))
             {
-                return (await this.svc.Execute<int[]>(dll, pdb, ClassName, FunctionName, args, paramTypes)).Select(ToOpt)
+                return (await this.svc.Execute<int[]>(compileResult, ClassName, FunctionName, args, paramTypes)).Select(ToOpt)
                     .ToArray();
             }
 
             if (returnType == typeof(string[]))
             {
-                return (await this.svc.Execute<string[]>(dll, pdb, ClassName, FunctionName, args, paramTypes))
+                return (await this.svc.Execute<string[]>(compileResult, ClassName, FunctionName, args, paramTypes))
                     .Select(ToOpt).ToArray();
             }
 
             if (returnType.IsArray)
             {
-                return (await this.svc.Execute<object[]>(dll, pdb, ClassName, FunctionName, args, paramTypes))
+                return (await this.svc.Execute<object[]>(compileResult, ClassName, FunctionName, args, paramTypes))
                     .Select(ToOpt).ToArray();
             }
             else
             {
-                return (await this.svc.Execute<object>(dll, pdb, ClassName, FunctionName, args, paramTypes))
+                return (await this.svc.Execute<object>(compileResult, ClassName, FunctionName, args, paramTypes))
                     .Select(ToOpt).ToArray();
             }
         }
@@ -208,7 +210,7 @@ namespace CodeGolf.Service
 
         private static bool IsStoppable(Diagnostic a) => a.Severity > DiagnosticSeverity.Warning;
 
-        private Option<(byte[], byte[]), IReadOnlyList<CompileErrorMessage>> Compile(
+        private Option<CompileResult, IReadOnlyList<CompileErrorMessage>> Compile(
             string function,
             CancellationToken cancellationToken)
         {
@@ -227,7 +229,7 @@ namespace CodeGolf.Service
                                 {
                                     dll.Seek(0, SeekOrigin.Begin);
                                     pdb.Seek(0, SeekOrigin.Begin);
-                                    return (dll.ToArray(), pdb.ToArray());
+                                    return new CompileResult(dll.ToArray(), pdb.ToArray());
                                 },
                             cancellationToken);
                     });

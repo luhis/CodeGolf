@@ -10,52 +10,57 @@ using CodeGolf.ServiceInterfaces;
 namespace CodeGolf.ExecutionServer
 {
     using System.Diagnostics;
+    using System.IO;
+    using System.Runtime.Loader;
 
     public class ExecutionService : IExecutionService
     {
         private const int ExecutionTimeoutMilliseconds = 1000;
 
         public async Task<ValueTuple<T, string>[]> Execute<T>(
-            byte[] dll,
-            byte[] pdb,
+            CompileResult compileResult,
             string className,
             string funcName,
             object[][] argSets,
             Type[] paramTypes)
         {
-            var obj = Assembly.Load(dll, pdb);
-            var type = obj.GetType(className);
-            var inst = Activator.CreateInstance(type);
-            var fun = GetMethod(funcName, type);
-            return (await Task.WhenAll(
-                        argSets.Select(
-                            async a =>
-                                {
-                                    var castArgs = CastArgs(a, paramTypes);
-                                    var source = new CancellationTokenSource();
-                                    source.CancelAfter(TimeSpan.FromMilliseconds(ExecutionTimeoutMilliseconds));
-                                    try
+            using (var dll = new MemoryStream(compileResult.Dll))
+            using (var pdb = new MemoryStream(compileResult.Pdb))
+            {
+                var obj = AssemblyLoadContext.Default.LoadFromStream(dll, pdb);
+                var type = obj.GetType(className);
+                var inst = Activator.CreateInstance(type);
+                var fun = GetMethod(funcName, type);
+                return (await Task.WhenAll(
+                            argSets.Select(
+                                async a =>
                                     {
-                                        return ValueTuple.Create<T, string>(
-                                            await Task<T>.Factory.StartNew(
-                                                () => (T)fun.Invoke(
-                                                    inst,
-                                                    BindingFlags.Default | BindingFlags.InvokeMethod,
-                                                    null,
-                                                    castArgs.Append(source.Token).ToArray(),
-                                                    CultureInfo.InvariantCulture),
-                                                source.Token),
-                                            null);
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        var final = GetFinalException(e);
-                                        var line = (new StackTrace(final, true)).GetFrame(0).GetFileLineNumber();
-                                        return ValueTuple.Create(
-                                            default(T),
-                                            $"Runtime Error line {line} - {final.Message}");
-                                    }
-                                }))).ToArray();
+                                        var castArgs = CastArgs(a, paramTypes);
+                                        var source = new CancellationTokenSource();
+                                        source.CancelAfter(TimeSpan.FromMilliseconds(ExecutionTimeoutMilliseconds));
+                                        try
+                                        {
+                                            return ValueTuple.Create<T, string>(
+                                                await Task<T>.Factory.StartNew(
+                                                    () => (T)fun.Invoke(
+                                                        inst,
+                                                        BindingFlags.Default | BindingFlags.InvokeMethod,
+                                                        null,
+                                                        castArgs.Append(source.Token).ToArray(),
+                                                        CultureInfo.InvariantCulture),
+                                                    source.Token),
+                                                null);
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            var final = GetFinalException(e);
+                                            var line = (new StackTrace(final, true)).GetFrame(0).GetFileLineNumber();
+                                            return ValueTuple.Create(
+                                                default(T),
+                                                $"Runtime Error line {line} - {final.Message}");
+                                        }
+                                    }))).ToArray();
+            }
         }
 
         private static Exception GetFinalException(Exception e) => e.InnerException == null ? e : GetFinalException(e.InnerException);

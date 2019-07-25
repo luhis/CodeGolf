@@ -5,6 +5,8 @@ using JKang.IpcServiceFramework;
 
 namespace CodeGolf.Service
 {
+    using System.IO;
+
     public class ExecutionProxy : IExecutionService
     {
         private readonly IpcServiceClient<IExecutionService> svc;
@@ -15,14 +17,13 @@ namespace CodeGolf.Service
         }
 
         Task<ValueTuple<T, string>[]> IExecutionService.Execute<T>(
-            byte[] dll,
-            byte[] pdb,
+            CompileResult compileResult,
             string className,
             string funcName,
             object[][] args,
             Type[] paramTypes)
         {
-            return this.svc.InvokeAsync(a => a.Execute<T>(dll, pdb, className, funcName, args, paramTypes));
+            return this.svc.InvokeAsync(a => a.Execute<T>(compileResult, className, funcName, args, paramTypes));
         }
     }
 }

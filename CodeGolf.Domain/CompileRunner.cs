@@ -6,9 +6,9 @@ using Optional;
 
 namespace CodeGolf.Domain
 {
-    public class CompileResult
+    public class CompileRunner
     {
-        public CompileResult(Func<object[][], Task<IReadOnlyList<Option<object, string>>>> func)
+        public CompileRunner(Func<object[][], Task<IReadOnlyList<Option<object, string>>>> func)
         {
             this.Func = EnsureArg.IsNotNull(func, nameof(func));
         }

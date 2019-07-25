@@ -26,7 +26,7 @@ namespace CodeGolf.Unit.Test.Domain
                 this.stringParam,
                 new[] { new Challenge<string[]>(new object[] { "test" }, new string[] { "a" }) });
             var r = a.GetResults(
-                new CompileResult(
+                new CompileRunner(
                     o => Task.FromResult<IReadOnlyList<Option<object, string>>>(
                         new[] { Option.Some<object, string>(new[] { "testXX" }) }))).Result;
             r.Single().Error.HasValue.Should().BeTrue();
@@ -42,7 +42,7 @@ namespace CodeGolf.Unit.Test.Domain
                 this.stringParam,
                 new[] { new Challenge<string[]>(new object[] { "test" }, new string[] { "a" }), });
             var r = a.GetResults(
-                new CompileResult(
+                new CompileRunner(
                     o => Task.FromResult<IReadOnlyList<Option<object, string>>>(
                         new[] { Option.Some<object, string>(new string[] { }) }))).Result;
             r.Single().Error.HasValue.Should().BeTrue();
@@ -58,7 +58,7 @@ namespace CodeGolf.Unit.Test.Domain
                 this.stringParam,
                 new[] { new Challenge<string[]>(new object[] { "test" }, new string[] { "a" }), });
             var r = a.GetResults(
-                new CompileResult(
+                new CompileRunner(
                     o => Task.FromResult<IReadOnlyList<Option<object, string>>>(
                         new[] { Option.Some<object, string>(new string[] { null }) }))).Result;
             r.Single().Error.HasValue.Should().BeTrue();
@@ -74,7 +74,7 @@ namespace CodeGolf.Unit.Test.Domain
                 this.stringParam,
                 new[] { new Challenge<string[]>(new object[] { "test" }, new string[] { "a" }), });
             var r = a.GetResults(
-                new CompileResult(
+                new CompileRunner(
                     o => Task.FromResult<IReadOnlyList<Option<object, string>>>(
                         new[] { Option.Some<object, string>(null) }))).Result;
             r.Single().Error.HasValue.Should().BeTrue();

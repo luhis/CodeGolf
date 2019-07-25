@@ -49,7 +49,7 @@ namespace CodeGolf.Unit.Test.Domain
                 this.stringParam,
                 new[] { new Challenge<string>(new object[] { "test" }, "test") });
             var r = a.GetResults(
-                new CompileResult(
+                new CompileRunner(
                     o => Task.FromResult<IReadOnlyList<Option<object, string>>>(
                         new[] { Option.Some<object, string>("test") }))).Result;
             r.Single().Error.HasValue.Should().BeFalse();
@@ -65,7 +65,7 @@ namespace CodeGolf.Unit.Test.Domain
                 this.stringParam,
                 new[] { new Challenge<string>(new object[] { "test" }, "test") });
             var r = a.GetResults(
-                new CompileResult(
+                new CompileRunner(
                     o => Task.FromResult<IReadOnlyList<Option<object, string>>>(
                         new[] { Option.Some<object, string>("testXX") }))).Result;
             r.Single().Error.HasValue.Should().BeTrue();

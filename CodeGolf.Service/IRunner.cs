@@ -10,7 +10,7 @@ namespace CodeGolf.Service
 
     public interface IRunner
     {
-        Option<CompileResult, IReadOnlyList<CompileErrorMessage>> Compile(string function, IReadOnlyList<Type> paramTypes, Type returnType, CancellationToken cancellationToken);
+        Option<CompileRunner, IReadOnlyList<CompileErrorMessage>> Compile(string function, IReadOnlyList<Type> paramTypes, Type returnType, CancellationToken cancellationToken);
 
         Option<IReadOnlyList<CompileErrorMessage>> TryCompile(string function, IReadOnlyList<Type> paramTypes, Type returnType, CancellationToken cancellationToken);
 
