@@ -168,14 +168,14 @@ namespace CodeGolf.Service
         }
 
         string IRunner.Wrap(string function, CancellationToken cancellationToken) =>
-            WrapInClass(function, cancellationToken).GetRoot().NormalizeWhitespace().ToFullString();
+            WrapInClass(function, cancellationToken).GetRoot().ToFullString();
 
         string IRunner.DebugCode(string function, CancellationToken cancellationToken)
         {
             var syntaxTree = WrapInClass(function, cancellationToken);
 
             var transformed = this.syntaxTreeTransformer.Transform(syntaxTree);
-            return transformed.GetRoot().NormalizeWhitespace().ToFullString();
+            return transformed.GetRoot().ToFullString();
         }
 
         void IRunner.WakeUpCompiler(CancellationToken cancellationToken)
@@ -208,11 +208,14 @@ namespace CodeGolf.Service
 
         private static bool IsStoppable(Diagnostic a) => a.Severity > DiagnosticSeverity.Warning;
 
-        private Option<(byte[], byte[]), IReadOnlyList<CompileErrorMessage>> Compile(string function, CancellationToken cancellationToken)
+        private Option<(byte[], byte[]), IReadOnlyList<CompileErrorMessage>> Compile(
+            string function,
+            CancellationToken cancellationToken)
         {
             var syntaxTree = WrapInClass(function, cancellationToken);
 
             // compile the basic source first, then the modified source to keep the error messages readable
+            // todo this is hiding issues in the line number modification
             return this.TryCompile(syntaxTree, (_, __) => true, cancellationToken).FlatMap(
                 _ =>
                     {
@@ -220,12 +223,13 @@ namespace CodeGolf.Service
 
                         return this.TryCompile(
                             transformed,
-                            (dll, pdb) => 
+                            (dll, pdb) =>
                                 {
                                     dll.Seek(0, SeekOrigin.Begin);
                                     pdb.Seek(0, SeekOrigin.Begin);
                                     return (dll.ToArray(), pdb.ToArray());
-                            }, cancellationToken);
+                                },
+                            cancellationToken);
                     });
         }
 

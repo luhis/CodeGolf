@@ -9,6 +9,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 namespace CodeGolf.Service
 {
     using System;
+    using System.Threading.Tasks;
 
     public class CancellationTokenInjector : CSharpSyntaxRewriter
     {
@@ -23,13 +24,7 @@ namespace CodeGolf.Service
                 SingletonList<StatementSyntax>(
                     ThrowStatement(
                         ObjectCreationExpression(
-                                QualifiedName(
-                                    QualifiedName(
-                                        QualifiedName(
-                                            IdentifierName("System"),
-                                            IdentifierName("Threading")),
-                                        IdentifierName("Tasks")),
-                                    IdentifierName("TaskCanceledException")))
+                            ParseTypeName(typeof(TaskCanceledException).FullName))
                             .WithArgumentList(
                                 ArgumentList()))))).NormalizeWhitespace();
 
@@ -53,27 +48,26 @@ namespace CodeGolf.Service
             var statements = node.Body != null
                                  ? node.Body.Statements.ToArray()
                                  : new[] { ReturnStatement(node.ExpressionBody.Expression) };
-            var line = GetLineNumber(node.Body != null
-                                         ? node.Body
-                                         : (CSharpSyntaxNode)node.ExpressionBody);
+            var line = GetLineNumber(node.Body != null ? node.Body : (CSharpSyntaxNode)node.ExpressionBody);
             var ps = node.AddParameterListParameters(
                 Parameter(Identifier(TokenName)).WithType(ParseTypeName(typeof(CancellationToken).FullName)));
-            var updated = (statements.Length > 1
-                              ? ps.WithBody(
-                                      Block(
-                                          new[]
-                                              {
-                                                  ThrowIfCancelled,
-                                                  statements.First().WithLeadingTrivia(
-                                                      statements.First().GetLeadingTrivia()
-                                                          .Concat(new[] { GetLineDirective(line) }))
-                                              }.Concat(statements.Skip(1)))).WithExpressionBody(null).WithoutTrivia()
-                                  .WithSemicolonToken(Token(SyntaxKind.None))
-                              : ps.WithBody(
-                                      Block(
-                                          new[] { ThrowIfCancelled.WithTrailingTrivia(GetLineDirective(line)) }.Concat(
-                                              statements))).WithExpressionBody(null).WithoutTrivia()
-                                  .WithSemicolonToken(Token(SyntaxKind.None))).WithLeadingTrivia(node.GetLeadingTrivia());
+            var updated = (statements.Length >= 1
+                               ? ps.WithBody(
+                                       Block(
+                                           new[]
+                                               {
+                                                   ThrowIfCancelled,
+                                                   statements.First().WithLeadingTrivia(
+                                                       statements.First().GetLeadingTrivia()
+                                                           .Concat(new[] { GetLineDirective(line) }))
+                                               }.Concat(statements.Skip(1)))).WithExpressionBody(null).WithoutTrivia()
+                                   .WithSemicolonToken(Token(SyntaxKind.None))
+                               : ps.WithBody(
+                                       Block(
+                                           new[] { ThrowIfCancelled.WithTrailingTrivia(GetLineDirective(line)) }.Concat(
+                                               statements))).WithExpressionBody(null).WithoutTrivia()
+                                   .WithSemicolonToken(Token(SyntaxKind.None)))
+                .WithLeadingTrivia(node.GetLeadingTrivia());
 
             this.ModifiedFuncs.Add(node.Identifier.ValueText);
             return base.VisitMethodDeclaration(node.ReplaceNode(node, updated));

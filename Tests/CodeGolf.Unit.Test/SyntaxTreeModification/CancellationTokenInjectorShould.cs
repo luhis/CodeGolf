@@ -10,7 +10,8 @@ namespace CodeGolf.Unit.Test.SyntaxTreeModification
         {
             var code = @"public class HelloWorld
                         {
-                            public string Main()
+                            #line 1
+                            string Main()
                             {
                                 return ""Hello World"";
                             }
@@ -20,13 +21,14 @@ namespace CodeGolf.Unit.Test.SyntaxTreeModification
 
             var expect = @"public class HelloWorld
                         {
-                            public string Main(System.Threading.CancellationToken cancellationToken)
+                            #line 1
+                            string Main(System.Threading.CancellationToken cancellationToken)
                             {
                                 if (cancellationToken.IsCancellationRequested)
                                 {
                                     throw new System.Threading.Tasks.TaskCanceledException();
                                 }
-                                #line -2
+                                #line -1
                                 return ""Hello World"";
                             }
                         }";
@@ -38,7 +40,8 @@ namespace CodeGolf.Unit.Test.SyntaxTreeModification
         {
             var code = @"public class HelloWorld
     {
-        public string Main()
+        #line 1
+        string Main()
         {
             while(true)
             {}
@@ -50,20 +53,21 @@ namespace CodeGolf.Unit.Test.SyntaxTreeModification
 
             var expect = @"public class HelloWorld
     {
-        public string Main(System.Threading.CancellationToken cancellationToken)
+        #line 1
+        string Main(System.Threading.CancellationToken cancellationToken)
         {
             if (cancellationToken.IsCancellationRequested)
             {
                 throw new System.Threading.Tasks.TaskCanceledException();
             }
-            #line -2
+            #line -1
             while (true)
             {
                 if (cancellationToken.IsCancellationRequested)
                 {
                     throw new System.Threading.Tasks.TaskCanceledException();
                 }
-                #line 0
+                #line 1
             }    
             return ""Hello World"";
         }    
@@ -76,7 +80,8 @@ namespace CodeGolf.Unit.Test.SyntaxTreeModification
         {
             var code = @"public class HelloWorld
     {
-        public string Main()
+        #line 1
+        string Main()
         {
             var i = 0;
             while(true)
@@ -91,13 +96,14 @@ namespace CodeGolf.Unit.Test.SyntaxTreeModification
 
             var expect = @"public class HelloWorld
     {
-        public string Main(System.Threading.CancellationToken cancellationToken)
+        #line 1
+        string Main(System.Threading.CancellationToken cancellationToken)
         {
             if (cancellationToken.IsCancellationRequested)
             {
                 throw new System.Threading.Tasks.TaskCanceledException();
             }
-            #line -2
+            #line -1
             var i = 0;
             while (true)
             {
@@ -105,7 +111,7 @@ namespace CodeGolf.Unit.Test.SyntaxTreeModification
                 {
                     throw new System.Threading.Tasks.TaskCanceledException();
                 }
-                #line 1
+                #line 2
                 i++;
             }    
             return ""Hello World"";
