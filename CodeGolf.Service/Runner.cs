@@ -60,34 +60,39 @@ namespace CodeGolf.Service
             return compileResult.FlatMap(
                 success =>
                     {
-                        var ass = AssemblyLoadContext.Default.LoadFromStream(new MemoryStream(success.Dll));
-                        var type = ass.GetType(ClassName);
-                        var fun = type.GetMethod(
-                            FunctionName,
-                            BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                        var validationFailures = ValidateCompiledFunction(fun, returnType, paramTypes);
-                        if (validationFailures.Errors.Any())
+                        using (var dll = new MemoryStream(success.Dll))
                         {
-                            return Option.None<CompileRunner, IReadOnlyList<CompileErrorMessage>>(validationFailures.Errors.Select(a => new CompileErrorMessage(a)).ToArray());
-                        }
-
-                        async Task<IReadOnlyList<ResultOrError>> Func(object[][] args)
-                        {
-                            try
+                            var ass = AssemblyLoadContext.Default.LoadFromStream(dll);
+                            var type = ass.GetType(ClassName);
+                            var fun = type.GetMethod(
+                                FunctionName,
+                                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                            var validationFailures = ValidateCompiledFunction(fun, returnType, paramTypes);
+                            if (validationFailures.Errors.Any())
                             {
-                                return await this.InvokeAsync(success, args, paramTypes.ToArray(), returnType);
+                                return Option.None<CompileRunner, IReadOnlyList<CompileErrorMessage>>(
+                                    validationFailures.Errors.Select(a => new CompileErrorMessage(a)).ToArray());
                             }
-                            catch (Exception)
-                            {
-                                return new[]
-                                           {
-                                               Option.None<object, string>(
-                                                   "It looks like someone crashed the microservice. Give it a sec.")
-                                           };
-                            }
-                        }
 
-                        return Option.Some<CompileRunner, IReadOnlyList<CompileErrorMessage>>(new CompileRunner(Func));
+                            async Task<IReadOnlyList<ResultOrError>> Func(object[][] args)
+                            {
+                                try
+                                {
+                                    return await this.InvokeAsync(success, args, paramTypes.ToArray(), returnType);
+                                }
+                                catch (Exception)
+                                {
+                                    return new[]
+                                               {
+                                                   Option.None<object, string>(
+                                                       "It looks like someone crashed the microservice. Give it a sec.")
+                                               };
+                                }
+                            }
+
+                            return Option.Some<CompileRunner, IReadOnlyList<CompileErrorMessage>>(
+                                new CompileRunner(Func));
+                        }
                     });
         }
 
