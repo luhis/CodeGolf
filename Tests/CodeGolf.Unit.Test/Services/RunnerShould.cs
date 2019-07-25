@@ -116,7 +116,7 @@ namespace CodeGolf.Unit.Test.Services
         }";
             this.runner.Compile(code, new[] { typeof(string) }, typeof(string), CancellationToken.None).ExtractSuccess()
                 .Func(new[] { new object[] { "Hello world" } }).Result.First().ExtractErrors().Should()
-                .BeEquivalentTo("Runtime Error line 1 - A task was canceled.");
+                .BeEquivalentTo("Runtime Error line 4 - A task was canceled.");
         }
 
         [Fact]
@@ -131,7 +131,7 @@ namespace CodeGolf.Unit.Test.Services
         }";
             this.runner.Compile(code, new[] { typeof(string) }, typeof(string), CancellationToken.None).ExtractSuccess()
                 .Func(new[] { new object[] { "Hello world" } }).Result.First().ExtractErrors().Should()
-                .BeEquivalentTo("Runtime Error line 1 - A task was canceled.");
+                .BeEquivalentTo("Runtime Error line 3 - A task was canceled.");
         }
 
         [Fact]
@@ -146,7 +146,7 @@ namespace CodeGolf.Unit.Test.Services
         }";
             this.runner.Compile(code, new[] { typeof(string) }, typeof(string), CancellationToken.None).ExtractSuccess()
                 .Func(new[] { new object[] { "Hello world" } }).Result.First().ExtractErrors().Should()
-                .BeEquivalentTo("Runtime Error line 1 - A task was canceled.");
+                .BeEquivalentTo("Runtime Error line 3 - A task was canceled.");
         }
 
         [Fact]
@@ -160,7 +160,7 @@ namespace CodeGolf.Unit.Test.Services
         }";
             this.runner.Compile(code, new[] { typeof(string) }, typeof(string), CancellationToken.None).ExtractSuccess()
                 .Func(new[] { new object[] { "Hello world" } }).Result.First().ExtractErrors().Should()
-                .BeEquivalentTo("Runtime Error line 2 - A task was canceled.");
+                .BeEquivalentTo("Runtime Error line 5 - A task was canceled.");
         }
 
         [Fact(Skip = "soon")]
