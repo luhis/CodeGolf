@@ -187,6 +187,45 @@ namespace CodeGolf.Unit.Test.SyntaxTreeModification
         }
 
         [Fact]
+        public void WorkWithPrivateFunctionsInReverse()
+        {
+            var code = @"public class HelloWorld
+    {
+        #line 1
+        string Main(string s)
+        {
+            return s + X();
+        }
+        private int X() => 42;
+    }";
+
+            var newSource = CompilationTooling.Transform(code);
+
+            var expect = @"public class HelloWorld
+    {
+        #line 1
+        string Main(string s, System.Threading.CancellationToken cancellationToken)
+        {
+            if (cancellationToken.IsCancellationRequested)
+            {
+                throw new System.Threading.Tasks.TaskCanceledException();
+            }
+            #line 3
+            return s + X(cancellationToken);
+        }
+        private int X(System.Threading.CancellationToken cancellationToken){
+            if (cancellationToken.IsCancellationRequested)
+                {
+                    throw new System.Threading.Tasks.TaskCanceledException();
+                }
+            #line 1
+            return 42;
+        }
+    }";
+            newSource.ToFullString().Should().BeEquivalentToIgnoreWS(expect);
+        }
+
+        [Fact]
         public void WorkWithGotoStatements()
         {
             var code = @"public class HelloWorld

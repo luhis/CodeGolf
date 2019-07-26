@@ -21,7 +21,7 @@ namespace CodeGolf.Unit.Test.Services
     public class CodeGolfServiceShould
     {
         private readonly ICodeGolfService codeGolfService = new CodeGolfService(
-            new Runner(new SyntaxTreeTransformer(new CancellationTokenInjector()), new ExecutionService(), new ErrorMessageTransformer()),
+            new Runner(new SyntaxTreeTransformer(), new ExecutionService(), new ErrorMessageTransformer()),
             new Scorer(), new ChallengeRepository());
 
         private readonly IReadOnlyList<ParamDescription> noParams =

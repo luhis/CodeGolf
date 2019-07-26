@@ -13,7 +13,7 @@ namespace CodeGolf.Unit.Test.Services
     public class RunnerShould
     {
         private readonly IRunner runner = 
-            new Runner(new SyntaxTreeTransformer(new CancellationTokenInjector()), new ExecutionService(), new ErrorMessageTransformer());
+            new Runner(new SyntaxTreeTransformer(), new ExecutionService(), new ErrorMessageTransformer());
 
         [Fact]
         public void ReturnHelloWorld()

@@ -10,7 +10,7 @@ namespace CodeGolf.Unit.Test.SyntaxTreeModification
         {
             var tree = CSharpSyntaxTree.ParseText(source);
 
-            var rewriter = new CancellationTokenInjector();
+            var rewriter = new CancellationTokenInjector(tree.GetRoot());
             return rewriter.Visit(tree.GetRoot());
         }
     }

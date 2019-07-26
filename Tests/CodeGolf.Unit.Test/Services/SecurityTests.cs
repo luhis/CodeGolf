@@ -16,7 +16,7 @@ namespace CodeGolf.Unit.Test.Services
     public class SecurityTests
     {
         private readonly ICodeGolfService codeGolfService = new CodeGolfService(
-            new Runner(new SyntaxTreeTransformer(new CancellationTokenInjector()), new ExecutionService(), new ErrorMessageTransformer()),
+            new Runner(new SyntaxTreeTransformer(), new ExecutionService(), new ErrorMessageTransformer()),
             new Scorer(), new ChallengeRepository());
 
         private readonly IReadOnlyList<ParamDescription> noParams = new ParamDescription[] { };

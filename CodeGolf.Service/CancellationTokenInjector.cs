@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿
 using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -28,7 +28,12 @@ namespace CodeGolf.Service
                             .WithArgumentList(
                                 ArgumentList()))))).NormalizeWhitespace();
 
-        private IList<string> ModifiedFuncs { get; } = new List<string>();
+        private readonly SyntaxNode Root;
+
+        public CancellationTokenInjector(SyntaxNode root)
+        {
+            this.Root = root;
+        }
 
         private static int GetLineNumber(CSharpSyntaxNode n) => n.GetLocation().GetMappedLineSpan().StartLinePosition.Line + 1;
 
@@ -69,7 +74,6 @@ namespace CodeGolf.Service
                                    .WithSemicolonToken(Token(SyntaxKind.None)))
                 .WithLeadingTrivia(node.GetLeadingTrivia());
 
-            this.ModifiedFuncs.Add(node.Identifier.ValueText);
             return base.VisitMethodDeclaration(node.ReplaceNode(node, updated));
         }
 
@@ -107,7 +111,7 @@ namespace CodeGolf.Service
 
         public override SyntaxNode VisitInvocationExpression(InvocationExpressionSyntax node)
         {
-            if (node.Expression is IdentifierNameSyntax ins && this.ModifiedFuncs.Contains(ins.Identifier.ValueText))
+            if (node.Expression is IdentifierNameSyntax ins && this.FileContains(ins.Identifier.ValueText))
             {
                 var updated = node.AddArgumentListArguments(Argument(IdentifierName(TokenName)));
                 return base.VisitInvocationExpression(node.ReplaceNode(node, updated).NormalizeWhitespace());
@@ -116,6 +120,13 @@ namespace CodeGolf.Service
             {
                 return base.VisitInvocationExpression(node);
             }
+        }
+
+        private bool FileContains(string funcName)
+        {
+            return this.Root.DescendantNodes().OfType<ClassDeclarationSyntax>()
+                .SelectMany(a => a.DescendantNodes().OfType<MethodDeclarationSyntax>())
+                .Any(a => a.Identifier.ValueText == funcName);
         }
 
         private static BlockSyntax GetStatementsAsBlock(CommonForEachStatementSyntax node)
