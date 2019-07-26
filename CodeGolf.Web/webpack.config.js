@@ -1,7 +1,7 @@
 // webpack v4
 const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = {
     plugins: [
         new VueLoaderPlugin(),

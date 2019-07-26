@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace CodeGolf.Web.Pages
 {
     using Optional;
-    using Optional.Unsafe;
 
     [Authorize]
     [ServiceFilter(typeof(GameAdminAuthAttribute))]

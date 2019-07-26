@@ -3,8 +3,6 @@ using System.Threading.Tasks;
 
 namespace CodeGolf.ServiceInterfaces
 {
-    using System.IO;
-
     public interface IExecutionService
     {
         Task<ValueTuple<T, string>[]> Execute<T>(

@@ -2,22 +2,18 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.Immutable;
     using System.Linq;
     using System.Reflection;
 
     using CodeGolf.Domain;
 
-    using Microsoft.CodeAnalysis;
-    using Microsoft.CodeAnalysis.Diagnostics;
-
     public class FunctionValidator
     {
-        private readonly string FunctionName;
+        private readonly string functionName;
 
         public FunctionValidator(string functionName)
         {
-            this.FunctionName = functionName;
+            this.functionName = functionName;
         }
 
         public ErrorSet ValidateCompiledFunction(
@@ -27,7 +23,7 @@
         {
             if (fun == null)
             {
-                return new ErrorSet($"Function '{this.FunctionName}' missing");
+                return new ErrorSet($"Function '{this.functionName}' missing");
             }
 
             var compiledParams = fun.GetParameters().Take(fun.GetParameters().Length - 1);

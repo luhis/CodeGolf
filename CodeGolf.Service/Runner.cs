@@ -18,7 +18,6 @@ namespace CodeGolf.Service
     using CodeGolf.Service.Dtos;
 
     using System.Runtime.Loader;
-    using EnsureThat;
 
     public class Runner : IRunner
     {

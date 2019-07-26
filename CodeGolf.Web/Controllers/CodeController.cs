@@ -9,11 +9,7 @@ namespace CodeGolf.Web.Controllers
     using System;
     using System.Linq;
 
-    using CodeGolf.Domain;
     using CodeGolf.Web.Models;
-    using CodeGolf.Web.Tooling;
-
-    using Optional.Unsafe;
 
     [Route("api/[controller]")]
     [ApiController]

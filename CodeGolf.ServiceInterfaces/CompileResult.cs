@@ -1,7 +1,5 @@
 ﻿namespace CodeGolf.ServiceInterfaces
 {
-    using System.IO;
-
     public class CompileResult
     {
         public CompileResult(byte[] dll, byte[] pdb)

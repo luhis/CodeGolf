@@ -1,5 +1,4 @@
-﻿using CodeGolf.Domain;
-using CodeGolf.Domain.ChallengeInterfaces;
+﻿using CodeGolf.Domain.ChallengeInterfaces;
 using Microsoft.AspNetCore.Mvc;
 using Optional;
 

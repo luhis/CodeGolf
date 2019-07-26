@@ -28,11 +28,11 @@ namespace CodeGolf.Service
                             .WithArgumentList(
                                 ArgumentList()))))).NormalizeWhitespace();
 
-        private readonly SyntaxNode Root;
+        private readonly SyntaxNode root;
 
         public CancellationTokenInjector(SyntaxNode root)
         {
-            this.Root = root;
+            this.root = root;
         }
 
         private static int GetLineNumber(CSharpSyntaxNode n) => n.GetLocation().GetMappedLineSpan().StartLinePosition.Line + 1;
@@ -124,7 +124,7 @@ namespace CodeGolf.Service
 
         private bool FileContains(string funcName)
         {
-            return this.Root.DescendantNodes().OfType<ClassDeclarationSyntax>()
+            return this.root.DescendantNodes().OfType<ClassDeclarationSyntax>()
                 .SelectMany(a => a.DescendantNodes().OfType<MethodDeclarationSyntax>())
                 .Any(a => a.Identifier.ValueText == funcName);
         }

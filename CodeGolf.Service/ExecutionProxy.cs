@@ -5,8 +5,6 @@ using JKang.IpcServiceFramework;
 
 namespace CodeGolf.Service
 {
-    using System.IO;
-
     public class ExecutionProxy : IExecutionService
     {
         private readonly IpcServiceClient<IExecutionService> svc;

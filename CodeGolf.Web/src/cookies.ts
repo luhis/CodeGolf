@@ -4,9 +4,7 @@ const element = document.getElementById("cookie-warning");
 const cookieName = "accepted-cookies";
 
 const hasCookie = () => {
-    return document.cookie.split(';').filter(function(item) {
-        return item.indexOf(`${cookieName}=`) >= 0;
-    }).length;
+    return document.cookie.split(';').filter(item => item.indexOf(`${cookieName}=`) >= 0).length;
 }
 
 if (hasCookie() && element) {
