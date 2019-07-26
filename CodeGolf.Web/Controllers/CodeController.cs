@@ -39,7 +39,7 @@ namespace CodeGolf.Web.Controllers
         {
             return new JsonResult(
                 this.codeGolfService.TryCompile(id, code ?? string.Empty, cancellationToken).Match(
-                    a => a.Where(x => true).Select(
+                    a => a.Select(
                         b => new ErrorItem(b.Line, b.Col, b.EndCol)).ToArray(),
                     () => new ErrorItem[0]));
         }

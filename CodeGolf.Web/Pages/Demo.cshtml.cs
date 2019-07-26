@@ -51,7 +51,7 @@ namespace CodeGolf.Web.Pages
                 this.CodeErrorLocations = r.Match(
                     _ => new ErrorItem[0],
                     _ => new ErrorItem[0],
-                    a => a.Where(x => true).Select(
+                    a => a.Select(
                         b => new ErrorItem(b.Line, b.Col, b.EndCol)).ToArray());
                 this.Result = r.Match(
                     a => (OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, IReadOnlyList<CompileErrorMessage>>)a,
