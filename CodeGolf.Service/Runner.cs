@@ -32,6 +32,8 @@ namespace CodeGolf.Service
 
         private readonly IErrorMessageTransformer errorMessageTransformer;
 
+        private readonly FunctionValidator functionValidator;
+
         private static readonly MetadataReference[] MetadataReferences =
             {
                 MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
@@ -47,6 +49,7 @@ namespace CodeGolf.Service
             this.syntaxTreeTransformer = syntaxTreeTransformer;
             this.svc = svc;
             this.errorMessageTransformer = errorMessageTransformer;
+            this.functionValidator = new FunctionValidator(FunctionName);
         }
 
         Option<CompileRunner, IReadOnlyList<CompileErrorMessage>> IRunner.Compile(
@@ -67,7 +70,7 @@ namespace CodeGolf.Service
                             var fun = type.GetMethod(
                                 FunctionName,
                                 BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                            var validationFailures = ValidateCompiledFunction(fun, returnType, paramTypes);
+                            var validationFailures = this.functionValidator.ValidateCompiledFunction(fun, returnType, paramTypes);
                             if (validationFailures.Errors.Any())
                             {
                                 return Option.None<CompileRunner, IReadOnlyList<CompileErrorMessage>>(
@@ -141,38 +144,6 @@ namespace CodeGolf.Service
 
         private static Option<object, string> ToOpt<T>(ValueTuple<T, string> t) =>
             t.Item2 == null ? Option.Some<object, string>(t.Item1) : Option.None<object, string>(t.Item2);
-
-        private static ErrorSet ValidateCompiledFunction(
-            MethodInfo fun,
-            Type expectedReturn,
-            IReadOnlyCollection<Type> paramTypes)
-        {
-            if (fun == null)
-            {
-                return new ErrorSet($"Function '{FunctionName}' missing");
-            }
-
-            var compiledParams = fun.GetParameters().Take(fun.GetParameters().Length - 1);
-
-            if (compiledParams.Count() != paramTypes.Count)
-            {
-                return new ErrorSet($"Incorrect parameter count expected {paramTypes.Count}");
-            }
-
-            if (expectedReturn != fun.ReturnType)
-            {
-                return new ErrorSet($"Return type incorrect expected {expectedReturn}");
-            }
-
-            var missMatches = compiledParams.Select(a => a.ParameterType).Zip(paramTypes, ValueTuple.Create)
-                .Where(a => a.Item1 != a.Item2);
-            if (missMatches.Any())
-            {
-                return new ErrorSet("Parameter type mismatch");
-            }
-
-            return new ErrorSet();
-        }
 
         string IRunner.Wrap(string function, CancellationToken cancellationToken) =>
             WrapInClass(function, cancellationToken).GetRoot().ToFullString();
