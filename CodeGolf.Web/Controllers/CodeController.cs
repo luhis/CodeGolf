@@ -35,7 +35,7 @@ namespace CodeGolf.Web.Controllers
         }
 
         [HttpPost("[action]/{id}")]
-        public JsonResult TryCompile(Guid id, [FromBody] string code, CancellationToken cancellationToken)
+        public ActionResult<ErrorItem[]> TryCompile(Guid id, [FromBody] string code, CancellationToken cancellationToken)
         {
             return new JsonResult(
                 this.codeGolfService.TryCompile(id, code ?? string.Empty, cancellationToken).Match(
