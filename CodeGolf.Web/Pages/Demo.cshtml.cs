@@ -53,16 +53,15 @@ namespace CodeGolf.Web.Pages
                     _ => new ErrorItem[0],
                     a => a.Select(
                         b => new ErrorItem(b.Line, b.Col, b.EndCol)).ToArray());
-                this.Result = r.Match(
-                    a => (OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, IReadOnlyList<CompileErrorMessage>>)a,
-                    a => (OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, IReadOnlyList<CompileErrorMessage>>)a.ToList(),
-                    a => (OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, IReadOnlyList<CompileErrorMessage>>)a.ToArray());
+                this.Result = r.Match<OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, IReadOnlyList<CompileErrorMessage>>>(
+                    a => a,
+                    a => a.ToArray(),
+                    a => a.ToArray());
             }
             else
             {
                 var errors = this.ModelState.Values.SelectMany(a => a.Errors.Select(b => b.ErrorMessage));
-                this.Result =
-                    (OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, IReadOnlyList<CompileErrorMessage>>)errors.Select(a => new CompileErrorMessage(a)).ToArray();
+                this.Result = errors.Select(a => new CompileErrorMessage(a)).ToArray();
             }
         }
 

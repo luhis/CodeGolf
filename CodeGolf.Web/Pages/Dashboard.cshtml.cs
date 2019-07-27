@@ -16,14 +16,14 @@ namespace CodeGolf.Web.Pages
     [ValidateAntiForgeryToken]
     public class DashboardModel : PageModel
     {
-        public Option<HoleDto> CurrentChallenge { get; private set; }
-
         private readonly IDashboardService gameService;
 
         public DashboardModel(IDashboardService gameService)
         {
             this.gameService = gameService;
         }
+
+        public Option<HoleDto> CurrentChallenge { get; private set; }
 
         public async Task OnGet(CancellationToken cancellationToken)
         {

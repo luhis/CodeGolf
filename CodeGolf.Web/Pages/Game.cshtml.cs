@@ -63,13 +63,13 @@ namespace CodeGolf.Web.Pages
             this.CodeErrorLocations = res.Match(
                 _ => new ErrorItem[0],
                 _ => new ErrorItem[0],
-                a => a.Where(x => true).Select( //todo
+                a => a.Select(
                     b => new ErrorItem(b.Line, b.Col, b.EndCol)).ToArray());
 
-            this.Result = res.Match(
-                a => (OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, IReadOnlyList<CompileErrorMessage>>)a,
-                a => (OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, IReadOnlyList<CompileErrorMessage>>)a.ToList(),
-                a => (OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, IReadOnlyList<CompileErrorMessage>>)a.ToArray());
+            this.Result = res.Match<OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, IReadOnlyList<CompileErrorMessage>>>(
+                a => a,
+                a => a.ToArray(),
+                a => a.ToArray());
         }
 
         public IActionResult OnPostViewSource()
