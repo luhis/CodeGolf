@@ -72,5 +72,37 @@ Swap all the vowels in the word with the corresponding:
                                 "14", "FizzBuzz", "16", "17", "Fizz", "19", "Buzz",
                             })
                 });
+
+        public static readonly ChallengeSet<string> RocketScience = new ChallengeSet<string>(
+            Guid.Parse("08d16a48-4dbb-4f93-9c69-41ff0ab5a417"),
+            "This isn't rocket science",
+            @"Write a program or function that takes in a single-line string. You can assume it only contains printable ASCII. Print or return a string of an ASCII art rocket such as.",
+            new[] { new ParamDescription(typeof(string), "s") },
+            new[]
+                {
+                    new Challenge<string>(new object[] { "" }, 
+@"  |
+ /_\
+ |_|
+/___\
+ VvV"),
+                    new Challenge<string>(new object[] { "a" }, 
+@"  |
+ /_\
+ |a|
+ |_|
+/___\
+ VvV"),
+                    new Challenge<string>(new object[] { "earth" }, @"  |
+ /_\
+ |E|
+ |a|
+ |r|
+ |t|
+ |h|
+ |_|
+/___\
+ VvV"),
+                });
     }
 }
