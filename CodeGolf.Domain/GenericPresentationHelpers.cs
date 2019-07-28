@@ -52,7 +52,7 @@ namespace CodeGolf.Domain
                     { typeof(string), "string" }, { typeof(string[]), "string[]" }, { typeof(int), "int" }
                 };
 
-        private static string GetAlias(Type t)
+        public static string GetAlias(Type t)
         {
             if (Aliases.ContainsKey(t))
             {

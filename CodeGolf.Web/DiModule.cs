@@ -14,6 +14,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace CodeGolf.Web
 {
+    using CodeGolf.Web.Mappers;
+
     public static class DiModule
     {
         private static DbContextOptions<CodeGolfContext> GetDbOptions(IServiceProvider a) => new DbContextOptionsBuilder<CodeGolfContext>()
@@ -28,6 +30,7 @@ namespace CodeGolf.Web
             collection.AddSingleton<IGameAdminChecker, GameAdminChecker>();
             collection.AddSingleton<RecaptchaAttribute>();
             collection.AddSingleton<GameAdminAuthAttribute>();
+            collection.AddSingleton<ChallengeSetMapper>();
             collection.AddSingleton<IpcServiceClient<IExecutionService>>(a => new IpcServiceClientBuilder<IExecutionService>()
                 .UseTcp(IPAddress.Loopback, SharedSettings.PortNumber).Build());
         }
