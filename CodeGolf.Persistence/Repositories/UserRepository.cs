@@ -37,7 +37,7 @@ namespace CodeGolf.Persistence.Repositories
             }
             else
             {
-                this.context.Users.Update(new User(user.UserId, user.LoginName, user.AvatarUri));
+                this.context.Users.Update(new User(user.UserId, user.LoginName, user.RealName, user.AvatarUri));
             }
 
             await this.context.SaveChangesAsync(cancellationToken);

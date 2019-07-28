@@ -76,7 +76,7 @@ namespace CodeGolf.Unit.Test.Services
                 Task.FromResult<IReadOnlyList<Attempt>>(
                     new Attempt[] { new Attempt(id, 1, Guid.NewGuid(), string.Empty, 11, new DateTime(2010, 1, 1)), }));
             this.userRepository.Setup(a => a.GetByUserId(1, CancellationToken.None))
-                .Returns(Task.FromResult(Option.Some(new User(1, "matt", "avatar.png"))));
+                .Returns(Task.FromResult(Option.Some(new User(1, "matt", "matt mccorry", "avatar.png"))));
 
             var scores = this.dashboardService.GetAttempts(CancellationToken.None).Result;
 
@@ -101,9 +101,9 @@ namespace CodeGolf.Unit.Test.Services
                             new Attempt(id2, 2, Guid.NewGuid(), string.Empty, 12, now),
                         }));
             this.userRepository.Setup(a => a.GetByUserId(1, CancellationToken.None))
-                .Returns(Task.FromResult(Option.Some(new User(1, "matt", "avatar.png"))));
+                .Returns(Task.FromResult(Option.Some(new User(1, "matt", "matt mccorry", "avatar.png"))));
             this.userRepository.Setup(a => a.GetByUserId(2, CancellationToken.None))
-                .Returns(Task.FromResult(Option.Some(new User(2, "matt2", "avatar2.png"))));
+                .Returns(Task.FromResult(Option.Some(new User(2, "matt2", "matt2 mccorry", "avatar2.png"))));
 
             var scores = this.dashboardService.GetAttempts(CancellationToken.None).Result;
 
@@ -133,9 +133,9 @@ namespace CodeGolf.Unit.Test.Services
                             new Attempt(id2, 2, Guid.NewGuid(), string.Empty, 11, date2),
                         }));
             this.userRepository.Setup(a => a.GetByUserId(1, CancellationToken.None))
-                .Returns(Task.FromResult(Option.Some(new User(1, "matt", "avatar.png"))));
+                .Returns(Task.FromResult(Option.Some(new User(1, "matt", "matt mccorry", "avatar.png"))));
             this.userRepository.Setup(a => a.GetByUserId(2, CancellationToken.None))
-                .Returns(Task.FromResult(Option.Some(new User(2, "matt2", "avatar2.png"))));
+                .Returns(Task.FromResult(Option.Some(new User(2, "matt2", "matt2 mccorry", "avatar2.png"))));
 
             var scores = this.dashboardService.GetAttempts(CancellationToken.None).Result;
 
@@ -164,7 +164,7 @@ namespace CodeGolf.Unit.Test.Services
                             new Attempt(id1, 1, Guid.NewGuid(), string.Empty, 11, date2),
                         }));
             this.userRepository.Setup(a => a.GetByUserId(1, CancellationToken.None))
-                .Returns(Task.FromResult(Option.Some(new User(1, "matt", "avatar.png"))));
+                .Returns(Task.FromResult(Option.Some(new User(1, "matt", "matt mccorry", "avatar.png"))));
 
             var scores = this.dashboardService.GetAttempts(CancellationToken.None).Result;
 

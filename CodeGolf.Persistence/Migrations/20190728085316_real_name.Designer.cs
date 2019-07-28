@@ -3,14 +3,16 @@ using System;
 using CodeGolf.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CodeGolf.Persistence.Migrations
 {
     [DbContext(typeof(CodeGolfContext))]
-    partial class CodeGolfContextModelSnapshot : ModelSnapshot
+    [Migration("20190728085316_real_name")]
+    partial class real_name
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

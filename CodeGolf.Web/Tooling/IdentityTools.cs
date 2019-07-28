@@ -16,8 +16,9 @@ namespace CodeGolf.Web.Tooling
             {
                 var identifier = GetByKey(user, ClaimTypes.NameIdentifier);
                 var loginName = GetByKey(user, "urn:github:login");
+                var realName = GetByKey(user, ClaimTypes.Name);
                 var avatar = GetByKey(user, "urn:github:avatar");
-                var u = new User(int.Parse(identifier), loginName, avatar);
+                var u = new User(int.Parse(identifier), loginName, realName, avatar);
                 return Option.Some(u);
             }
 
