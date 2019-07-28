@@ -6,8 +6,10 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace CodeGolf.Web.Attributes
 {
+    using Microsoft.AspNetCore.Mvc;
+
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
-    public class RecaptchaAttribute : Attribute, IAsyncPageFilter
+    public class RecaptchaAttribute : Attribute, IAsyncPageFilter, IAsyncActionFilter
     {
         private readonly IRecaptchaVerifier recaptchaVerifier;
         private readonly IGetCaptchaValue getCaptchaValue;
@@ -35,6 +37,27 @@ namespace CodeGolf.Web.Attributes
             }
 
             await next();
+        }
+
+        async Task IAsyncActionFilter.OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+        {
+            if (string.Equals(context.HttpContext.Request.Method, "POST", StringComparison.InvariantCultureIgnoreCase))
+            {
+                var ip = this.getIp.GetIp(context.HttpContext.Request);
+                var recaptcha = context.HttpContext.Request.Headers["g-recaptcha-response"];
+                if (!await this.recaptchaVerifier.IsValid(recaptcha, ip))
+                {
+                    context.Result = new UnauthorizedResult();
+                }
+                else
+                {
+                    await next();
+                }
+            }
+            else
+            {
+                await next();
+            }
         }
     }
 }

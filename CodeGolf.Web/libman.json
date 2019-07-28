@@ -8,22 +8,6 @@
       "files": [
         "css/bulma.min.css"
       ]
-    },
-    {
-      "library": "codemirror@5.48.2",
-      "destination": "wwwroot/lib/codemirror",
-      "files": [
-        "codemirror.min.css"
-      ]
-    },
-    {
-      "library": "font-awesome@5.10.0-9",
-      "destination": "wwwroot/lib/font-awesome",
-      "files": [
-        "css/solid.min.css",
-        "css/fontawesome.min.css",
-        "webfonts/fa-solid-900.woff2"
-      ]
     }
 ]
 }

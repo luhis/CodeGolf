@@ -9,7 +9,7 @@ namespace CodeGolf.Web.Controllers
     using System;
     using System.Linq;
 
-    using CodeGolf.Web.Models;
+    using CodeGolf.Service.Dtos;
 
     [Route("api/[controller]")]
     [ApiController]
@@ -35,13 +35,11 @@ namespace CodeGolf.Web.Controllers
         }
 
         [HttpPost("[action]/{id}")]
-        public ActionResult<ErrorItem[]> TryCompile(Guid id, [FromBody] string code, CancellationToken cancellationToken)
+        public ActionResult<CompileErrorMessage[]> TryCompile(Guid id, [FromBody] string code, CancellationToken cancellationToken)
         {
-            return new JsonResult(
-                this.codeGolfService.TryCompile(id, code ?? string.Empty, cancellationToken).Match(
-                    a => a.Select(
-                        b => new ErrorItem(b.Line, b.Col, b.EndCol)).ToArray(),
-                    Array.Empty<ErrorItem>));
+            return this.codeGolfService.TryCompile(id, code ?? string.Empty, cancellationToken).Match(
+                    a => a.ToArray(),
+                    Array.Empty<CompileErrorMessage>);
         }
     }
 }

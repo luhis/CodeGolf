@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentAssertions" Version="5.7.0" />
+    <PackageReference Include="FluentAssertions" Version="5.8.0" />
     <PackageReference Include="FluentAssertions.OneOf" Version="0.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="2.2.0" />
@@ -28,5 +28,9 @@
     <ProjectReference Include="..\..\CodeGolf.ServiceInterfaces\CodeGolf.ServiceInterfaces.csproj" />
     <ProjectReference Include="..\..\CodeGolf.Service\CodeGolf.Service.csproj" />
     <ProjectReference Include="..\..\CodeGolf.Web\CodeGolf.Web.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Pages\" />
   </ItemGroup>
 </Project>

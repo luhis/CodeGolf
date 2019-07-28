@@ -48,7 +48,7 @@ namespace CodeGolf.Service
                 async compiled =>
                     {
                         var results = await challenge.GetResults(compiled);
-                        if (results.Any(a => a.Error.HasValue))
+                        if (results.Any(a => a.Error != null))
                         {
                             return (OneOf<int, IReadOnlyList<ChallengeResult>, IReadOnlyList<CompileErrorMessage>>)results.ToList();
                         }

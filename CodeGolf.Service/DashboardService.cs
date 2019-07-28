@@ -116,10 +116,11 @@
                     });
         }
 
-        async Task<Option<IReadOnlyList<AttemptDto>>> IDashboardService.GetAttempts(CancellationToken cancellationToken)
+        async Task<Option<IReadOnlyList<AttemptDto>>> IDashboardService.GetAttempts(
+            Guid id,
+            CancellationToken cancellationToken)
         {
-            var hole = await this.holeRepository.GetCurrentHole(cancellationToken);
-            return await hole.MapAsync(a => this.GetBestAttemptDtos(a.HoleId, cancellationToken));
+            return Option.Some(await this.GetBestAttemptDtos(id, cancellationToken));
         }
     }
 }

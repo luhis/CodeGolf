@@ -1,0 +1,29 @@
+#app {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+.is-clickable {
+    cursor: pointer;
+}
+.underline {
+    text-decoration: underline;
+    text-decoration-color: red;
+    text-decoration-style: solid;
+}
+div.CodeMirror {
+    height: 500px;
+}
+footer.is-thin {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.Site-content {
+    flex: 1;
+}
+
+div.navbar-menu {
+    flex-grow: 0;
+}

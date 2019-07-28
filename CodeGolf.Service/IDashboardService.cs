@@ -19,6 +19,6 @@
 
         Task<Option<AttemptCodeDto>> GetAttemptById(Guid id, CancellationToken cancellationToken);
 
-        Task<Option<IReadOnlyList<AttemptDto>>> GetAttempts(CancellationToken cancellationToken);
+        Task<Option<IReadOnlyList<AttemptDto>>> GetAttempts(Guid token, CancellationToken cancellationToken);
     }
 }

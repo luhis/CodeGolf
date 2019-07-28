@@ -52,7 +52,7 @@ namespace CodeGolf.Unit.Test.Domain
                 new CompileRunner(
                     o => Task.FromResult<IReadOnlyList<Option<object, string>>>(
                         new[] { Option.Some<object, string>("test") }))).Result;
-            r.Single().Error.HasValue.Should().BeFalse();
+            r.Single().Error.Should().BeNull();
         }
 
         [Fact]
@@ -68,7 +68,7 @@ namespace CodeGolf.Unit.Test.Domain
                 new CompileRunner(
                     o => Task.FromResult<IReadOnlyList<Option<object, string>>>(
                         new[] { Option.Some<object, string>("testXX") }))).Result;
-            r.Single().Error.HasValue.Should().BeTrue();
+            r.Single().Error.Should().NotBeNull();
         }
     }
 }

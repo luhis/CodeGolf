@@ -75,13 +75,13 @@ namespace CodeGolf.Domain
                                     var res = x != null ? (T[])x : null;
                                     if (!AreEqual(challenge.Item2.ExpectedResult, res))
                                     {
-                                        return Option.Some(
-                                            $"Return value incorrect. Expected: {GenericPresentationHelpers.WrapIfArray(challenge.Item2.ExpectedResult, typeof(T[]))}, Found: {GenericPresentationHelpers.WrapIfArray(res, typeof(T[]))}");
+                                        return 
+                                            $"Return value incorrect. Expected: {GenericPresentationHelpers.WrapIfArray(challenge.Item2.ExpectedResult, typeof(T[]))}, Found: {GenericPresentationHelpers.WrapIfArray(res, typeof(T[]))}";
                                     }
 
-                                    return Option.None<string>();
+                                    return null;
                                 },
-                            Option.Some);
+                            s => s);
                         return new ChallengeResult(errors, challenge.Item2);
                     }).ToList();
         }

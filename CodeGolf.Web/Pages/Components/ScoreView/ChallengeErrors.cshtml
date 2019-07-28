@@ -9,12 +9,12 @@
     <div class="message-body">
         @foreach (var c in Model.Item1)
         {
-            @if (c.Error.HasValue)
+            @if (c.Error != null)
             {
                 <p>
                     <i class="fas fa-exclamation-triangle"></i>
                     @GenericPresentationHelpers.DisplayFunction(c.Challenge, Model.Item2.Params, Model.Item2.ReturnType)
-                    <strong>@c.Error.ValueOrFailure()</strong>
+                    <strong>@c.Error</strong>
                 </p>
             }
             else

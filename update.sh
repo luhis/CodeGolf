@@ -2,7 +2,7 @@
 
 echo "Update Source"
 git pull
-yarn --cwd ./CodeGolf.Web/ install
+yarn --cwd ./CodeGolf.Web/ClientApp/codeGolf/ install
 
 echo "Stop codegolf service"
 systemctl stop kestrel-codegolf.service
@@ -10,7 +10,7 @@ systemctl stop execution-codegolf.service
 sleep 5
 
 echo "Client Build"
-yarn --cwd ./CodeGolf.Web/ build
+yarn --cwd ./CodeGolf.Web/ClientApp/codeGolf/ build
 
 echo "Run build"
 dotnet publish ./CodeGolf.Web -o ../publish -c Release

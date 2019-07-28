@@ -10,9 +10,6 @@
     <title>@ViewData["Title"] - CodeGolf.Web</title>
 
     <link rel="stylesheet" href="~/lib/bulma/css/bulma.min.css" />
-    <link rel="stylesheet" href="~/lib/font-awesome/css/solid.min.css" />
-    <link rel="stylesheet" href="~/lib/font-awesome/css/fontawesome.min.css" />
-    <link rel="stylesheet" href="lib/codemirror/codemirror.min.css"> @*todo this shouldn't be here*@
     <link rel="stylesheet" href="~/dist/siteCss.css" asp-append-version="true" />
     <!-- Global site tag (gtag.js) - Google Analytics -->
     @inject IOptions<WebSiteSettings> WebSiteSettings
@@ -40,13 +37,13 @@
         <div id="navbarBasicExample" class="navbar-menu">
             <div class="navbar-start">
                 <a class="navbar-item" asp-page="/Index">Home</a>
-                <a class="navbar-item" asp-page="/Demo">Demo</a>
+                <a class="navbar-item" href="/demo">Demo</a>
                 @if (this.User.Identity.IsAuthenticated)
                 {
-                    <a class="navbar-item" asp-page="/Game">Game</a>
+                    <a class="navbar-item" href="/game">Game</a>
                     if (AdminChecker.IsAdmin(this.Context))
                     {
-                        <a class="navbar-item" asp-page="/Dashboard">Dashboard</a>
+                        <a class="navbar-item" href="/dashboard">Dashboard</a>
                         <a class="navbar-item" asp-page="/Admin">Admin</a>
                     }
                     <a class="navbar-item" asp-page="/SignOut">Sign Out</a>

@@ -21,7 +21,7 @@
                 cs.Challenges.Select(
                     a => new ChallengeDto(
                         a.Args.Select(b => b.ToString()).ToArray(),
-                        GenericPresentationHelpers.WrapIfArray(a.ExpectedResult,cs.ReturnType))).ToArray());
+                        GenericPresentationHelpers.WrapIfArray(a.ExpectedResult, cs.ReturnType))).ToArray());
         }
     }
 }

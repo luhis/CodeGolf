@@ -22,7 +22,7 @@
             CancellationToken cancellationToken)
         {
             var attempts = await this.attemptRepository.GetAttempts(holeId, cancellationToken);
-            return attempts.OrderBy(a => a.Score).GroupBy(a => a.UserId).Select(a => (a).OrderBy(x => x.Score).ThenBy(x => x.TimeStamp).First()).OrderBy(x => x.Score).ThenBy(a => a.TimeStamp);
+            return attempts.OrderBy(a => a.Score).GroupBy(a => a.UserId).Select(a => a.OrderBy(x => x.Score).ThenBy(x => x.TimeStamp).First()).OrderBy(x => x.Score).ThenBy(a => a.TimeStamp);
         }
     }
 }
