@@ -41,7 +41,7 @@ namespace CodeGolf.Web.Controllers
                 this.codeGolfService.TryCompile(id, code ?? string.Empty, cancellationToken).Match(
                     a => a.Select(
                         b => new ErrorItem(b.Line, b.Col, b.EndCol)).ToArray(),
-                    () => new ErrorItem[0]));
+                    Array.Empty<ErrorItem>));
         }
     }
 }

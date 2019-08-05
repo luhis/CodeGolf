@@ -52,7 +52,7 @@ namespace CodeGolf.Unit.Test.Services
                     new[] { new Challenge<string>(new object[0], "Hello World") }),
                 CancellationToken.None).Result;
             r.AsT2.Should().BeEquivalentTo(
-                new CompileErrorMessage(2,0, 8,
+                new CompileErrorMessage(2, 0,  8,
                 "The type or namespace name 'Assembly' could not be found (are you missing a using directive or an assembly reference?)"),
                 new CompileErrorMessage(2, 20, 28, "The name 'Assembly' does not exist in the current context"));
         }

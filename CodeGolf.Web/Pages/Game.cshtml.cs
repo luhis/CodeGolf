@@ -11,6 +11,7 @@ using Optional.Unsafe;
 
 namespace CodeGolf.Web.Pages
 {
+    using System;
     using System.Linq;
 
     using CodeGolf.Domain.ChallengeInterfaces;
@@ -34,7 +35,7 @@ namespace CodeGolf.Web.Pages
 
         public Option<IChallengeSet> Hole { get; private set; }
 
-        public ErrorItem[] CodeErrorLocations { get; private set; } = new ErrorItem[0];
+        public ErrorItem[] CodeErrorLocations { get; private set; } = Array.Empty<ErrorItem>();
 
         public GameModel(IGameService gameService, IIdentityTools identityTools)
         {
@@ -61,8 +62,8 @@ namespace CodeGolf.Web.Pages
                           gs.ChallengeSet,
                           cancellationToken).ConfigureAwait(false);
             this.CodeErrorLocations = res.Match(
-                _ => new ErrorItem[0],
-                _ => new ErrorItem[0],
+                _ => Array.Empty<ErrorItem>(),
+                _ => Array.Empty<ErrorItem>(),
                 a => a.Select(
                     b => new ErrorItem(b.Line, b.Col, b.EndCol)).ToArray());
 

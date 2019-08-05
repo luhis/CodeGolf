@@ -59,7 +59,7 @@ namespace CodeGolf.Unit.Test
         {
             var r = GenericPresentationHelpers.GetFuncTemplate(
                 new ChallengeSet<string[]>(
-                    Guid.NewGuid(), "a", "b", new List<ParamDescription>() { }, new Challenge<string[]>[] { }));
+                    Guid.NewGuid(), "a", "b", Array.Empty<ParamDescription>(), new Challenge<string[]>[] { }));
             r.Should().BeEquivalentTo("string[] Main() { return ... ; }");
         }
 

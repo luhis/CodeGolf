@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace CodeGolf.Web.Pages
 {
+    using System;
+
     using CodeGolf.Service.Dtos;
     using CodeGolf.Web.Models;
 
@@ -30,7 +32,7 @@ namespace CodeGolf.Web.Pages
 
         public IChallengeSet ChallengeSet { get; }
 
-        public ErrorItem[] CodeErrorLocations { get; private set; } = new ErrorItem[0];
+        public ErrorItem[] CodeErrorLocations { get; private set; } = Array.Empty<ErrorItem>();
 
         public DemoModel(ICodeGolfService codeGolfService)
         {
@@ -49,8 +51,8 @@ namespace CodeGolf.Web.Pages
                 var r = await this.codeGolfService.Score(this.Code, this.ChallengeSet, cancellationToken)
                             .ConfigureAwait(false);
                 this.CodeErrorLocations = r.Match(
-                    _ => new ErrorItem[0],
-                    _ => new ErrorItem[0],
+                    _ => Array.Empty<ErrorItem>(),
+                    _ => Array.Empty<ErrorItem>(),
                     a => a.Select(
                         b => new ErrorItem(b.Line, b.Col, b.EndCol)).ToArray());
                 this.Result = r.Match<OneOf<None, int, IReadOnlyList<Domain.ChallengeResult>, IReadOnlyList<CompileErrorMessage>>>(
