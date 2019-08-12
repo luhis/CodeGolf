@@ -14,8 +14,6 @@ interface Props {
     readonly endHole: () => Promise<void>;
 }
 
-const PleaseWait: FunctionalComponent = () => (<div>There is no current challenge</div>);
-
 const FuncComp: FunctionalComponent<Readonly<Props>> = ({ current, attempts, nextHole, endHole }) =>
     (<section class="section">
         <span class="title">Attempts</span>
@@ -29,7 +27,7 @@ const FuncComp: FunctionalComponent<Readonly<Props>> = ({ current, attempts, nex
                     <div>
                         <Times start={current.data.start} end={current.data.end} />
                         <ChallengeComp challenge={current.data.challengeSet} onCodeClick={undefined} />
-                    </div> : <PleaseWait/>}
+                    </div> : <Circular/>}
             </div>
         </div>
     </section>);
