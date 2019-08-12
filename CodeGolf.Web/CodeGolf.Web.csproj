@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="HostedServices\" />
     <Folder Include="Partials\" />
     <Folder Include="wwwroot\css\" />
   </ItemGroup>

@@ -74,5 +74,10 @@ namespace CodeGolf.ExecutionServer
         {
             return paramTypes.Zip(args, ValueTuple.Create).Select(a => Convert.ChangeType(a.Item2, a.Item1));
         }
+
+        public Task Ping()
+        {
+            return Task.CompletedTask;
+        }
     }
 }

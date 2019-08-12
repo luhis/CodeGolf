@@ -26,6 +26,7 @@ using WebMarkupMin.AspNetCore2;
 
 namespace CodeGolf.Web
 {
+    using CodeGolf.Web.HostedServices;
     using System.Threading.Tasks;
 
     public class Startup
@@ -133,6 +134,7 @@ namespace CodeGolf.Web
                 });
 
             services.AddSignalR();
+            services.AddHostedService<PingService>();
         }
 
         private static readonly IReadOnlyList<Action<IServiceCollection>> DiModules = new List<Action<IServiceCollection>>

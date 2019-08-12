@@ -23,5 +23,10 @@ namespace CodeGolf.Service
         {
             return this.svc.InvokeAsync(a => a.Execute<T>(compileResult, className, funcName, args, paramTypes));
         }
+
+        Task IExecutionService.Ping()
+        {
+            return this.svc.InvokeAsync(a => a.Ping());
+        }
     }
 }
