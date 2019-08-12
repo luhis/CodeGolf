@@ -23,9 +23,8 @@ const valueOr = <T extends any>(l: LoadingState<T>, f: (() => T)): T => {
   if (l.type === "Loaded") {
     return l.data;
   }
-  
-    return f();
-  
+
+  return f();
 };
 
 const FuncComp: FunctionalComponent<Readonly<Props>> = ({ code, errors, challenge, codeChanged, onCodeClick, submitCode }) => {
@@ -43,7 +42,7 @@ const FuncComp: FunctionalComponent<Readonly<Props>> = ({ code, errors, challeng
           />
 
           {challenge.type === "Loaded" && errors.type === "Loaded" ?
-            <ErrorsComp errors={errors.data} returnType={challenge.data.challengeSet.returnType} /> : <Circular/>}
+            <ErrorsComp errors={errors.data} returnType={challenge.data.challengeSet.returnType} /> : <Circular />}
         </div>
       </div> : <PleaseWait />}
   </section>);
