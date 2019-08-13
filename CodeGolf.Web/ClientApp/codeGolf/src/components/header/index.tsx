@@ -24,7 +24,7 @@ const FuncComp: FunctionalComponent<State> = ({ admin, loggedIn }) =>
         </div>
     </nav >);
 
-interface State { admin: boolean; loggedIn: boolean; }
+interface State { readonly admin: boolean; readonly loggedIn: boolean; }
 
 export default class Comp extends Component<{}, State> {
     constructor() {

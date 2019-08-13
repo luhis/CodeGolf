@@ -27,3 +27,7 @@ footer.is-thin {
 div.navbar-menu {
     flex-grow: 0;
 }
+
+.editor {
+    border: 1px solid #dbdbdb;
+}

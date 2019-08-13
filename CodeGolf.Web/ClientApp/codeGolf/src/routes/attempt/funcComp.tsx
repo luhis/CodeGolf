@@ -25,7 +25,7 @@ const FuncComp: FunctionalComponent<Readonly<Props>> = ({ result }) => result.ty
             </span>
         </div>
         <CM value={result.data.code}
-            // className={style.editor}
+            className="editor"
             onBeforeChange={() => undefined}
             options={{ lineNumbers: true, mode: "text/x-csharp" } as EditorConfiguration}
             editorDidMount={(e: Editor) => {
@@ -33,6 +33,6 @@ const FuncComp: FunctionalComponent<Readonly<Props>> = ({ result }) => result.ty
                     e.refresh();
                 }, 250);
             }} />
-    </section>) : <Circular/>;
+    </section>) : <Circular />;
 
 export default FuncComp;

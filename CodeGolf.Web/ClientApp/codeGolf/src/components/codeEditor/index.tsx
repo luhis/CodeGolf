@@ -3,7 +3,6 @@ import { FunctionalComponent, h } from "preact";
 import { Controlled as CodeMirror, IControlledCodeMirror } from "react-codemirror2";
 
 import { RunResult } from "../../types/types";
-import * as style from "./style.css";
 
 import "codemirror/lib/codemirror.css";
 import "codemirror/mode/clike/clike";
@@ -48,7 +47,7 @@ const Comp: FunctionalComponent<Readonly<Props>> = ({ code, codeChanged, submitC
             <div class="control">
                 <CM
                     value={code}
-                    className={style.editor}
+                    className="editor"
                     options={{ lineNumbers: true, mode: "text/x-csharp" }}
                     editorDidMount={(e: Editor) => {
                         editor = e;
