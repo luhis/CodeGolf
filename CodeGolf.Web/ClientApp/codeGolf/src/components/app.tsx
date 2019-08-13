@@ -1,6 +1,7 @@
 import "bulma";
 import { FunctionalComponent, h } from "preact";
 import { Route, Router } from "preact-router";
+import ReactGA from "react-ga";
 
 import Attempt from "../routes/attempt";
 import Dashboard from "../routes/dashboard";
@@ -16,6 +17,8 @@ if (module.hot) {
     // tslint:disable-next-line:no-var-requires
     require("preact/debug");
 }
+
+ReactGA.initialize(process.env.PREACT_APP_GA_KEY as string);
 
 const Comp: FunctionalComponent = () => (
     <div id="app">
@@ -36,6 +39,5 @@ const Comp: FunctionalComponent = () => (
         <Footer />
     </div>
 );
-
 
 export default Comp;

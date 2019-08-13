@@ -5,7 +5,7 @@
     <meta name="description" content="Play C# golf with your friends.">
     <meta name="keywords" content="C#,dotnetcore,programming,challenge,codegolf">
     <meta charset="utf-8">
-    <title><%= htmlWebpackPlugin.options.title %></title> 
+    <title><%= htmlWebpackPlugin.options.title %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -31,7 +31,6 @@
 			url: '/'
 		}) %>
     <script defer src="<%= htmlWebpackPlugin.files.chunks['bundle'].entry %>"></script>
-    <script>window.fetch || document.write('<script src="<%= htmlWebpackPlugin.files.chunks["polyfills"].entry %>"><\/script>')</script>
 </body>
 
 </html>
