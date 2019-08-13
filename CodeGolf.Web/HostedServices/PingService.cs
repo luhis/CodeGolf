@@ -24,11 +24,10 @@ namespace CodeGolf.Web.HostedServices
 
         private async Task Loop()
         {
-            await this.svc.Ping();
             while (!this.source.IsCancellationRequested)
             {
-                await Task.Delay(TimeSpan.FromSeconds(5), this.source.Token);
                 await this.svc.Ping();
+                await Task.Delay(TimeSpan.FromSeconds(30), this.source.Token);
             }
         }
 
