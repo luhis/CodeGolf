@@ -4,7 +4,7 @@ import { isAdmin, isLoggedIn } from "../../api";
 const FuncComp: FunctionalComponent<State> = ({ admin, loggedIn }) =>
     (<nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
-            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false">
                 <span aria-hidden="true" />
                 <span aria-hidden="true" />
                 <span aria-hidden="true" />
