@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using EnsureThat;
-
-namespace CodeGolf.Domain
+﻿namespace CodeGolf.Domain
 {
+    using System.Collections.Generic;
+    using EnsureThat;
+
     public class ErrorSet
     {
         public ErrorSet(IReadOnlyList<string> errors)

@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using EnsureThat;
-using Optional;
-
-namespace CodeGolf.Domain
+﻿namespace CodeGolf.Domain
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using EnsureThat;
+    using Optional;
+
     public class CompileRunner
     {
         public CompileRunner(Func<object[][], Task<IReadOnlyList<Option<object, string>>>> func)

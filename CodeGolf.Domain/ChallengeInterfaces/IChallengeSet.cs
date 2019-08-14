@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace CodeGolf.Domain.ChallengeInterfaces
+﻿namespace CodeGolf.Domain.ChallengeInterfaces
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
     public interface IChallengeSet
     {
         Guid Id { get; }
-
-        Task<IReadOnlyList<ChallengeResult>> GetResults(CompileRunner t);
 
         IReadOnlyList<ParamDescription> Params { get; }
 
@@ -19,5 +17,7 @@ namespace CodeGolf.Domain.ChallengeInterfaces
         string Description { get; }
 
         IReadOnlyList<IChallenge> Challenges { get; }
+
+        Task<IReadOnlyList<ChallengeResult>> GetResults(CompileRunner t);
     }
 }

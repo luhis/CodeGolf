@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace CodeGolf.Domain.Repositories
+﻿namespace CodeGolf.Domain.Repositories
 {
-
+    using System;
+    using System.Collections.Generic;
+    using System.Threading;
+    using System.Threading.Tasks;
     using Optional;
 
     public interface IAttemptRepository

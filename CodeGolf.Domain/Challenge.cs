@@ -1,8 +1,8 @@
-﻿using CodeGolf.Domain.ChallengeInterfaces;
-using EnsureThat;
-
-namespace CodeGolf.Domain
+﻿namespace CodeGolf.Domain
 {
+    using CodeGolf.Domain.ChallengeInterfaces;
+    using EnsureThat;
+
     public class Challenge<T> : IChallenge
     {
         public Challenge(object[] args, T expectedResult)

@@ -1,8 +1,7 @@
-﻿using CodeGolf.Domain.ChallengeInterfaces;
-using Optional;
-
-namespace CodeGolf.Domain
+﻿namespace CodeGolf.Domain
 {
+    using CodeGolf.Domain.ChallengeInterfaces;
+
     public class ChallengeResult
     {
         public ChallengeResult(string error, IChallenge challenge)

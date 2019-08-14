@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using CodeGolf.Domain.ChallengeInterfaces;
-
-namespace CodeGolf.Domain
+﻿namespace CodeGolf.Domain
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using CodeGolf.Domain.ChallengeInterfaces;
+
     public static class GenericPresentationHelpers
     {
-        private static string ToCommaSep<T>(T[] arr) =>
-            arr == null ? "null" : string.Join(", ", arr.Select(a => a == null ? "null" : WrapIfString(a, typeof(T))));
-
-        private static string WrapIfString(object o, Type t) => t == typeof(string) ? $"\"{o}\"" : o.ToString();
+        private static readonly IReadOnlyDictionary<Type, string> Aliases =
+            new Dictionary<Type, string>()
+                {
+                    { typeof(string), "string" }, { typeof(string[]), "string[]" }, { typeof(int), "int" },
+                };
 
         public static string WrapIfArray(object o, Type t)
         {
@@ -46,12 +47,6 @@ namespace CodeGolf.Domain
             return $"({string.Join(", ", zipped)}) => {WrapIfArray(challenge.ExpectedResult, returnType)}";
         }
 
-        private static readonly IReadOnlyDictionary<Type, string> Aliases =
-            new Dictionary<Type, string>()
-                {
-                    { typeof(string), "string" }, { typeof(string[]), "string[]" }, { typeof(int), "int" }
-                };
-
         public static string GetAlias(Type t)
         {
             if (Aliases.ContainsKey(t))
@@ -70,5 +65,10 @@ namespace CodeGolf.Domain
                 .Select(t => $"{GetAlias(t.Type)} {t.SuggestedName}");
             return $"{GetAlias(set.ReturnType)} Main({string.Join(", ", paramPairs)}) {{ return ... ; }}";
         }
+
+        private static string ToCommaSep<T>(T[] arr) =>
+            arr == null ? "null" : string.Join(", ", arr.Select(a => a == null ? "null" : WrapIfString(a, typeof(T))));
+
+        private static string WrapIfString(object o, Type t) => t == typeof(string) ? $"\"{o}\"" : o.ToString();
     }
 }

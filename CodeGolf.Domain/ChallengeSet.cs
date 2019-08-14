@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CodeGolf.Domain.ChallengeInterfaces;
-using EnsureThat;
-using Optional;
-
-namespace CodeGolf.Domain
+﻿namespace CodeGolf.Domain
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using CodeGolf.Domain.ChallengeInterfaces;
+    using EnsureThat;
+
     public class ChallengeSet<T> : IChallengeSet
     {
         public ChallengeSet(
@@ -28,22 +27,6 @@ namespace CodeGolf.Domain
             }
         }
 
-        private static bool IsMisMatched(ValueTuple<object, Type> t) => t.Item1.GetType() != t.Item2;
-
-        private void ValidateParameters(IChallenge challenge)
-        {
-            if (challenge.Args.Length != this.Params.Count)
-            {
-                throw new Exception("Incorrect number of parameters");
-            }
-
-            var misMatched = challenge.Args.Zip(this.Params.Select(a => a.Type), ValueTuple.Create).Where(IsMisMatched);
-            if (misMatched.Any())
-            {
-                throw new Exception("Mismatched parameters");
-            }
-        }
-
         public string Title { get; }
 
         public string Description { get; }
@@ -52,11 +35,11 @@ namespace CodeGolf.Domain
 
         Type IChallengeSet.ReturnType => typeof(T);
 
-        private IReadOnlyList<Challenge<T>> Challenges { get; }
-
         IReadOnlyList<IChallenge> IChallengeSet.Challenges => this.Challenges;
 
         public Guid Id { get; }
+
+        private IReadOnlyList<Challenge<T>> Challenges { get; }
 
         async Task<IReadOnlyList<ChallengeResult>> IChallengeSet.GetResults(CompileRunner t)
         {
@@ -72,7 +55,7 @@ namespace CodeGolf.Domain
                                     var res = success;
                                     if (!AreEqual(challenge.Item2.ExpectedResult, res))
                                     {
-                                        return 
+                                        return
                                             $"Return value incorrect. Expected: {GenericPresentationHelpers.WrapIfArray(challenge.Item2.ExpectedResult, typeof(T))}, Found: {GenericPresentationHelpers.WrapIfArray(res, typeof(T))}";
                                     }
 
@@ -86,6 +69,22 @@ namespace CodeGolf.Domain
         private static bool AreEqual(object expect, object actual)
         {
             return expect.Equals(actual);
+        }
+
+        private static bool IsMisMatched(ValueTuple<object, Type> t) => t.Item1.GetType() != t.Item2;
+
+        private void ValidateParameters(IChallenge challenge)
+        {
+            if (challenge.Args.Length != this.Params.Count)
+            {
+                throw new Exception("Incorrect number of parameters");
+            }
+
+            var misMatched = challenge.Args.Zip(this.Params.Select(a => a.Type), ValueTuple.Create).Where(IsMisMatched);
+            if (misMatched.Any())
+            {
+                throw new Exception("Mismatched parameters");
+            }
         }
     }
 }

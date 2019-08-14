@@ -7,14 +7,7 @@
     <WarningsAsErrors />
     <TieredCompilation>true</TieredCompilation>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <CodeAnalysisRuleSet>CodeGolf.Web.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <CodeAnalysisRuleSet>CodeGolf.Web.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>CodeGolf.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>

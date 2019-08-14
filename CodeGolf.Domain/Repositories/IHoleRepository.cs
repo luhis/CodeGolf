@@ -1,10 +1,9 @@
-﻿using System.Threading.Tasks;
-using Optional;
-
-namespace CodeGolf.Domain.Repositories
+﻿namespace CodeGolf.Domain.Repositories
 {
     using System;
     using System.Threading;
+    using System.Threading.Tasks;
+    using Optional;
 
     public interface IHoleRepository
     {

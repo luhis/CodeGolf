@@ -1,8 +1,8 @@
-﻿using System;
-using EnsureThat;
-
-namespace CodeGolf.Domain
+﻿namespace CodeGolf.Domain
 {
+    using System;
+    using EnsureThat;
+
     public class Attempt
     {
         public Attempt(Guid id, int userId, Guid holeId, string code, int score, DateTime timeStamp)

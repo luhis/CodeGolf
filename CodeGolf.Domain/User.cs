@@ -1,7 +1,7 @@
-﻿using EnsureThat;
-
-namespace CodeGolf.Domain
+﻿namespace CodeGolf.Domain
 {
+    using EnsureThat;
+
     public class User
     {
         public User(int userId, string loginName, string realName, string avatarUri)

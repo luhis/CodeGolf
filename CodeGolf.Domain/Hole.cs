@@ -1,8 +1,8 @@
-﻿using System;
-using EnsureThat;
-
-namespace CodeGolf.Domain
+﻿namespace CodeGolf.Domain
 {
+    using System;
+    using EnsureThat;
+
     public class Hole
     {
         public Hole(Guid holeId, Guid challengeId, TimeSpan duration)

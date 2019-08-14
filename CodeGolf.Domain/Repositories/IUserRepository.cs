@@ -1,9 +1,9 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using Optional;
-
-namespace CodeGolf.Domain.Repositories
+﻿namespace CodeGolf.Domain.Repositories
 {
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Optional;
+
     public interface IUserRepository
     {
         Task<Option<User>> GetByUserName(string userName, CancellationToken cancellationToken);
