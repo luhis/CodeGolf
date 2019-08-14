@@ -1,15 +1,14 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CodeGolf.Domain;
-using CodeGolf.Domain.ChallengeInterfaces;
-using FluentAssertions;
-using Optional;
-using Xunit;
-
 namespace CodeGolf.Unit.Test.Domain
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using CodeGolf.Domain;
+    using CodeGolf.Domain.ChallengeInterfaces;
+    using FluentAssertions;
+    using Optional;
+    using Xunit;
 
     public class ChallengeSetArrayShould
     {

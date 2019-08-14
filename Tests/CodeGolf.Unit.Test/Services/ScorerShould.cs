@@ -1,9 +1,9 @@
-using CodeGolf.Service;
-using FluentAssertions;
-using Xunit;
-
 namespace CodeGolf.Unit.Test.Services
 {
+    using CodeGolf.Service;
+    using FluentAssertions;
+    using Xunit;
+
     public class ScorerShould
     {
         private readonly IScorer scorer = new Scorer();
@@ -23,7 +23,7 @@ namespace CodeGolf.Unit.Test.Services
             {
                 return s;
             }";
-            
+
             var r = this.scorer.Score(code);
             r.Should().Be(35);
         }

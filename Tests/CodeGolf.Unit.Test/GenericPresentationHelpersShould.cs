@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using CodeGolf.Domain;
-using FluentAssertions;
-using Xunit;
-
-namespace CodeGolf.Unit.Test
+﻿namespace CodeGolf.Unit.Test
 {
+    using System;
+    using System.Collections.Generic;
+    using CodeGolf.Domain;
+    using FluentAssertions;
+    using Xunit;
+
     public class GenericPresentationHelpersShould
     {
         private readonly IReadOnlyList<ParamDescription> intAndString =

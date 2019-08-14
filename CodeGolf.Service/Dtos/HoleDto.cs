@@ -1,10 +1,9 @@
-﻿using System;
-using CodeGolf.Domain;
-using EnsureThat;
-
-namespace CodeGolf.Service.Dtos
+﻿namespace CodeGolf.Service.Dtos
 {
+    using System;
+    using CodeGolf.Domain;
     using CodeGolf.Domain.ChallengeInterfaces;
+    using EnsureThat;
 
     public class HoleDto
     {

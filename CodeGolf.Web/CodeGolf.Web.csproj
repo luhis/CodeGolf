@@ -7,7 +7,7 @@
     <WarningsAsErrors />
     <TieredCompilation>true</TieredCompilation>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
-    <CodeAnalysisRuleSet>CodeGolf.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\CodeGolf.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
@@ -34,6 +34,10 @@
     <Folder Include="HostedServices\" />
     <Folder Include="Partials\" />
     <Folder Include="wwwroot\css\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\CodeGolf.ruleset" Link="CodeGolf.ruleset" />
   </ItemGroup>
 
 </Project>

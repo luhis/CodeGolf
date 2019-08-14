@@ -1,9 +1,10 @@
-using CodeGolf.Domain;
-
 namespace CodeGolf.Persistence.Static
 {
     using System;
+    using CodeGolf.Domain;
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1118:Parameter should not span multiple lines", Justification = "Pre formatted text")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1137:Elements should have the same indentation", Justification = "Pre formatted text")]
     public static class Challenges
     {
         public static readonly ChallengeSet<string> HelloWorld = new ChallengeSet<string>(
@@ -52,7 +53,7 @@ Swap all the vowels in the word with the corresponding:
                 });
 
         public static readonly ChallengeSetArray<string> FizzBuzz = new ChallengeSetArray<string>(
-            Guid.Parse("74e2c07b-4d14-413f-8efa-d8befcae0510"), 
+            Guid.Parse("74e2c07b-4d14-413f-8efa-d8befcae0510"),
             "FizzBuzz",
             "Write a program that prints the integer numbers from 1 to i inclusive. But for multiples of three print \"Fizz\" instead of the number and for the multiples of five print \"Buzz\". For numbers which are multiples of both three and five print \"FizzBuzz\".",
             new[] { new ParamDescription(typeof(int), "i") },
@@ -80,13 +81,15 @@ Swap all the vowels in the word with the corresponding:
             new[] { new ParamDescription(typeof(string), "s") },
             new[]
                 {
-                    new Challenge<string>(new object[] { "" }, 
+                    new Challenge<string>(
+                        new object[] { string.Empty },
 @"  |
  /_\
  |_|
 /___\
  VvV"),
-                    new Challenge<string>(new object[] { "a" }, 
+                    new Challenge<string>(
+                        new object[] { "a" },
 @"  |
  /_\
  |a|

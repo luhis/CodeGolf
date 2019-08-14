@@ -1,21 +1,17 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using CodeGolf.Domain;
-using CodeGolf.Domain.ChallengeInterfaces;
-using CodeGolf.Persistence.Static;
-using EnsureThat;
-
-namespace CodeGolf.Service
+﻿namespace CodeGolf.Service
 {
     using System;
-
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using CodeGolf.Domain;
+    using CodeGolf.Domain.ChallengeInterfaces;
     using CodeGolf.Domain.Repositories;
+    using CodeGolf.Persistence.Static;
     using CodeGolf.Service.Dtos;
-
+    using EnsureThat;
     using OneOf;
-
     using Optional;
     using Optional.Unsafe;
 

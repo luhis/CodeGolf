@@ -1,16 +1,16 @@
-﻿using System;
-using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
-using CodeGolf.ServiceInterfaces;
-using JKang.IpcServiceFramework;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace CodeGolf.ExecutionServer
+﻿namespace CodeGolf.ExecutionServer
 {
+    using System;
+    using System.Net;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using CodeGolf.ServiceInterfaces;
+    using JKang.IpcServiceFramework;
+    using Microsoft.Extensions.DependencyInjection;
+
     public static class Program
     {
-        static async Task Main()
+        public static async Task Main()
         {
             // configure DI
             var services = ConfigureServices(new ServiceCollection());

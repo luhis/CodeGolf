@@ -1,9 +1,9 @@
-﻿using CodeGolf.Service;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-
-namespace CodeGolf.Unit.Test.SyntaxTreeModification
+﻿namespace CodeGolf.Unit.Test.SyntaxTreeModification
 {
+    using CodeGolf.Service;
+    using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.CSharp;
+
     public static class CompilationTooling
     {
         public static SyntaxNode Transform(string source)

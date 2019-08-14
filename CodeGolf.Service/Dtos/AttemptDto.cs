@@ -1,8 +1,8 @@
-﻿using System;
-using EnsureThat;
-
-namespace CodeGolf.Service.Dtos
+﻿namespace CodeGolf.Service.Dtos
 {
+    using System;
+    using EnsureThat;
+
     public class AttemptDto
     {
         public AttemptDto(int rank, Guid id, string loginName, string avatar, int score, string timeStamp)

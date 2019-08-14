@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using CodeGolf.Domain;
-using CodeGolf.Domain.ChallengeInterfaces;
-using CodeGolf.Domain.Repositories;
-using CodeGolf.Service.Dtos;
-using Optional;
-
-namespace CodeGolf.Service
+﻿namespace CodeGolf.Service
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using CodeGolf.Domain;
+    using CodeGolf.Domain.ChallengeInterfaces;
+    using CodeGolf.Domain.Repositories;
+    using CodeGolf.Service.Dtos;
     using OneOf;
-
+    using Optional;
     using Optional.Unsafe;
 
     public class GameService : IGameService
@@ -49,28 +47,6 @@ namespace CodeGolf.Service
             this.challengeRepository = challengeRepository;
         }
 
-        private async Task<IOrderedEnumerable<Attempt>> GetBestAttempts(
-            Guid holeId,
-            CancellationToken cancellationToken)
-        {
-            var attempts = await this.attemptRepository.GetAttempts(holeId, cancellationToken);
-            return attempts.OrderBy(a => a.Score).GroupBy(a => a.UserId).Select(a => a.First())
-                .OrderByDescending(a => a.Score);
-        }
-
-        private async Task<bool> IsBestScore(Guid holeId, Guid attemptId, CancellationToken cancellationToken)
-        {
-            var bests = await this.GetBestAttempts(holeId, cancellationToken);
-            if (bests.Any())
-            {
-                return bests.First().Id == attemptId;
-            }
-            else
-            {
-                return true;
-            }
-        }
-
         async Task<Option<HoleDto>> IGameService.GetCurrentHole(CancellationToken cancellationToken)
         {
             var hole = await this.holeRepository.GetCurrentHole(cancellationToken);
@@ -86,7 +62,7 @@ namespace CodeGolf.Service
                                 {
                                     var chal = this.challengeRepository.GetById(x.ChallengeId).ValueOrFailure();
                                     var next = this.gameRepository.GetAfter(x.HoleId);
-                                        return new HoleDto(x, a.Start, a.Start.Add(x.Duration), a.End, next.HasValue, chal);
+                                    return new HoleDto(x, a.Start, a.Start.Add(x.Duration), a.End, next.HasValue, chal);
                                     });
                         }
                         else
@@ -123,6 +99,28 @@ namespace CodeGolf.Service
                 _ => Task.CompletedTask,
                 _ => Task.CompletedTask);
             return res;
+        }
+
+        private async Task<IOrderedEnumerable<Attempt>> GetBestAttempts(
+            Guid holeId,
+            CancellationToken cancellationToken)
+        {
+            var attempts = await this.attemptRepository.GetAttempts(holeId, cancellationToken);
+            return attempts.OrderBy(a => a.Score).GroupBy(a => a.UserId).Select(a => a.First())
+                .OrderByDescending(a => a.Score);
+        }
+
+        private async Task<bool> IsBestScore(Guid holeId, Guid attemptId, CancellationToken cancellationToken)
+        {
+            var bests = await this.GetBestAttempts(holeId, cancellationToken);
+            if (bests.Any())
+            {
+                return bests.First().Id == attemptId;
+            }
+            else
+            {
+                return true;
+            }
         }
     }
 }

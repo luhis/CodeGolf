@@ -1,15 +1,13 @@
-﻿
-using System.Linq;
-using System.Threading;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
-
-namespace CodeGolf.Service
+﻿namespace CodeGolf.Service
 {
     using System;
+    using System.Linq;
+    using System.Threading;
     using System.Threading.Tasks;
+    using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
+    using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
     public class CancellationTokenInjector : CSharpSyntaxRewriter
     {
@@ -34,11 +32,6 @@ namespace CodeGolf.Service
         {
             this.root = root;
         }
-
-        private static int GetLineNumber(CSharpSyntaxNode n) => n.GetLocation().GetMappedLineSpan().StartLinePosition.Line + 1;
-
-        private static SyntaxTrivia GetLineDirective(int line) =>
-            Trivia(LineDirectiveTrivia(Literal(line), true));
 
         public override SyntaxNode VisitLabeledStatement(LabeledStatementSyntax node)
         {
@@ -122,12 +115,10 @@ namespace CodeGolf.Service
             }
         }
 
-        private bool FileContains(string funcName)
-        {
-            return this.root.DescendantNodes().OfType<ClassDeclarationSyntax>()
-                .SelectMany(a => a.DescendantNodes().OfType<MethodDeclarationSyntax>())
-                .Any(a => a.Identifier.ValueText == funcName);
-        }
+        private static int GetLineNumber(CSharpSyntaxNode n) => n.GetLocation().GetMappedLineSpan().StartLinePosition.Line + 1;
+
+        private static SyntaxTrivia GetLineDirective(int line) =>
+            Trivia(LineDirectiveTrivia(Literal(line), true));
 
         private static BlockSyntax GetStatementsAsBlock(CommonForEachStatementSyntax node)
         {
@@ -141,6 +132,13 @@ namespace CodeGolf.Service
             }
 
             throw new Exception($"Unknown body type {node.Statement.GetType()}");
+        }
+
+        private bool FileContains(string funcName)
+        {
+            return this.root.DescendantNodes().OfType<ClassDeclarationSyntax>()
+                .SelectMany(a => a.DescendantNodes().OfType<MethodDeclarationSyntax>())
+                .Any(a => a.Identifier.ValueText == funcName);
         }
     }
 }

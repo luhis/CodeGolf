@@ -1,29 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime;
-using System.Threading;
-using System.Threading.Tasks;
-using CodeGolf.Domain;
-using CodeGolf.ServiceInterfaces;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Optional;
-using ResultOrError = Optional.Option<object, string>;
-
-namespace CodeGolf.Service
+﻿namespace CodeGolf.Service
 {
-    using CodeGolf.Service.Dtos;
-
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+    using System.Runtime;
     using System.Runtime.Loader;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using CodeGolf.Domain;
+    using CodeGolf.Service.Dtos;
+    using CodeGolf.ServiceInterfaces;
+    using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.CSharp;
+    using Optional;
+    using ResultOrError = Optional.Option<object, string>;
 
     public class Runner : IRunner
     {
         private const string ClassName = "CodeGolf";
 
         private const string FunctionName = "Main";
+
+        private static readonly MetadataReference[] MetadataReferences =
+            {
+                MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
+                MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location),
+                MetadataReference.CreateFromFile(typeof(AssemblyTargetedPatchBandAttribute).Assembly.Location)
+            };
 
         private readonly ISyntaxTreeTransformer syntaxTreeTransformer;
 
@@ -32,13 +37,6 @@ namespace CodeGolf.Service
         private readonly IErrorMessageTransformer errorMessageTransformer;
 
         private readonly FunctionValidator functionValidator;
-
-        private static readonly MetadataReference[] MetadataReferences =
-            {
-                MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
-                MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location),
-                MetadataReference.CreateFromFile(typeof(AssemblyTargetedPatchBandAttribute).Assembly.Location)
-            };
 
         public Runner(
             ISyntaxTreeTransformer syntaxTreeTransformer,
@@ -111,6 +109,50 @@ namespace CodeGolf.Service
             return compileResult.Match(_ => Option.None<IReadOnlyList<CompileErrorMessage>>(), Option.Some);
         }
 
+        string IRunner.Wrap(string function, CancellationToken cancellationToken) =>
+            WrapInClass(function, cancellationToken).GetRoot().ToFullString();
+
+        string IRunner.DebugCode(string function, CancellationToken cancellationToken)
+        {
+            var syntaxTree = WrapInClass(function, cancellationToken);
+
+            var transformed = this.syntaxTreeTransformer.Transform(syntaxTree);
+            return transformed.GetRoot().ToFullString();
+        }
+
+        void IRunner.WakeUpCompiler(CancellationToken cancellationToken)
+        {
+            this.TryCompile(WrapInClass(string.Empty, cancellationToken), (_, __) => true, cancellationToken);
+        }
+
+        private static Option<object, string> ToOpt<T>(ValueTuple<T, string> t) =>
+            t.Item2 == null ? Option.Some<object, string>(t.Item1) : Option.None<object, string>(t.Item2);
+
+        private static SyntaxTree WrapInClass(string function, CancellationToken cancellationToken)
+        {
+            var transformed = string.Join("\n", function.Split('\n').Select(s => "    " + s));
+            return CSharpSyntaxTree.ParseText(
+                "using System;\n" + "using System.Collections.Generic;\n" + "using System.Linq;\n\n"
+                + $"public class {ClassName}\n" + "{\n" +
+                "#line 1\n" +
+                transformed + "\n}",
+                cancellationToken: cancellationToken,
+                options: CSharpParseOptions.Default.WithLanguageVersion(LanguageVersion.Latest));
+        }
+
+        private static T UseTempFile<T>(Func<string> gen, Func<string, T> process)
+        {
+            var fileName = gen();
+
+            var res = process(fileName);
+
+            File.Delete(fileName);
+
+            return res;
+        }
+
+        private static bool IsStoppable(Diagnostic a) => a.Severity > DiagnosticSeverity.Warning;
+
         private async Task<IReadOnlyList<Option<object, string>>> InvokeAsync(
             CompileResult compileResult,
             object[][] args,
@@ -140,50 +182,6 @@ namespace CodeGolf.Service
                     .Select(ToOpt).ToArray();
             }
         }
-
-        private static Option<object, string> ToOpt<T>(ValueTuple<T, string> t) =>
-            t.Item2 == null ? Option.Some<object, string>(t.Item1) : Option.None<object, string>(t.Item2);
-
-        string IRunner.Wrap(string function, CancellationToken cancellationToken) =>
-            WrapInClass(function, cancellationToken).GetRoot().ToFullString();
-
-        string IRunner.DebugCode(string function, CancellationToken cancellationToken)
-        {
-            var syntaxTree = WrapInClass(function, cancellationToken);
-
-            var transformed = this.syntaxTreeTransformer.Transform(syntaxTree);
-            return transformed.GetRoot().ToFullString();
-        }
-
-        void IRunner.WakeUpCompiler(CancellationToken cancellationToken)
-        {
-            this.TryCompile(WrapInClass(string.Empty, cancellationToken), (_, __) => true, cancellationToken);
-        }
-
-        private static SyntaxTree WrapInClass(string function, CancellationToken cancellationToken)
-        {
-            var transformed = string.Join("\n", function.Split('\n').Select(s => "    " + s));
-            return CSharpSyntaxTree.ParseText(
-                "using System;\n" + "using System.Collections.Generic;\n" + "using System.Linq;\n\n"
-                + $"public class {ClassName}\n" + "{\n" + 
-                "#line 1\n" + 
-                transformed + "\n}",
-                cancellationToken: cancellationToken,
-                options: CSharpParseOptions.Default.WithLanguageVersion(LanguageVersion.Latest));
-        }
-
-        private static T UseTempFile<T>(Func<string> gen, Func<string, T> process)
-        {
-            var fileName = gen();
-
-            var res = process(fileName);
-
-            File.Delete(fileName);
-
-            return res;
-        }
-
-        private static bool IsStoppable(Diagnostic a) => a.Severity > DiagnosticSeverity.Warning;
 
         private Option<CompileResult, IReadOnlyList<CompileErrorMessage>> Compile(
             string function,

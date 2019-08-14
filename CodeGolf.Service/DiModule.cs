@@ -1,8 +1,8 @@
-﻿using CodeGolf.ServiceInterfaces;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace CodeGolf.Service
+﻿namespace CodeGolf.Service
 {
+    using CodeGolf.ServiceInterfaces;
+    using Microsoft.Extensions.DependencyInjection;
+
     public static class DiModule
     {
         public static void Add(IServiceCollection collection)

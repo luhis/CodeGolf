@@ -1,10 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
-using CodeGolf.ServiceInterfaces;
-using JKang.IpcServiceFramework;
-
-namespace CodeGolf.Service
+﻿namespace CodeGolf.Service
 {
+    using System;
+    using System.Threading.Tasks;
+    using CodeGolf.ServiceInterfaces;
+    using JKang.IpcServiceFramework;
+
     public class ExecutionProxy : IExecutionService
     {
         private readonly IpcServiceClient<IExecutionService> svc;

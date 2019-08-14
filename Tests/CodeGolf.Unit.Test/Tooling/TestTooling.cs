@@ -1,12 +1,11 @@
-using System;
-using System.Collections.Generic;
-using CodeGolf.Domain;
-using Optional;
-using Optional.Unsafe;
-
 namespace CodeGolf.Unit.Test.Tooling
 {
+    using System;
+    using System.Collections.Generic;
+    using CodeGolf.Domain;
     using CodeGolf.Service.Dtos;
+    using Optional;
+    using Optional.Unsafe;
 
     public static class TestTooling
     {

@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using CodeGolf.Domain;
-using Optional;
-
-namespace CodeGolf.Service
+﻿namespace CodeGolf.Service
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading;
+    using CodeGolf.Domain;
     using CodeGolf.Service.Dtos;
+    using Optional;
 
     public interface IRunner
     {

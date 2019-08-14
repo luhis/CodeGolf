@@ -26,21 +26,6 @@
             this.bestAttemptsService = bestAttemptsService;
         }
 
-        private static int PosToPoints(int i)
-        {
-            switch (i)
-            {
-                case 0:
-                    return 3;
-                case 1:
-                    return 2;
-                case 2:
-                    return 1;
-                default:
-                    return 0;
-            }
-        }
-
         async Task<IReadOnlyList<ResultDto>> IResultsService.GetFinalScores(CancellationToken cancellationToken)
         {
             var holes = await Task.WhenAll(
@@ -59,6 +44,21 @@
                                         user.Match(a => a.AvatarUri, () => string.Empty),
                                         r.Sum(a => PosToPoints(a.Item1)));
                                 }))).ToList();
+        }
+
+        private static int PosToPoints(int i)
+        {
+            switch (i)
+            {
+                case 0:
+                    return 3;
+                case 1:
+                    return 2;
+                case 2:
+                    return 1;
+                default:
+                    return 0;
+            }
         }
     }
 }

@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
-
-namespace CodeGolf.Recaptcha
+﻿namespace CodeGolf.Recaptcha
 {
+    using System.Collections.Generic;
+    using System.Net;
+    using System.Net.Http;
+    using System.Threading.Tasks;
+    using Microsoft.Extensions.Options;
+    using Newtonsoft.Json;
+
     public class RecaptchaVerifier : IRecaptchaVerifier
     {
         private static readonly string Api = "https://www.google.com/recaptcha/api/siteverify";

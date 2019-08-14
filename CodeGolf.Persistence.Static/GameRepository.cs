@@ -1,12 +1,10 @@
-﻿using System;
-using CodeGolf.Domain;
-using CodeGolf.Domain.Repositories;
-
-namespace CodeGolf.Persistence.Static
+﻿namespace CodeGolf.Persistence.Static
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
-
+    using CodeGolf.Domain;
+    using CodeGolf.Domain.Repositories;
     using Optional;
     using Optional.Collections;
 

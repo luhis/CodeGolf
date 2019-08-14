@@ -1,7 +1,7 @@
-﻿using Microsoft.CodeAnalysis;
-
-namespace CodeGolf.Service
+﻿namespace CodeGolf.Service
 {
+    using Microsoft.CodeAnalysis;
+
     public class SyntaxTreeTransformer : ISyntaxTreeTransformer
     {
         SyntaxTree ISyntaxTreeTransformer.Transform(SyntaxTree syntaxTree)

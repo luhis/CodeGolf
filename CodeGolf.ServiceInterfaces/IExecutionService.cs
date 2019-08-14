@@ -1,12 +1,12 @@
-﻿using System;
-using System.Threading.Tasks;
-
-namespace CodeGolf.ServiceInterfaces
+﻿namespace CodeGolf.ServiceInterfaces
 {
+    using System;
+    using System.Threading.Tasks;
+
     public interface IExecutionService
     {
         Task<ValueTuple<T, string>[]> Execute<T>(
-            CompileResult compileResult, 
+            CompileResult compileResult,
             string className,
             string funcName,
             object[][] args,

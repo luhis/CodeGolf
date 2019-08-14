@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using CodeGolf.Domain;
-using CodeGolf.Domain.Repositories;
-
-namespace CodeGolf.Persistence.Repositories
+﻿namespace CodeGolf.Persistence.Repositories
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using CodeGolf.Domain;
+    using CodeGolf.Domain.Repositories;
     using Optional;
 
     public class AttemptRepository : IAttemptRepository

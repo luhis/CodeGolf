@@ -82,6 +82,24 @@
                     });
         }
 
+        async Task<Option<AttemptCodeDto>> IDashboardService.GetAttemptById(Guid attemptId, CancellationToken cancellationToken)
+        {
+            var attempt = await this.attemptRepository.GetAttempt(attemptId, cancellationToken);
+            return await attempt.MapAsync(
+                async a =>
+                    {
+                        var user = await this.userRepository.GetByUserId(a.UserId, cancellationToken);
+                        return new AttemptCodeDto(a.Id, user.Map(x => x.LoginName).ValueOrDefault(), user.Map(x => x.AvatarUri).ValueOrDefault(), a.Score, a.TimeStamp.ToLocalTime().ToString(), a.Code);
+                    });
+        }
+
+        async Task<Option<IReadOnlyList<AttemptDto>>> IDashboardService.GetAttempts(
+            Guid id,
+            CancellationToken cancellationToken)
+        {
+            return Option.Some(await this.GetBestAttemptDtos(id, cancellationToken));
+        }
+
         private async Task<Option<Hole>> GetNextHole(CancellationToken cancellationToken)
         {
             var currentHole = await this.holeRepository.GetCurrentHole(cancellationToken);
@@ -99,28 +117,10 @@
             return await Task.WhenAll(
                        rows.Select(
                            async (r, i) =>
-                               {
-                                   var user = await this.userRepository.GetByUserId(r.UserId, cancellationToken);
-                                   return new AttemptDto(i + 1, r.Id, user.Map(a => a.LoginName).ValueOrDefault(), user.Map(a => a.AvatarUri).ValueOrDefault(), r.Score, r.TimeStamp.ToLocalTime().ToString());
-                               }));
-        }
-
-        async Task<Option<AttemptCodeDto>> IDashboardService.GetAttemptById(Guid attemptId, CancellationToken cancellationToken)
-        {
-            var attempt = await this.attemptRepository.GetAttempt(attemptId, cancellationToken);
-            return await attempt.MapAsync(
-                async a =>
-                    {
-                        var user = await this.userRepository.GetByUserId(a.UserId, cancellationToken);
-                        return new AttemptCodeDto(a.Id, user.Map(x => x.LoginName).ValueOrDefault(), user.Map(x => x.AvatarUri).ValueOrDefault(), a.Score, a.TimeStamp.ToLocalTime().ToString(), a.Code);
-                    });
-        }
-
-        async Task<Option<IReadOnlyList<AttemptDto>>> IDashboardService.GetAttempts(
-            Guid id,
-            CancellationToken cancellationToken)
-        {
-            return Option.Some(await this.GetBestAttemptDtos(id, cancellationToken));
+                           {
+                               var user = await this.userRepository.GetByUserId(r.UserId, cancellationToken);
+                               return new AttemptDto(i + 1, r.Id, user.Map(a => a.LoginName).ValueOrDefault(), user.Map(a => a.AvatarUri).ValueOrDefault(), r.Score, r.TimeStamp.ToLocalTime().ToString());
+                           }));
         }
     }
 }

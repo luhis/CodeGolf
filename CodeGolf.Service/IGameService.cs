@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using CodeGolf.Domain;
-using CodeGolf.Domain.ChallengeInterfaces;
-using CodeGolf.Service.Dtos;
-using Optional;
-
-namespace CodeGolf.Service
+﻿namespace CodeGolf.Service
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using CodeGolf.Domain;
+    using CodeGolf.Domain.ChallengeInterfaces;
+    using CodeGolf.Service.Dtos;
     using OneOf;
+    using Optional;
 
     public interface IGameService
     {
@@ -21,6 +20,5 @@ namespace CodeGolf.Service
             string code,
             IChallengeSet challengeSet,
             CancellationToken cancellationToken);
-
     }
 }

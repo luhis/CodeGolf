@@ -1,23 +1,22 @@
-using System.Threading;
-using CodeGolf.Domain;
-using CodeGolf.ExecutionServer;
-using CodeGolf.Service;
-using FluentAssertions;
-using Xunit;
-
 namespace CodeGolf.Unit.Test.Services
 {
     using System;
     using System.Collections.Generic;
-
+    using System.Threading;
+    using CodeGolf.Domain;
+    using CodeGolf.ExecutionServer;
     using CodeGolf.Persistence.Static;
+    using CodeGolf.Service;
     using CodeGolf.Service.Dtos;
+    using FluentAssertions;
+    using Xunit;
 
     public class SecurityTests
     {
         private readonly ICodeGolfService codeGolfService = new CodeGolfService(
             new Runner(new SyntaxTreeTransformer(), new ExecutionService(), new ErrorMessageTransformer()),
-            new Scorer(), new ChallengeRepository());
+            new Scorer(),
+            new ChallengeRepository());
 
         private readonly IReadOnlyList<ParamDescription> noParams = new ParamDescription[] { };
 
@@ -33,8 +32,8 @@ namespace CodeGolf.Unit.Test.Services
                     this.noParams,
                     new[] { new Challenge<string>(new object[0], "Hello World") }),
                 CancellationToken.None).Result;
-            r.AsT2.Should().BeEquivalentTo(new CompileErrorMessage(1, 21, 35,
-                "The type or namespace name 'File' does not exist in the namespace 'System.IO' (are you missing an assembly reference?)"));
+            r.AsT2.Should().BeEquivalentTo(new CompileErrorMessage(
+                1, 21, 35, "The type or namespace name 'File' does not exist in the namespace 'System.IO' (are you missing an assembly reference?)"));
         }
 
         [Fact]
@@ -52,8 +51,8 @@ namespace CodeGolf.Unit.Test.Services
                     new[] { new Challenge<string>(new object[0], "Hello World") }),
                 CancellationToken.None).Result;
             r.AsT2.Should().BeEquivalentTo(
-                new CompileErrorMessage(2, 0,  8,
-                "The type or namespace name 'Assembly' could not be found (are you missing a using directive or an assembly reference?)"),
+                new CompileErrorMessage(
+                    2, 0, 8, "The type or namespace name 'Assembly' could not be found (are you missing a using directive or an assembly reference?)"),
                 new CompileErrorMessage(2, 20, 28, "The name 'Assembly' does not exist in the current context"));
         }
 
@@ -94,8 +93,8 @@ namespace CodeGolf.Unit.Test.Services
                     this.noParams,
                     new[] { new Challenge<string>(new object[0], "Hello World") }),
                 CancellationToken.None).Result;
-            r.AsT2.Should().BeEquivalentTo(new CompileErrorMessage(1, 1 , 25,
-                "A using clause must precede all other elements defined in the namespace except extern alias declarations"));
+            r.AsT2.Should().BeEquivalentTo(new CompileErrorMessage(
+                1, 1, 25, "A using clause must precede all other elements defined in the namespace except extern alias declarations"));
         }
     }
 }

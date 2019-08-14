@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-
-namespace CodeGolf.Integration.Test.Tooling
+﻿namespace CodeGolf.Integration.Test.Tooling
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Security.Claims;
+    using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Http;
+
     public class AuthenticatedTestRequestMiddleware
     {
         private const string TestingCookieAuthentication = "TestCookieAuthentication";
@@ -24,7 +24,8 @@ namespace CodeGolf.Integration.Test.Tooling
             if (context.Request.Headers.Keys.Contains(TestingHeader) &&
                 context.Request.Headers[TestingHeader].First().Equals(TestingHeaderValue))
             {
-                var claimsIdentity = new ClaimsIdentity(new List<Claim>
+                var claimsIdentity = new ClaimsIdentity(
+                    new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, "matt"),
                     new Claim(ClaimTypes.NameIdentifier, "mattID"),

@@ -8,7 +8,7 @@
         {
             this.Line = line;
             this.Col = col;
-            this.EndCol = endCol; 
+            this.EndCol = endCol;
             this.Message = EnsureArg.IsNotNull(message, nameof(message));
         }
 

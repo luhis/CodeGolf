@@ -1,18 +1,17 @@
-using System.Linq;
-using System.Threading;
-using CodeGolf.ExecutionServer;
-using CodeGolf.Service;
-using CodeGolf.Unit.Test.Tooling;
-using FluentAssertions;
-using Xunit;
-
 namespace CodeGolf.Unit.Test.Services
 {
+    using System.Linq;
+    using System.Threading;
+    using CodeGolf.ExecutionServer;
+    using CodeGolf.Service;
     using CodeGolf.Service.Dtos;
+    using CodeGolf.Unit.Test.Tooling;
+    using FluentAssertions;
+    using Xunit;
 
     public class RunnerShould
     {
-        private readonly IRunner runner = 
+        private readonly IRunner runner =
             new Runner(new SyntaxTreeTransformer(), new ExecutionService(), new ErrorMessageTransformer());
 
         [Fact]

@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace CodeGolf.Recaptcha
+﻿namespace CodeGolf.Recaptcha
 {
+    using Microsoft.AspNetCore.Http;
+
     public interface IGetCaptchaValue
     {
         string Get(HttpRequest req);

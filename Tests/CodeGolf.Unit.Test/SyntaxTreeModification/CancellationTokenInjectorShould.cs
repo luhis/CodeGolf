@@ -1,8 +1,8 @@
-﻿using FluentAssertions;
-using Xunit;
-
-namespace CodeGolf.Unit.Test.SyntaxTreeModification
+﻿namespace CodeGolf.Unit.Test.SyntaxTreeModification
 {
+    using FluentAssertions;
+    using Xunit;
+
     public class CancellationTokenInjectorShould
     {
         [Fact]

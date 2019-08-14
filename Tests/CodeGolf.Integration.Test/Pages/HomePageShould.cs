@@ -1,12 +1,12 @@
-﻿using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using CodeGolf.Integration.Test.Fixtures;
-using FluentAssertions;
-using Xunit;
-
-namespace CodeGolf.Integration.Test.Pages
+﻿namespace CodeGolf.Integration.Test.Pages
 {
+    using System.Net;
+    using System.Net.Http;
+    using System.Threading.Tasks;
+    using CodeGolf.Integration.Test.Fixtures;
+    using FluentAssertions;
+    using Xunit;
+
     public class HomePageShould : IClassFixture<ClientFixture>
     {
         private readonly HttpClient client;

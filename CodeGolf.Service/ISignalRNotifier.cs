@@ -1,7 +1,7 @@
-using System.Threading.Tasks;
-
 namespace CodeGolf.Service
 {
+    using System.Threading.Tasks;
+
     public interface ISignalRNotifier
     {
         Task NewRound();

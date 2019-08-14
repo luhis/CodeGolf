@@ -6,11 +6,20 @@
     <WarningsAsErrors />
     <TieredCompilation>true</TieredCompilation>
     <OutputType>Exe</OutputType>
+    <CodeAnalysisRuleSet>..\CodeGolf.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\CodeGolf.ruleset" Link="CodeGolf.ruleset" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="JKang.IpcServiceFramework.Server" Version="2.2.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>

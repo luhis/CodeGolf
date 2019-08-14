@@ -1,28 +1,23 @@
-using System.Threading;
-using CodeGolf.Domain;
-using CodeGolf.ExecutionServer;
-using CodeGolf.Service;
-
-using FluentAssertions;
-
-using Xunit;
-
 namespace CodeGolf.Unit.Test.Services
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
+    using System.Threading;
+    using CodeGolf.Domain;
+    using CodeGolf.ExecutionServer;
     using CodeGolf.Persistence.Static;
+    using CodeGolf.Service;
     using CodeGolf.Service.Dtos;
-
-    using Optional.Unsafe;
+    using FluentAssertions;
+    using Xunit;
 
     public class CodeGolfServiceShould
     {
         private readonly ICodeGolfService codeGolfService = new CodeGolfService(
             new Runner(new SyntaxTreeTransformer(), new ExecutionService(), new ErrorMessageTransformer()),
-            new Scorer(), new ChallengeRepository());
+            new Scorer(),
+            new ChallengeRepository());
 
         private readonly IReadOnlyList<ParamDescription> noParams =
             new ParamDescription[] { };
@@ -54,8 +49,8 @@ namespace CodeGolf.Unit.Test.Services
                     this.noParams,
                     new[] { new Challenge<string>(new object[0], "Hello World") }),
                 CancellationToken.None).Result;
-            r.AsT2.Should().BeEquivalentTo(new CompileErrorMessage(1, 38, 39,
-                "Invalid token ';' in class, struct, or interface member declaration"));
+            r.AsT2.Should().BeEquivalentTo(new CompileErrorMessage(
+                1, 38, 39, "Invalid token ';' in class, struct, or interface member declaration"));
         }
 
         [Fact]

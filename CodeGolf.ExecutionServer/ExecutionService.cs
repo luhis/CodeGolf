@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
-using CodeGolf.ServiceInterfaces;
-
-namespace CodeGolf.ExecutionServer
+﻿namespace CodeGolf.ExecutionServer
 {
+    using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Globalization;
     using System.IO;
+    using System.Linq;
+    using System.Reflection;
     using System.Runtime.Loader;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using CodeGolf.ServiceInterfaces;
 
     public class ExecutionService : IExecutionService
     {
@@ -54,13 +53,18 @@ namespace CodeGolf.ExecutionServer
                                         catch (Exception e)
                                         {
                                             var final = GetFinalException(e);
-                                            var line = (new StackTrace(final, true)).GetFrame(0).GetFileLineNumber();
+                                            var line = new StackTrace(final, true).GetFrame(0).GetFileLineNumber();
                                             return ValueTuple.Create(
                                                 default(T),
                                                 $"Runtime Error line {line} - {final.Message}");
                                         }
                                     }))).ToArray();
             }
+        }
+
+        public Task Ping()
+        {
+            return Task.CompletedTask;
         }
 
         private static Exception GetFinalException(Exception e) => e.InnerException == null ? e : GetFinalException(e.InnerException);
@@ -73,11 +77,6 @@ namespace CodeGolf.ExecutionServer
         private static IEnumerable<object> CastArgs(IEnumerable<object> args, IEnumerable<Type> paramTypes)
         {
             return paramTypes.Zip(args, ValueTuple.Create).Select(a => Convert.ChangeType(a.Item2, a.Item1));
-        }
-
-        public Task Ping()
-        {
-            return Task.CompletedTask;
         }
     }
 }

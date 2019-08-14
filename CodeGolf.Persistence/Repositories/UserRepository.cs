@@ -1,13 +1,13 @@
-﻿using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using CodeGolf.Domain;
-using CodeGolf.Domain.Repositories;
-using Microsoft.EntityFrameworkCore;
-using Optional;
-
-namespace CodeGolf.Persistence.Repositories
+﻿namespace CodeGolf.Persistence.Repositories
 {
+    using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using CodeGolf.Domain;
+    using CodeGolf.Domain.Repositories;
+    using Microsoft.EntityFrameworkCore;
+    using Optional;
+
     public class UserRepository : IUserRepository
     {
         private readonly CodeGolfContext context;

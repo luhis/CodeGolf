@@ -1,10 +1,10 @@
-﻿using System.Net.Http;
-using System.Threading.Tasks;
-using CodeGolf.Integration.Test.Fixtures;
-using Xunit;
-
-namespace CodeGolf.Integration.Test.Controllers
+﻿namespace CodeGolf.Integration.Test.Controllers
 {
+    using System.Net.Http;
+    using System.Threading.Tasks;
+    using CodeGolf.Integration.Test.Fixtures;
+    using Xunit;
+
     public class CodeControllerShould : IClassFixture<ClientFixture>
     {
         private readonly HttpClient client;
