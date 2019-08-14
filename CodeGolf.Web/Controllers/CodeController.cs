@@ -1,15 +1,11 @@
-﻿using System.Threading;
-
-using CodeGolf.Service;
-
-using Microsoft.AspNetCore.Mvc;
-
-namespace CodeGolf.Web.Controllers
+﻿namespace CodeGolf.Web.Controllers
 {
     using System;
     using System.Linq;
-
+    using System.Threading;
+    using CodeGolf.Service;
     using CodeGolf.Service.Dtos;
+    using Microsoft.AspNetCore.Mvc;
 
     [Route("api/[controller]")]
     [ApiController]

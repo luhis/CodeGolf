@@ -1,11 +1,11 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using CodeGolf.ServiceInterfaces;
-using Microsoft.Extensions.Hosting;
-
-namespace CodeGolf.Web.HostedServices
+﻿namespace CodeGolf.Web.HostedServices
 {
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using CodeGolf.ServiceInterfaces;
+    using Microsoft.Extensions.Hosting;
+
     public class PingService : IHostedService
     {
         private readonly IExecutionService svc;
@@ -22,6 +22,12 @@ namespace CodeGolf.Web.HostedServices
             return this.Loop();
         }
 
+        Task IHostedService.StopAsync(CancellationToken cancellationToken)
+        {
+            this.source.Cancel();
+            return Task.CompletedTask;
+        }
+
         private async Task Loop()
         {
             while (!this.source.IsCancellationRequested)
@@ -29,12 +35,6 @@ namespace CodeGolf.Web.HostedServices
                 await this.svc.Ping();
                 await Task.Delay(TimeSpan.FromSeconds(30), this.source.Token);
             }
-        }
-
-        Task IHostedService.StopAsync(CancellationToken cancellationToken)
-        {
-            source.Cancel();
-            return Task.CompletedTask;
         }
     }
 }

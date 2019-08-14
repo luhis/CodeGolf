@@ -1,9 +1,9 @@
-﻿using System;
-using CodeGolf.Domain;
-using EnsureThat;
-
-namespace CodeGolf.Web.Models
+﻿namespace CodeGolf.Web.Models
 {
+    using System;
+    using CodeGolf.Domain;
+    using EnsureThat;
+
     public class HoleDto
     {
         public HoleDto(Hole hole, DateTime start, DateTime end, DateTime? closedAt, bool hasNext, ChallengeSetDto challengeSet)

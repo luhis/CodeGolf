@@ -1,11 +1,11 @@
-﻿using System;
-using CodeGolf.Web.Tooling;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Options;
-
-namespace CodeGolf.Web.Attributes
+﻿namespace CodeGolf.Web.Attributes
 {
+    using System;
+    using CodeGolf.Web.Tooling;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Filters;
+    using Microsoft.Extensions.Options;
+
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     public class GameAdminAuthAttribute : Attribute, IPageFilter
     {
@@ -25,13 +25,15 @@ namespace CodeGolf.Web.Attributes
         void IPageFilter.OnPageHandlerExecuting(PageHandlerExecutingContext context)
         {
             var user = this.identityTools.GetIdentity(context.HttpContext);
-            user.Match(currentUsername =>
+            user.Match(
+                currentUsername =>
             {
                 if (!this.gameAdminSettings.AdminGithubNames.Contains(currentUsername.LoginName))
                 {
                     context.Result = new ForbidResult();
                 }
-            }, () => { context.Result = new ForbidResult(); });
+            },
+                () => { context.Result = new ForbidResult(); });
         }
 
         void IPageFilter.OnPageHandlerExecuted(PageHandlerExecutedContext context)

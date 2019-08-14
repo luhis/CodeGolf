@@ -1,12 +1,11 @@
-﻿using System;
-using System.Threading.Tasks;
-using CodeGolf.Recaptcha;
-using CodeGolf.Web.WebServices;
-using Microsoft.AspNetCore.Mvc.Filters;
-
-namespace CodeGolf.Web.Attributes
+﻿namespace CodeGolf.Web.Attributes
 {
+    using System;
+    using System.Threading.Tasks;
+    using CodeGolf.Recaptcha;
+    using CodeGolf.Web.WebServices;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Filters;
 
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     public class RecaptchaAttribute : Attribute, IAsyncPageFilter, IAsyncActionFilter

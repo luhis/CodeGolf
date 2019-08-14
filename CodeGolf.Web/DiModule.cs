@@ -1,26 +1,22 @@
-using System;
-using System.Net;
-using CodeGolf.Persistence;
-using CodeGolf.Service;
-using CodeGolf.ServiceInterfaces;
-using CodeGolf.Web.Attributes;
-using CodeGolf.Web.Hubs;
-using CodeGolf.Web.Tooling;
-using CodeGolf.Web.WebServices;
-using JKang.IpcServiceFramework;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-
 namespace CodeGolf.Web
 {
+    using System;
+    using System.Net;
+    using CodeGolf.Persistence;
+    using CodeGolf.Service;
+    using CodeGolf.ServiceInterfaces;
+    using CodeGolf.Web.Attributes;
+    using CodeGolf.Web.Hubs;
     using CodeGolf.Web.Mappers;
+    using CodeGolf.Web.Tooling;
+    using CodeGolf.Web.WebServices;
+    using JKang.IpcServiceFramework;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
 
     public static class DiModule
     {
-        private static DbContextOptions<CodeGolfContext> GetDbOptions(IServiceProvider a) => new DbContextOptionsBuilder<CodeGolfContext>()
-            .UseSqlite(a.GetService<IConfiguration>().GetSection("DbPath").Get<string>()).Options;
-
         public static void Add(IServiceCollection collection)
         {
             collection.AddSingleton<DbContextOptions<CodeGolfContext>>(GetDbOptions);
@@ -34,5 +30,8 @@ namespace CodeGolf.Web
             collection.AddSingleton<IpcServiceClient<IExecutionService>>(a => new IpcServiceClientBuilder<IExecutionService>()
                 .UseTcp(IPAddress.Loopback, SharedSettings.PortNumber).Build());
         }
+
+        private static DbContextOptions<CodeGolfContext> GetDbOptions(IServiceProvider a) => new DbContextOptionsBuilder<CodeGolfContext>()
+            .UseSqlite(a.GetService<IConfiguration>().GetSection("DbPath").Get<string>()).Options;
     }
 }

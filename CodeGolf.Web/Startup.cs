@@ -1,36 +1,44 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Security.Claims;
-using System.Threading;
-using CodeGolf.Persistence;
-using CodeGolf.Recaptcha;
-using CodeGolf.Service;
-using CodeGolf.Web.Attributes;
-using CodeGolf.Web.Hubs;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json.Linq;
-using WebMarkupMin.AspNetCore2;
-
 namespace CodeGolf.Web
 {
-    using CodeGolf.Web.HostedServices;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Security.Claims;
+    using System.Threading;
     using System.Threading.Tasks;
+    using CodeGolf.Persistence;
+    using CodeGolf.Recaptcha;
+    using CodeGolf.Service;
+    using CodeGolf.Web.Attributes;
+    using CodeGolf.Web.HostedServices;
+    using CodeGolf.Web.Hubs;
+    using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Authentication.Cookies;
+    using Microsoft.AspNetCore.Authentication.OAuth;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.HttpOverrides;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Routing;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Newtonsoft.Json.Linq;
+    using WebMarkupMin.AspNetCore2;
 
     public class Startup
     {
+        private static readonly IReadOnlyList<Action<IServiceCollection>> DiModules = new List<Action<IServiceCollection>>
+        {
+            DiModule.Add,
+            Service.DiModule.Add,
+            CodeGolf.Recaptcha.DiModule.Add,
+            Persistence.DiModule.Add,
+            Persistence.Static.DiModule.Add,
+        };
+
         public Startup(IConfiguration configuration)
         {
             this.Configuration = configuration;
@@ -114,8 +122,10 @@ namespace CodeGolf.Web
                             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", context.AccessToken);
 
-                            using (var response = await context.Backchannel.SendAsync(request,
-                                HttpCompletionOption.ResponseHeadersRead, context.HttpContext.RequestAborted))
+                            using (var response = await context.Backchannel.SendAsync(
+                                request,
+                                HttpCompletionOption.ResponseHeadersRead,
+                                context.HttpContext.RequestAborted))
                             {
                                 response.EnsureSuccessStatusCode();
 
@@ -124,7 +134,7 @@ namespace CodeGolf.Web
                                 context.RunClaimActions(user);
                             }
                         }
-                    }
+                    },
                 };
             });
 
@@ -137,15 +147,6 @@ namespace CodeGolf.Web
             services.AddHostedService<PingService>();
         }
 
-        private static readonly IReadOnlyList<Action<IServiceCollection>> DiModules = new List<Action<IServiceCollection>>
-        {
-            DiModule.Add,
-            Service.DiModule.Add,
-            CodeGolf.Recaptcha.DiModule.Add,
-            Persistence.DiModule.Add,
-            Persistence.Static.DiModule.Add,
-        };
-
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IRunner runner, CodeGolfContext codeGolfContext)
         {
@@ -156,6 +157,7 @@ namespace CodeGolf.Web
             else
             {
                 app.UseExceptionHandler("/Error");
+
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
@@ -188,7 +190,7 @@ namespace CodeGolf.Web
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
-                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
             });
 
             app.UseHttpsRedirection();
@@ -204,7 +206,7 @@ namespace CodeGolf.Web
                             var maxAge = TimeSpan.FromDays(7);
                             r.Context.Response.Headers.Add("Cache-Control", "max-age=" + maxAge.TotalSeconds.ToString("0"));
                         }
-                    }
+                    },
             });
 
             app.UseSpaStaticFiles();
@@ -226,7 +228,7 @@ namespace CodeGolf.Web
                     if (env.IsDevelopment())
                     {
                         // run npm process with client app
-                        //spa.UseReactDevelopmentServer(npmScript: "start:development");
+                        // spa.UseReactDevelopmentServer(npmScript: "start:development");
                         // if you just prefer to proxy requests from client app, use proxy to SPA dev server instead:
                         // app should be already running before starting a .NET client
                         spa.UseProxyToSpaDevelopmentServer("http://localhost:8080"); // your Vue app port

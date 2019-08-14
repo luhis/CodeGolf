@@ -1,9 +1,9 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-
-namespace CodeGolf.Web
+﻿namespace CodeGolf.Web
 {
+    using System.Threading.Tasks;
+    using Microsoft.AspNetCore;
+    using Microsoft.AspNetCore.Hosting;
+
     public static class Program
     {
         public static Task Main(string[] args)

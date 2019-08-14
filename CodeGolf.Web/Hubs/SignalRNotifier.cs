@@ -1,9 +1,9 @@
-using System.Threading.Tasks;
-using CodeGolf.Service;
-using Microsoft.AspNetCore.SignalR;
-
 namespace CodeGolf.Web.Hubs
 {
+    using System.Threading.Tasks;
+    using CodeGolf.Service;
+    using Microsoft.AspNetCore.SignalR;
+
     public class SignalRNotifier : ISignalRNotifier
     {
         private readonly IHubContext<RefreshHub> hub;

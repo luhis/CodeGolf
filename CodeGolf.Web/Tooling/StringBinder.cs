@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-
-namespace CodeGolf.Web.Tooling
+﻿namespace CodeGolf.Web.Tooling
 {
+    using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Mvc.ModelBinding;
+
     public class StringBinder : IModelBinder
     {
         Task IModelBinder.BindModelAsync(ModelBindingContext bindingContext)

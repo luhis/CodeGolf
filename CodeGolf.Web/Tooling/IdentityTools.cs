@@ -1,14 +1,12 @@
-﻿using System.Security.Claims;
-using CodeGolf.Domain;
-using Microsoft.AspNetCore.Http;
-using Optional;
-
-namespace CodeGolf.Web.Tooling
+﻿namespace CodeGolf.Web.Tooling
 {
+    using System.Security.Claims;
+    using CodeGolf.Domain;
+    using Microsoft.AspNetCore.Http;
+    using Optional;
+
     public class IdentityTools : IIdentityTools
     {
-        private static string GetByKey(ClaimsPrincipal cp, string key) => cp.FindFirst(c => c.Type == key).Value;
-
         Option<User> IIdentityTools.GetIdentity(HttpContext hc)
         {
             var user = hc.User;
@@ -24,5 +22,7 @@ namespace CodeGolf.Web.Tooling
 
             return Option.None<User>();
         }
+
+        private static string GetByKey(ClaimsPrincipal cp, string key) => cp.FindFirst(c => c.Type == key).Value;
     }
 }
