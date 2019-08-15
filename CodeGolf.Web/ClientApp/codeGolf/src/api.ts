@@ -9,10 +9,15 @@ export const getDemoChallenge = () => axios
 interface HoleInt { challengeSet: ChallengeSet; start: string; end: string; closedAt?: string; }
 
 export const getCurrentHole = () => axios
-  .get<HoleInt>("api/Challenge/CurrentChallenge")
+  .get<HoleInt | null>("api/Challenge/CurrentChallenge")
   .then(response => {
     const d = response.data;
-    return { ...d, start: new Date(d.start), end: new Date(d.end), closedAt: d.closedAt ? new Date(d.closedAt) : undefined } as Hole;
+    if (d) {
+      return { ...d, start: new Date(d.start), end: new Date(d.end), closedAt: d.closedAt ? new Date(d.closedAt) : undefined } as Hole;
+    }
+    
+      return null;
+    
   });
 
 export const getCurrentChallenge = () => axios

@@ -8,7 +8,7 @@ import { getFunctionDeclaration } from "../../funcDeclaration";
 import { Hole, LoadingState, RunResult } from "../../types/types";
 import FuncComp from "./funcComp";
 
-interface State { readonly challenge: LoadingState<Hole>; readonly code: string; readonly errors: LoadingState<RunResult | undefined>; }
+interface State { readonly challenge: LoadingState<Hole | null>; readonly code: string; readonly errors: LoadingState<RunResult | undefined>; }
 
 const template = (name: string, score: number, avatarUri: string) =>
   `<div>
@@ -21,7 +21,7 @@ export default class Comp extends Component<{}, State> {
   private tryCompile = debounce(async () => {
     const errors = {
       type: "Loaded",
-      data: { type: "CompileError", errors: await tryCompile(this.state.challenge.type === "Loaded" ? this.state.challenge.data.challengeSet.id : "", this.state.code) } as RunResult
+      data: { type: "CompileError", errors: await tryCompile(this.state.challenge.type === "Loaded" && this.state.challenge.data ? this.state.challenge.data.challengeSet.id : "", this.state.code) } as RunResult
     } as LoadingState<RunResult>;
     this.setState({ ...this.state, errors });
   }, 1000);
@@ -40,10 +40,10 @@ export default class Comp extends Component<{}, State> {
     connection.on("newRound", async () => {
       this.setState({ ...this.state, challenge: { type: "Loading" } });
       const challenge = await getCurrentHole();
-      this.setState({ ...this.state, challenge: { type: "Loaded", data: challenge } });
+      this.setState({ ...this.state, challenge: { type: "Loaded", data: challenge }, errors: {type: "Loaded", data: undefined} });
     });
     connection.start().catch(err => console.error(err.toString()));
-    this.state = { challenge: { type: "Loading" }, code: "", errors: { type: "Loaded", data: { type: "CompileError", errors: [] } } };
+    this.state = { challenge: { type: "Loading" }, code: "", errors: { type: "Loaded", data: undefined } };
   }
   public async componentDidMount() {
     const challenge = await getCurrentHole();
@@ -57,12 +57,12 @@ export default class Comp extends Component<{}, State> {
     this.tryCompile();
   }
   private onCodeClick = () => {
-    if (this.state.code === "" && this.state.challenge.type === "Loaded") {
+    if (this.state.code === "" && this.state.challenge.type === "Loaded" && this.state.challenge.data) {
       this.setState({ code: getFunctionDeclaration(this.state.challenge.data.challengeSet) });
     }
   }
   private submitCode = async (code: string) => {
-    if (this.state.challenge.type === "Loaded") {
+    if (this.state.challenge.type === "Loaded" && this.state.challenge.data) {
       this.setState({ ...this.state, code, errors: {type: "Loading"} });
       const res = { type: "Loaded", data: await submitChallenge(code, this.state.challenge.data.hole.holeId) } as LoadingState<RunResult>;
       this.setState({ errors: res });

@@ -40,9 +40,10 @@
 
         [Authorize]
         [HttpGet("[action]")]
-        public async Task<ActionResult<Models.HoleDto>> CurrentChallenge(CancellationToken cancellationToken)
+        public async Task<ActionResult<HoleDto>> CurrentChallenge(CancellationToken cancellationToken)
         {
-            return (await this.gameService.GetCurrentHole(cancellationToken)).Match<ActionResult<Models.HoleDto>>(some => new Models.HoleDto(some.Hole, some.Start, some.End, some.ClosedAt, some.HasNext, this.challengeSetMapper.Map(some.ChallengeSet)), () => this.NotFound());
+            return (await this.gameService.GetCurrentHole(cancellationToken))
+                .Match<ActionResult<HoleDto>>(some => new HoleDto(some.Hole, some.Start, some.End, some.ClosedAt, some.HasNext, this.challengeSetMapper.Map(some.ChallengeSet)), () => (HoleDto)null);
         }
 
         [HttpPost("[action]")]
