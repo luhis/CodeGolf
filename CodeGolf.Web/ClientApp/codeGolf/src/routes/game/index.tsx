@@ -34,13 +34,13 @@ export default class Comp extends Component<{}, State> {
         type: "is-info",
         dismissible: true,
         pauseOnHover: true,
-        duration: 2000,
+        duration: 5000,
       });
     });
     connection.on("newRound", async () => {
       this.setState({ ...this.state, challenge: { type: "Loading" } });
       const challenge = await getCurrentHole();
-      this.setState({ ...this.state, challenge: { type: "Loaded", data: challenge }, errors: {type: "Loaded", data: undefined} });
+      this.setState({ ...this.state, challenge: { type: "Loaded", data: challenge }, errors: {type: "Loaded", data: undefined}, code: "" });
     });
     connection.start().catch(err => console.error(err.toString()));
     this.state = { challenge: { type: "Loading" }, code: "", errors: { type: "Loaded", data: undefined } };

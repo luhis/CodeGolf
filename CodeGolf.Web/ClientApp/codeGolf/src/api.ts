@@ -8,29 +8,22 @@ export const getDemoChallenge = () => axios
 
 interface HoleInt { challengeSet: ChallengeSet; start: string; end: string; closedAt?: string; }
 
+const MapHole = (h?: HoleInt) => {
+  if (h) {
+    return { ...h, start: new Date(h.start), end: new Date(h.end), closedAt: h.closedAt ? new Date(h.closedAt) : undefined } as Hole;
+  }
+
+  // tslint:disable-next-line: no-return-undefined
+  return undefined;
+};
+
 export const getCurrentHole = () => axios
   .get<HoleInt | undefined>("api/Challenge/CurrentChallenge")
-  .then(response => {
-    const d = response.data;
-    if (d) {
-      return { ...d, start: new Date(d.start), end: new Date(d.end), closedAt: d.closedAt ? new Date(d.closedAt) : undefined } as Hole;
-    }
-
-    // tslint:disable-next-line: no-return-undefined
-    return undefined;
-  });
+  .then(response => MapHole(response.data));
 
 export const getCurrentChallenge = () => axios
   .get<HoleInt | undefined>("api/Admin/CurrentHole")
-  .then(response => {
-    const d = response.data;
-    if (d) {
-      return { ...d, start: new Date(d.start), end: new Date(d.end), closedAt: d.closedAt ? new Date(d.closedAt) : undefined } as Hole;
-    }
-
-    // tslint:disable-next-line: no-return-undefined
-    return undefined;
-  });
+  .then(response => MapHole(response.data));
 
 interface Result { readonly score?: number; readonly runErrors?: ReadonlyArray<RunError>; readonly compileErrors?: ReadonlyArray<Error>; }
 
