@@ -54,7 +54,9 @@
         [HttpGet("[action]")]
         public async Task<ActionResult<Models.HoleDto>> CurrentHole(CancellationToken cancellationToken)
         {
-            return (await this.dashboardService.GetCurrentHole(cancellationToken)).Match<ActionResult<Models.HoleDto>>(some => new Models.HoleDto(some.Hole, some.Start, some.End, some.ClosedAt, some.HasNext, this.challengeSetMapper.Map(some.ChallengeSet)), () => this.NotFound());
+            return (await this.dashboardService.GetCurrentHole(cancellationToken)).Match<ActionResult<Models.HoleDto>>(
+                some => new Models.HoleDto(some.Hole, some.Start, some.End, some.ClosedAt, some.HasNext, this.challengeSetMapper.Map(some.ChallengeSet)),
+                () => null);
         }
 
         [HttpGet("[action]")]

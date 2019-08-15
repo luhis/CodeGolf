@@ -9,22 +9,27 @@ export const getDemoChallenge = () => axios
 interface HoleInt { challengeSet: ChallengeSet; start: string; end: string; closedAt?: string; }
 
 export const getCurrentHole = () => axios
-  .get<HoleInt | null>("api/Challenge/CurrentChallenge")
+  .get<HoleInt | undefined>("api/Challenge/CurrentChallenge")
   .then(response => {
     const d = response.data;
     if (d) {
       return { ...d, start: new Date(d.start), end: new Date(d.end), closedAt: d.closedAt ? new Date(d.closedAt) : undefined } as Hole;
     }
-    
-      return null;
-    
+
+    // tslint:disable-next-line: no-return-undefined
+    return undefined;
   });
 
 export const getCurrentChallenge = () => axios
-  .get<HoleInt>("api/Admin/CurrentHole")
+  .get<HoleInt | undefined>("api/Admin/CurrentHole")
   .then(response => {
     const d = response.data;
-    return { ...d, start: new Date(d.start), end: new Date(d.end), closedAt: d.closedAt ? new Date(d.closedAt) : undefined } as Hole;
+    if (d) {
+      return { ...d, start: new Date(d.start), end: new Date(d.end), closedAt: d.closedAt ? new Date(d.closedAt) : undefined } as Hole;
+    }
+
+    // tslint:disable-next-line: no-return-undefined
+    return undefined;
   });
 
 interface Result { readonly score?: number; readonly runErrors?: ReadonlyArray<RunError>; readonly compileErrors?: ReadonlyArray<Error>; }

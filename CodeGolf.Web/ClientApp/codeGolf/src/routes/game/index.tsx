@@ -8,7 +8,7 @@ import { getFunctionDeclaration } from "../../funcDeclaration";
 import { Hole, LoadingState, RunResult } from "../../types/types";
 import FuncComp from "./funcComp";
 
-interface State { readonly challenge: LoadingState<Hole | null>; readonly code: string; readonly errors: LoadingState<RunResult | undefined>; }
+interface State { readonly challenge: LoadingState<Hole | undefined>; readonly code: string; readonly errors: LoadingState<RunResult | undefined>; }
 
 const template = (name: string, score: number, avatarUri: string) =>
   `<div>

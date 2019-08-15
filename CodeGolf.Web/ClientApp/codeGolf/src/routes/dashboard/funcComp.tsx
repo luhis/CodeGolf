@@ -14,20 +14,22 @@ interface Props {
     readonly endHole: () => Promise<void>;
 }
 
+const LeftCol: FunctionalComponent<{ hole?: Hole }> = ({ hole }) => (hole ? <div>
+    <Times start={hole.start} end={hole.end} />
+    <ChallengeComp challenge={hole.challengeSet} onCodeClick={undefined} />
+</div> : null);
+
 const FuncComp: FunctionalComponent<Readonly<Props>> = ({ current, attempts, nextHole, endHole }) =>
     (<section class="section">
         <span class="title">Attempts</span>
         <div class="columns">
             <div class="column">
-                {attempts.type === "Loaded" ? <Attempts attempts={attempts.data} /> : <Circular/>}
+                {attempts.type === "Loaded" ? <Attempts attempts={attempts.data} /> : <Circular />}
             </div>
             <div class="column">
                 <Controls hole={current} nextHole={nextHole} endHole={endHole} />
-                {current.type === "Loaded" && current.data ?
-                    <div>
-                        <Times start={current.data.start} end={current.data.end} />
-                        <ChallengeComp challenge={current.data.challengeSet} onCodeClick={undefined} />
-                    </div> : <Circular/>}
+                {current.type === "Loaded" ?
+                    <LeftCol hole={current.data} /> : <Circular />}
             </div>
         </div>
     </section>);

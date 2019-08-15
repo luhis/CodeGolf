@@ -2,8 +2,7 @@ import { HubConnectionBuilder } from "@aspnet/signalr";
 import { Component, h, RenderableProps } from "preact";
 import { route } from "preact-router";
 
-import { endHole, nextHole } from "../../api";
-import { getCurrentChallenge, getResults } from "../../api";
+import { endHole, getCurrentChallenge, getResults, nextHole } from "../../api";
 import { Attempt, Hole, LoadingState } from "../../types/types";
 import FuncComp from "./funcComp";
 
@@ -15,7 +14,7 @@ export default class Comp extends Component<{}, State> {
     const connection = new HubConnectionBuilder().withUrl("/refreshHub").build();
     connection.on("newAnswer", this.getResults);
     connection.start().catch(err => console.error(err.toString()));
-    this.state = { currentHole: { type: "Loading" }, attempts: { type: "Loading" } };
+    this.state = { currentHole: { type: "Loading" }, attempts: { type: "Loaded", data: [] } };
   }
   public async componentDidMount() {
     await this.getHole();
@@ -53,5 +52,6 @@ export default class Comp extends Component<{}, State> {
   private doThenUpdateHole = (f: () => Promise<any>) => async () => {
     await f();
     await this.getHole();
+    await this.getResults();
   }
 }
