@@ -30,10 +30,10 @@
             return this.codeGolfService.DebugCode(code ?? string.Empty, cancellationToken);
         }
 
-        [HttpPost("[action]/{id}")]
-        public ActionResult<CompileErrorMessage[]> TryCompile(Guid id, [FromBody] string code, CancellationToken cancellationToken)
+        [HttpPost("[action]/{challengeId}")]
+        public ActionResult<CompileErrorMessage[]> TryCompile(Guid challengeId, [FromBody] string code, CancellationToken cancellationToken)
         {
-            return this.codeGolfService.TryCompile(id, code ?? string.Empty, cancellationToken).Match(
+            return this.codeGolfService.TryCompile(challengeId, code ?? string.Empty, cancellationToken).Match(
                     a => a.ToArray(),
                     Array.Empty<CompileErrorMessage>);
         }

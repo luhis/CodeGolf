@@ -94,10 +94,10 @@
         }
 
         async Task<Option<IReadOnlyList<AttemptDto>>> IDashboardService.GetAttempts(
-            Guid id,
+            Guid holeId,
             CancellationToken cancellationToken)
         {
-            return Option.Some(await this.GetBestAttemptDtos(id, cancellationToken));
+            return Option.Some(await this.GetBestAttemptDtos(holeId, cancellationToken));
         }
 
         private async Task<Option<Hole>> GetNextHole(CancellationToken cancellationToken)

@@ -45,10 +45,10 @@
             await this.dashboardService.NextHole(cancellationToken);
         }
 
-        [HttpGet("[action]/{id}")]
-        public async Task<ActionResult<IReadOnlyList<AttemptDto>>> Results(Guid id, CancellationToken cancellationToken)
+        [HttpGet("[action]/{holeId}")]
+        public async Task<ActionResult<IReadOnlyList<AttemptDto>>> Results(Guid holeId, CancellationToken cancellationToken)
         {
-            return (await this.dashboardService.GetAttempts(id, cancellationToken)).Match(some => new ActionResult<IReadOnlyList<AttemptDto>>(some), () => this.NotFound());
+            return (await this.dashboardService.GetAttempts(holeId, cancellationToken)).Match(some => new ActionResult<IReadOnlyList<AttemptDto>>(some), () => this.NotFound());
         }
 
         [HttpGet("[action]")]
