@@ -92,17 +92,18 @@ namespace CodeGolf.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IRunner runner, CodeGolfContext codeGolfContext)
         {
-            if (env.IsDevelopment())
+            ////if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                app.UseExceptionHandler("/Error");
 
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
+            ////else
+            ////{
+            ////    app.UseExceptionHandler("/Error");
+
+            ////    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+            ////    app.UseHsts();
+            ////}
 
             app.UseCustomSecurityHeaders(env);
 
@@ -135,7 +136,7 @@ namespace CodeGolf.Web
             app.UseSpa(
                 spa =>
                     {
-                        spa.Options.SourcePath = "ClientApp/";
+                        spa.Options.SourcePath = "ClientApp";
 
                         if (env.IsDevelopment())
                         {

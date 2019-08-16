@@ -1,4 +1,4 @@
-﻿namespace CodeGolf.ExecutionServer
+namespace CodeGolf.ExecutionServer
 {
     using System.Diagnostics.CodeAnalysis;
     using System.Threading.Tasks;

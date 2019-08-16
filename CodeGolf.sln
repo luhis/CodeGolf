@@ -19,13 +19,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGolf.Recaptcha", "CodeG
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGolf.Integration.Test", "Tests\CodeGolf.Integration.Test\CodeGolf.Integration.Test.csproj", "{2B99FE0E-EC82-45BB-89A0-45D8A182CCF7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGolf.ExecutionServer", "CodeGolf.ExecutionServer\CodeGolf.ExecutionServer.csproj", "{C1A14574-C85C-4741-A0DC-61DD902374CA}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGolf.ServiceInterfaces", "CodeGolf.ServiceInterfaces\CodeGolf.ServiceInterfaces.csproj", "{6E811EA9-027F-4E70-B05B-F92483327BD3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGolf.Web", "CodeGolf.Web\CodeGolf.Web.csproj", "{A82107B6-B0F3-476B-A146-446831E4F19D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGolf.CollectableAssembly", "CodeGolf.CollectableAssembly\CodeGolf.CollectableAssembly.csproj", "{C71BBC37-22C5-445F-8244-ABA4C37FD91A}"
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{F665AA0F-F614-4FCA-AFAC-E855F17B9736}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGolf.ExecutionServer", "CodeGolf.ExecutionServer\CodeGolf.ExecutionServer.csproj", "{3F2623A2-3E63-4C89-BDF6-0EF65A7FD6EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,10 +61,6 @@ Global
 		{2B99FE0E-EC82-45BB-89A0-45D8A182CCF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B99FE0E-EC82-45BB-89A0-45D8A182CCF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B99FE0E-EC82-45BB-89A0-45D8A182CCF7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C1A14574-C85C-4741-A0DC-61DD902374CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C1A14574-C85C-4741-A0DC-61DD902374CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C1A14574-C85C-4741-A0DC-61DD902374CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C1A14574-C85C-4741-A0DC-61DD902374CA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6E811EA9-027F-4E70-B05B-F92483327BD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6E811EA9-027F-4E70-B05B-F92483327BD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E811EA9-027F-4E70-B05B-F92483327BD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -73,10 +69,14 @@ Global
 		{A82107B6-B0F3-476B-A146-446831E4F19D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A82107B6-B0F3-476B-A146-446831E4F19D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A82107B6-B0F3-476B-A146-446831E4F19D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C71BBC37-22C5-445F-8244-ABA4C37FD91A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C71BBC37-22C5-445F-8244-ABA4C37FD91A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C71BBC37-22C5-445F-8244-ABA4C37FD91A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C71BBC37-22C5-445F-8244-ABA4C37FD91A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F665AA0F-F614-4FCA-AFAC-E855F17B9736}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F665AA0F-F614-4FCA-AFAC-E855F17B9736}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F665AA0F-F614-4FCA-AFAC-E855F17B9736}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F665AA0F-F614-4FCA-AFAC-E855F17B9736}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F2623A2-3E63-4C89-BDF6-0EF65A7FD6EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F2623A2-3E63-4C89-BDF6-0EF65A7FD6EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F2623A2-3E63-4C89-BDF6-0EF65A7FD6EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F2623A2-3E63-4C89-BDF6-0EF65A7FD6EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

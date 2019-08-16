@@ -19,6 +19,7 @@
         {
             AppContext.SetSwitch(
                 "System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+            Environment.SetEnvironmentVariable("GRPC_VERBOSITY", "DEBUG");
             var channel = GrpcChannel.ForAddress(
                 $"http://{settings.Value.ServiceHost}:{SharedSettings.PortNumber}");
             this.client = new Executer.ExecuterClient(channel);

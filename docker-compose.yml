@@ -1,0 +1,16 @@
+version: '3.4'
+
+services:
+  codegolf.web:
+    image: ${DOCKER_REGISTRY-}codegolfweb
+    build:
+      context: .
+      dockerfile: CodeGolf.Web/Dockerfile
+    depends_on:
+      - "codegolf.executionserver"
+
+  codegolf.executionserver:
+    image: ${DOCKER_REGISTRY-}codegolfexecutionserver
+    build:
+      context: .
+      dockerfile: CodeGolf.ExecutionServer/Dockerfile
