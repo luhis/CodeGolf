@@ -6,15 +6,17 @@ import FuncComp from "./funcComp";
 
 type State = LoadingState<AttemptWithCode>;
 
-export default class Comp extends Component<{attemptId: Guid}, State> {
+interface Props { readonly attemptId: Guid; }
+
+export default class Comp extends Component<Props, State> {
   constructor() {
     super();
     this.state = { type: "Loading" };
   }
-  public async componentDidMount() {
+  public readonly componentDidMount = async () => {
     const results = await getAttempt(this.props.attemptId);
     this.setState(() => ({ type: "Loaded", data: results }));
   }
-  public render = (_: RenderableProps<{attemptId: Guid}>, res: Readonly<State>) =>
+  public readonly render = (_: RenderableProps<Props>, res: Readonly<State>) =>
     <FuncComp result={res} />
 }

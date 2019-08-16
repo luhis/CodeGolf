@@ -1,6 +1,6 @@
 import { FunctionalComponent, h } from "preact";
 
-const comp: FunctionalComponent<{ start: Date, end: Date }> = ({ start, end }) => (<div class="field is-grouped is-grouped-multiline">
+const comp: FunctionalComponent<{ readonly start: Date, readonly end: Date }> = ({ start, end }) => (<div class="field is-grouped is-grouped-multiline">
     <div class="control">
         <div class="tags has-addons">
             <span class="tag is-dark">start</span>

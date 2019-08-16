@@ -8,13 +8,14 @@ import ErrorsComp from "../../components/results";
 import { ChallengeSet, LoadingState, RunResult } from "../../types/types";
 
 interface Props {
-  code: string;
-  errors: LoadingState<RunResult | undefined>;
-  challenge: LoadingState<ChallengeSet>;
-  codeChanged: ((s: string) => Promise<void>);
-  onCodeClick: (() => void);
-  submitCode: ((code: string, recaptcha: string) => void);
+  readonly code: string;
+  readonly errors: LoadingState<RunResult | undefined>;
+  readonly challenge: LoadingState<ChallengeSet>;
+  readonly codeChanged: ((s: string) => Promise<void>);
+  readonly onCodeClick: (() => void);
+  readonly submitCode: ((code: string, recaptcha: string) => void);
 }
+// tslint:disable-next-line: no-let
 let recaptchaInstance: any = null;
 
 const executeCaptcha = () => {

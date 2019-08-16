@@ -2,7 +2,7 @@ import { FunctionalComponent, h } from "preact";
 
 import { Score } from "../../types/types";
 
-interface Props { score: Score;}
+interface Props { readonly score: Score;}
 
 const Comp: FunctionalComponent<Props> = ({ score }) => (
     <article class="message is-success">

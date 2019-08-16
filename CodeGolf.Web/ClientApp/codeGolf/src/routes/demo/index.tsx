@@ -9,7 +9,7 @@ import FuncComp from "./funcComp";
 interface State { readonly challenge: LoadingState<ChallengeSet>; readonly code: string; readonly errors: LoadingState<RunResult | undefined>; }
 
 export default class Comp extends Component<{}, State> {
-  private tryCompile = debounce(async () => {
+  private readonly tryCompile = debounce(async () => {
     const errors = {
       type: "Loaded",
       data: { type: "CompileError", errors: await tryCompile(this.state.challenge.type === "Loaded" ? this.state.challenge.data.id : "", this.state.code) }
@@ -20,23 +20,23 @@ export default class Comp extends Component<{}, State> {
     super();
     this.state = { challenge: { type: "Loading" }, code: "", errors: { type: "Loaded", data: undefined } };
   }
-  public async componentDidMount() {
+  public readonly componentDidMount = async () => {
     const challenge = await getDemoChallenge();
     this.setState({ ...this.state, challenge: { type: "Loaded", data: challenge } });
   }
-  public render = (_: RenderableProps<{}>, { errors, code, challenge }: Readonly<State>) =>
+  public readonly render = (_: RenderableProps<{}>, { errors, code, challenge }: Readonly<State>) =>
     <FuncComp code={code} errors={errors} challenge={challenge} codeChanged={this.codeChanged} submitCode={this.submitCode} onCodeClick={this.onCodeClick} />
 
-  public codeChanged = async (code: string) => {
+  public readonly codeChanged = async (code: string) => {
     this.setState({ ...this.state, code, errors: {type: "Loading"} });
     this.tryCompile();
   }
-  private onCodeClick = () => {
+  private readonly onCodeClick = () => {
     if (this.state.code === "" && this.state.challenge.type === "Loaded") {
       this.setState({ ...this.state, code: getFunctionDeclaration(this.state.challenge.data) });
     }
   }
-  private submitCode = async (code: string, reCaptcha: string) => {
+  private readonly submitCode = async (code: string, reCaptcha: string) => {
     this.setState({ ...this.state, errors: {type: "Loading"} });
     const res = { type: "Loaded", data: await submitDemo(code, reCaptcha) } as LoadingState<RunResult>;
     this.setState({ ...this.state, errors: res });

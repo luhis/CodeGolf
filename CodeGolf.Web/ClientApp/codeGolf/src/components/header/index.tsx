@@ -31,11 +31,11 @@ export default class Comp extends Component<{}, State> {
         super();
         this.state = { loggedIn: false, admin: false };
     }
-    public async componentDidMount() {
+    public readonly componentDidMount = async () => {
         const admin = await isAdmin();
         const loggedIn = await isLoggedIn();
         this.setState({ admin, loggedIn });
     }
-    public render = (_: RenderableProps<{}>, s: Readonly<State>) =>
+    public readonly render = (_: RenderableProps<{}>, s: Readonly<State>) =>
         <FuncComp {...s} />
 }

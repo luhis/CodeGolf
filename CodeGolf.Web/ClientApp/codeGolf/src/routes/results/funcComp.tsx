@@ -4,7 +4,7 @@ import { Circular } from "styled-loaders";
 import { LoadingState, Result } from "../../types/types";
 
 interface Props {
-  results: LoadingState<ReadonlyArray<Result>>;
+  readonly results: LoadingState<ReadonlyArray<Result>>;
 }
 
 const Row: FunctionalComponent<Result> = ({ score, loginName, rank, avatarUri }) => (<tr>

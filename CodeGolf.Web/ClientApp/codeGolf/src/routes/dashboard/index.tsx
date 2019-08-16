@@ -16,11 +16,11 @@ export default class Comp extends Component<{}, State> {
     connection.start().catch(err => console.error(err.toString()));
     this.state = { currentHole: { type: "Loading" }, attempts: { type: "Loaded", data: [] } };
   }
-  public async componentDidMount() {
+  public readonly componentDidMount = async () => {
     await this.getHole();
     await this.getResults();
   }
-  public render = (_: RenderableProps<{}>, { currentHole, attempts }: Readonly<State>) => {
+  public readonly render = (_: RenderableProps<{}>, { currentHole, attempts }: Readonly<State>) => {
     if (currentHole.type === "Loaded") {
       const f = currentHole.data && currentHole.data.hasNext ? endHole : async () => { await endHole(); route("/results"); };
       return (<FuncComp
@@ -32,14 +32,14 @@ export default class Comp extends Component<{}, State> {
     return null;
   }
 
-  private getResults = async () => {
+  private readonly getResults = async () => {
     if (this.state.currentHole.type === "Loaded" && this.state.currentHole.data) {
       const results = await getResults(this.state.currentHole.data.hole.holeId);
       this.setState({ ...this.state, attempts: { type: "Loaded", data: results } });
     }
   }
 
-  private getHole = async () => {
+  private readonly getHole = async () => {
     try {
       const hole = await getCurrentChallenge();
       this.setState({ ...this.state, currentHole: { type: "Loaded", data: hole } });
@@ -49,7 +49,7 @@ export default class Comp extends Component<{}, State> {
     }
   }
 
-  private doThenUpdateHole = (f: () => Promise<any>) => async () => {
+  private readonly doThenUpdateHole = (f: () => Promise<any>) => async () => {
     await f();
     await this.getHole();
     await this.getResults();

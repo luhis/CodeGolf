@@ -11,10 +11,10 @@ export default class Comp extends Component<{}, State> {
     super();
     this.state = { type: "Loading" };
   }
-  public async componentDidMount() {
+  public readonly componentDidMount = async () => {
     const results = await getFinalResults();
     this.setState(() => ({ type: "Loaded", data: results }));
   }
-  public render = (_: RenderableProps<{}>, res: Readonly<State>) =>
+  public readonly render = (_: RenderableProps<{}>, res: Readonly<State>) =>
     <FuncComp results={res} />
 }

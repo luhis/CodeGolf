@@ -4,7 +4,7 @@ import { FunctionalComponent, h } from "preact";
 
 import { Attempt } from "../../types/types";
 
-const Row: FunctionalComponent<{ attempt: Attempt }> = ({ attempt }) => (<tr>
+const Row: FunctionalComponent<{ readonly attempt: Attempt }> = ({ attempt }) => (<tr>
   <td>{attempt.rank}.</td>
   <td><figure class="image is-48x48"><img src={attempt.avatar} /></figure></td>
   <td>{attempt.loginName}</td>
@@ -17,7 +17,7 @@ const Row: FunctionalComponent<{ attempt: Attempt }> = ({ attempt }) => (<tr>
   </td>
 </tr>);
 
-interface Props { attempts: ReadonlyArray<Attempt>; }
+interface Props { readonly attempts: ReadonlyArray<Attempt>; }
 
 const comp: FunctionalComponent<Readonly<Props>> = ({ attempts }) => (<table class="table is-striped is-fullwidth">
   <thead>

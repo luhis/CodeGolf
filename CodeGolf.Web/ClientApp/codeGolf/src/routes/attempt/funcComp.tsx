@@ -10,7 +10,7 @@ import "codemirror/mode/clike/clike";
 
 const CM = CodeMirror as any as FunctionalComponent<IControlledCodeMirror>;
 interface Props {
-    result: LoadingState<AttemptWithCode>;
+    readonly result: LoadingState<AttemptWithCode>;
 }
 
 const FuncComp: FunctionalComponent<Readonly<Props>> = ({ result }) => result.type === "Loaded" ? (

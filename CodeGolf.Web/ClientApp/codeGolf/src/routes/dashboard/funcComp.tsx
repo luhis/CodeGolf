@@ -14,7 +14,7 @@ interface Props {
     readonly endHole: () => Promise<void>;
 }
 
-const LeftCol: FunctionalComponent<{ hole?: Hole }> = ({ hole }) => (hole ? <div>
+const LeftCol: FunctionalComponent<{ readonly hole?: Hole }> = ({ hole }) => (hole ? <div>
     <Times start={hole.start} end={hole.end} />
     <ChallengeComp challenge={hole.challengeSet} onCodeClick={undefined} />
 </div> : null);

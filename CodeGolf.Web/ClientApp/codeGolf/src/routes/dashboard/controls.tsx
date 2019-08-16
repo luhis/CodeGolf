@@ -2,7 +2,7 @@ import { FunctionalComponent, h } from "preact";
 
 import { Hole, LoadingState } from "../../types/types";
 
-interface Props { hole: LoadingState<Hole | undefined>; endHole: () => Promise<void>; nextHole: () => Promise<void>; }
+interface Props { readonly hole: LoadingState<Hole | undefined>; readonly endHole: () => Promise<void>; readonly nextHole: () => Promise<void>; }
 
 const GetButton: FunctionalComponent<Props> = ({ hole, endHole, nextHole }) => {
     if (hole.type === "Loaded" && hole.data) {

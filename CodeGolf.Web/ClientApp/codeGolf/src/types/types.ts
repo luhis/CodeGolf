@@ -1,11 +1,11 @@
 
-export interface Loading { type: "Loading"; }
+export interface Loading { readonly type: "Loading"; }
 
-interface Loaded<T> { type: "Loaded"; readonly data: T; }
-export interface Score { type: "Score"; val: number; }
-export interface CompileError { type: "CompileError"; errors: ReadonlyArray<Error>; }
-export interface RunErrorSet { type: "RunError"; errors: ReadonlyArray<RunError>; }
-type ChallengeResult = Challenge & { found?: object; };
+interface Loaded<T> { readonly type: "Loaded"; readonly data: T; }
+export interface Score { readonly type: "Score"; readonly val: number; }
+export interface CompileError { readonly type: "CompileError"; readonly errors: ReadonlyArray<Error>; }
+export interface RunErrorSet { readonly type: "RunError"; readonly errors: ReadonlyArray<RunError>; }
+type ChallengeResult = Challenge & { readonly found?: object; };
 
 export type RunResult = Score | CompileError | RunErrorSet;
 
@@ -36,7 +36,7 @@ export interface Attempt {
     readonly timeStamp: string;
 }
 
-export type AttemptWithCode = Attempt & {code: string };
+export type AttemptWithCode = Attempt & { readonly code: string };
 
 export interface Result {
     readonly score: number;
@@ -45,4 +45,4 @@ export interface Result {
     readonly avatarUri: string;
 }
 
-export interface Hole { challengeSet: ChallengeSet; start: Date; end: Date; closedAt?: Date; hasNext: boolean; hole: { holeId: Guid }; }
+export interface Hole { readonly challengeSet: ChallengeSet; readonly start: Date; readonly end: Date; readonly closedAt?: Date; readonly hasNext: boolean; readonly hole: { readonly holeId: Guid }; }

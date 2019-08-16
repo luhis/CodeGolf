@@ -5,14 +5,14 @@ import { FunctionalComponent, h } from "preact";
 import { getChallengeOverView } from "../../funcDeclaration";
 import { CompileError, Error, RunError, RunErrorSet } from "../../types/types";
 
-interface Props { errors: RunErrorSet | CompileError; returnType: string; }
+interface Props { readonly errors: RunErrorSet | CompileError; readonly returnType: string; }
 
-const CompileErrorView: FunctionalComponent<{ error: Error }> = ({ error }) => (<p>
+const CompileErrorView: FunctionalComponent<{ readonly error: Error }> = ({ error }) => (<p>
     <FontAwesomeIcon icon={faExclamationTriangle} />
     <strong>{`(${error.line},${error.col}) ${error.message}`}</strong>
 </p>);
 
-const RunErrorView: FunctionalComponent<{ error: RunError, returnType: string }> = ({ error, returnType }) => error.error ? (<p>
+const RunErrorView: FunctionalComponent<{ readonly error: RunError, readonly returnType: string }> = ({ error, returnType }) => error.error ? (<p>
     <FontAwesomeIcon icon={faExclamationTriangle} />
     {getChallengeOverView(error.challenge, returnType)}&nbsp;
     <strong>{`${error.error}`}</strong>

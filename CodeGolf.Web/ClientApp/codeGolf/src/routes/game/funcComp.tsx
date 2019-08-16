@@ -7,15 +7,15 @@ import ErrorsComp from "../../components/results";
 import { Hole, LoadingState, RunResult } from "../../types/types";
 
 interface Funcs {
-  codeChanged: ((s: string) => Promise<void>);
-  onCodeClick: (() => void);
-  submitCode: ((code: string) => void);
+  readonly codeChanged: ((s: string) => Promise<void>);
+  readonly onCodeClick: (() => void);
+  readonly submitCode: ((code: string) => void);
 }
 
 type Props = ({
-  code: string;
-  errors: LoadingState<RunResult | undefined>;
-  challenge: LoadingState<Hole | undefined>;
+  readonly code: string;
+  readonly errors: LoadingState<RunResult | undefined>;
+  readonly challenge: LoadingState<Hole | undefined>;
 } & Funcs);
 
 const PleaseWait: FunctionalComponent = () => (<div class="notification is-info">
@@ -31,9 +31,9 @@ const valueOr = <T extends any>(l: LoadingState<T>, f: (() => T)): T => {
 };
 
 const HasChallenge: FunctionalComponent<{
-  code: string;
-  challenge: Hole | undefined;
-  errors: LoadingState<RunResult | undefined>;
+  readonly code: string;
+  readonly challenge: Hole | undefined;
+  readonly errors: LoadingState<RunResult | undefined>;
 } & Funcs> = ({ challenge, code, errors, codeChanged, submitCode, onCodeClick }) => (
   challenge ?
     (<div class="columns">

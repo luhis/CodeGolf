@@ -6,7 +6,7 @@ export const getDemoChallenge = () => axios
   .get<ChallengeSet>("api/Challenge/DemoChallenge")
   .then(response => response.data);
 
-interface HoleInt { challengeSet: ChallengeSet; start: string; end: string; closedAt?: string; }
+interface HoleInt { readonly challengeSet: ChallengeSet; readonly start: string; readonly end: string; readonly closedAt?: string; }
 
 const MapHole = (h?: HoleInt) => {
   if (h) {

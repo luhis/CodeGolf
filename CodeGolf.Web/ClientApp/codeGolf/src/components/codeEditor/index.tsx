@@ -21,6 +21,7 @@ const getScore = (code: string) => code
     .replace(/\s/g, "")
     .length.toString();
 
+// tslint:disable-next-line: no-let
 let editor: (Editor | undefined);
 
 const setErrors = (errors?: RunResult) => {

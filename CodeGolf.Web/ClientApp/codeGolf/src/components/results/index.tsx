@@ -5,8 +5,8 @@ import ErrorsView from "./errors";
 import Success from "./success";
 
 interface Props {
-    errors?: RunResult;
-    returnType: string;
+    readonly errors?: RunResult;
+    readonly returnType: string;
 }
 
 const Comp: FunctionalComponent<Props> = ({ errors, returnType }) => {
@@ -20,7 +20,6 @@ const Comp: FunctionalComponent<Props> = ({ errors, returnType }) => {
             return <ErrorsView errors={errors} returnType={returnType} />;
         case "Score":
             return <Success score={errors} />;
-        
     }
 };
 

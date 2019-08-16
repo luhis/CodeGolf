@@ -4,7 +4,8 @@
         "tslint-react",
         "tslint-eslint-rules",
         "tslint-consistent-codestyle",
-        "tslint-config-prettier"
+        "tslint-config-prettier",
+        "tslint-immutable"
     ],
     "rules": {
         "interface-name": [true, "never-prefix"],
@@ -49,6 +50,25 @@
         },
         "prefer-const-enum": { "severity": "warning" },
         "semicolon": [true, "always"],
-        "quotemark": [true, "double"]
+        "quotemark": [true, "double"],
+
+        "no-var-keyword": true,
+        "no-parameter-reassignment": true,
+        "typedef": [true, "call-signature"],
+        "no-duplicate-imports": true,
+    
+        // Immutability rules
+        "readonly-keyword": true,
+        "readonly-array": true,
+        "no-let": true,
+        "no-object-mutation": true,
+        "no-delete": true,
+        "no-method-signature": true
+    
+        // Functional style rules
+        //"no-this": true
+        //"no-class": true,
+        //"no-expression-statement": true,
+        //"no-if-statement": true
     }
 }

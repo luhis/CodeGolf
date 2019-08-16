@@ -6,9 +6,9 @@ import Markdown from "preact-markdown";
 import { getChallengeOverView, getFunctionDeclaration } from "../../funcDeclaration";
 import { Challenge, ChallengeSet } from "../../types/types";
 
-interface Props { challenge: ChallengeSet; onCodeClick?: (() => void); }
+interface Props { readonly challenge: ChallengeSet; readonly onCodeClick?: (() => void); }
 
-const X: FunctionalComponent<{ challenge: Challenge, returnType: string; }> = ({ challenge, returnType }) =>
+const X: FunctionalComponent<{ readonly challenge: Challenge, readonly returnType: string; }> = ({ challenge, returnType }) =>
     (<div
         class="panel-block"
     >{getChallengeOverView(challenge, returnType)}</div>);

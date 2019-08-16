@@ -10,7 +10,7 @@
     "build": "preact build  --no-prerender --template ./src/template.html",
     "serve": "preact build && preact serve",
     "dev": "preact watch  --template ./src/template.html",
-    "lint": "tslint --project src",
+    "lint": "tslint --project .",
     "test": "jest ./tests",
     "precommit": "lint-staged",
     "postbuild": "rm -r ../../../publish/ClientApp/ && mv build ../../../publish/ClientApp/"
@@ -73,7 +73,8 @@
     "preact-router": "^2.6.1",
     "react-codemirror2": "^6.0.0",
     "react-ga": "^2.6.0",
-    "styled-loaders": "^0.3.0"
+    "styled-loaders": "^0.3.0",
+    "tslint-immutable": "^6.0.1"
   },
   "peerDependencies": {
     "prettier": ">1.0.0",

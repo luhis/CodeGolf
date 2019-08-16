@@ -2,7 +2,7 @@ import { Component, FunctionalComponent, h, RenderableProps } from "preact";
 
 const F: FunctionalComponent = () => (<p>This website uses cookies. By continuing to use our site, you agree to our use of cookies</p>);
 
-interface Props { showWarning: boolean; }
+interface Props { readonly showWarning: boolean; }
 
 const cookieName = "accepted-cookies";
 
@@ -16,6 +16,6 @@ export default class Comp extends Component<{}, Props> {
         }
         this.state = { showWarning: !hasCookie };
     }
-    public render = (_: RenderableProps<{}>, { showWarning }: Readonly<Props>) => showWarning ?
+    public readonly render = (_: RenderableProps<{}>, { showWarning }: Readonly<Props>) => showWarning ?
         <F /> : null
 }

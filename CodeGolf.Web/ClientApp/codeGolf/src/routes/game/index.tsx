@@ -18,7 +18,7 @@ const template = (name: string, score: number, avatarUri: string) =>
     </div>`;
 
 export default class Comp extends Component<{}, State> {
-  private tryCompile = debounce(async () => {
+  private readonly tryCompile = debounce(async () => {
     const errors = {
       type: "Loaded",
       data: { type: "CompileError", errors: await tryCompile(this.state.challenge.type === "Loaded" && this.state.challenge.data ? this.state.challenge.data.challengeSet.id : "", this.state.code) } as RunResult
@@ -45,23 +45,23 @@ export default class Comp extends Component<{}, State> {
     connection.start().catch(err => console.error(err.toString()));
     this.state = { challenge: { type: "Loading" }, code: "", errors: { type: "Loaded", data: undefined } };
   }
-  public async componentDidMount() {
+  public readonly componentDidMount = async () => {
     const challenge = await getCurrentHole();
     this.setState({ ...this.state, challenge: { type: "Loaded", data: challenge } });
   }
-  public render = (_: RenderableProps<{}>, { errors, code, challenge }: Readonly<State>) =>
+  public readonly render = (_: RenderableProps<{}>, { errors, code, challenge }: Readonly<State>) =>
     <FuncComp code={code} errors={errors} challenge={challenge} codeChanged={this.codeChanged} submitCode={this.submitCode} onCodeClick={this.onCodeClick} />
 
-  public codeChanged = async (code: string) => {
+  public readonly codeChanged = async (code: string) => {
     this.setState({ ...this.state, code, errors: {type: "Loading"} });
     this.tryCompile();
   }
-  private onCodeClick = () => {
+  private readonly onCodeClick = () => {
     if (this.state.code === "" && this.state.challenge.type === "Loaded" && this.state.challenge.data) {
       this.setState({ code: getFunctionDeclaration(this.state.challenge.data.challengeSet) });
     }
   }
-  private submitCode = async (code: string) => {
+  private readonly submitCode = async (code: string) => {
     if (this.state.challenge.type === "Loaded" && this.state.challenge.data) {
       this.setState({ ...this.state, code, errors: {type: "Loading"} });
       const res = { type: "Loaded", data: await submitChallenge(code, this.state.challenge.data.hole.holeId) } as LoadingState<RunResult>;
