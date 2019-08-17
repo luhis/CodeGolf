@@ -3,11 +3,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FunctionalComponent, h } from "preact";
 
 import { getChallengeOverView } from "../../funcDeclaration";
-import { CompileError, Error, RunError, RunErrorSet } from "../../types/types";
+import { CodeError, CompileError, RunError, RunErrorSet } from "../../types/types";
 
 interface Props { readonly errors: RunErrorSet | CompileError; readonly returnType: string; }
 
-const CompileErrorView: FunctionalComponent<{ readonly error: Error }> = ({ error }) => (<p>
+const CompileErrorView: FunctionalComponent<{ readonly error: CodeError }> = ({ error }) => (<p>
     <FontAwesomeIcon icon={faExclamationTriangle} />
     <strong>{`(${error.line},${error.col}) ${error.message}`}</strong>
 </p>);

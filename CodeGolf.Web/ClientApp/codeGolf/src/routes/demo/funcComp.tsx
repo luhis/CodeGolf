@@ -26,9 +26,8 @@ const valueOr = <T extends any>(l: LoadingState<T>, f: (() => T)): T => {
   if (l.type === "Loaded") {
     return l.data;
   }
-  
-    return f();
-  
+
+  return f();
 };
 
 const FuncComp: FunctionalComponent<Readonly<Props>> = ({ code, errors, challenge, codeChanged, onCodeClick, submitCode }) => {

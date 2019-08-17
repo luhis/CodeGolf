@@ -3,7 +3,7 @@ import { Component, h, RenderableProps } from "preact";
 
 import { getCurrentHole, submitChallenge, tryCompile } from "../../api";
 import { getFunctionDeclaration } from "../../funcDeclaration";
-import { Hole, LoadingState, RunResult } from "../../types/types";
+import { Hole, ifLoaded, LoadingState, RunResult } from "../../types/types";
 import FuncComp from "./funcComp";
 import Notification from "./Notification";
 
@@ -29,7 +29,7 @@ export default class Comp extends Component<{}, State> {
   }
   public readonly componentDidMount = async () => {
     const challenge = await getCurrentHole();
-    this.setState((s => ({ ...s, challenge: { type: "Loaded", data: challenge } }));
+    this.setState((s => ({ ...s, challenge: { type: "Loaded", data: challenge } })));
   }
   public readonly render = (_: RenderableProps<{}>, { errors, code, challenge }: Readonly<State>) =>
     <FuncComp code={code} errors={errors} challenge={challenge} codeChanged={this.codeChanged} submitCode={this.submitCode} onCodeClick={this.onCodeClick} />
@@ -45,10 +45,12 @@ export default class Comp extends Component<{}, State> {
     }
   }
   private readonly submitCode = async (code: string) => {
-    if (this.state.challenge.type === "Loaded" && this.state.challenge.data) {
-      this.setState(s => ({ ...s, code, errors: { type: "Loading" } }));
-      const res = { type: "Loaded", data: await submitChallenge(code, this.state.challenge.data.hole.holeId) } as LoadingState<RunResult>;
-      this.setState(_ => ({ errors: res }));
-    }
+    ifLoaded(this.state.challenge, async c => {
+      if (c) {
+        this.setState(s => ({ ...s, code, errors: { type: "Loading" } }));
+        const res = { type: "Loaded", data: await submitChallenge(code, c.hole.holeId) } as LoadingState<RunResult>;
+        this.setState(_ => ({ errors: res }));
+      }
+    }, () => undefined);
   }
 }

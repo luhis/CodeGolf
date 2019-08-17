@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { Attempt, AttemptWithCode, ChallengeSet, Error, Guid, Hole, RunError, RunResult } from "./types/types";
+import { Attempt, AttemptWithCode, ChallengeSet, CodeError, Guid, Hole, RunError, RunResult } from "./types/types";
 
 export const getDemoChallenge = () => axios
   .get<ChallengeSet>("api/Challenge/DemoChallenge")
@@ -25,7 +25,7 @@ export const getCurrentChallenge = () => axios
   .get<HoleInt | undefined>("api/Admin/CurrentHole")
   .then(response => MapHole(response.data));
 
-interface Result { readonly score?: number; readonly runErrors?: ReadonlyArray<RunError>; readonly compileErrors?: ReadonlyArray<Error>; }
+interface Result { readonly score?: number; readonly runErrors?: ReadonlyArray<RunError>; readonly compileErrors?: ReadonlyArray<CodeError>; }
 
 export const submitDemo = (code: string, reCaptcha: string): Promise<RunResult> => axios
   .post<Result>("api/Challenge/SubmitDemo", JSON.stringify(code), {
@@ -69,7 +69,7 @@ export const submitChallenge = (code: string, holeId: Guid) => axios
   });
 
 export const tryCompile = (challengeId: Guid, code: string) => axios
-  .post<ReadonlyArray<Error>>(`api/code/TryCompile/${challengeId}`, JSON.stringify(code), {
+  .post<ReadonlyArray<CodeError>>(`api/code/TryCompile/${challengeId}`, JSON.stringify(code), {
     headers: {
       "Content-Type": "application/json"
     }

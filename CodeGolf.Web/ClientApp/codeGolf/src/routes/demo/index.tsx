@@ -3,7 +3,7 @@ import { Component, h, RenderableProps } from "preact";
 
 import { getDemoChallenge, submitDemo, tryCompile } from "../../api";
 import { getFunctionDeclaration } from "../../funcDeclaration";
-import { ChallengeSet, LoadingState, RunResult } from "../../types/types";
+import { ChallengeSet, ifLoaded, LoadingState, RunResult } from "../../types/types";
 import FuncComp from "./funcComp";
 
 interface State { readonly challenge: LoadingState<ChallengeSet>; readonly code: string; readonly errors: LoadingState<RunResult | undefined>; }
@@ -33,9 +33,11 @@ export default class Comp extends Component<{}, State> {
     this.tryCompile();
   }
   private readonly onCodeClick = () => {
-    if (this.state.code === "" && this.state.challenge.type === "Loaded") {
-      const funcDec = getFunctionDeclaration(this.state.challenge.data);
-      this.setState(s => ({ ...s, code: funcDec }));
+    if (this.state.code === "") {
+      ifLoaded(this.state.challenge, c => {
+        const funcDec = getFunctionDeclaration(c);
+        this.setState(s => ({ ...s, code: funcDec }));
+      }, () => undefined);
     }
   }
   private readonly submitCode = async (code: string, reCaptcha: string) => {
