@@ -11,6 +11,7 @@
             services.AddScoped<IAttemptRepository, AttemptRepository>();
             services.AddScoped<IHoleRepository, HoleRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IGameRepository, GameRepository>();
             services.AddDbContext<CodeGolfContext>();
         }
     }

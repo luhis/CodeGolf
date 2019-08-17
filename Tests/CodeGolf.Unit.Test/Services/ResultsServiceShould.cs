@@ -7,6 +7,7 @@ namespace CodeGolf.Unit.Test.Services
 
     using CodeGolf.Domain;
     using CodeGolf.Domain.Repositories;
+    using CodeGolf.Persistence.Repositories;
     using CodeGolf.Persistence.Static;
     using CodeGolf.Service;
     using CodeGolf.Service.Dtos;
