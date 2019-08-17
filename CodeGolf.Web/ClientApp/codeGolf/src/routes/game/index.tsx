@@ -40,7 +40,8 @@ export default class Comp extends Component<{}, State> {
   }
   private readonly onCodeClick = () => {
     if (this.state.code === "" && this.state.challenge.type === "Loaded" && this.state.challenge.data) {
-      this.setState({ code: getFunctionDeclaration(this.state.challenge.data.challengeSet) });
+      const funcDec = getFunctionDeclaration(this.state.challenge.data.challengeSet);
+      this.setState(s => ({ ...s, code: funcDec }));
     }
   }
   private readonly submitCode = async (code: string) => {
