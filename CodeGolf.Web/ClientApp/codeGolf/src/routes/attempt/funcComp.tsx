@@ -8,7 +8,7 @@ import { AttemptWithCode, LoadingState } from "../../types/types";
 import "codemirror/lib/codemirror.css";
 import "codemirror/mode/clike/clike";
 
-const CM = CodeMirror as any as FunctionalComponent<IControlledCodeMirror>;
+const CM = CodeMirror as unknown as FunctionalComponent<IControlledCodeMirror>;
 interface Props {
     readonly result: LoadingState<AttemptWithCode>;
 }

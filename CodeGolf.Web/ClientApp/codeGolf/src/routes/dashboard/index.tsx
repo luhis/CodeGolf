@@ -49,7 +49,7 @@ export default class Comp extends Component<{}, State> {
     }
   }
 
-  private readonly doThenUpdateHole = (f: () => Promise<any>) => async () => {
+  private readonly doThenUpdateHole = (f: () => Promise<unknown>) => async () => {
     await f();
     await this.getHole();
     await this.getResults();

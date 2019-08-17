@@ -22,26 +22,25 @@ const getScore = (code: string) => code
     .length.toString();
 
 // tslint:disable-next-line: no-let
-let editor: (Editor | undefined);
+let editor = undefined as (Editor | undefined);
 
-const setErrors = (errors?: RunResult) => {
-    if (editor) {
-        const doc = editor.getDoc();
-        const clear = () => doc.getAllMarks().map((a: TextMarker) => a.clear());
+const setErrors = (editorComp: Editor, errors?: RunResult) => {
+    const doc = editorComp.getDoc();
 
-        clear();
-        if (errors && errors.type === "CompileError" && errors.errors.length > 0) {
-            errors.errors.map(e => doc.markText({ line: e.line - 1, ch: e.col }, { line: e.line - 1, ch: e.endCol },
-                { className: "underline" }));
-        }
+    doc.getAllMarks().map((a: TextMarker) => a.clear());
+    if (errors && errors.type === "CompileError" && errors.errors.length > 0) {
+        errors.errors.map(e => doc.markText({ line: e.line - 1, ch: e.col }, { line: e.line - 1, ch: e.endCol },
+            { className: "underline" }));
     }
 };
 
-const CM = CodeMirror as any as FunctionalComponent<IControlledCodeMirror>;
+const CM = CodeMirror as unknown as FunctionalComponent<IControlledCodeMirror>;
 
 const Comp: FunctionalComponent<Readonly<Props>> = ({ code, codeChanged, submitCode, errors }) => {
-    setErrors(errors);
-
+    if (editor)
+    {
+        setErrors(editor, errors);
+    }
     return (<div>
         <div class="field">
             <label class="label">Code</label>
