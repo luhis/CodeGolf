@@ -35,17 +35,17 @@ export default class Comp extends Component<{}, State> {
   private readonly getResults = async () => {
     if (this.state.currentHole.type === "Loaded" && this.state.currentHole.data) {
       const results = await getResults(this.state.currentHole.data.hole.holeId);
-      this.setState({ ...this.state, attempts: { type: "Loaded", data: results } });
+      this.setState(s => ({ ...s, attempts: { type: "Loaded", data: results } }));
     }
   }
 
   private readonly getHole = async () => {
     try {
       const hole = await getCurrentChallenge();
-      this.setState({ ...this.state, currentHole: { type: "Loaded", data: hole } });
+      this.setState(s => ({ ...s, currentHole: { type: "Loaded", data: hole } }));
     }
     catch {
-      this.setState({ ...this.state, currentHole: { type: "Loaded", data: undefined } });
+      this.setState(s => ({ ...s, currentHole: { type: "Loaded", data: undefined } }));
     }
   }
 

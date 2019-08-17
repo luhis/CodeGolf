@@ -34,7 +34,7 @@ export default class Comp extends Component<{}, State> {
     public readonly componentDidMount = async () => {
         const admin = await isAdmin();
         const loggedIn = await isLoggedIn();
-        this.setState({ admin, loggedIn });
+        this.setState(_ => ({ admin, loggedIn }));
     }
     public readonly render = (_: RenderableProps<{}>, s: Readonly<State>) =>
         <FuncComp {...s} />

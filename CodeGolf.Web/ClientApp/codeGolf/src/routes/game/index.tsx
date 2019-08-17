@@ -11,30 +11,31 @@ interface State { readonly challenge: LoadingState<Hole | undefined>; readonly c
 
 export default class Comp extends Component<{}, State> {
   private readonly tryCompile = debounce(async () => {
+    this.setState(s => ({ ...s, errors: { type: "Loading" } }));
     const errors = {
       type: "Loaded",
       data: { type: "CompileError", errors: await tryCompile(this.state.challenge.type === "Loaded" && this.state.challenge.data ? this.state.challenge.data.challengeSet.id : "", this.state.code) } as RunResult
     } as LoadingState<RunResult>;
-    this.setState({ ...this.state, errors });
+    this.setState(s => ({ ...s, errors }));
   }, 1000);
   constructor() {
     super();
     Notification(async () => {
-      this.setState({ ...this.state, challenge: { type: "Loading" } });
+      this.setState(s => ({ ...s, challenge: { type: "Loading" } }));
       const challenge = await getCurrentHole();
-      this.setState({ ...this.state, challenge: { type: "Loaded", data: challenge }, errors: { type: "Loaded", data: undefined }, code: "" });
+      this.setState(s => ({ ...s, challenge: { type: "Loaded", data: challenge }, errors: { type: "Loaded", data: undefined }, code: "" }));
     });
     this.state = { challenge: { type: "Loading" }, code: "", errors: { type: "Loaded", data: undefined } };
   }
   public readonly componentDidMount = async () => {
     const challenge = await getCurrentHole();
-    this.setState({ ...this.state, challenge: { type: "Loaded", data: challenge } });
+    this.setState((s => ({ ...s, challenge: { type: "Loaded", data: challenge } }));
   }
   public readonly render = (_: RenderableProps<{}>, { errors, code, challenge }: Readonly<State>) =>
     <FuncComp code={code} errors={errors} challenge={challenge} codeChanged={this.codeChanged} submitCode={this.submitCode} onCodeClick={this.onCodeClick} />
 
   public readonly codeChanged = async (code: string) => {
-    this.setState({ ...this.state, code, errors: { type: "Loading" } });
+    this.setState(s => ({ ...s, code }));
     this.tryCompile();
   }
   private readonly onCodeClick = () => {
@@ -44,9 +45,9 @@ export default class Comp extends Component<{}, State> {
   }
   private readonly submitCode = async (code: string) => {
     if (this.state.challenge.type === "Loaded" && this.state.challenge.data) {
-      this.setState({ ...this.state, code, errors: { type: "Loading" } });
+      this.setState(s => ({ ...s, code, errors: { type: "Loading" } }));
       const res = { type: "Loaded", data: await submitChallenge(code, this.state.challenge.data.hole.holeId) } as LoadingState<RunResult>;
-      this.setState({ errors: res });
+      this.setState(_ => ({ errors: res }));
     }
   }
 }
