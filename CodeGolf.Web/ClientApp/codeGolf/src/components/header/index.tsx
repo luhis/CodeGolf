@@ -1,15 +1,15 @@
 import { Component, FunctionalComponent, h, RenderableProps } from "preact";
 import { isAdmin, isLoggedIn } from "../../api";
 
-const FuncComp: FunctionalComponent<State> = ({ admin, loggedIn }) =>
+const FuncComp: FunctionalComponent<State & { readonly toggleMenu: (() => void) }> = ({ admin, loggedIn, toggleMenu, showMenu }) =>
     (<nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
-            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false">
+            <a role="button" class={"navbar-burger burger " + (showMenu ? "is-active" : "")} aria-label="menu" aria-expanded="false" onClick={toggleMenu}>
                 <span aria-hidden="true" />
                 <span aria-hidden="true" />
                 <span aria-hidden="true" />
             </a>
-        </div><div class="navbar-menu">
+        </div><div class={"navbar-menu " + (showMenu ? "is-active" : "")}>
             <div class="navbar-start">
                 <a class="navbar-item" href="/">Home</a>
                 <a class="navbar-item" href="/demo">Demo</a>
@@ -24,18 +24,19 @@ const FuncComp: FunctionalComponent<State> = ({ admin, loggedIn }) =>
         </div>
     </nav >);
 
-interface State { readonly admin: boolean; readonly loggedIn: boolean; }
+interface State { readonly admin: boolean; readonly loggedIn: boolean; readonly showMenu: boolean; }
 
 export default class Comp extends Component<{}, State> {
     constructor() {
         super();
-        this.state = { loggedIn: false, admin: false };
+        this.state = { loggedIn: false, admin: false, showMenu: false };
     }
     public readonly componentDidMount = async () => {
         const admin = await isAdmin();
         const loggedIn = await isLoggedIn();
-        this.setState(_ => ({ admin, loggedIn }));
+        this.setState(s => ({ ...s, admin, loggedIn }));
     }
     public readonly render = (_: RenderableProps<{}>, s: Readonly<State>) =>
-        <FuncComp {...s} />
+        <FuncComp {...s} toggleMenu={this.ToggleMenu} />
+    private readonly ToggleMenu = () => this.setState(s => ({ ...s, showMenu: !s.showMenu }));
 }
