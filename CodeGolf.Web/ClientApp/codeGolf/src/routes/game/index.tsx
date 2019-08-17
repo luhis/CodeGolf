@@ -5,7 +5,7 @@ import { getCurrentHole, submitChallenge, tryCompile } from "../../api";
 import { getFunctionDeclaration } from "../../funcDeclaration";
 import { Hole, ifLoaded, LoadingState, RunResult } from "../../types/types";
 import FuncComp from "./funcComp";
-import Notification from "./Notification";
+import Notification from "./notification";
 
 interface State { readonly challenge: LoadingState<Hole | undefined>; readonly code: string; readonly errors: LoadingState<RunResult | undefined>; }
 
