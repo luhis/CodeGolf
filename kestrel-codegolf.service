@@ -2,8 +2,8 @@
 Description=Code Golf website
 
 [Service]
-WorkingDirectory=/var/www/codegolf/CodeGolf/publish/
-ExecStart=/usr/bin/dotnet /var/www/codegolf/CodeGolf/publish/CodeGolf.Web.dll
+WorkingDirectory=/var/www/CodeGolf/publish/
+ExecStart=/usr/bin/dotnet /var/www/CodeGolf/publish/CodeGolf.Web.dll
 Restart=always
 # Restart service after 10 seconds if the dotnet service crashes:
 RestartSec=10

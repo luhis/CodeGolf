@@ -2,8 +2,8 @@
 Description=Code Golf Execution Engine
 
 [Service]
-WorkingDirectory=/var/www/codegolf/CodeGolf/executionServer/
-ExecStart=/usr/bin/dotnet /var/www/codegolf/CodeGolf/executionServer/CodeGolf.ExecutionServer.dll
+WorkingDirectory=/var/www/CodeGolf/executionServer/
+ExecStart=/usr/bin/dotnet /var/www/CodeGolf/executionServer/CodeGolf.ExecutionServer.dll
 Restart=always
 # Restart service after 1 seconds if the dotnet service crashes:
 RestartSec=1
