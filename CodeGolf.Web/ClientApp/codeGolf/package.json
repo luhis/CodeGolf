@@ -65,6 +65,7 @@
     "bulma-toast": "^1.5.1",
     "codemirror": "^5.48.2",
     "lodash": "^4.17.15",
+    "node-loader": "^0.6.0",
     "preact": "^8.3.1",
     "preact-cli-lodash": "^1.1.0",
     "preact-cli-plugin-env-vars": "^1.2.1",
