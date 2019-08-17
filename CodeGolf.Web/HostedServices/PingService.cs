@@ -5,36 +5,35 @@
     using System.Threading.Tasks;
     using CodeGolf.ServiceInterfaces;
     using Microsoft.Extensions.Hosting;
+    using Microsoft.Extensions.Logging;
 
-    public class PingService : IHostedService
+    public class PingService : BackgroundService
     {
+        private readonly ILogger<PingService> logger;
         private readonly IExecutionService svc;
-        private readonly CancellationTokenSource source;
 
-        public PingService(IExecutionService svc)
+        public PingService(IExecutionService svc, ILogger<PingService> logger)
         {
             this.svc = svc;
-            this.source = new CancellationTokenSource();
+            this.logger = logger;
         }
 
-        Task IHostedService.StartAsync(CancellationToken cancellationToken)
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            return this.Loop();
-        }
+            this.logger.LogDebug($"{nameof(PingService)} is starting.");
 
-        Task IHostedService.StopAsync(CancellationToken cancellationToken)
-        {
-            this.source.Cancel();
-            return Task.CompletedTask;
-        }
+            stoppingToken.Register(() =>
+                this.logger.LogDebug($" {nameof(PingService)} background task is stopping."));
 
-        private async Task Loop()
-        {
-            while (!this.source.IsCancellationRequested)
+            while (!stoppingToken.IsCancellationRequested)
             {
+                this.logger.LogDebug($"{nameof(PingService)} task doing background work.");
+
                 await this.svc.Ping();
-                await Task.Delay(TimeSpan.FromSeconds(30), this.source.Token);
+                await Task.Delay(TimeSpan.FromSeconds(30), stoppingToken);
             }
+
+            this.logger.LogDebug($"{nameof(PingService)} background task is stopping.");
         }
     }
 }
