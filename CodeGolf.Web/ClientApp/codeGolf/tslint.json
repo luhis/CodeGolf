@@ -51,6 +51,8 @@
         "prefer-const-enum": { "severity": "warning" },
         "semicolon": [true, "always"],
         "quotemark": [true, "double"],
+        "align": true,
+        "no-consecutive-blank-lines": true,
 
         "no-var-keyword": true,
         "no-parameter-reassignment": true,

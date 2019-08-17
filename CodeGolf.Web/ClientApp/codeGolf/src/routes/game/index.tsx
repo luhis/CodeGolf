@@ -18,6 +18,7 @@ export default class Comp extends Component<{}, State> {
     } as LoadingState<RunResult>;
     this.setState(s => ({ ...s, errors }));
   }, 1000);
+
   constructor() {
     super();
     Notification(async () => {
