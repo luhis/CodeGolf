@@ -37,10 +37,10 @@ const FuncComp: FunctionalComponent<Readonly<Props>> = ({ code, errors, challeng
   return (<section class="section">
     <h1 class="title">Demo</h1>
     <div class="columns">
-      <div class="column">
+      <div class="column is-half">
         <CodeEditor code={code} codeChanged={codeChanged} errors={valueOr(errors, () => undefined)} submitCode={executeCaptcha} />
       </div>
-      <div class="column">
+      <div class="column is-half">
         {challenge.type === "Loaded" ? <ChallengeComp
           challenge={challenge.data}
           onCodeClick={onCodeClick}

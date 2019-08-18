@@ -11,6 +11,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ClientApp\**" />
+    <Compile Remove="Partials\**" />
+    <Content Remove="ClientApp\**" />
+    <Content Remove="Partials\**" />
+    <EmbeddedResource Remove="ClientApp\**" />
+    <EmbeddedResource Remove="Partials\**" />
+    <None Remove="ClientApp\**" />
+    <None Remove="Partials\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
@@ -32,7 +43,6 @@
 
   <ItemGroup>
     <Folder Include="HostedServices\" />
-    <Folder Include="Partials\" />
     <Folder Include="wwwroot\css\" />
   </ItemGroup>
 

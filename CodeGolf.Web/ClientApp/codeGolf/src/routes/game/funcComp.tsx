@@ -37,10 +37,10 @@ const HasChallenge: FunctionalComponent<{
 } & Funcs> = ({ challenge, code, errors, codeChanged, submitCode, onCodeClick }) => (
   challenge ?
     (<div class="columns">
-      <div class="column">
+      <div class="column is-half">
         <CodeEditor code={code} codeChanged={codeChanged} errors={valueOr(errors, () => undefined)} submitCode={submitCode} />
       </div>
-      <div class="column">
+      <div class="column is-half">
         <ChallengeComp
           challenge={challenge.challengeSet}
           onCodeClick={onCodeClick}
