@@ -6,11 +6,20 @@ export const getDemoChallenge = () => axios
   .get<ChallengeSet>("api/Challenge/DemoChallenge")
   .then(response => response.data);
 
-interface HoleInt { readonly challengeSet: ChallengeSet; readonly start: string; readonly end: string; readonly closedAt?: string; }
+const utzParse = (date: string) => new Date(date + "z");
 
+interface HoleInt { readonly challengeSet: ChallengeSet; readonly start: string; readonly end: string; readonly closedAt?: string; }
+interface AttemptInt {
+  readonly rank: number;
+  readonly id: Guid;
+  readonly loginName: string;
+  readonly avatar: string;
+  readonly score: number;
+  readonly timeStamp: string;
+}
 const MapHole = (h?: HoleInt) => {
   if (h) {
-    return { ...h, start: new Date(h.start), end: new Date(h.end), closedAt: h.closedAt ? new Date(h.closedAt) : undefined } as Hole;
+    return { ...h, start: utzParse(h.start), end: utzParse(h.end), closedAt: h.closedAt ? utzParse(h.closedAt) : undefined } as Hole;
   }
 
   // tslint:disable-next-line: no-return-undefined
@@ -76,8 +85,8 @@ export const tryCompile = (challengeId: Guid, code: string) => axios
   })
   .then(response => response.data);
 
-export const getResults = (holeId: Guid) => axios.get<ReadonlyArray<Attempt>>(`./api/Admin/Results/${holeId}`)
-  .then(response => response.data);
+export const getResults = (holeId: Guid) => axios.get<ReadonlyArray<AttemptInt>>(`./api/Admin/Results/${holeId}`)
+  .then(response => response.data).then(attempts => attempts.map(a => ({...a, timeStamp: utzParse(a.timeStamp)} as Attempt)));
 
 export const nextHole = () => axios.post("./api/Admin/nextHole");
 

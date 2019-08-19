@@ -195,7 +195,7 @@ namespace CodeGolf.Web
                     });
 
             app.UseHttpsRedirection();
-            var sfOptions = new StaticFileOptions()
+            var sfOptions = new StaticFileOptions
                                 {
                                     OnPrepareResponse = r =>
                                         {
@@ -211,7 +211,7 @@ namespace CodeGolf.Web
                                             }
                                         }
                                 };
-            app.UseStaticFiles(sfOptions);
+            app.UseStaticFiles();
             app.UseSpaStaticFiles(sfOptions);
 
             app.UseAuthentication();

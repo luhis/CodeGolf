@@ -9,7 +9,7 @@ const Row: FunctionalComponent<{ readonly attempt: Attempt }> = ({ attempt }) =>
   <td><figure class="image is-48x48"><img src={attempt.avatar} /></figure></td>
   <td>{attempt.loginName}</td>
   <td>{attempt.score}</td>
-  <td>{attempt.timeStamp}</td>
+  <td>{attempt.timeStamp.toLocaleTimeString()}</td>
   <td>
     <a target="_blank" href={`/attempt/${attempt.id}`} class="button">
       <FontAwesomeIcon icon={faCode} />&nbsp;View Code

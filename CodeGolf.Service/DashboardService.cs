@@ -119,7 +119,7 @@
                            async (r, i) =>
                            {
                                var user = await this.userRepository.GetByUserId(r.UserId, cancellationToken);
-                               return new AttemptDto(i + 1, r.Id, user.Map(a => a.LoginName).ValueOrDefault(), user.Map(a => a.AvatarUri).ValueOrDefault(), r.Score, r.TimeStamp.ToLocalTime().ToString());
+                               return new AttemptDto(i + 1, r.Id, user.Map(a => a.LoginName).ValueOrDefault(), user.Map(a => a.AvatarUri).ValueOrDefault(), r.Score, r.TimeStamp);
                            }));
         }
     }

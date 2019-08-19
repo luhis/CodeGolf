@@ -35,7 +35,7 @@ export interface Attempt {
     readonly loginName: string;
     readonly avatar: string;
     readonly score: number;
-    readonly timeStamp: string;
+    readonly timeStamp: Date;
 }
 
 export type AttemptWithCode = Attempt & { readonly code: string };
