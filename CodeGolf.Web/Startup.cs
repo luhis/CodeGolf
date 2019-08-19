@@ -201,7 +201,7 @@ namespace CodeGolf.Web
                                         {
                                             var path = r.File.PhysicalPath;
                                             var cacheExtensions =
-                                                new[] { ".css", ".js", ".gif", ".jpg", ".png", ".svg", ".ico" };
+                                                new[] { ".css", ".js", ".gif", ".jpg", ".png", ".svg", ".ico", ".json" };
                                             if (cacheExtensions.Any(path.EndsWith))
                                             {
                                                 var maxAge = TimeSpan.FromDays(7);
