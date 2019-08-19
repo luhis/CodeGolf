@@ -69,15 +69,16 @@ namespace CodeGolf.Unit.Test.Services
         {
             var id = Guid.NewGuid();
             var hole = this.gameRepository.GetGame().Holes.First();
+            var date = new DateTime(2010, 1, 1);
             this.attemptRepository.Setup(a => a.GetAttempts(It.IsAny<Guid>(), CancellationToken.None)).Returns(
                 Task.FromResult<IReadOnlyList<Attempt>>(
-                    new Attempt[] { new Attempt(id, 1, Guid.NewGuid(), string.Empty, 11, new DateTime(2010, 1, 1)), }));
+                    new Attempt[] { new Attempt(id, 1, Guid.NewGuid(), string.Empty, 11, date), }));
             this.userRepository.Setup(a => a.GetByUserId(1, CancellationToken.None))
                 .Returns(Task.FromResult(Option.Some(new User(1, "matt", "matt mccorry", "avatar.png"))));
 
             var scores = this.dashboardService.GetAttempts(hole.HoleId, CancellationToken.None).Result;
 
-            scores.ValueOrFailure().Should().BeEquivalentTo(new AttemptDto(1, id, "matt", "avatar.png", 11, "01/01/2010 00:00:00"));
+            scores.ValueOrFailure().Should().BeEquivalentTo(new AttemptDto(1, id, "matt", "avatar.png", 11, date));
             this.mockRepository.VerifyAll();
         }
 
@@ -105,8 +106,8 @@ namespace CodeGolf.Unit.Test.Services
             scores.HasValue.Should().BeTrue();
             scores.ValueOrFailure().Should().HaveCount(2);
             scores.ValueOrFailure().Should().BeEquivalentTo(
-                new AttemptDto(1, id1, "matt", "avatar.png", 11, now.ToLocalTime().ToString()),
-                new AttemptDto(2, id2, "matt2", "avatar2.png", 12, now.ToLocalTime().ToString()));
+                new AttemptDto(1, id1, "matt", "avatar.png", 11, now),
+                new AttemptDto(2, id2, "matt2", "avatar2.png", 12, now));
             this.mockRepository.VerifyAll();
         }
 
@@ -134,8 +135,8 @@ namespace CodeGolf.Unit.Test.Services
 
             scores.HasValue.Should().BeTrue();
             scores.ValueOrFailure().Should().BeEquivalentTo(
-                new AttemptDto(1, id2, "matt2", "avatar2.png", 11, date2.ToLocalTime().ToString()),
-                new AttemptDto(2, id1, "matt", "avatar.png", 11, date1.ToLocalTime().ToString()));
+                new AttemptDto(1, id2, "matt2", "avatar2.png", 11, date2),
+                new AttemptDto(2, id1, "matt", "avatar.png", 11, date1));
 
             this.mockRepository.VerifyAll();
         }
@@ -161,7 +162,7 @@ namespace CodeGolf.Unit.Test.Services
 
             scores.HasValue.Should().BeTrue();
             scores.ValueOrFailure().Should().BeEquivalentTo(
-                new AttemptDto(1, id1, "matt", "avatar.png", 11, date2.ToLocalTime().ToString()));
+                new AttemptDto(1, id1, "matt", "avatar.png", 11, date2));
 
             this.mockRepository.VerifyAll();
         }
