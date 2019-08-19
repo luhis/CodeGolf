@@ -164,76 +164,77 @@ namespace CodeGolf.Web
 
             var minifiedGAScriptHash = "qEShyXJhwl9qHYlR7p7AwHlpnpEclnzFsPGivkRFOzM=";
 
-            app.UseSecurityHeaders(policies =>
-                    policies
-                        .AddDefaultSecurityHeaders()
-                        .AddStrictTransportSecurityMaxAgeIncludeSubDomains(maxAgeInSeconds: 63072000)
-                        .AddContentSecurityPolicy(b =>
-                        {
-                            b.AddDefaultSrc().Self();
-                            var scripts = b.AddScriptSrc().Self()
-                                .From("https://www.google.com")
-                                .From("https://www.googletagmanager.com")
-                                .From("https://www.gstatic.com")
-                                .From("https://www.google-analytics.com")
-                                .WithHash256("fJYxG/MUxs9b4moaAfLG0e5TxMp0nppc6ulRT3MfHLU=").WithHash256(minifiedGAScriptHash);
-                            if (env.IsDevelopment())
+            app.UseSecurityHeaders(
+                policies => policies.AddDefaultSecurityHeaders()
+                    .AddStrictTransportSecurityMaxAgeIncludeSubDomains(maxAgeInSeconds: 63072000)
+                    .AddContentSecurityPolicy(
+                        b =>
                             {
-                                scripts.UnsafeEval();
-                            }
+                                b.AddDefaultSrc().Self();
+                                var scripts = b.AddScriptSrc().Self().From("https://www.google.com")
+                                    .From("https://www.googletagmanager.com").From("https://www.gstatic.com")
+                                    .From("https://www.google-analytics.com")
+                                    .WithHash256("fJYxG/MUxs9b4moaAfLG0e5TxMp0nppc6ulRT3MfHLU=")
+                                    .WithHash256(minifiedGAScriptHash);
+                                if (env.IsDevelopment())
+                                {
+                                    scripts.UnsafeEval();
+                                }
 
-                            b.AddImgSrc().Self().From("https://www.google-analytics.com").From("https://*.githubusercontent.com");
-                            b.AddFrameSource().Self().From("https://www.google.com");
-                            b.AddStyleSrc().Self().UnsafeInline().Blob();
-                            b.AddConnectSrc().Self().From("https://localhost:8080");
-                        }));
+                                b.AddImgSrc().Self().From("https://www.google-analytics.com")
+                                    .From("https://*.githubusercontent.com");
+                                b.AddFrameSource().Self().From("https://www.google.com");
+                                b.AddStyleSrc().Self().UnsafeInline().Blob();
+                                b.AddConnectSrc().Self().From("https://localhost:8080");
+                            }));
 
-            app.UseForwardedHeaders(new ForwardedHeadersOptions
-            {
-                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
-            });
+            app.UseForwardedHeaders(
+                new ForwardedHeadersOptions
+                    {
+                        ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
+                    });
 
             app.UseHttpsRedirection();
-            app.UseStaticFiles(new StaticFileOptions()
-            {
-                OnPrepareResponse =
-                    r =>
-                    {
-                        var path = r.File.PhysicalPath;
-                        var cacheExtensions = new[] { ".css", ".js", ".gif", ".jpg", ".png", ".svg", ".ico" };
-                        if (cacheExtensions.Any(path.EndsWith))
-                        {
-                            var maxAge = TimeSpan.FromDays(7);
-                            r.Context.Response.Headers.Add("Cache-Control", "max-age=" + maxAge.TotalSeconds.ToString("0"));
-                        }
-                    },
-            });
-
-            app.UseSpaStaticFiles();
+            var sfOptions = new StaticFileOptions()
+                                {
+                                    OnPrepareResponse = r =>
+                                        {
+                                            var path = r.File.PhysicalPath;
+                                            var cacheExtensions =
+                                                new[] { ".css", ".js", ".gif", ".jpg", ".png", ".svg", ".ico" };
+                                            if (cacheExtensions.Any(path.EndsWith))
+                                            {
+                                                var maxAge = TimeSpan.FromDays(7);
+                                                r.Context.Response.Headers.Add(
+                                                    "Cache-Control",
+                                                    "max-age=" + maxAge.TotalSeconds.ToString("0"));
+                                            }
+                                        }
+                                };
+            app.UseStaticFiles(sfOptions);
+            app.UseSpaStaticFiles(sfOptions);
 
             app.UseAuthentication();
             app.UseWebMarkupMin();
 
             app.UseCookiePolicy();
-            app.UseSignalR(routes =>
-            {
-                routes.MapHub<RefreshHub>("/refreshHub");
-            });
+            app.UseSignalR(routes => { routes.MapHub<RefreshHub>("/refreshHub"); });
             app.UseMvc();
 
-            app.UseSpa(spa =>
-                {
-                    spa.Options.SourcePath = "ClientApp/codeGolf/";
-
-                    if (env.IsDevelopment())
+            app.UseSpa(
+                spa =>
                     {
-                        // run npm process with client app
-                        // spa.UseReactDevelopmentServer(npmScript: "start:development");
-                        // if you just prefer to proxy requests from client app, use proxy to SPA dev server instead:
-                        // app should be already running before starting a .NET client
-                        spa.UseProxyToSpaDevelopmentServer("http://localhost:8080"); // your Vue app port
-                    }
-                });
+                        spa.Options.SourcePath = "ClientApp/codeGolf/";
+
+                        if (env.IsDevelopment())
+                        {
+                            // run npm process with client app
+                            // spa.UseReactDevelopmentServer(npmScript: "start:development");
+                            // if you just prefer to proxy requests from client app, use proxy to SPA dev server instead:
+                            // app should be already running before starting a .NET client
+                            spa.UseProxyToSpaDevelopmentServer("http://localhost:8080"); // your Vue app port
+                        }
+                    });
 
             codeGolfContext.SeedDatabase().Wait();
             runner.WakeUpCompiler(CancellationToken.None);
