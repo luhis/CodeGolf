@@ -29,6 +29,7 @@
             SetupHole.Setup(modelBuilder.Entity<HoleInstance>());
             SetupAttempt.Setup(modelBuilder.Entity<Attempt>());
             SetupUser.Setup(modelBuilder.Entity<User>());
+            //// SetupGame.Setup(modelBuilder.Entity<Game>());
         }
     }
 }

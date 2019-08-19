@@ -10,6 +10,6 @@
             this.Holes = EnsureArg.IsNotNull(holes, nameof(holes));
         }
 
-        public IReadOnlyList<Hole> Holes { get; }
+        public IReadOnlyList<Hole> Holes { get; private set; }
     }
 }
