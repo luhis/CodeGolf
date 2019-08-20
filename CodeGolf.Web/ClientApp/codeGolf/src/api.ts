@@ -3,7 +3,7 @@ import axios from "axios";
 import { Attempt, AttemptWithCode, ChallengeSet, CodeError, Guid, Hole, RunError, RunResult } from "./types/types";
 
 export const getDemoChallenge = () => axios
-  .get<ChallengeSet>("api/Challenge/DemoChallenge")
+  .get<ChallengeSet>("/api/Challenge/DemoChallenge")
   .then(response => response.data);
 
 const utzParse = (date: string) => new Date(date + "z");
@@ -27,17 +27,17 @@ const MapHole = (h?: HoleInt) => {
 };
 
 export const getCurrentHole = () => axios
-  .get<HoleInt | undefined>("api/Challenge/CurrentChallenge")
+  .get<HoleInt | undefined>("/api/Challenge/CurrentChallenge")
   .then(response => MapHole(response.data));
 
 export const getCurrentChallenge = () => axios
-  .get<HoleInt | undefined>("api/Admin/CurrentHole")
+  .get<HoleInt | undefined>("/api/Admin/CurrentHole")
   .then(response => MapHole(response.data));
 
 interface Result { readonly score?: number; readonly runErrors?: ReadonlyArray<RunError>; readonly compileErrors?: ReadonlyArray<CodeError>; }
 
 export const submitDemo = (code: string, reCaptcha: string): Promise<RunResult> => axios
-  .post<Result>("api/Challenge/SubmitDemo", JSON.stringify(code), {
+  .post<Result>("/api/Challenge/SubmitDemo", JSON.stringify(code), {
     headers: {
       "Content-Type": "application/json",
       "g-recaptcha-response": reCaptcha
@@ -58,7 +58,7 @@ export const submitDemo = (code: string, reCaptcha: string): Promise<RunResult> 
   });
 
 export const submitChallenge = (code: string, holeId: Guid) => axios
-  .post<Result>(`api/Challenge/SubmitChallenge/${holeId}`, JSON.stringify(code), {
+  .post<Result>(`/api/Challenge/SubmitChallenge/${holeId}`, JSON.stringify(code), {
     headers: {
       "Content-Type": "application/json"
     }
@@ -78,19 +78,19 @@ export const submitChallenge = (code: string, holeId: Guid) => axios
   });
 
 export const tryCompile = (challengeId: Guid, code: string) => axios
-  .post<ReadonlyArray<CodeError>>(`api/code/TryCompile/${challengeId}`, JSON.stringify(code), {
+  .post<ReadonlyArray<CodeError>>(`/api/code/TryCompile/${challengeId}`, JSON.stringify(code), {
     headers: {
       "Content-Type": "application/json"
     }
   })
   .then(response => response.data);
 
-export const getResults = (holeId: Guid) => axios.get<ReadonlyArray<AttemptInt>>(`./api/Admin/Results/${holeId}`)
+export const getResults = (holeId: Guid) => axios.get<ReadonlyArray<AttemptInt>>(`/api/Admin/Results/${holeId}`)
   .then(response => response.data).then(attempts => attempts.map(a => ({...a, timeStamp: utzParse(a.timeStamp)} as Attempt)));
 
-export const nextHole = () => axios.post("./api/Admin/nextHole");
+export const nextHole = () => axios.post("/api/Admin/nextHole");
 
-export const endHole = () => axios.post("./api/Admin/endHole");
+export const endHole = () => axios.post("/api/Admin/endHole");
 
 export const isLoggedIn = () => axios.get<boolean>("/api/Access/isLoggedIn").then(a => a.data);
 

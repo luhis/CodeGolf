@@ -15,7 +15,7 @@ interface Props {
 }
 
 const openInAction = (actionName: string, code: string) =>
-    window.open(`./api/code/${actionName}?Code=${code}`, "_blank");
+    window.open(`/api/code/${actionName}?Code=${code}`, "_blank");
 
 const getScore = (code: string) => code
     .replace(/\s/g, "")
