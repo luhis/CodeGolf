@@ -19,7 +19,7 @@ const FuncComp: FunctionalComponent<State & { readonly toggleMenu: (() => void) 
 
                 {admin ? <a class="navbar-item" href="/dashboard">Dashboard</a> : null}
                 {admin ? <a class="navbar-item" href="/admin">Admin</a> : null}
-                <a class="navbar-item" target="_blank" href="https://codegolf.stackexchange.com/questions/173/tips-for-code-golfing-in-c">Tips</a>
+                <a class="navbar-item" target="_blank" rel="noopener" href="https://codegolf.stackexchange.com/questions/173/tips-for-code-golfing-in-c">Tips</a>
             </div>
         </div>
     </nav >);
