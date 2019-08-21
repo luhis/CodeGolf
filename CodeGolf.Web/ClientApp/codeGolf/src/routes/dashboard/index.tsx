@@ -1,4 +1,4 @@
-import { HubConnectionBuilder } from "@aspnet/signalr";
+import { HubConnection, HubConnectionBuilder } from "@aspnet/signalr";
 import { Component, h, RenderableProps } from "preact";
 import { route } from "preact-router";
 
@@ -6,19 +6,26 @@ import { endHole, getCurrentChallenge, getResults, nextHole } from "../../api";
 import { Attempt, Hole, LoadingState } from "../../types/types";
 import FuncComp from "./funcComp";
 
-interface State { readonly currentHole: LoadingState<Hole | undefined>; readonly attempts: LoadingState<ReadonlyArray<Attempt>>; }
+interface State { 
+  readonly currentHole: LoadingState<Hole | undefined>; 
+  readonly attempts: LoadingState<ReadonlyArray<Attempt>>;
+  readonly connection: HubConnection;
+ }
 
 export default class Comp extends Component<{}, State> {
   constructor() {
     super();
     const connection = new HubConnectionBuilder().withUrl("/refreshHub").build();
     connection.on("newAnswer", this.getResults);
-    connection.start().catch(err => console.error(err.toString()));
-    this.state = { currentHole: { type: "Loading" }, attempts: { type: "Loaded", data: [] } };
+    this.state = { currentHole: { type: "Loading" }, attempts: { type: "Loaded", data: [] }, connection };
   }
   public readonly componentDidMount = async () => {
+    await this.state.connection.start().catch(err => console.error(err.toString()));
     await this.getHole();
     await this.getResults();
+  }
+  public readonly componentWillUnmount = () => {
+    return this.state.connection.stop();
   }
   public readonly render = (_: RenderableProps<{}>, { currentHole, attempts }: Readonly<State>) => {
     if (currentHole.type === "Loaded") {

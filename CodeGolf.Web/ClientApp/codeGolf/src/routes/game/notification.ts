@@ -21,6 +21,7 @@ const setup = (onUpdate: (() => void)) => {
     });
     connection.on("newRound", onUpdate);
     connection.start().catch(err => console.error(err.toString()));
+    return connection;
 };
 
 export default setup;

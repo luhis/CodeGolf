@@ -1,3 +1,4 @@
+import { HubConnection } from "@aspnet/signalr";
 import { debounce } from "lodash";
 import { Component, h, RenderableProps } from "preact";
 
@@ -7,7 +8,12 @@ import { Hole, ifLoaded, LoadingState, RunResult } from "../../types/types";
 import FuncComp from "./funcComp";
 import Notification from "./notification";
 
-interface State { readonly challenge: LoadingState<Hole | undefined>; readonly code: string; readonly errors: LoadingState<RunResult | undefined>; }
+interface State {
+  readonly challenge: LoadingState<Hole | undefined>;
+  readonly code: string;
+  readonly errors: LoadingState<RunResult | undefined>;
+  readonly connection: HubConnection;
+}
 
 export default class Comp extends Component<{}, State> {
   private readonly tryCompile = debounce(async () => {
@@ -21,16 +27,19 @@ export default class Comp extends Component<{}, State> {
 
   constructor() {
     super();
-    Notification(async () => {
+    const connection = Notification(async () => {
       this.setState(s => ({ ...s, challenge: { type: "Loading" } }));
       const challenge = await getCurrentHole();
       this.setState(s => ({ ...s, challenge: { type: "Loaded", data: challenge }, errors: { type: "Loaded", data: undefined }, code: "" }));
     });
-    this.state = { challenge: { type: "Loading" }, code: "", errors: { type: "Loaded", data: undefined } };
+    this.state = { challenge: { type: "Loading" }, code: "", errors: { type: "Loaded", data: undefined }, connection };
   }
   public readonly componentDidMount = async () => {
     const challenge = await getCurrentHole();
     this.setState((s => ({ ...s, challenge: { type: "Loaded", data: challenge } })));
+  }
+  public readonly componentWillUnmount = () => {
+    this.state.connection.stop();
   }
   public readonly render = (_: RenderableProps<{}>, { errors, code, challenge }: Readonly<State>) =>
     <FuncComp code={code} errors={errors} challenge={challenge} codeChanged={this.codeChanged} submitCode={this.submitCode} onCodeClick={this.onCodeClick} />
