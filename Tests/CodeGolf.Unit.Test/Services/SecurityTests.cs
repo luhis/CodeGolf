@@ -3,6 +3,8 @@ namespace CodeGolf.Unit.Test.Services
     using System;
     using System.Collections.Generic;
     using System.Threading;
+    using System.Threading.Tasks;
+
     using CodeGolf.Domain;
     using CodeGolf.ExecutionServer;
     using CodeGolf.Persistence.Static;
@@ -21,9 +23,9 @@ namespace CodeGolf.Unit.Test.Services
         private readonly IReadOnlyList<ParamDescription> noParams = new ParamDescription[] { };
 
         [Fact]
-        public void NotAllowFileAccess()
+        public async Task NotAllowFileAccess()
         {
-            var r = this.codeGolfService.Score(
+            var r = await this.codeGolfService.Score(
                 "public string Main(){System.IO.File.ReadAllBytes(\"a.txt\");return \"a\";}",
                 new ChallengeSet<string>(
                     Guid.NewGuid(),
@@ -31,17 +33,17 @@ namespace CodeGolf.Unit.Test.Services
                     "b",
                     this.noParams,
                     new[] { new Challenge<string>(new object[0], "Hello World") }),
-                CancellationToken.None).Result;
+                CancellationToken.None);
             r.AsT2.Should().BeEquivalentTo(new CompileErrorMessage(
                 1, 21, 35, "The type or namespace name 'File' does not exist in the namespace 'System.IO' (are you missing an assembly reference?)"));
         }
 
         [Fact]
-        public void NotAllowReflection()
+        public async Task NotAllowReflection()
         {
             var code = "public string Main(){\n" + "Assembly assembly = Assembly.LoadFrom (\"testdll.dll\");\n"
                                                  + "return \"a\";\n}";
-            var r = this.codeGolfService.Score(
+            var r = await this.codeGolfService.Score(
                 code,
                 new ChallengeSet<string>(
                     Guid.NewGuid(),
@@ -49,7 +51,7 @@ namespace CodeGolf.Unit.Test.Services
                     "b",
                     this.noParams,
                     new[] { new Challenge<string>(new object[0], "Hello World") }),
-                CancellationToken.None).Result;
+                CancellationToken.None);
             r.AsT2.Should().BeEquivalentTo(
                 new CompileErrorMessage(
                     2, 0, 8, "The type or namespace name 'Assembly' could not be found (are you missing a using directive or an assembly reference?)"),
@@ -57,12 +59,12 @@ namespace CodeGolf.Unit.Test.Services
         }
 
         [Fact]
-        public void NotAllowAdditionalUsings()
+        public async Task NotAllowAdditionalUsings()
         {
             var code = "using System.Reflection;" + "public string Main(){"
                                                   + "Assembly assembly = Assembly.LoadFrom (\"testdll.dll\");"
                                                   + "return \"a\";}";
-            var r = this.codeGolfService.Score(
+            var r = await this.codeGolfService.Score(
                 code,
                 new ChallengeSet<string>(
                     Guid.NewGuid(),
@@ -70,7 +72,7 @@ namespace CodeGolf.Unit.Test.Services
                     "b",
                     this.noParams,
                     new[] { new Challenge<string>(new object[0], "Hello World") }),
-                CancellationToken.None).Result;
+                CancellationToken.None);
             r.AsT2.Should().BeEquivalentTo(
                 new CompileErrorMessage(6, -3, -3, "} expected"),
                 new CompileErrorMessage(1, 0, 24, "A using clause must precede all other elements defined in the namespace except extern alias declarations"),
@@ -80,11 +82,11 @@ namespace CodeGolf.Unit.Test.Services
         }
 
         [Fact]
-        public void HandleDoubleClasses()
+        public async Task HandleDoubleClasses()
         {
             var code = "}" + "using System.Reflection;" + "public class Naughty {" + "public string Main(){"
                        + "return \"a\";}";
-            var r = this.codeGolfService.Score(
+            var r = await this.codeGolfService.Score(
                 code,
                 new ChallengeSet<string>(
                     Guid.NewGuid(),
@@ -92,7 +94,7 @@ namespace CodeGolf.Unit.Test.Services
                     "b",
                     this.noParams,
                     new[] { new Challenge<string>(new object[0], "Hello World") }),
-                CancellationToken.None).Result;
+                CancellationToken.None);
             r.AsT2.Should().BeEquivalentTo(new CompileErrorMessage(
                 1, 1, 25, "A using clause must precede all other elements defined in the namespace except extern alias declarations"));
         }

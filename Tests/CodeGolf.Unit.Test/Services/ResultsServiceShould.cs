@@ -44,17 +44,17 @@ namespace CodeGolf.Unit.Test.Services
         }
 
         [Fact]
-        public void GetFinalScoresNone()
+        public async Task GetFinalScoresNone()
         {
             this.attemptRepository.Setup(a => a.GetAttempts(It.IsAny<Guid>(), CancellationToken.None))
                 .Returns(Task.FromResult<IReadOnlyList<Attempt>>(new Attempt[] { }));
-            var scores = this.dashboardService.GetFinalScores(CancellationToken.None).Result;
+            var scores = await this.dashboardService.GetFinalScores(CancellationToken.None);
             scores.Should().BeEquivalentTo();
             this.mockRepository.VerifyAll();
         }
 
         [Fact]
-        public void GetFinalScoresOneUser()
+        public async Task GetFinalScoresOneUser()
         {
             this.attemptRepository.Setup(a => a.GetAttempts(It.IsAny<Guid>(), CancellationToken.None)).Returns(
                 Task.FromResult<IReadOnlyList<Attempt>>(
@@ -62,14 +62,14 @@ namespace CodeGolf.Unit.Test.Services
             this.userRepository.Setup(a => a.GetByUserId(1, CancellationToken.None))
                 .Returns(Task.FromResult(Option.Some(new User(1, "matt", "matt mccorry", "avatar.png"))));
 
-            var scores = this.dashboardService.GetFinalScores(CancellationToken.None).Result;
+            var scores = await this.dashboardService.GetFinalScores(CancellationToken.None);
 
             scores.Should().BeEquivalentTo(new ResultDto(1, "matt", "avatar.png", 6));
             this.mockRepository.VerifyAll();
         }
 
         [Fact]
-        public void GetFinalScoresTwoUsers()
+        public async Task GetFinalScoresTwoUsers()
         {
             this.attemptRepository.Setup(a => a.GetAttempts(It.IsAny<Guid>(), CancellationToken.None)).Returns(
                 Task.FromResult<IReadOnlyList<Attempt>>(
@@ -83,7 +83,7 @@ namespace CodeGolf.Unit.Test.Services
             this.userRepository.Setup(a => a.GetByUserId(2, CancellationToken.None))
                 .Returns(Task.FromResult(Option.Some(new User(2, "matt2", "matt2 mccorry", "avatar2.png"))));
 
-            var scores = this.dashboardService.GetFinalScores(CancellationToken.None).Result;
+            var scores = await this.dashboardService.GetFinalScores(CancellationToken.None);
 
             scores.Should().BeEquivalentTo(new ResultDto(1, "matt", "avatar.png", 6), new ResultDto(2, "matt2", "avatar2.png", 4));
             this.mockRepository.VerifyAll();

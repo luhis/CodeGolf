@@ -4,6 +4,8 @@ namespace CodeGolf.Unit.Test.Services
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
+    using System.Threading.Tasks;
+
     using CodeGolf.Domain;
     using CodeGolf.ExecutionServer;
     using CodeGolf.Persistence.Static;
@@ -23,9 +25,9 @@ namespace CodeGolf.Unit.Test.Services
             new ParamDescription[] { };
 
         [Fact]
-        public void ReturnCorrectResultForHelloWorld()
+        public async Task ReturnCorrectResultForHelloWorld()
         {
-            var r = this.codeGolfService.Score(
+            var r = await this.codeGolfService.Score(
                 "public string Main() => \"Hello World\";",
                 new ChallengeSet<string>(
                     Guid.NewGuid(),
@@ -33,14 +35,14 @@ namespace CodeGolf.Unit.Test.Services
                     "b",
                     this.noParams,
                     new[] { new Challenge<string>(new object[0], "Hello World") }),
-                CancellationToken.None).Result;
+                CancellationToken.None);
             r.AsT0.Should().Be(33);
         }
 
         [Fact]
-        public void ReturnACompileFailure()
+        public async Task ReturnACompileFailure()
         {
-            var r = this.codeGolfService.Score(
+            var r = await this.codeGolfService.Score(
                 "public string Main() => \"Hello World\";;",
                 new ChallengeSet<string>(
                     Guid.NewGuid(),
@@ -48,15 +50,15 @@ namespace CodeGolf.Unit.Test.Services
                     "b",
                     this.noParams,
                     new[] { new Challenge<string>(new object[0], "Hello World") }),
-                CancellationToken.None).Result;
+                CancellationToken.None);
             r.AsT2.Should().BeEquivalentTo(new CompileErrorMessage(
                 1, 38, 39, "Invalid token ';' in class, struct, or interface member declaration"));
         }
 
         [Fact]
-        public void ReturnAResultFailure()
+        public async Task ReturnAResultFailure()
         {
-            var r = this.codeGolfService.Score(
+            var r = await this.codeGolfService.Score(
                 "public string Main() => \"Hello X World\";",
                 new ChallengeSet<string>(
                     Guid.NewGuid(),
@@ -64,7 +66,7 @@ namespace CodeGolf.Unit.Test.Services
                     "b",
                     this.noParams,
                     new[] { new Challenge<string>(new object[0], "Hello World") }),
-                CancellationToken.None).Result;
+                CancellationToken.None);
             r.AsT1.First().Error.Should().BeEquivalentTo(
                 "Return value incorrect. Expected: \"Hello World\", Found: \"Hello X World\"");
         }

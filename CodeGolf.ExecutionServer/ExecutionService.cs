@@ -47,7 +47,9 @@
                                                         null,
                                                         castArgs.Append(source.Token).ToArray(),
                                                         CultureInfo.InvariantCulture),
-                                                    source.Token),
+                                                    source.Token,
+                                                    TaskCreationOptions.None,
+                                                    TaskScheduler.Current),
                                                 null);
                                         }
                                         catch (Exception e)

@@ -16,7 +16,7 @@ namespace CodeGolf.Unit.Test.Domain
             new ParamDescription[] { new ParamDescription(typeof(string), "s"), };
 
         [Fact]
-        public void ReturnFalseResultWhenIncorrectWithArray()
+        public async Task ReturnFalseResultWhenIncorrectWithArray()
         {
             var a = (IChallengeSet)new ChallengeSetArray<string>(
                 Guid.NewGuid(),
@@ -24,15 +24,15 @@ namespace CodeGolf.Unit.Test.Domain
                 "b",
                 this.stringParam,
                 new[] { new Challenge<string[]>(new object[] { "test" }, new string[] { "a" }) });
-            var r = a.GetResults(
+            var r = await a.GetResults(
                 new CompileRunner(
                     o => Task.FromResult<IReadOnlyList<Option<object, string>>>(
-                        new[] { Option.Some<object, string>(new[] { "testXX" }) }))).Result;
+                        new[] { Option.Some<object, string>(new[] { "testXX" }) })));
             r.Single().Error.Should().NotBeNull();
         }
 
         [Fact]
-        public void ReturnFalseResultWhenIncorrectWithEmptyArray()
+        public async Task ReturnFalseResultWhenIncorrectWithEmptyArray()
         {
             var a = (IChallengeSet)new ChallengeSetArray<string>(
                 Guid.NewGuid(),
@@ -40,15 +40,15 @@ namespace CodeGolf.Unit.Test.Domain
                 "b",
                 this.stringParam,
                 new[] { new Challenge<string[]>(new object[] { "test" }, new string[] { "a" }), });
-            var r = a.GetResults(
+            var r = await a.GetResults(
                 new CompileRunner(
                     o => Task.FromResult<IReadOnlyList<Option<object, string>>>(
-                        new[] { Option.Some<object, string>(new string[] { }) }))).Result;
+                        new[] { Option.Some<object, string>(new string[] { }) })));
             r.Single().Error.Should().NotBeNull();
         }
 
         [Fact]
-        public void ReturnFalseResultWhenIncorrectWithNullInArray()
+        public async Task ReturnFalseResultWhenIncorrectWithNullInArray()
         {
             var a = (IChallengeSet)new ChallengeSetArray<string>(
                 Guid.NewGuid(),
@@ -56,15 +56,15 @@ namespace CodeGolf.Unit.Test.Domain
                 "b",
                 this.stringParam,
                 new[] { new Challenge<string[]>(new object[] { "test" }, new string[] { "a" }), });
-            var r = a.GetResults(
+            var r = await a.GetResults(
                 new CompileRunner(
                     o => Task.FromResult<IReadOnlyList<Option<object, string>>>(
-                        new[] { Option.Some<object, string>(new string[] { null }) }))).Result;
+                        new[] { Option.Some<object, string>(new string[] { null }) })));
             r.Single().Error.Should().NotBeNull();
         }
 
         [Fact]
-        public void ReturnFalseResultWhenIncorrectWithNull()
+        public async Task ReturnFalseResultWhenIncorrectWithNull()
         {
             var a = (IChallengeSet)new ChallengeSetArray<string>(
                 Guid.NewGuid(),
@@ -72,10 +72,10 @@ namespace CodeGolf.Unit.Test.Domain
                 "b",
                 this.stringParam,
                 new[] { new Challenge<string[]>(new object[] { "test" }, new string[] { "a" }), });
-            var r = a.GetResults(
+            var r = await a.GetResults(
                 new CompileRunner(
                     o => Task.FromResult<IReadOnlyList<Option<object, string>>>(
-                        new[] { Option.Some<object, string>(null) }))).Result;
+                        new[] { Option.Some<object, string>(null) })));
             r.Single().Error.Should().NotBeNull();
         }
     }

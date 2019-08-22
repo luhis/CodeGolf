@@ -40,7 +40,7 @@ namespace CodeGolf.Unit.Test.Domain
         }
 
         [Fact]
-        public void ReturnTrueResultWhenCorrect()
+        public async Task ReturnTrueResultWhenCorrect()
         {
             var a = (IChallengeSet)new ChallengeSet<string>(
                 Guid.NewGuid(),
@@ -48,15 +48,15 @@ namespace CodeGolf.Unit.Test.Domain
                 "b",
                 this.stringParam,
                 new[] { new Challenge<string>(new object[] { "test" }, "test") });
-            var r = a.GetResults(
+            var r = await a.GetResults(
                 new CompileRunner(
                     o => Task.FromResult<IReadOnlyList<Option<object, string>>>(
-                        new[] { Option.Some<object, string>("test") }))).Result;
+                        new[] { Option.Some<object, string>("test") })));
             r.Single().Error.Should().BeNull();
         }
 
         [Fact]
-        public void ReturnFalseResultWhenIncorrect()
+        public async Task ReturnFalseResultWhenIncorrect()
         {
             var a = (IChallengeSet)new ChallengeSet<string>(
                 Guid.NewGuid(),
@@ -64,10 +64,10 @@ namespace CodeGolf.Unit.Test.Domain
                 "b",
                 this.stringParam,
                 new[] { new Challenge<string>(new object[] { "test" }, "test") });
-            var r = a.GetResults(
+            var r = await a.GetResults(
                 new CompileRunner(
                     o => Task.FromResult<IReadOnlyList<Option<object, string>>>(
-                        new[] { Option.Some<object, string>("testXX") }))).Result;
+                        new[] { Option.Some<object, string>("testXX") })));
             r.Single().Error.Should().NotBeNull();
         }
     }

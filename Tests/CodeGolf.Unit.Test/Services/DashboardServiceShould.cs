@@ -53,19 +53,19 @@ namespace CodeGolf.Unit.Test.Services
         }
 
         [Fact]
-        public void GetAttemptsNone()
+        public async Task GetAttemptsNone()
         {
             var hole = this.gameRepository.GetGame().Holes.First();
             this.attemptRepository.Setup(a => a.GetAttempts(It.IsAny<Guid>(), CancellationToken.None))
                 .Returns(Task.FromResult<IReadOnlyList<Attempt>>(new Attempt[] { }));
-            var scores = this.dashboardService.GetAttempts(hole.HoleId, CancellationToken.None).Result;
+            var scores = await this.dashboardService.GetAttempts(hole.HoleId, CancellationToken.None);
             scores.HasValue.Should().BeTrue();
             scores.ValueOrFailure().Should().HaveCount(0);
             this.mockRepository.VerifyAll();
         }
 
         [Fact]
-        public void GetAttemptsSome()
+        public async Task GetAttemptsSome()
         {
             var id = Guid.NewGuid();
             var hole = this.gameRepository.GetGame().Holes.First();
@@ -76,14 +76,14 @@ namespace CodeGolf.Unit.Test.Services
             this.userRepository.Setup(a => a.GetByUserId(1, CancellationToken.None))
                 .Returns(Task.FromResult(Option.Some(new User(1, "matt", "matt mccorry", "avatar.png"))));
 
-            var scores = this.dashboardService.GetAttempts(hole.HoleId, CancellationToken.None).Result;
+            var scores = await this.dashboardService.GetAttempts(hole.HoleId, CancellationToken.None);
 
             scores.ValueOrFailure().Should().BeEquivalentTo(new AttemptDto(1, id, "matt", "avatar.png", 11, date));
             this.mockRepository.VerifyAll();
         }
 
         [Fact]
-        public void GetAttemptsOrderedByScore()
+        public async Task GetAttemptsOrderedByScore()
         {
             var id1 = Guid.NewGuid();
             var id2 = Guid.NewGuid();
@@ -101,7 +101,7 @@ namespace CodeGolf.Unit.Test.Services
             this.userRepository.Setup(a => a.GetByUserId(2, CancellationToken.None))
                 .Returns(Task.FromResult(Option.Some(new User(2, "matt2", "matt2 mccorry", "avatar2.png"))));
 
-            var scores = this.dashboardService.GetAttempts(hole.HoleId, CancellationToken.None).Result;
+            var scores = await this.dashboardService.GetAttempts(hole.HoleId, CancellationToken.None);
 
             scores.HasValue.Should().BeTrue();
             scores.ValueOrFailure().Should().HaveCount(2);
@@ -112,7 +112,7 @@ namespace CodeGolf.Unit.Test.Services
         }
 
         [Fact]
-        public void GetAttemptsOrderedByTime()
+        public async Task GetAttemptsOrderedByTime()
         {
             var id1 = Guid.NewGuid();
             var id2 = Guid.NewGuid();
@@ -131,7 +131,7 @@ namespace CodeGolf.Unit.Test.Services
             this.userRepository.Setup(a => a.GetByUserId(2, CancellationToken.None))
                 .Returns(Task.FromResult(Option.Some(new User(2, "matt2", "matt2 mccorry", "avatar2.png"))));
 
-            var scores = this.dashboardService.GetAttempts(hole.HoleId, CancellationToken.None).Result;
+            var scores = await this.dashboardService.GetAttempts(hole.HoleId, CancellationToken.None);
 
             scores.HasValue.Should().BeTrue();
             scores.ValueOrFailure().Should().BeEquivalentTo(
@@ -142,7 +142,7 @@ namespace CodeGolf.Unit.Test.Services
         }
 
         [Fact]
-        public void ReturnEldestWhenUserHasIdenticalScores()
+        public async Task ReturnEldestWhenUserHasIdenticalScores()
         {
             var id1 = Guid.NewGuid();
             var date1 = new DateTime(2000, 1, 1, 2, 0, 0);
@@ -158,7 +158,7 @@ namespace CodeGolf.Unit.Test.Services
             this.userRepository.Setup(a => a.GetByUserId(1, CancellationToken.None))
                 .Returns(Task.FromResult(Option.Some(new User(1, "matt", "matt mccorry", "avatar.png"))));
 
-            var scores = this.dashboardService.GetAttempts(hole.HoleId, CancellationToken.None).Result;
+            var scores = await this.dashboardService.GetAttempts(hole.HoleId, CancellationToken.None);
 
             scores.HasValue.Should().BeTrue();
             scores.ValueOrFailure().Should().BeEquivalentTo(
