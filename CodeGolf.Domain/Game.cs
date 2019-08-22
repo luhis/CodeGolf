@@ -1,15 +1,21 @@
 ﻿namespace CodeGolf.Domain
 {
-    using System.Collections.Generic;
+    using System;
     using EnsureThat;
 
     public class Game
     {
-        public Game(IReadOnlyList<Hole> holes)
+        public Game(string accessKey)
         {
-            this.Holes = EnsureArg.IsNotNull(holes, nameof(holes));
+            this.AccessKey = EnsureArg.IsNotNull(accessKey, nameof(accessKey));
         }
 
-        public IReadOnlyList<Hole> Holes { get; private set; }
+        public Guid Id { get; private set; }
+
+        public string AccessKey { get; private set; }
+
+        public int Owner { get; private set; }
+
+        public DateTime Created { get; private set; }
     }
 }

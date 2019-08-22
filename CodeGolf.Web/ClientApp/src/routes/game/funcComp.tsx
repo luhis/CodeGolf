@@ -2,10 +2,11 @@ import { FunctionalComponent, h } from "preact";
 
 import ChallengeComp from "../../components/challenge";
 import CodeEditor from "../../components/codeEditor";
+import GamePicker from "../../components/gamePicker";
 import Loading from "../../components/loading";
 import ErrorsComp from "../../components/results";
 import { ifLoaded, LoadingState } from "../../types/appTypes";
-import { CompileError, Hole, RunResultSet, Score } from "../../types/types";
+import { CompileError, GameId, Hole, RunResultSet, Score } from "../../types/types";
 
 interface Funcs {
   readonly codeChanged: (s: string) => Promise<void>;
@@ -15,10 +16,11 @@ interface Funcs {
 
 type Props = {
   readonly code: string;
+  readonly gameId: GameId | undefined;
   readonly runResult: LoadingState<Score | CompileError | undefined>;
   readonly runErrors: RunResultSet | undefined;
   readonly challenge: LoadingState<Hole | undefined>;
-} & Funcs;
+} & Funcs & { readonly verifyPasscode: (passcode: string) => Promise<void> };
 
 const PleaseWait: FunctionalComponent = () => (<div class="notification is-info">
   Please wait for the hole to begin
@@ -48,11 +50,14 @@ const HasChallenge: FunctionalComponent<{
     </div>) : <PleaseWait />
 );
 
-const FuncComp: FunctionalComponent<Props> = ({ code, runResult, runErrors, challenge, codeChanged, onCodeClick, submitCode }) => (<section class="section">
-  <h1 class="title">Game</h1>
-  {ifLoaded(challenge, c =>
-    <HasChallenge challenge={c} code={code} runResult={runResult} runErrors={runErrors} codeChanged={codeChanged} onCodeClick={onCodeClick} submitCode={submitCode} />,
-  () => <Loading />)}
-</section>);
+const FuncComp: FunctionalComponent<Props> = ({ code, gameId, runResult, runErrors, challenge, codeChanged, onCodeClick, submitCode, verifyPasscode }) => {
+  return (<section class="section">
+    {gameId ? null : <GamePicker verifyCode={verifyPasscode} />}
+    <h1 class="title">Game</h1>
+    {ifLoaded(challenge, c =>
+      <HasChallenge challenge={c} code={code} runResult={runResult} runErrors={runErrors} codeChanged={codeChanged} onCodeClick={onCodeClick} submitCode={submitCode} />,
+      () => <Loading />)}
+  </section>);
+};
 
 export default FuncComp;

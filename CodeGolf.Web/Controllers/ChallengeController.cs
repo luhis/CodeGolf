@@ -39,8 +39,8 @@
         }
 
         [Authorize]
-        [HttpGet("[action]")]
-        public async Task<ActionResult<HoleDto>> CurrentChallenge(CancellationToken cancellationToken)
+        [HttpGet("[action]/{gameId}")]
+        public async Task<ActionResult<HoleDto>> CurrentChallenge(Guid gameId, CancellationToken cancellationToken)
         {
             return (await this.gameService.GetCurrentHole(cancellationToken))
                 .Match<ActionResult<HoleDto>>(some => new HoleDto(some.Hole, some.Start, some.End, some.ClosedAt, some.HasNext, this.challengeSetMapper.Map(some.ChallengeSet)), () => (HoleDto)null);

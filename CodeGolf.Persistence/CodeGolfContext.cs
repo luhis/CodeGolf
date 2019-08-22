@@ -14,9 +14,11 @@
 
         public DbSet<Attempt> Attempts { get; private set; }
 
-        public DbSet<HoleInstance> Holes { get; private set; }
+        public DbSet<Hole> Holes { get; private set; }
 
         public DbSet<User> Users { get; private set; }
+
+        public DbSet<Game> Games { get; private set; }
 
         public void SeedDatabase()
         {
@@ -28,10 +30,10 @@
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            SetupHole.Setup(modelBuilder.Entity<HoleInstance>());
+            SetupHole.Setup(modelBuilder.Entity<Hole>());
             SetupAttempt.Setup(modelBuilder.Entity<Attempt>());
             SetupUser.Setup(modelBuilder.Entity<User>());
-            //// SetupGame.Setup(modelBuilder.Entity<Game>());
+            SetupGame.Setup(modelBuilder.Entity<Game>());
         }
     }
 }

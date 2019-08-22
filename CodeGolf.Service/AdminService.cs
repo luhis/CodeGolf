@@ -1,8 +1,10 @@
 ﻿namespace CodeGolf.Service
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+
     using CodeGolf.Domain;
     using CodeGolf.Domain.ChallengeInterfaces;
     using CodeGolf.Domain.Repositories;
@@ -46,22 +48,23 @@
             await this.signalRNotifier.NewRound();
         }
 
+        Task<IReadOnlyList<IChallengeSet>> IAdminService.GetAllChallenges(CancellationToken cancellationToken)
+        {
+            return Task.FromResult(this.challengeRepository.GetAll());
+        }
+
         Task IAdminService.CreateGame(GameDto challenges, string accessKey, User user, CancellationToken cancellationToken)
         {
             throw new System.NotImplementedException();
         }
 
-        Task<IReadOnlyList<IChallengeSet>> IAdminService.GetAllChallenges(CancellationToken cancellationToken)
+        async Task<IReadOnlyList<GameDto>> IAdminService.GetAllGames(User user, CancellationToken cancellationToken)
         {
-            return Task.FromResult(this.challengeRepository.GetAll(cancellationToken));
-        }
-
-        Task<IReadOnlyList<Game>> IAdminService.GetAllGames(CancellationToken cancellationToken)
-        {
-            return Task.FromResult<IReadOnlyList<Game>>(new[]
+            return await Task.WhenAll(this.gameRepository.GetMyGames(user.UserId, cancellationToken).Select(async a =>
             {
-                this.gameRepository.GetGame(cancellationToken)
-            });
+                var holes = await this.holeRepository.GetGameHoles(a.Id, cancellationToken);
+                return new GameDto(a.Id, a.AccessKey, holes.Select(b => new RoundDto(b.ChallengeId, "a")).ToList());
+            }));
         }
     }
 }

@@ -41,16 +41,47 @@ namespace CodeGolf.Persistence.Migrations
                     b.ToTable("Attempts");
                 });
 
-            modelBuilder.Entity("CodeGolf.Domain.HoleInstance", b =>
+            modelBuilder.Entity("CodeGolf.Domain.Game", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AccessKey")
+                        .IsRequired();
+
+                    b.Property<DateTime>("Created");
+
+                    b.Property<int>("Owner");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Games");
+                });
+
+            modelBuilder.Entity("CodeGolf.Domain.Hole", b =>
                 {
                     b.Property<Guid>("HoleId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<Guid>("ChallengeId");
+
+                    b.Property<TimeSpan>("Duration");
+
                     b.Property<DateTime?>("End");
 
-                    b.Property<DateTime>("Start");
+                    b.Property<Guid>("GameId");
+
+                    b.Property<Guid?>("GameId1");
+
+                    b.Property<int>("Rank");
+
+                    b.Property<DateTime?>("Start");
 
                     b.HasKey("HoleId");
+
+                    b.HasIndex("GameId");
+
+                    b.HasIndex("GameId1");
 
                     b.ToTable("Holes");
                 });
@@ -79,7 +110,7 @@ namespace CodeGolf.Persistence.Migrations
 
             modelBuilder.Entity("CodeGolf.Domain.Attempt", b =>
                 {
-                    b.HasOne("CodeGolf.Domain.HoleInstance")
+                    b.HasOne("CodeGolf.Domain.Hole")
                         .WithMany()
                         .HasForeignKey("HoleId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -88,6 +119,18 @@ namespace CodeGolf.Persistence.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("CodeGolf.Domain.Hole", b =>
+                {
+                    b.HasOne("CodeGolf.Domain.Game")
+                        .WithMany()
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CodeGolf.Domain.Game")
+                        .WithMany("Holes")
+                        .HasForeignKey("GameId1");
                 });
 #pragma warning restore 612, 618
         }

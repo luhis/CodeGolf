@@ -8,7 +8,8 @@
     {
         public static void Setup(EntityTypeBuilder<Game> entity)
         {
-            // entity.HasKey(e => e.GameId);
+             entity.HasKey(e => e.Id);
+             entity.Property(e => e.AccessKey).IsRequired();
         }
     }
 }

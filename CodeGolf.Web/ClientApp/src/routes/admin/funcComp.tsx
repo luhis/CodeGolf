@@ -30,14 +30,14 @@ interface Props {
 }
 
 const FuncComp: FunctionalComponent<Readonly<Props>> = ({ myGames, allChallenges, showCreate, toggleCreate, resetGame }) =>
-  ifLoaded(myGames, g =>
-    (<div><section class="accordions">
-      {g.map((a: Game) => <Row g={a} resetGame={resetGame} key={a.id} />)}
-    </section>
-    {ifLoaded(allChallenges, c => (showCreate ? <CreateGame hide={() => toggleCreate(false)} challenges={c} /> : null), () => null)}
-    <button className="button" onClick={() => toggleCreate(!showCreate)}>Create New</button>
-    </div>),
-  () =>
-    <Loading />);
+    ifLoaded(myGames, g =>
+        (<div><section class="accordions">
+            {g.map((a: Game) => <Row g={a} key={a.id} resetGame={resetGame} />)}
+        </section>
+            {ifLoaded(allChallenges, c => (showCreate ? <CreateGame hide={() => toggleCreate(false)} challenges={c} /> : null), () => null)}
+            <button className="button" onClick={() => toggleCreate(!showCreate)}>Create New</button>
+        </div>),
+        () =>
+            <Loading/>);
 
 export default FuncComp;

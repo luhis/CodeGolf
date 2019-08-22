@@ -11,23 +11,23 @@
 
     public class FinalScoresHandler : IRequestHandler<FinalScores, IReadOnlyList<ResultDto>>
     {
-        private readonly IGameRepository gameRepository;
+        private readonly IHoleRepository holeRepository;
 
         private readonly IUserRepository userRepository;
 
         private readonly IBestAttemptsService bestAttemptsService;
 
-        public FinalScoresHandler(IGameRepository gameRepository, IUserRepository userRepository, IBestAttemptsService bestAttemptsService)
+        public FinalScoresHandler(IUserRepository userRepository, IBestAttemptsService bestAttemptsService, IHoleRepository holeRepository)
         {
-            this.gameRepository = gameRepository;
             this.userRepository = userRepository;
             this.bestAttemptsService = bestAttemptsService;
+            this.holeRepository = holeRepository;
         }
 
         async Task<IReadOnlyList<ResultDto>> IRequestHandler<FinalScores, IReadOnlyList<ResultDto>>.Handle(FinalScores request, CancellationToken cancellationToken)
         {
             var holes = await Task.WhenAll(
-                            this.gameRepository.GetGame(cancellationToken).Holes.Select(
+                            (await this.holeRepository.GetGameHoles(request.GameId, cancellationToken)).Select(
                                 async h => (await this.bestAttemptsService.GetBestAttempts(h.HoleId, cancellationToken))
                                     .Select((a, b) => ValueTuple.Create(b, a))));
             var ranks = holes.SelectMany(a => a);

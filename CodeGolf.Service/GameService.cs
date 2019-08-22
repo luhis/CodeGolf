@@ -5,10 +5,12 @@
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+
     using CodeGolf.Domain;
     using CodeGolf.Domain.ChallengeInterfaces;
     using CodeGolf.Domain.Repositories;
     using CodeGolf.Service.Dtos;
+
     using OneOf;
     using Optional;
     using Optional.Unsafe;
@@ -60,9 +62,9 @@
                             return curr.Map(
                                 x =>
                                 {
-                                    var chal = this.challengeRepository.GetById(x.ChallengeId, cancellationToken).ValueOrFailure();
+                                    var chal = this.challengeRepository.GetById(x.ChallengeId).ValueOrFailure();
                                     var next = this.gameRepository.GetAfter(x.HoleId, cancellationToken);
-                                    return new HoleDto(x, a.Start, a.Start.Add(x.Duration), a.End, next.HasValue, chal);
+                                    return new HoleDto(x, a.Start.Value, a.Start.Value.Add(x.Duration), a.End, next.HasValue, chal);
                                     });
                         }
                         else
@@ -89,8 +91,7 @@
                         var newId = Guid.NewGuid();
 
                         await this.attemptRepository.AddAttempt(
-                            new Attempt(newId, user.UserId, holeId, code, score, DateTime.UtcNow),
-                            cancellationToken);
+                            new Attempt(newId, user.UserId, holeId, code, score, DateTime.UtcNow));
                         await this.signalRNotifier.NewAnswer();
                         if (await this.IsBestScore(holeId, newId, cancellationToken))
                         {

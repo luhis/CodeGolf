@@ -74,6 +74,7 @@
     <Rule Id="SA0001" Action="None" />
     <Rule Id="SA1413" Action="None" />
     <Rule Id="SA1202" Action="None" />
+    <Rule Id="SA1601" Action="None" />
   </Rules>
   <Rules AnalyzerId="Microsoft.VisualStudio.Threading.Analyzers" RuleNamespace="Microsoft.VisualStudio.Threading.Analyzers">
     <Rule Id="VSTHRD200" Action="None" />

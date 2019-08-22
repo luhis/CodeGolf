@@ -3,7 +3,7 @@ import debounce from "lodash.debounce";
 import { FunctionComponent, h } from "preact";
 import { useEffect, useState } from "preact/hooks";
 
-import { getCurrentHole, submitChallenge, tryCompile } from "../../api/playerApi";
+import { getCurrentHole, submitChallenge, tryCompile, verifyGameCode } from "../../api/playerApi";
 import { getFunctionDeclaration } from "../../funcDeclaration";
 import { ifLoaded, LoadingState } from "../../types/appTypes";
 import { CompileError, GameId, Hole, RunResultSet, Score } from "../../types/types";
@@ -22,6 +22,15 @@ interface State {
 const Comp: FunctionComponent = () => {
   const [state, setState] = useState<State>(
     { challenge: { type: "Loading" }, code: "", runResult: { type: "Loaded", data: undefined }, runErrors: undefined, connection: undefined, gameId: undefined });
+
+  const verCode = async (s: string) => {
+    try {
+      const gameId = await verifyGameCode(s);
+      setState(s => ({ ...s, gameId }));
+    }
+    finally {
+    }
+  };
   const tryCompileX = debounce(async (code) => {
     const runResult = {
       type: "Loaded",
@@ -70,12 +79,16 @@ const Comp: FunctionComponent = () => {
   useEffect(() => {
     const f = async () => {
       const connection = Notification(async () => {
-        setState(s => ({ ...s, challenge: { type: "Loading" } }));
-        const c = await getCurrentHole();
-        setState(s => ({ ...s, challenge: { type: "Loaded", data: c }, runResult: { type: "Loaded", data: undefined }, code: "" }));
+        if (state.gameId) {
+          setState(s => ({ ...s, challenge: { type: "Loading" } }));
+          const c = await getCurrentHole(state.gameId);
+          setState(s => ({ ...s, challenge: { type: "Loaded", data: c }, runResult: { type: "Loaded", data: undefined }, code: "" }));
+        }
       });
-      const challenge = await getCurrentHole();
-      setState(s => ({ ...s, challenge: { type: "Loaded", data: challenge }, connection }));
+      if (state.gameId) {
+        const challenge = await getCurrentHole(state.gameId);
+        setState(s => ({ ...s, challenge: { type: "Loaded", data: challenge }, connection }));
+      }
     };
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     f();
@@ -85,10 +98,16 @@ const Comp: FunctionComponent = () => {
       }
     };
   }, []);
-  return (<FuncComp code={state.code}
+  return (<FuncComp
+    gameId={state.gameId}
+    code={state.code}
     onCodeClick={onCodeClick}
-    runResult={state.runResult} runErrors={state.runErrors}
-    challenge={state.challenge} codeChanged={codeChanged} submitCode={submitCode} />);
+    runResult={state.runResult}
+    runErrors={state.runErrors}
+    challenge={state.challenge}
+    codeChanged={codeChanged}
+    submitCode={submitCode}
+    verifyPasscode={verCode} />);
 };
 
 export default Comp;

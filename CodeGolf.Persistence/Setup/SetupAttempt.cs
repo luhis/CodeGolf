@@ -14,7 +14,7 @@
             entity.Property(e => e.UserId).IsRequired();
             entity.Property(e => e.Code).IsRequired();
             entity.HasOne<User>().WithMany().HasForeignKey(p => p.UserId);
-            entity.HasOne<HoleInstance>().WithMany().HasForeignKey(p => p.HoleId);
+            entity.HasOne<Hole>().WithMany().HasForeignKey(p => p.HoleId);
         }
     }
 }

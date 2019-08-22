@@ -1,17 +1,19 @@
 import axios from "axios";
 
-import { ChallengeSet, CodeError, HoleId, RunError, RunResult } from "../types/types";
+import { ChallengeSet, CodeError, GameId, HoleId, RunError, RunResult } from "../types/types";
 import { getData, HoleInt, JsonHeaders, mapHole } from "./utils";
 
 interface Result { readonly score?: number, readonly runErrors?: ReadonlyArray<RunError>, readonly compileErrors?: ReadonlyArray<CodeError> }
 
-export const getCurrentHole = () => axios
-  .get<HoleInt | undefined>("/api/Challenge/CurrentChallenge")
-  .then(getData).then(mapHole);
+export const getCurrentHole = (id: GameId) => axios
+    .get<HoleInt | undefined>(`/api/Challenge/CurrentChallenge/${id}`)
+    .then(getData).then(mapHole);
 
 export const getDemoChallenge = () => axios
   .get<ChallengeSet>("/api/Challenge/DemoChallenge")
   .then(getData);
+
+export const verifyGameCode = (accessKey: string) => axios.get<GameId>(`/api/Game/GetGameId?AccessKey=${accessKey}`).then(getData);
 
 export const submitChallenge = (code: string, holeId: HoleId) => axios
   .post<Result>(`/api/Challenge/SubmitChallenge/${holeId}`, JSON.stringify(code), {

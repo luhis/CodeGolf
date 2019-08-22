@@ -11,10 +11,10 @@
     {
         Task ResetGame(CancellationToken cancellationToken);
 
+        Task<IReadOnlyList<GameDto>> GetAllGames(User user, CancellationToken cancellationToken);
+
         Task CreateGame(GameDto challenges, string accessKey, User user, CancellationToken cancellationToken);
 
         Task<IReadOnlyList<IChallengeSet>> GetAllChallenges(CancellationToken cancellationToken);
-
-        Task<IReadOnlyList<Game>> GetAllGames(CancellationToken cancellationToken);
     }
 }

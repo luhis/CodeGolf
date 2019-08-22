@@ -1,6 +1,7 @@
 ﻿namespace CodeGolf.Persistence.Repositories
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
@@ -18,7 +19,7 @@
             this.context = context;
         }
 
-        async Task<Option<HoleInstance>> IHoleRepository.GetCurrentHole(CancellationToken cancellationToken)
+        async Task<Option<Hole>> IHoleRepository.GetCurrentHole(CancellationToken cancellationToken)
         {
             if (await this.context.Holes.AnyAsync(cancellationToken))
             {
@@ -26,18 +27,19 @@
             }
             else
             {
-                return Option.None<HoleInstance>();
+                return Option.None<Hole>();
             }
         }
 
         async Task IHoleRepository.EndHole(Guid holeId, DateTime closeTime, CancellationToken cancellationToken)
         {
-            var hole = await this.context.Holes.SingleAsync(a => a.HoleId == holeId);
-            this.context.Update(new HoleInstance(hole.HoleId, hole.Start, closeTime));
+            var hole = await this.context.Holes.SingleAsync(a => a.HoleId == holeId, cancellationToken);
+            hole.SetEnd(closeTime);
+            this.context.Update(hole);
             await this.context.SaveChangesAsync(cancellationToken);
         }
 
-        Task IHoleRepository.AddHole(HoleInstance hole, CancellationToken cancellationToken)
+        Task IHoleRepository.AddHole(Hole hole, CancellationToken cancellationToken)
         {
             this.context.Holes.Add(hole);
             return this.context.SaveChangesAsync(cancellationToken);
@@ -47,6 +49,19 @@
         {
             this.context.Holes.RemoveRange(this.context.Holes);
             return this.context.SaveChangesAsync(cancellationToken);
+        }
+
+        Task IHoleRepository.Update(Hole hole, CancellationToken cancellationToken)
+        {
+            this.context.Attach(hole);
+            this.context.Entry(hole).State = EntityState.Modified;
+            this.context.Update(hole);
+            return this.context.SaveChangesAsync(cancellationToken);
+        }
+
+        Task<IReadOnlyList<Hole>> IHoleRepository.GetGameHoles(Guid gameId, CancellationToken cancellationToken)
+        {
+            return this.context.Holes.Where(a => a.GameId == gameId).ToReadOnlyAsync(cancellationToken);
         }
     }
 }

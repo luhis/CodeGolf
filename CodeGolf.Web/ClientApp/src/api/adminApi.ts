@@ -12,18 +12,18 @@ interface AttemptInt {
   readonly timeStamp: string;
 }
 
-export const getCurrentChallenge = () => axios
-  .get<HoleInt | undefined>("/api/Admin/CurrentHole").then(getData)
+export const getCurrentChallenge = (gameId: GameId) => axios
+  .get<HoleInt | undefined>(`/api/Admin/CurrentHole/${gameId}`).then(getData)
   .then(mapHole);
 
 export const getResults = (holeId: HoleId) => axios.get<ReadonlyArray<AttemptInt>>(`/api/Admin/Results/${holeId}`)
   .then(getData).then(attempts => attempts.map(a => ({ ...a, timeStamp: utzParse(a.timeStamp) } as Attempt)));
 
-export const nextHole = () => axios.post<void>("/api/Admin/nextHole").then(getData);
+export const nextHole = (gameId: GameId) => axios.post<void>(`/api/Admin/nextHole/${gameId}`).then(getData);
 
-export const endHole = () => axios.post<void>("/api/Admin/endHole").then(getData);
+export const endHole = (gameId: GameId) => axios.post<void>(`/api/Admin/endHole/${gameId}`).then(getData);
 
-export const getFinalResults = () => axios.get<ReadonlyArray<Result>>("/api/Admin/FinalScores").then(getData);
+export const getFinalResults = (gameId: GameId) => axios.get<ReadonlyArray<Result>>(`/api/Admin/FinalScores/${gameId}`).then(getData);
 
 export const getAttempt = (attemptId: AttemptId) => axios.get<AttemptWithCode>(`/api/Admin/Attempt/${attemptId}`).then(getData);
 

@@ -5,9 +5,10 @@
 
     public static class SetupHole
     {
-        public static void Setup(EntityTypeBuilder<HoleInstance> entity)
+        public static void Setup(EntityTypeBuilder<Hole> entity)
         {
             entity.HasKey(e => e.HoleId);
+            entity.HasOne<Game>().WithMany().HasForeignKey(p => p.GameId);
         }
     }
 }
