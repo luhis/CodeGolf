@@ -1,6 +1,5 @@
 ﻿namespace CodeGolf.Persistence
 {
-    using System.Threading.Tasks;
     using CodeGolf.Domain;
     using CodeGolf.Persistence.Setup;
     using Microsoft.EntityFrameworkCore;
@@ -19,9 +18,9 @@
 
         public DbSet<User> Users { get; private set; }
 
-        public Task SeedDatabase()
+        public void SeedDatabase()
         {
-            return this.Database.MigrateAsync();
+            this.Database.Migrate();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
