@@ -1,4 +1,5 @@
 import { Editor, TextMarker } from "codemirror";
+import {escape} from "lodash";
 import { FunctionalComponent, h } from "preact";
 import { Controlled as CodeMirror, IControlledCodeMirror } from "react-codemirror2";
 
@@ -15,7 +16,7 @@ interface Props {
 }
 
 const openInAction = (actionName: string, code: string) =>
-    window.open(`/api/code/${actionName}?Code=${code}`, "_blank");
+    window.open(`/api/code/${actionName}?Code=${escape(code)}`, "_blank");
 
 const getScore = (code: string) => code
     .replace(/\s/g, "")
