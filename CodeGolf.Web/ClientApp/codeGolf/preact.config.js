@@ -1,6 +1,6 @@
 import { resolve } from "path";
 import envVars from "preact-cli-plugin-env-vars";
-import babelPluginLodash from "babel-plugin-lodash";
+import CopyWebpackPlugin from "copy-webpack-plugin";
 import LodashModuleReplacementPlugin from "lodash-webpack-plugin";
 
 export default function(config, env, helpers) {
@@ -16,6 +16,12 @@ export default function(config, env, helpers) {
             silent: true
         });
     });
+
+    config.plugins.push(
+        new CopyWebpackPlugin([
+            { context: `${__dirname}/src/assets`, from: `*.*` }
+        ])
+    );
 
     // helpers.getLoadersByName(config, "babel-loader").forEach(({ loader }) => {
     //     loader.options.plugins.push(babelPluginLodash)
