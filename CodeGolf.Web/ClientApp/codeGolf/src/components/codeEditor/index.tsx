@@ -1,5 +1,4 @@
 import { Editor, TextMarker } from "codemirror";
-import {escape} from "lodash";
 import { FunctionalComponent, h } from "preact";
 import { Controlled as CodeMirror, IControlledCodeMirror } from "react-codemirror2";
 
@@ -15,8 +14,8 @@ interface Props {
     readonly errors?: RunResult;
 }
 
-const openInAction = (actionName: string, code: string) =>
-    window.open(`/api/code/${actionName}?Code=${escape(code)}`, "_blank");
+const openInAction = (actionName: ("debug" | "preview"), code: string) =>
+    window.open(`/codefile/${actionName}?code=${encodeURI(code)}`, "_blank");
 
 const getScore = (code: string) => code
     .replace(/\s/g, "")

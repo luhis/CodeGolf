@@ -4,6 +4,7 @@ import { Route, Router } from "preact-router";
 import ReactGA from "react-ga";
 
 import Attempt from "../routes/attempt";
+import CodeFile from "../routes/codefile";
 import Dashboard from "../routes/dashboard";
 import Demo from "../routes/demo";
 import Game from "../routes/game";
@@ -33,6 +34,7 @@ const Comp: FunctionalComponent = () => (
                     <Route path="/game/" component={Game} />
                     <Route path="/results/" component={Results} />
                     <Route path="/attempt/:attemptId" component={Attempt} />
+                    <Route path="/codefile/:type/" component={CodeFile} />
                 </Router>
             </main>
         </div>

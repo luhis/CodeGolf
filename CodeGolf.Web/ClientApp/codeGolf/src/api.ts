@@ -86,7 +86,7 @@ export const tryCompile = (challengeId: Guid, code: string) => axios
   .then(response => response.data);
 
 export const getResults = (holeId: Guid) => axios.get<ReadonlyArray<AttemptInt>>(`/api/Admin/Results/${holeId}`)
-  .then(response => response.data).then(attempts => attempts.map(a => ({...a, timeStamp: utzParse(a.timeStamp)} as Attempt)));
+  .then(response => response.data).then(attempts => attempts.map(a => ({ ...a, timeStamp: utzParse(a.timeStamp) } as Attempt)));
 
 export const nextHole = () => axios.post("/api/Admin/nextHole");
 
@@ -99,3 +99,5 @@ export const isAdmin = () => axios.get<boolean>("/api/Access/isAdmin").then(a =>
 export const getFinalResults = () => axios.get<ReadonlyArray<Result>>("/api/Admin/GetFinalScores").then(a => a.data);
 
 export const getAttempt = (attemptId: Guid) => axios.get<AttemptWithCode>(`/api/Admin/GetAttempt/${attemptId}`).then(a => a.data);
+
+export const getCsFile = (style: ("debug" | "preview"), code: string) => axios.get<string>(`/api/code/${style}?Code=${escape(code)}`).then(a => a.data);
