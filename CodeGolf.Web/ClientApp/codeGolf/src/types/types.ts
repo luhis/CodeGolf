@@ -1,7 +1,7 @@
 
-export interface Loading { readonly type: "Loading"; }
-
+interface Loading { readonly type: "Loading"; }
 interface Loaded<T> { readonly type: "Loaded"; readonly data: T; }
+
 export interface Score { readonly type: "Score"; readonly val: number; }
 export interface CompileError { readonly type: "CompileError"; readonly errors: ReadonlyArray<CodeError>; }
 export interface RunErrorSet { readonly type: "RunError"; readonly errors: ReadonlyArray<RunError>; }
