@@ -6,8 +6,8 @@ import { endHole, getCurrentChallenge, getResults, nextHole } from "../../api";
 import { Attempt, Hole, ifLoaded, LoadingState } from "../../types/types";
 import FuncComp from "./funcComp";
 
-interface State { 
-  readonly currentHole: LoadingState<Hole | undefined>; 
+interface State {
+  readonly currentHole: LoadingState<Hole | undefined>;
   readonly attempts: LoadingState<ReadonlyArray<Attempt>>;
   readonly connection: HubConnection;
  }
@@ -35,9 +35,9 @@ export default class Comp extends Component<{}, State> {
         attempts={attempts}
         nextHole={this.doThenUpdateHole(nextHole)}
         endHole={this.doThenUpdateHole(f)} />);
-    }, 
+    },
     () => null)
-  
+
   private readonly getResults = async () => {
     if (this.state.currentHole.type === "Loaded" && this.state.currentHole.data) {
       const results = await getResults(this.state.currentHole.data.hole.holeId);

@@ -53,6 +53,8 @@
         "quotemark": [true, "double"],
         "align": true,
         "no-consecutive-blank-lines": true,
+        "eofline": true,
+        "no-trailing-whitespace": true,
 
         "no-var-keyword": true,
         "no-parameter-reassignment": true,
