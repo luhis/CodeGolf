@@ -5,7 +5,7 @@ import { Circular } from "styled-loaders";
 import ChallengeComp from "../../components/challenge";
 import CodeEditor from "../../components/codeEditor";
 import ErrorsComp from "../../components/results";
-import { ChallengeSet, LoadingState, RunResult } from "../../types/types";
+import { ChallengeSet, ifLoaded, LoadingState, RunResult } from "../../types/types";
 
 interface Props {
   readonly code: string;
@@ -41,10 +41,10 @@ const FuncComp: FunctionalComponent<Readonly<Props>> = ({ code, errors, challeng
         <CodeEditor code={code} codeChanged={codeChanged} errors={valueOr(errors, () => undefined)} submitCode={executeCaptcha} />
       </div>
       <div class="column is-half">
-        {challenge.type === "Loaded" ? <ChallengeComp
-          challenge={challenge.data}
+        {ifLoaded(challenge, c => <ChallengeComp
+          challenge={c}
           onCodeClick={onCodeClick}
-        /> : <Circular />}
+        />, () => <Circular />)}
         {challenge.type === "Loaded" && errors.type === "Loaded" ?
           errors.data ? <ErrorsComp errors={errors.data} returnType={challenge.data.returnType} /> : null
           : <Circular />}

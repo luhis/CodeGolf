@@ -3,7 +3,7 @@ import { Component, h, RenderableProps } from "preact";
 import { route } from "preact-router";
 
 import { endHole, getCurrentChallenge, getResults, nextHole } from "../../api";
-import { Attempt, Hole, LoadingState } from "../../types/types";
+import { Attempt, Hole, ifLoaded, LoadingState } from "../../types/types";
 import FuncComp from "./funcComp";
 
 interface State { 
@@ -27,18 +27,17 @@ export default class Comp extends Component<{}, State> {
   public readonly componentWillUnmount = () => {
     return this.state.connection.stop();
   }
-  public readonly render = (_: RenderableProps<{}>, { currentHole, attempts }: Readonly<State>) => {
-    if (currentHole.type === "Loaded") {
-      const f = currentHole.data && currentHole.data.hasNext ? endHole : async () => { await endHole(); route("/results"); };
+  public readonly render = (_: RenderableProps<{}>, { currentHole, attempts }: Readonly<State>) =>
+    ifLoaded(currentHole, x => {
+      const f = x ? endHole : async () => { await endHole(); route("/results"); };
       return (<FuncComp
         current={currentHole}
         attempts={attempts}
         nextHole={this.doThenUpdateHole(nextHole)}
         endHole={this.doThenUpdateHole(f)} />);
-    }
-    return null;
-  }
-
+    }, 
+    () => null)
+  
   private readonly getResults = async () => {
     if (this.state.currentHole.type === "Loaded" && this.state.currentHole.data) {
       const results = await getResults(this.state.currentHole.data.hole.holeId);

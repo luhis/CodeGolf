@@ -3,7 +3,7 @@ import { Circular } from "styled-loaders";
 
 import Attempts from "../../components/attempts";
 import ChallengeComp from "../../components/challenge";
-import { Attempt, Hole, LoadingState } from "../../types/types";
+import { Attempt, Hole, ifLoaded, LoadingState } from "../../types/types";
 import Controls from "./controls";
 import Times from "./times";
 
@@ -24,12 +24,11 @@ const FuncComp: FunctionalComponent<Readonly<Props>> = ({ current, attempts, nex
         <span class="title">Attempts</span>
         <div class="columns">
             <div class="column">
-                {attempts.type === "Loaded" ? <Attempts attempts={attempts.data} /> : <Circular />}
+                {ifLoaded(attempts, a=> <Attempts attempts={a} />, () => <Circular />)}
             </div>
             <div class="column">
                 <Controls hole={current} nextHole={nextHole} endHole={endHole} />
-                {current.type === "Loaded" ?
-                    <LeftCol hole={current.data} /> : <Circular />}
+                {ifLoaded(current, c => <LeftCol hole={c} />, () => <Circular />)}
             </div>
         </div>
     </section>);

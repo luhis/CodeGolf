@@ -1,7 +1,7 @@
 import { FunctionalComponent, h } from "preact";
 import { Circular } from "styled-loaders";
 
-import { LoadingState, Result } from "../../types/types";
+import { ifLoaded, LoadingState, Result } from "../../types/types";
 
 interface Props {
   readonly results: LoadingState<ReadonlyArray<Result>>;
@@ -29,7 +29,7 @@ const FuncComp: FunctionalComponent<Readonly<Props>> = ({ results }) => (
         </tr>
       </thead>
       <tbody>
-        {results.type === "Loaded" ? results.data.map(a => <Row key={a.rank} {...a} />) : <Circular/>}
+        {ifLoaded(results, r => r.map(a => <Row key={a.rank} {...a} />), () => [<Circular key={1} />])}
       </tbody>
     </table>
   </section>);

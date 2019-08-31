@@ -4,7 +4,7 @@ import { Circular } from "styled-loaders";
 import ChallengeComp from "../../components/challenge";
 import CodeEditor from "../../components/codeEditor";
 import ErrorsComp from "../../components/results";
-import { Hole, LoadingState, RunResult } from "../../types/types";
+import { Hole, ifLoaded, LoadingState, RunResult } from "../../types/types";
 
 interface Funcs {
   readonly codeChanged: ((s: string) => Promise<void>);
@@ -46,8 +46,8 @@ const HasChallenge: FunctionalComponent<{
           onCodeClick={onCodeClick}
         />
 
-        {errors.type === "Loaded" ?
-          <ErrorsComp errors={errors.data} returnType={challenge.challengeSet.returnType} /> : <Circular />}
+        {ifLoaded(errors, e =>
+          <ErrorsComp errors={e} returnType={challenge.challengeSet.returnType} />, () => <Circular />)}
       </div>
     </div>) : <PleaseWait />
 );
@@ -55,8 +55,9 @@ const HasChallenge: FunctionalComponent<{
 const FuncComp: FunctionalComponent<Readonly<Props>> = ({ code, errors, challenge, codeChanged, onCodeClick, submitCode }) => {
   return (<section class="section">
     <h1 class="title">Game</h1>
-    {challenge.type === "Loaded" ?
-      <HasChallenge challenge={challenge.data} code={code} errors={errors} codeChanged={codeChanged} onCodeClick={onCodeClick} submitCode={submitCode} /> : <Circular />}
+    {ifLoaded(challenge, c =>
+      <HasChallenge challenge={c} code={code} errors={errors} codeChanged={codeChanged} onCodeClick={onCodeClick} submitCode={submitCode} />,
+      () => <Circular />)}
   </section>);
 };
 
