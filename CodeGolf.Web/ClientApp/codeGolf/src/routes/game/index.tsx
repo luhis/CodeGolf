@@ -2,7 +2,7 @@ import { HubConnection } from "@aspnet/signalr";
 import { debounce } from "lodash";
 import { Component, h, RenderableProps } from "preact";
 
-import { getCurrentHole, submitChallenge, tryCompile } from "../../api";
+import { getCurrentHole, submitChallenge, tryCompile } from "../../api/playerApi";
 import { getFunctionDeclaration } from "../../funcDeclaration";
 import { Hole, ifLoaded, LoadingState, RunResult } from "../../types/types";
 import FuncComp from "./funcComp";

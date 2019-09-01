@@ -1,7 +1,7 @@
 import { debounce } from "lodash";
 import { Component, h, RenderableProps } from "preact";
 
-import { getDemoChallenge, submitDemo, tryCompile } from "../../api";
+import { getDemoChallenge, submitDemo, tryCompile } from "../../api/playerApi";
 import { getFunctionDeclaration } from "../../funcDeclaration";
 import { ChallengeSet, ifLoaded, LoadingState, RunResult } from "../../types/types";
 import FuncComp from "./funcComp";

@@ -1,6 +1,6 @@
 import { Component, h, RenderableProps } from "preact";
 
-import { getFinalResults } from "../../api";
+import { getFinalResults } from "../../api/adminApi";
 import { LoadingState, Result } from "../../types/types";
 import FuncComp from "./funcComp";
 

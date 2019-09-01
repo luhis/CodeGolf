@@ -1,5 +1,5 @@
 import { Component, FunctionalComponent, h, RenderableProps } from "preact";
-import { isAdmin, isLoggedIn } from "../../api";
+import { isAdmin, isLoggedIn } from "../../api/accessApi";
 
 const FuncComp: FunctionalComponent<State & { readonly toggleMenu: (() => void) }> = ({ admin, loggedIn, toggleMenu, showMenu }) =>
     (<nav class="navbar" role="navigation" aria-label="main navigation">

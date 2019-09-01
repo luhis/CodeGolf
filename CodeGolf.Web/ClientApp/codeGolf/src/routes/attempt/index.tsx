@@ -1,6 +1,6 @@
 import { Component, h, RenderableProps } from "preact";
 
-import { getAttempt } from "../../api";
+import { getAttempt } from "../../api/adminApi";
 import { AttemptWithCode, Guid, LoadingState } from "../../types/types";
 import FuncComp from "./funcComp";
 

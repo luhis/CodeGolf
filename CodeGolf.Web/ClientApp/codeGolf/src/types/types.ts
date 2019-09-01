@@ -51,3 +51,14 @@ export interface Hole {
     readonly challengeSet: ChallengeSet; readonly start: Date;
     readonly end: Date; readonly closedAt?: Date; readonly hasNext: boolean; readonly hole: { readonly holeId: Guid };
 }
+
+export interface Round {
+    readonly id: Guid;
+    readonly title: string;
+}
+
+export interface Game {
+    readonly id: Guid;
+    readonly accessKey: string;
+    readonly rounds: ReadonlyArray<Round>;
+}

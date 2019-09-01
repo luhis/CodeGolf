@@ -1,6 +1,6 @@
 import { Component, h, RenderableProps } from "preact";
 
-import { getCsFile } from "../../api";
+import { getCsFile } from "../../api/playerApi";
 import { LoadingState } from "../../types/types";
 import FuncComp from "./funcComp";
 

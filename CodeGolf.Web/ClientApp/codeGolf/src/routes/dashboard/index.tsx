@@ -2,7 +2,7 @@ import { HubConnection, HubConnectionBuilder } from "@aspnet/signalr";
 import { Component, h, RenderableProps } from "preact";
 import { route } from "preact-router";
 
-import { endHole, getCurrentChallenge, getResults, nextHole } from "../../api";
+import { endHole, getCurrentChallenge, getResults, nextHole } from "../../api/adminApi";
 import { Attempt, Hole, ifLoaded, LoadingState } from "../../types/types";
 import FuncComp from "./funcComp";
 
