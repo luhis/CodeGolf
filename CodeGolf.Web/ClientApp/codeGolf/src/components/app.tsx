@@ -3,6 +3,7 @@ import { FunctionalComponent, h } from "preact";
 import { Route, Router } from "preact-router";
 import ReactGA from "react-ga";
 
+import Admin from "../routes/admin";
 import Attempt from "../routes/attempt";
 import CodeFile from "../routes/codefile";
 import Dashboard from "../routes/dashboard";
@@ -29,6 +30,7 @@ const Comp: FunctionalComponent = () => (
                 <CookieConsent />
                 <Router>
                     <Route path="/" component={Home} />
+                    <Route path="/admin/" component={Admin} />
                     <Route path="/demo/" component={Demo} />
                     <Route path="/dashboard/" component={Dashboard} />
                     <Route path="/game/" component={Game} />

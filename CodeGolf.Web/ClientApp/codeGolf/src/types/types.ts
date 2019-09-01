@@ -54,7 +54,7 @@ export interface Hole {
 
 export interface Round {
     readonly id: Guid;
-    readonly title: string;
+    readonly name: string;
 }
 
 export interface Game {

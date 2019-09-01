@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -9,7 +10,7 @@
     using CodeGolf.Service.Dtos;
     using CodeGolf.Web.Attributes;
     using CodeGolf.Web.Mappers;
-
+    using CodeGolf.Web.Models;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
@@ -22,12 +23,14 @@
         private readonly IDashboardService dashboardService;
         private readonly IResultsService resultsService;
         private readonly ChallengeSetMapper challengeSetMapper;
+        private readonly IAdminService adminService;
 
-        public AdminController(IDashboardService dashboardService, ChallengeSetMapper challengeSetMapper, IResultsService resultsService)
+        public AdminController(IDashboardService dashboardService, ChallengeSetMapper challengeSetMapper, IResultsService resultsService, IAdminService adminService)
         {
             this.dashboardService = dashboardService;
             this.challengeSetMapper = challengeSetMapper;
             this.resultsService = resultsService;
+            this.adminService = adminService;
         }
 
         [HttpPost("[action]")]
@@ -73,6 +76,21 @@
             return res.Match(
                 some => new ActionResult<AttemptCodeDto>(some),
                 () => this.NotFound());
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult<IReadOnlyList<GameDto>>> MyGames(CancellationToken cancellationToken)
+        {
+            // var user = this.identityTools.GetIdentity(this.HttpContext).ValueOrFailure();
+            var r = await this.adminService.GetAllHoles(cancellationToken);
+            return new ActionResult<IReadOnlyList<GameDto>>(
+                new[] { new GameDto(Guid.NewGuid(), "aa", r.Select(a => new RoundDto(a.Id, a.Title)).ToList()) });
+        }
+
+        [HttpPost("[action]/{gameId}")]
+        public async Task Reset(CancellationToken cancellationToken)
+        {
+            await this.adminService.ResetGame();
         }
     }
 }
