@@ -17,8 +17,8 @@ export const submitChallenge = (code: string, holeId: Guid) => axios
     .post<Result>(`/api/Challenge/SubmitChallenge/${holeId}`, JSON.stringify(code), {
         headers: JsonHeaders
     })
-    .then(response => {
-        const data = response.data;
+    .then(getData)
+    .then(data => {
         if (data.score) {
             return { type: "Score", val: data.score } as RunResult;
         }
@@ -44,8 +44,8 @@ export const submitDemo = (code: string, reCaptcha: string): Promise<RunResult> 
             "g-recaptcha-response": reCaptcha
         }
     })
-    .then(response => {
-        const data = response.data;
+    .then(getData)
+    .then(data => {
         if (data.score) {
             return { type: "Score", val: data.score };
         }
@@ -58,4 +58,4 @@ export const submitDemo = (code: string, reCaptcha: string): Promise<RunResult> 
         throw new Error("failed to convert");
     });
 
-export const getCsFile = (style: ("debug" | "preview"), code: string) => axios.get<string>(`/api/code/${style}?Code=${escape(code)}`).then(a => a.data);
+export const getCsFile = (style: ("debug" | "preview"), code: string) => axios.get<string>(`/api/code/${style}?Code=${escape(code)}`).then(getData);
