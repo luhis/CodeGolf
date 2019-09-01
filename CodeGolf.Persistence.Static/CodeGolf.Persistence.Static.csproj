@@ -20,4 +20,8 @@
     <ProjectReference Include="..\CodeGolf.Domain\CodeGolf.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <AdditionalFiles Include="..\stylecop.json" Link="Properties\stylecop.json" />
+  </ItemGroup>
+
 </Project>

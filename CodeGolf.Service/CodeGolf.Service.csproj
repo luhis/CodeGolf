@@ -29,4 +29,7 @@
     <ProjectReference Include="..\CodeGolf.ServiceInterfaces\CodeGolf.ServiceInterfaces.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <AdditionalFiles Include="..\stylecop.json" Link="Properties\stylecop.json" />
+  </ItemGroup>
 </Project>

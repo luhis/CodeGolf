@@ -21,15 +21,14 @@
         {
             using (var client = new HttpClient())
             {
-                using (var result = await client.PostAsync(
-                                        Api,
-                                        new FormUrlEncodedContent(
-                                            new Dictionary<string, string>()
-                                                {
-                                                    { "secret", this.settings.SecretKey },
-                                                    { "response", response },
-                                                    { "ipaddress", ip.ToString() },
-                                                })))
+                using (var content = new FormUrlEncodedContent(
+                    new Dictionary<string, string>()
+                    {
+                        { "secret", this.settings.SecretKey },
+                        { "response", response },
+                        { "ipaddress", ip.ToString() },
+                    }))
+                using (var result = await client.PostAsync(Api, content))
                 {
                     var s = await result.Content.ReadAsStringAsync();
                     return JsonConvert.DeserializeObject<ReCaptchaResponse>(s).Success;
