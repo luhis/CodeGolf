@@ -51,4 +51,9 @@
     <None Include="..\CodeGolf.ruleset" Link="CodeGolf.ruleset" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <AdditionalFiles Include="..\stylecop.json" Link="Properties\stylecop.json" />
+  </ItemGroup>
+
 </Project>
