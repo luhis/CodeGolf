@@ -1,5 +1,7 @@
 import { Component, FunctionalComponent, h, RenderableProps } from "preact";
+
 import { isAdmin, isLoggedIn } from "../../api/accessApi";
+import SignOut from "../signOut";
 
 const FuncComp: FunctionalComponent<State & { readonly toggleMenu: (() => void) }> = ({ admin, loggedIn, toggleMenu, showMenu }) =>
     (<nav class="navbar" role="navigation" aria-label="main navigation">
@@ -14,7 +16,7 @@ const FuncComp: FunctionalComponent<State & { readonly toggleMenu: (() => void) 
                 <a class="navbar-item" href="/">Home</a>
                 <a class="navbar-item" href="/demo">Demo</a>
                 {loggedIn ? <a class="navbar-item" href="/game">Game</a> : null}
-                {loggedIn ? <a class="navbar-item" href="/SignOut">Sign Out</a> : null}
+                {loggedIn ? <SignOut loggedIn={loggedIn}/> : null}
                 {!loggedIn ? <a href="/account/signin" class="navbar-item">Sign In with GitHub</a> : null}
 
                 {admin ? <a class="navbar-item" href="/dashboard">Dashboard</a> : null}

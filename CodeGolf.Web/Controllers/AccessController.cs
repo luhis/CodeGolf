@@ -1,8 +1,9 @@
 ﻿namespace CodeGolf.Web.Controllers
 {
+    using System.Threading.Tasks;
     using CodeGolf.Web.Attributes;
     using CodeGolf.Web.Tooling;
-
+    using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
 
@@ -30,6 +31,12 @@
         {
             var id = this.identityTools.GetIdentity(this.HttpContext);
             return id.Match(some => this.gameAdminSettings.AdminGithubNames.Contains(some.LoginName), () => false);
+        }
+
+        [HttpPost("[action]")]
+        public Task SignOut()
+        {
+            return this.HttpContext.SignOutAsync();
         }
     }
 }
