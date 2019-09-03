@@ -5,7 +5,7 @@
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-
+    using CodeGolf.Domain.ChallengeInterfaces;
     using CodeGolf.Service;
     using CodeGolf.Service.Dtos;
     using CodeGolf.Web.Attributes;
@@ -91,6 +91,12 @@
         public async Task Reset(CancellationToken cancellationToken)
         {
             await this.adminService.ResetGame();
+        }
+
+        [HttpGet("[action]")]
+        public Task<IReadOnlyList<IChallengeSet>> AllChallenges(CancellationToken cancellationToken)
+        {
+            return this.adminService.GetAllChallenges(cancellationToken);
         }
     }
 }

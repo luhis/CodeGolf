@@ -27,12 +27,12 @@ const Modal: FunctionalComponent<{ readonly hide: () => void, readonly challenge
     </div>);
 
 const Row: FunctionalComponent<{ readonly g: Game, readonly resetGame: ((g: Guid) => void) }> = ({ g, resetGame }) =>
-  (<article class="accordion is-active">
-        <div class="accordion-header toggle">
+  (<article class="message">
+        <div class="message-header">
             <p>Code: {g.accessKey}</p>
         </div>
-        <div class="accordion-body">
-            <div class="accordion-content">
+        <div class="message-body">
+            <div class="message-content">
                 Rounds:
                 <ul>
                     {g.rounds.map(b => <li key={b.id}>{b.name}</li>)}

@@ -19,7 +19,12 @@
 
         private readonly IUserRepository userRepository;
 
-        public AdminService(IHoleRepository holeRepository, ISignalRNotifier signalRNotifier, IAttemptRepository attemptRepository, IUserRepository userRepository, IChallengeRepository challengeRepository)
+        public AdminService(
+            IHoleRepository holeRepository,
+            ISignalRNotifier signalRNotifier,
+            IAttemptRepository attemptRepository,
+            IUserRepository userRepository,
+            IChallengeRepository challengeRepository)
         {
             this.holeRepository = holeRepository;
             this.signalRNotifier = signalRNotifier;
@@ -40,6 +45,11 @@
         {
             var holes = this.challengeRepository.GetAll();
             return Task.FromResult(holes);
+        }
+
+        Task<IReadOnlyList<IChallengeSet>> IAdminService.GetAllChallenges(in CancellationToken cancellationToken)
+        {
+            return Task.FromResult(this.challengeRepository.GetAll());
         }
     }
 }

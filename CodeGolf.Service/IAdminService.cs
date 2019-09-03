@@ -11,5 +11,7 @@
         Task ResetGame();
 
         Task<IReadOnlyList<IChallengeSet>> GetAllHoles(CancellationToken cancellationToken);
+
+        Task<IReadOnlyList<IChallengeSet>> GetAllChallenges(in CancellationToken cancellationToken);
     }
 }

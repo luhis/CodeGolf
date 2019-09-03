@@ -1,6 +1,6 @@
 import { Component, h, RenderableProps } from "preact";
 
-import { getMyGames, resetGame } from "../../api/adminApi";
+import { getAllChallenges, getMyGames, resetGame } from "../../api/adminApi";
 import { Game, LoadingState, Round } from "../../types/types";
 import FuncComp from "./funcComp";
 
@@ -19,8 +19,8 @@ export default class Comp extends Component<{}, State> {
 
     public readonly componentDidMount = async () => {
         const games = await getMyGames();
-        // const challenges = await getAllChallenges();
-        this.setState(s => ({ ...s, myGames: { type: "Loaded", data: games } }));
+        const challenges = await getAllChallenges();
+        this.setState(s => ({ ...s, myGames: { type: "Loaded", data: games }, allChallenges: { type: "Loaded", data: challenges } }));
     }
 
     public readonly render = (_: RenderableProps<{}>, state: Readonly<State>) =>
