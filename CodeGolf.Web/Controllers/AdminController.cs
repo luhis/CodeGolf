@@ -43,9 +43,9 @@
         }
 
         [HttpPost("[action]")]
-        public async Task NextHole(CancellationToken cancellationToken)
+        public Task NextHole(CancellationToken cancellationToken)
         {
-            await this.dashboardService.NextHole(cancellationToken);
+            return this.dashboardService.NextHole(cancellationToken);
         }
 
         [HttpGet("[action]/{holeId}")]
@@ -88,9 +88,9 @@
         }
 
         [HttpPost("[action]/{gameId}")]
-        public async Task Reset(CancellationToken cancellationToken)
+        public Task Reset(CancellationToken cancellationToken)
         {
-            await this.adminService.ResetGame();
+            return this.adminService.ResetGame();
         }
 
         [HttpGet("[action]")]
