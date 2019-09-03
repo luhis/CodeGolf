@@ -75,7 +75,7 @@
             return hole.Map(
                 a =>
                     {
-                        var curr = this.gameRepository.GetById(a.HoleId).ValueOrFailure();
+                        var curr = this.gameRepository.GetByHoleId(a.HoleId).ValueOrFailure();
                         var next = this.gameRepository.GetAfter(curr.HoleId);
                         var chal = this.challengeRepository.GetById(curr.ChallengeId).ValueOrFailure();
                         return new HoleDto(curr, a.Start, a.Start.Add(curr.Duration), a.End, next.HasValue, chal);

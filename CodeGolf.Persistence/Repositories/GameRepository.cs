@@ -33,14 +33,14 @@
             return Game;
         }
 
-        Option<Hole> IGameRepository.GetById(Guid id)
+        Option<Hole> IGameRepository.GetByHoleId(Guid holeId)
         {
-            return Game.Holes.SingleOrNone(b => b.HoleId.Equals(id));
+            return Game.Holes.SingleOrNone(b => b.HoleId.Equals(holeId));
         }
 
-        Option<Hole> IGameRepository.GetAfter(Guid id)
+        Option<Hole> IGameRepository.GetAfter(Guid holeId)
         {
-            return GetAfter(Game.Holes, item => item.HoleId.Equals(id));
+            return GetAfter(Game.Holes, item => item.HoleId.Equals(holeId));
         }
 
         private static Option<T> GetAfter<T>(IReadOnlyList<T> list, Func<T, bool> equals) =>

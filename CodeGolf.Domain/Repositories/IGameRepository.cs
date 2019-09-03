@@ -8,8 +8,8 @@
     {
         Game GetGame();
 
-        Option<Hole> GetById(Guid id);
+        Option<Hole> GetByHoleId(Guid holeId);
 
-        Option<Hole> GetAfter(Guid id);
+        Option<Hole> GetAfter(Guid holeId);
     }
 }

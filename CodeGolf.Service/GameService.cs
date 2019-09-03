@@ -55,7 +55,7 @@
                     {
                         if (!a.End.HasValue)
                         {
-                            var curr = this.gameRepository.GetById(a.HoleId);
+                            var curr = this.gameRepository.GetByHoleId(a.HoleId);
 
                             return curr.Map(
                                 x =>
