@@ -89,7 +89,7 @@
                 async a =>
                     {
                         var user = await this.userRepository.GetByUserId(a.UserId, cancellationToken);
-                        return new AttemptCodeDto(a.Id, user.Map(x => x.LoginName).ValueOrDefault(), user.Map(x => x.AvatarUri).ValueOrDefault(), a.Score, a.TimeStamp.ToLocalTime().ToString(), a.Code);
+                        return new AttemptCodeDto(a.Id, user.Map(x => x.LoginName).ValueOr(string.Empty), user.Map(x => x.AvatarUri).ValueOr(string.Empty), a.Score, a.TimeStamp.ToLocalTime().ToString(), a.Code);
                     });
         }
 
@@ -119,7 +119,7 @@
                            async (r, i) =>
                            {
                                var user = await this.userRepository.GetByUserId(r.UserId, cancellationToken);
-                               return new AttemptDto(i + 1, r.Id, user.Map(a => a.LoginName).ValueOrDefault(), user.Map(a => a.AvatarUri).ValueOrDefault(), r.Score, r.TimeStamp);
+                               return new AttemptDto(i + 1, r.Id, user.Map(a => a.LoginName).ValueOr(string.Empty), user.Map(a => a.AvatarUri).ValueOrDefault(), r.Score, r.TimeStamp);
                            }));
         }
     }

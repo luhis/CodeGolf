@@ -23,7 +23,7 @@
             this.logger.LogDebug($"{nameof(PingService)} is starting.");
 
             stoppingToken.Register(() =>
-                this.logger.LogDebug($" {nameof(PingService)} background task is stopping."));
+                this.logger.LogDebug($"{nameof(PingService)} background task is stopping."));
 
             while (!stoppingToken.IsCancellationRequested)
             {

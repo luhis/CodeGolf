@@ -1,11 +1,9 @@
 ﻿namespace CodeGolf.Persistence.Repositories
 {
-    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using CodeGolf.Domain;
     using CodeGolf.Domain.Repositories;
-    using Microsoft.EntityFrameworkCore;
     using Optional;
 
     public class UserRepository : IUserRepository
@@ -29,9 +27,9 @@
 
         async Task IUserRepository.AddOrUpdate(User user, CancellationToken cancellationToken)
         {
-            var existing = await this.context.Users.Where(a => a.UserId == user.UserId)
-                .FirstOrDefaultAsync(cancellationToken);
-            if (existing == null)
+            var existing = await this.context.Users
+                .SingleOrNone(a => a.UserId == user.UserId, cancellationToken);
+            if (!existing.HasValue)
             {
                 this.context.Users.Add(user);
             }
