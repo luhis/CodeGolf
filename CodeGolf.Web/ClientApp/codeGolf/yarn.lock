@@ -764,24 +764,24 @@
     reflect-metadata "^0.1.12"
     tslib "^1.8.1"
 
-"@fortawesome/fontawesome-common-types@^0.2.21":
-  version "0.2.21"
-  resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-common-types/-/fontawesome-common-types-0.2.21.tgz#f1c26ae24761cca583de7cafd1273ab4c70a4d87"
-  integrity sha512-iJtcrU2BtF9Wyr0zm3tHEJy3HqA6sADExhCqCv3SKaJJKKp4ORJ40t4nyHvcWXSVFtd7r1gcdqcRsAfoREGTFA==
+"@fortawesome/fontawesome-common-types@^0.2.22":
+  version "0.2.22"
+  resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-common-types/-/fontawesome-common-types-0.2.22.tgz#3f1328d232a0fd5de8484d833c8519426f39f016"
+  integrity sha512-QmEuZsipX5/cR9JOg0fsTN4Yr/9lieYWM8AQpmRa0eIfeOcl/HLYoEa366BCGRSrgNJEexuvOgbq9jnJ22IY5g==
 
-"@fortawesome/fontawesome-svg-core@^1.2.20":
-  version "1.2.21"
-  resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-svg-core/-/fontawesome-svg-core-1.2.21.tgz#5b08a28d6e1ea198e002447b158abba00fd12122"
-  integrity sha512-EhrgMZLJS0tTYZhUbodurZBqDgAFLDNdxJP/q5unrZJwiFo8Dd7xGvJdhAhY5WcX4khzkPQcbLTCMPHBtutD7Q==
+"@fortawesome/fontawesome-svg-core@^1.2.22":
+  version "1.2.22"
+  resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-svg-core/-/fontawesome-svg-core-1.2.22.tgz#9a6117c96c8b823c7d531000568ac75c3c02e123"
+  integrity sha512-Q941E4x8UfnMH3308n0qrgoja+GoqyiV846JTLoCcCWAKokLKrixCkq6RDBs8r+TtAWaLUrBpI+JFxQNX/WNPQ==
   dependencies:
-    "@fortawesome/fontawesome-common-types" "^0.2.21"
+    "@fortawesome/fontawesome-common-types" "^0.2.22"
 
-"@fortawesome/free-solid-svg-icons@^5.10.0":
-  version "5.10.1"
-  resolved "https://registry.yarnpkg.com/@fortawesome/free-solid-svg-icons/-/free-solid-svg-icons-5.10.1.tgz#535fd5429dbe99656de4f1a8ee42d9f8f5a7aef9"
-  integrity sha512-MKH+SCt0DnVoXdemxf6JEdTRtCPwYLMCWZcwgGccYU/ab6QcDtbAMn6Xm4Zub6YqQCcaiy0hU294YdHOldSBRA==
+"@fortawesome/free-solid-svg-icons@^5.10.2":
+  version "5.10.2"
+  resolved "https://registry.yarnpkg.com/@fortawesome/free-solid-svg-icons/-/free-solid-svg-icons-5.10.2.tgz#61bcecce3aa5001fd154826238dfa840de4aa05a"
+  integrity sha512-9Os/GRUcy+iVaznlg8GKcPSQFpIQpAg14jF0DWsMdnpJfIftlvfaQCWniR/ex9FoOpSEOrlXqmUCFL+JGeciuA==
   dependencies:
-    "@fortawesome/fontawesome-common-types" "^0.2.21"
+    "@fortawesome/fontawesome-common-types" "^0.2.22"
 
 "@fortawesome/react-fontawesome@^0.1.4":
   version "0.1.4"
@@ -885,10 +885,10 @@
   resolved "https://registry.yarnpkg.com/@types/jest/-/jest-23.3.14.tgz#37daaf78069e7948520474c87b80092ea912520a"
   integrity sha512-Q5hTcfdudEL2yOmluA1zaSyPbzWPmJ3XfSWeP3RyoYvS9hnje1ZyagrZOuQ6+1nQC1Gw+7gap3pLNL3xL6UBug==
 
-"@types/lodash@^4.14.137":
-  version "4.14.137"
-  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.137.tgz#8a4804937dc6462274ffcc088df8f14fc1b368e2"
-  integrity sha512-g4rNK5SRKloO+sUGbuO7aPtwbwzMgjK+bm9BBhLD7jGUiGR7zhwYEhSln/ihgYQBeIJ5j7xjyaYzrWTcu3UotQ==
+"@types/lodash@^4.14.138":
+  version "4.14.138"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.138.tgz#34f52640d7358230308344e579c15b378d91989e"
+  integrity sha512-A4uJgHz4hakwNBdHNPdxOTkYmXNgmUAKLbXZ7PKGslgeV0Mb8P3BlbYfPovExek1qnod4pDfRbxuzcVs3dlFLg==
 
 "@types/minimatch@*":
   version "3.0.3"
@@ -2382,10 +2382,10 @@ code-point-at@^1.0.0:
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
   integrity sha1-DQcLTQQ6W+ozovGkDi7bPZpMz3c=
 
-codemirror@^5.48.2:
-  version "5.48.2"
-  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.48.2.tgz#a9dd3d426dea4cd59efd59cd98e20a9152a30922"
-  integrity sha512-i9VsmC8AfA5ji6EDIZ+aoSe4vt9FcwPLdHB1k1ItFbVyuOFRrcfvnoKqwZlC7EVA2UmTRiNEypE4Uo7YvzVY8Q==
+codemirror@^5.48.4:
+  version "5.48.4"
+  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.48.4.tgz#4210fbe92be79a88f0eea348fab3ae78da85ce47"
+  integrity sha512-pUhZXDQ6qXSpWdwlgAwHEkd4imA0kf83hINmUEzJpmG80T/XLtDDEzZo8f6PQLuRCcUQhmzqqIo3ZPTRaWByRA==
 
 collection-visit@^1.0.0:
   version "1.0.0"
@@ -8363,10 +8363,15 @@ preact@^5.6.0:
   resolved "https://registry.yarnpkg.com/preact/-/preact-5.7.0.tgz#2f2a1fff07b11cf25fc54887789d1af137722b5a"
   integrity sha1-Lyof/wexHPJfxUiHeJ0a8TdyK1o=
 
-preact@^8.2.1, preact@^8.3.1:
+preact@^8.2.1:
   version "8.5.1"
   resolved "https://registry.yarnpkg.com/preact/-/preact-8.5.1.tgz#3a86cf5f3d4f6eb3349fa1f106ad59756c2af0e3"
   integrity sha512-YVnCgcboxGrorFVIPjViqkEPOtfYVDxn5GOJuXHQZiOty+JOw7A+1xJytv/mb1O2QIIRC0SyT+kapA7Wj3jdZA==
+
+preact@^8.5.2:
+  version "8.5.2"
+  resolved "https://registry.yarnpkg.com/preact/-/preact-8.5.2.tgz#2f532da485287c07369e08150cf4d23921a09789"
+  integrity sha512-37tlDJGq5IQKqGUbqPZ7qPtsTOWFyxe+ojAOFfzKo0dEPreenqrqgJuS83zGpeGAqD9h9L9Yr7QuxH2W4ZrKxg==
 
 prelude-ls@~1.1.2:
   version "1.1.2"
@@ -10357,10 +10362,10 @@ tslint-react@^4.0.0:
   dependencies:
     tsutils "^3.9.1"
 
-tslint@^5.11.0:
-  version "5.18.0"
-  resolved "https://registry.yarnpkg.com/tslint/-/tslint-5.18.0.tgz#f61a6ddcf372344ac5e41708095bbf043a147ac6"
-  integrity sha512-Q3kXkuDEijQ37nXZZLKErssQVnwCV/+23gFEMROi8IlbaBG6tXqLPQJ5Wjcyt/yHPKBC+hD5SzuGaMora+ZS6w==
+tslint@^5.19.0:
+  version "5.19.0"
+  resolved "https://registry.yarnpkg.com/tslint/-/tslint-5.19.0.tgz#a2cbd4a7699386da823f6b499b8394d6c47bb968"
+  integrity sha512-1LwwtBxfRJZnUvoS9c0uj8XQtAnyhWr9KlNvDIdB+oXyT+VpsOAaEhEgKi1HrZ8rq0ki/AAnbGSv4KM6/AfVZw==
   dependencies:
     "@babel/code-frame" "^7.0.0"
     builtin-modules "^1.1.1"
