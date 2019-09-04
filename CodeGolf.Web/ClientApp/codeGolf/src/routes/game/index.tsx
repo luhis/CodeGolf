@@ -36,7 +36,7 @@ export default class Comp extends Component<{}, State> {
   }
   public readonly componentDidMount = async () => {
     const challenge = await getCurrentHole();
-    this.setState((s => ({ ...s, challenge: { type: "Loaded", data: challenge } })));
+    this.setState(s => ({ ...s, challenge: { type: "Loaded", data: challenge } }));
   }
   public readonly componentWillUnmount = () => {
     this.state.connection.stop();
@@ -44,7 +44,7 @@ export default class Comp extends Component<{}, State> {
   public readonly render = (_: RenderableProps<{}>, { errors, code, challenge }: Readonly<State>) =>
     <FuncComp code={code} errors={errors} challenge={challenge} codeChanged={this.codeChanged} submitCode={this.submitCode} onCodeClick={this.onCodeClick} />
 
-  public readonly codeChanged = async (code: string) => {
+  private readonly codeChanged = async (code: string) => {
     this.setState(s => ({ ...s, code }));
     this.tryCompile();
   }

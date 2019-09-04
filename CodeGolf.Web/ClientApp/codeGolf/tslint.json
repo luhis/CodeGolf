@@ -60,7 +60,7 @@
         "no-parameter-reassignment": true,
         "typedef": [true, "call-signature"],
         "no-duplicate-imports": true,
-    
+
         // Immutability rules
         "readonly-keyword": true,
         "readonly-array": true,
