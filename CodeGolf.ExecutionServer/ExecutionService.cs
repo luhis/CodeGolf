@@ -16,7 +16,7 @@
     {
         private const int ExecutionTimeoutMilliseconds = 1000;
 
-        public async Task<ValueTuple<T, string>[]> Execute<T>(
+        public Task<ValueTuple<T, string>[]> Execute<T>(
             CompileResult compileResult,
             string className,
             string funcName,
@@ -30,37 +30,37 @@
                 var type = obj.GetType(className);
                 var inst = Activator.CreateInstance(type);
                 var fun = GetMethod(funcName, type);
-                return (await Task.WhenAll(
-                            argSets.Select(
-                                async a =>
-                                    {
-                                        var castArgs = CastArgs(a, paramTypes);
-                                        var source = new CancellationTokenSource();
-                                        source.CancelAfter(TimeSpan.FromMilliseconds(ExecutionTimeoutMilliseconds));
-                                        try
-                                        {
-                                            return ValueTuple.Create<T, string>(
-                                                await Task<T>.Factory.StartNew(
-                                                    () => (T)fun.Invoke(
-                                                        inst,
-                                                        BindingFlags.Default | BindingFlags.InvokeMethod,
-                                                        null,
-                                                        castArgs.Append(source.Token).ToArray(),
-                                                        CultureInfo.InvariantCulture),
-                                                    source.Token,
-                                                    TaskCreationOptions.None,
-                                                    TaskScheduler.Current),
-                                                null);
-                                        }
-                                        catch (Exception e)
-                                        {
-                                            var final = GetFinalException(e);
-                                            var line = new StackTrace(final, true).GetFrame(0).GetFileLineNumber();
-                                            return ValueTuple.Create(
-                                                default(T),
-                                                $"Runtime Error line {line} - {final.Message}");
-                                        }
-                                    }))).ToArray();
+                return Task.WhenAll(
+                    argSets.Select(
+                        async a =>
+                        {
+                            var castArgs = CastArgs(a, paramTypes);
+                            var source = new CancellationTokenSource();
+                            source.CancelAfter(TimeSpan.FromMilliseconds(ExecutionTimeoutMilliseconds));
+                            try
+                            {
+                                return ValueTuple.Create<T, string>(
+                                    await Task<T>.Factory.StartNew(
+                                        () => (T)fun.Invoke(
+                                            inst,
+                                            BindingFlags.Default | BindingFlags.InvokeMethod,
+                                            null,
+                                            castArgs.Append(source.Token).ToArray(),
+                                            CultureInfo.InvariantCulture),
+                                        source.Token,
+                                        TaskCreationOptions.None,
+                                        TaskScheduler.Current),
+                                    null);
+                            }
+                            catch (Exception e)
+                            {
+                                var final = GetFinalException(e);
+                                var line = new StackTrace(final, true).GetFrame(0).GetFileLineNumber();
+                                return ValueTuple.Create(
+                                    default(T),
+                                    $"Runtime Error line {line} - {final.Message}");
+                            }
+                        }));
             }
         }
 
