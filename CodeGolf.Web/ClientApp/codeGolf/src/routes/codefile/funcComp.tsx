@@ -3,7 +3,7 @@ import { FunctionalComponent, h } from "preact";
 import { Controlled as CodeMirror, IControlledCodeMirror } from "react-codemirror2";
 import { Circular } from "styled-loaders";
 
-import { LoadingState } from "../../types/types";
+import { ifLoaded, LoadingState } from "../../types/types";
 
 import "codemirror/lib/codemirror.css";
 import "codemirror/mode/clike/clike";
@@ -13,9 +13,9 @@ interface Props {
     readonly result: LoadingState<string>;
 }
 
-const FuncComp: FunctionalComponent<Readonly<Props>> = ({ result }) => result.type === "Loaded" ? (
+const FuncComp: FunctionalComponent<Readonly<Props>> = ({ result }) => ifLoaded(result, data => (
     <section class="section is-fluid">
-        <CM value={result.data}
+        <CM value={data}
             className="editor"
             onBeforeChange={() => undefined}
             options={{ lineNumbers: true, mode: "text/x-csharp" } as EditorConfiguration}
@@ -24,6 +24,6 @@ const FuncComp: FunctionalComponent<Readonly<Props>> = ({ result }) => result.ty
                     e.refresh();
                 }, 250);
             }} />
-    </section>) : <Circular />;
+    </section>), () => <Circular />);
 
 export default FuncComp;

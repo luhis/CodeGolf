@@ -20,7 +20,10 @@ export default class Comp extends Component<{}, State> {
     this.setState(s => ({ ...s, errors: { type: "Loading" } }));
     const errors = {
       type: "Loaded",
-      data: { type: "CompileError", errors: await tryCompile(this.state.challenge.type === "Loaded" && this.state.challenge.data ? this.state.challenge.data.challengeSet.id : "", this.state.code) } as RunResult
+      data: {
+        type: "CompileError",
+        errors: await tryCompile(ifLoaded(this.state.challenge, c => c ? c.challengeSet.id : "", () => ""), this.state.code)
+      } as RunResult
     } as LoadingState<RunResult>;
     this.setState(s => ({ ...s, errors }));
   }, 1000);
@@ -49,9 +52,13 @@ export default class Comp extends Component<{}, State> {
     this.tryCompile();
   }
   private readonly onCodeClick = () => {
-    if (this.state.code === "" && this.state.challenge.type === "Loaded" && this.state.challenge.data) {
-      const funcDec = getFunctionDeclaration(this.state.challenge.data.challengeSet);
-      this.setState(s => ({ ...s, code: funcDec }));
+    if (this.state.code === "") {
+      ifLoaded(this.state.challenge, c => {
+        if (c) {
+          const funcDec = getFunctionDeclaration(c.challengeSet);
+          this.setState(s => ({ ...s, code: funcDec }));
+        }
+      }, () => undefined);
     }
   }
   private readonly submitCode = async (code: string) => {

@@ -3,7 +3,7 @@ import { FunctionalComponent, h } from "preact";
 import { Controlled as CodeMirror, IControlledCodeMirror } from "react-codemirror2";
 import { Circular } from "styled-loaders";
 
-import { AttemptWithCode, LoadingState } from "../../types/types";
+import { AttemptWithCode, ifLoaded, LoadingState } from "../../types/types";
 
 import "codemirror/lib/codemirror.css";
 import "codemirror/mode/clike/clike";
@@ -13,18 +13,18 @@ interface Props {
     readonly result: LoadingState<AttemptWithCode>;
 }
 
-const FuncComp: FunctionalComponent<Readonly<Props>> = ({ result }) => result.type === "Loaded" ? (
+const FuncComp: FunctionalComponent<Readonly<Props>> = ({ result }) => ifLoaded(result, data => (
     <section class="section is-fluid">
         <h1 class="title">Attempt</h1>
         <div class="columns">
             <figure class="image is-48x48">
-                <img src={result.data.avatar} />
+                <img src={data.avatar} />
             </figure>
             <span>
-                {result.data.loginName} {result.data.score} {result.data.timeStamp}
+                {data.loginName} {data.score} {data.timeStamp}
             </span>
         </div>
-        <CM value={result.data.code}
+        <CM value={data.code}
             className="editor"
             onBeforeChange={() => undefined}
             options={{ lineNumbers: true, mode: "text/x-csharp" } as EditorConfiguration}
@@ -33,6 +33,6 @@ const FuncComp: FunctionalComponent<Readonly<Props>> = ({ result }) => result.ty
                     e.refresh();
                 }, 250);
             }} />
-    </section>) : <Circular />;
+    </section>), () => <Circular />);
 
 export default FuncComp;

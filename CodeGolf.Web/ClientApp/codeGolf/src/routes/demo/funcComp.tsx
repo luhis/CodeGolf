@@ -22,14 +22,6 @@ const executeCaptcha = () => {
   recaptchaInstance.execute();
 };
 
-const valueOr = <T extends any>(l: LoadingState<T>, f: (() => T)): T => {
-  if (l.type === "Loaded") {
-    return l.data;
-  }
-
-  return f();
-};
-
 const FuncComp: FunctionalComponent<Readonly<Props>> = ({ code, errors, challenge, codeChanged, onCodeClick, submitCode }) => {
   const verifyCallback = (response: string) => {
     submitCode(code, response);
@@ -38,7 +30,7 @@ const FuncComp: FunctionalComponent<Readonly<Props>> = ({ code, errors, challeng
     <h1 class="title">Demo</h1>
     <div class="columns">
       <div class="column is-half">
-        <CodeEditor code={code} codeChanged={codeChanged} errors={valueOr(errors, () => undefined)} submitCode={executeCaptcha} />
+        <CodeEditor code={code} codeChanged={codeChanged} errors={ifLoaded(errors, e => e, () => undefined)} submitCode={executeCaptcha} />
       </div>
       <div class="column is-half">
         {ifLoaded(challenge, c => <ChallengeComp

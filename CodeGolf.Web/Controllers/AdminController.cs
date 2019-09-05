@@ -63,14 +63,14 @@
         }
 
         [HttpGet("[action]")]
-        public async Task<ActionResult<IReadOnlyList<ResultDto>>> GetFinalScores(CancellationToken cancellationToken)
+        public async Task<ActionResult<IReadOnlyList<ResultDto>>> FinalScores(CancellationToken cancellationToken)
         {
             var r = await this.resultsService.GetFinalScores(cancellationToken);
             return new ActionResult<IReadOnlyList<ResultDto>>(r);
         }
 
         [HttpGet("[action]/{attemptId}")]
-        public async Task<ActionResult<AttemptCodeDto>> GetAttempt(Guid attemptId, CancellationToken cancellationToken)
+        public async Task<ActionResult<AttemptCodeDto>> Attempt(Guid attemptId, CancellationToken cancellationToken)
         {
             var res = await this.dashboardService.GetAttemptById(attemptId, cancellationToken);
             return res.Match(

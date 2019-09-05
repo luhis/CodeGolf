@@ -22,14 +22,6 @@ const PleaseWait: FunctionalComponent = () => (<div class="notification is-info"
   Please wait for the hole to begin
 </div>);
 
-const valueOr = <T extends any>(l: LoadingState<T>, f: (() => T)): T => {
-  if (l.type === "Loaded") {
-    return l.data;
-  }
-
-  return f();
-};
-
 const HasChallenge: FunctionalComponent<{
   readonly code: string;
   readonly challenge: Hole | undefined;
@@ -38,7 +30,7 @@ const HasChallenge: FunctionalComponent<{
   challenge ?
     (<div class="columns">
       <div class="column is-half">
-        <CodeEditor code={code} codeChanged={codeChanged} errors={valueOr(errors, () => undefined)} submitCode={submitCode} />
+        <CodeEditor code={code} codeChanged={codeChanged} errors={ifLoaded(errors, e => e, () => undefined)} submitCode={submitCode} />
       </div>
       <div class="column is-half">
         <ChallengeComp

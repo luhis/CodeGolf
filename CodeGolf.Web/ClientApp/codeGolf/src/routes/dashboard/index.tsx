@@ -10,7 +10,7 @@ interface State {
   readonly currentHole: LoadingState<Hole | undefined>;
   readonly attempts: LoadingState<ReadonlyArray<Attempt>>;
   readonly connection: HubConnection;
- }
+}
 
 export default class Comp extends Component<{}, State> {
   constructor() {
@@ -36,13 +36,16 @@ export default class Comp extends Component<{}, State> {
         nextHole={this.doThenUpdateHole(nextHole)}
         endHole={this.doThenUpdateHole(f)} />);
     },
-    () => null)
+      () => null)
 
   private readonly getResults = async () => {
-    if (this.state.currentHole.type === "Loaded" && this.state.currentHole.data) {
-      const results = await getResults(this.state.currentHole.data.hole.holeId);
-      this.setState(s => ({ ...s, attempts: { type: "Loaded", data: results } }));
-    }
+    return ifLoaded(this.state.currentHole, async hole => {
+      if (hole) {
+        const results = await getResults(hole.hole.holeId);
+        this.setState(s => ({ ...s, attempts: { type: "Loaded", data: results } }));
+      }
+
+    }, () => Promise.resolve());
   }
 
   private readonly getHole = async () => {
