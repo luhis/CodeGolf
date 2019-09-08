@@ -82,9 +82,13 @@
         public async Task<ActionResult<IReadOnlyList<GameDto>>> MyGames(CancellationToken cancellationToken)
         {
             // var user = this.identityTools.GetIdentity(this.HttpContext).ValueOrFailure();
-            var r = await this.adminService.GetAllHoles(cancellationToken);
-            return new ActionResult<IReadOnlyList<GameDto>>(
-                new[] { new GameDto(Guid.NewGuid(), "aa", r.Select(a => new RoundDto(a.Id, a.Title)).ToList()) });
+            var r = await this.adminService.GetAllGames(cancellationToken);
+            var x = r.Select(a =>
+                new GameDto(
+                    Guid.NewGuid(),
+                    "aa",
+                    a.Holes.Select(h => new RoundDto(Guid.NewGuid(), "bb")).ToList())).ToList();
+            return new ActionResult<IReadOnlyList<GameDto>>(x);
         }
 
         [HttpPost("[action]/{gameId}")]
