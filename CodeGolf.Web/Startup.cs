@@ -224,7 +224,7 @@ namespace CodeGolf.Web
             app.UseSpa(
                 spa =>
                     {
-                        spa.Options.SourcePath = "ClientApp/codeGolf/";
+                        spa.Options.SourcePath = "ClientApp/";
 
                         if (env.IsDevelopment())
                         {

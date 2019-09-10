@@ -13,7 +13,7 @@
     "lint": "tslint --project .",
     "test": "jest ./tests",
     "precommit": "lint-staged",
-    "postbuild": "rm -r ../../../publish/ClientApp/ && mv build ../../../publish/ClientApp/"
+    "postbuild": "rm -r ../../publish/ClientApp/ && mv build ../../publish/ClientApp/"
   },
   "lint-staged": {
     "*.{js,jsx,css,md,scss}": [
