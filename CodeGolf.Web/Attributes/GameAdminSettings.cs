@@ -4,6 +4,6 @@
 
     public class GameAdminSettings
     {
-        public List<string> AdminGithubNames { get; set; }
+        public List<string> AdminGithubNames { get; set; } = new List<string>();
     }
 }
