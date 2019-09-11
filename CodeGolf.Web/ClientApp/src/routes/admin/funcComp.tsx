@@ -1,30 +1,8 @@
 import { FunctionalComponent, h } from "preact";
 import { Circular } from "styled-loaders";
 
+import CreateGame from "../../components/createGame";
 import { Game, Guid, ifLoaded, LoadingState, Round } from "../../types/types";
-
-const Modal: FunctionalComponent<{ readonly hide: () => void, readonly challenges: ReadonlyArray<Round> }> = ({ hide }) =>
-    (<div class="modal is-active">
-        <div class="modal-background" />
-        <div class="modal-content">
-            <header class="modal-card-head">
-                <p class="modal-card-title">Create New Game</p>
-                <button class="delete" aria-label="close" onClick={hide} />
-            </header>
-            <section class="modal-card-body">
-                <div class="field">
-                    <label class="label">Access Code</label>
-                    <div class="control">
-                        <input class="input is-primary" type="text" />
-                    </div>
-                </div>
-            </section>
-            <footer class="modal-card-foot">
-                <button class="button is-success">Save changes</button>
-                <button class="button" onClick={hide}>Cancel</button>
-            </footer>
-        </div>
-    </div>);
 
 const Row: FunctionalComponent<{ readonly g: Game, readonly resetGame: ((g: Guid) => void) }> = ({ g, resetGame }) =>
   (<article class="message">
@@ -42,20 +20,20 @@ const Row: FunctionalComponent<{ readonly g: Game, readonly resetGame: ((g: Guid
         </div>
     </article>);
 
-type Props = ({
+interface Props {
     readonly myGames: LoadingState<ReadonlyArray<Game>>;
     readonly allChallenges: LoadingState<ReadonlyArray<Round>>;
-    readonly showCreate: boolean
+    readonly showCreate: boolean;
     readonly toggleCreate: (state: boolean) => void;
-    readonly resetGame: ((g: Guid) => void);
-});
+    readonly resetGame: (g: Guid) => void;
+}
 
 const FuncComp: FunctionalComponent<Readonly<Props>> = ({ myGames, allChallenges, showCreate, toggleCreate, resetGame }) =>
     ifLoaded(myGames, g =>
         (<div><section class="accordions">
             {g.map((a: Game) => <Row g={a} resetGame={resetGame} key={a.id} />)}
         </section>
-            {ifLoaded(allChallenges, c => (showCreate ? <Modal hide={() => toggleCreate(false)} challenges={c} /> : null), () => null)}
+            {ifLoaded(allChallenges, c => (showCreate ? <CreateGame hide={() => toggleCreate(false)} challenges={c} /> : null), () => null)}
             <button className="button" onClick={() => toggleCreate(!showCreate)}>Create New</button>
         </div>),
         () =>

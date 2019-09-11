@@ -87,7 +87,7 @@
                 new GameDto(
                     Guid.NewGuid(),
                     "aa",
-                    a.Holes.Select(h => new RoundDto(Guid.NewGuid(), "bb")).ToList())).ToList();
+                    a.Holes.Select(h => new RoundDto(h.HoleId, "bb")).ToList())).ToList();
             return new ActionResult<IReadOnlyList<GameDto>>(x);
         }
 
