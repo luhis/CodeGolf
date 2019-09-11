@@ -11,9 +11,9 @@ interface Props {
   readonly code: string;
   readonly errors: LoadingState<RunResult | undefined>;
   readonly challenge: LoadingState<ChallengeSet>;
-  readonly codeChanged: ((s: string) => Promise<void>);
-  readonly onCodeClick: (() => void);
-  readonly submitCode: ((code: string, recaptcha: string) => void);
+  readonly codeChanged: (s: string) => Promise<void>;
+  readonly onCodeClick: () => void;
+  readonly submitCode: (code: string, recaptcha: string) => void;
 }
 // tslint:disable-next-line: no-let
 let recaptchaInstance: any = null;

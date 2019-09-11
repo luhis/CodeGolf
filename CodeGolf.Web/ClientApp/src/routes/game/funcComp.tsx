@@ -7,16 +7,16 @@ import ErrorsComp from "../../components/results";
 import { Hole, ifLoaded, LoadingState, RunResult } from "../../types/types";
 
 interface Funcs {
-  readonly codeChanged: ((s: string) => Promise<void>);
-  readonly onCodeClick: (() => void);
-  readonly submitCode: ((code: string) => void);
+  readonly codeChanged: (s: string) => Promise<void>;
+  readonly onCodeClick: () => void;
+  readonly submitCode: (code: string) => void;
 }
 
-type Props = ({
+type Props = {
   readonly code: string;
   readonly errors: LoadingState<RunResult | undefined>;
   readonly challenge: LoadingState<Hole | undefined>;
-} & Funcs);
+} & Funcs;
 
 const PleaseWait: FunctionalComponent = () => (<div class="notification is-info">
   Please wait for the hole to begin
