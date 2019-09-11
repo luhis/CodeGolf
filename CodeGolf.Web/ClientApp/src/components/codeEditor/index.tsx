@@ -9,8 +9,8 @@ import "codemirror/mode/clike/clike";
 
 interface Props {
     readonly code: string;
-    readonly codeChanged: ((s: string) => void);
-    readonly submitCode: ((s: string) => void);
+    readonly codeChanged: (s: string) => void;
+    readonly submitCode: (s: string) => void;
     readonly errors?: RunResult;
 }
 
@@ -37,8 +37,7 @@ const setErrors = (editorComp: Editor, errors?: RunResult) => {
 const CM = CodeMirror as unknown as FunctionalComponent<IControlledCodeMirror>;
 
 const Comp: FunctionalComponent<Readonly<Props>> = ({ code, codeChanged, submitCode, errors }) => {
-    if (editor)
-    {
+    if (editor) {
         setErrors(editor, errors);
     }
     return (<div>

@@ -6,6 +6,7 @@
     using CodeGolf.Domain;
     using CodeGolf.Domain.ChallengeInterfaces;
     using CodeGolf.Domain.Repositories;
+    using CodeGolf.Service.Dtos;
 
     public class AdminService : IAdminService
     {
@@ -43,6 +44,11 @@
             await this.holeRepository.ClearAll();
             await this.userRepository.ClearAll();
             await this.signalRNotifier.NewRound();
+        }
+
+        Task IAdminService.CreateGame(GameDto challenges, string accessKey, User user, CancellationToken cancellationToken)
+        {
+            throw new System.NotImplementedException();
         }
 
         Task<IReadOnlyList<IChallengeSet>> IAdminService.GetAllChallenges(in CancellationToken cancellationToken)

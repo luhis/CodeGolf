@@ -13,6 +13,8 @@
     using CodeGolf.Web.Models;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using GameDto = CodeGolf.Web.Models.GameDto;
+    using RoundDto = CodeGolf.Web.Models.RoundDto;
 
     [Route("api/[controller]")]
     [ApiController]

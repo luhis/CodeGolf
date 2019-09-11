@@ -5,6 +5,8 @@
         "clike",
         "codefile",
         "codemirror",
+        "fontawesome",
+        "fortawesome",
         "preact",
         "recaptcha",
         "sitekey"
