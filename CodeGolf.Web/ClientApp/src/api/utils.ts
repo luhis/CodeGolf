@@ -2,6 +2,8 @@ import { AxiosResponse } from "axios";
 
 import { ChallengeSet, Hole } from "../types/types";
 
+export const utzParse = (date: string) => new Date(date + "z");
+
 export const MapHole = (h?: HoleInt) => {
     if (h) {
         return { ...h, start: utzParse(h.start), end: utzParse(h.end), closedAt: h.closedAt ? utzParse(h.closedAt) : undefined } as Hole;
@@ -10,8 +12,6 @@ export const MapHole = (h?: HoleInt) => {
     // tslint:disable-next-line: no-return-undefined
     return undefined;
 };
-
-export const utzParse = (date: string) => new Date(date + "z");
 
 export interface HoleInt { readonly challengeSet: ChallengeSet; readonly start: string; readonly end: string; readonly closedAt?: string; }
 

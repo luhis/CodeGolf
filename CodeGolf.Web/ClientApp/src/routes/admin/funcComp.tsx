@@ -5,7 +5,7 @@ import CreateGame from "../../components/createGame";
 import { Game, Guid, ifLoaded, LoadingState, Round } from "../../types/types";
 
 const Row: FunctionalComponent<{ readonly g: Game, readonly resetGame: ((g: Guid) => void) }> = ({ g, resetGame }) =>
-  (<article class="message">
+    (<article class="message">
         <div class="message-header">
             <p>Code: {g.accessKey}</p>
         </div>

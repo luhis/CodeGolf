@@ -18,6 +18,8 @@ export const ifLoaded = <T, TT>(l: LoadingState<T>, some: ((t: T) => TT), none: 
 export interface ParamDescription { readonly type: string; readonly suggestedName: string; }
 export interface Challenge { readonly args: ReadonlyArray<string>; readonly expectedResult: object; }
 
+export type Guid = string & {};
+
 export interface ChallengeSet {
     readonly id: Guid;
     readonly title: string;
@@ -26,8 +28,6 @@ export interface ChallengeSet {
     readonly params: ReadonlyArray<ParamDescription>;
     readonly challenges: ReadonlyArray<Challenge>;
 }
-
-export type Guid = string & {};
 
 export interface Attempt {
     readonly rank: number;
