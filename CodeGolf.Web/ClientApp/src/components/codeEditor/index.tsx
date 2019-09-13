@@ -1,5 +1,5 @@
 import { Editor, TextMarker } from "codemirror";
-import { FunctionalComponent, h } from "preact";
+import { AnyComponent, FunctionalComponent, h } from "preact";
 import { Controlled as CodeMirror, IControlledCodeMirror } from "react-codemirror2";
 
 import { RunResult } from "../../types/types";
@@ -34,7 +34,7 @@ const setErrors = (editorComp: Editor, errors?: RunResult) => {
     }
 };
 
-const CM = CodeMirror as unknown as FunctionalComponent<IControlledCodeMirror>;
+const CM = CodeMirror as unknown as AnyComponent<IControlledCodeMirror, any>;
 
 const Comp: FunctionalComponent<Readonly<Props>> = ({ code, codeChanged, submitCode, errors }) => {
     if (editor) {

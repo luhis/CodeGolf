@@ -1,5 +1,5 @@
 import { Editor, EditorConfiguration } from "codemirror";
-import { FunctionalComponent, h } from "preact";
+import { AnyComponent, FunctionalComponent, h } from "preact";
 import { Controlled as CodeMirror, IControlledCodeMirror } from "react-codemirror2";
 import { Circular } from "styled-loaders";
 
@@ -8,7 +8,7 @@ import { AttemptWithCode, ifLoaded, LoadingState } from "../../types/types";
 import "codemirror/lib/codemirror.css";
 import "codemirror/mode/clike/clike";
 
-const CM = CodeMirror as unknown as FunctionalComponent<IControlledCodeMirror>;
+const CM = CodeMirror as unknown as AnyComponent<IControlledCodeMirror, any>;
 interface Props {
     readonly result: LoadingState<AttemptWithCode>;
 }
