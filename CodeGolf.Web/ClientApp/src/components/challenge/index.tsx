@@ -6,7 +6,7 @@ import Markdown from "preact-markdown";
 import { getChallengeOverView, getFunctionDeclaration } from "../../funcDeclaration";
 import { Challenge, ChallengeSet } from "../../types/types";
 
-interface Props { readonly challenge: ChallengeSet; readonly onCodeClick?: (() => void); }
+interface Props { readonly challenge: ChallengeSet; readonly onCodeClick?: () => void; }
 
 const X: FunctionalComponent<{ readonly challenge: Challenge, readonly returnType: string; }> = ({ challenge, returnType }) =>
     (<div
