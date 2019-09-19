@@ -2009,10 +2009,10 @@ builtins@^1.0.3:
   resolved "https://registry.yarnpkg.com/builtins/-/builtins-1.0.3.tgz#cb94faeb61c8696451db36534e1422f94f0aee88"
   integrity sha1-y5T662HIaWRR2zZTThQi+U8K7og=
 
-bulma-toast@^1.5.1:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/bulma-toast/-/bulma-toast-1.5.1.tgz#a88a4c0aee224b6344dfa5dfbcc49f7a25e865d1"
-  integrity sha512-RgJ9jaQmN418PySZSMHk9ukG6gOpmPu5U96ahe21kgaN3jS6FoA1T8RLu3v73GSLGIAfayyVS73hbR71lh7fug==
+bulma-toast@^1.5.2:
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/bulma-toast/-/bulma-toast-1.5.2.tgz#a4cf2e29d14a92c10a63b589f315f253abcf94be"
+  integrity sha512-vvfjvPawZWtOVLzn43POYwv4IYsLqUzYEPtsgPr8GPMRNsM9jyzsMXpsZchb2RxX9rVCSFrn5MikGi4hoyR0zw==
 
 bulma@^0.7.5:
   version "0.7.5"
