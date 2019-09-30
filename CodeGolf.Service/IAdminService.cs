@@ -13,7 +13,7 @@
 
         Task CreateGame(GameDto challenges, string accessKey, User user, CancellationToken cancellationToken);
 
-        Task<IReadOnlyList<IChallengeSet>> GetAllChallenges(in CancellationToken cancellationToken);
+        Task<IReadOnlyList<IChallengeSet>> GetAllChallenges(CancellationToken cancellationToken);
 
         Task<IReadOnlyList<Game>> GetAllGames(CancellationToken cancellationToken);
     }

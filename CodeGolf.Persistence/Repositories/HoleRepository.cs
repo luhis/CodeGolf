@@ -1,6 +1,7 @@
 ﻿namespace CodeGolf.Persistence.Repositories
 {
     using System;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using CodeGolf.Domain;
@@ -21,7 +22,7 @@
         {
             if (await this.context.Holes.AnyAsync(cancellationToken))
             {
-                return Option.Some(await this.context.Holes.LastAsync(cancellationToken));
+                return Option.Some(await this.context.Holes.OrderByDescending(a => a.Start).FirstAsync(cancellationToken));
             }
             else
             {

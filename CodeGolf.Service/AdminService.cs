@@ -51,7 +51,7 @@
             throw new System.NotImplementedException();
         }
 
-        Task<IReadOnlyList<IChallengeSet>> IAdminService.GetAllChallenges(in CancellationToken cancellationToken)
+        Task<IReadOnlyList<IChallengeSet>> IAdminService.GetAllChallenges(CancellationToken cancellationToken)
         {
             return Task.FromResult(this.challengeRepository.GetAll());
         }

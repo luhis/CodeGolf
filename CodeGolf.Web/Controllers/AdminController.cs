@@ -100,9 +100,9 @@
         }
 
         [HttpGet("[action]")]
-        public Task<IReadOnlyList<IChallengeSet>> AllChallenges(CancellationToken cancellationToken)
+        public async Task<IReadOnlyList<ChallengeOverView>> AllChallenges(CancellationToken cancellationToken)
         {
-            return this.adminService.GetAllChallenges(cancellationToken);
+            return (await this.adminService.GetAllChallenges(cancellationToken)).Select(a => new ChallengeOverView(a.Id, a.Title, a.Description)).ToArray();
         }
     }
 }

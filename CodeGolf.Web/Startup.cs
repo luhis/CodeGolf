@@ -6,6 +6,7 @@ namespace CodeGolf.Web
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Security.Claims;
+    using System.Text.Json;
     using System.Threading;
     using System.Threading.Tasks;
     using CodeGolf.Persistence;
@@ -25,6 +26,7 @@ namespace CodeGolf.Web
     using Microsoft.AspNetCore.Routing;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
     using Newtonsoft.Json.Linq;
     using WebMarkupMin.AspNetCore2;
 
@@ -71,7 +73,7 @@ namespace CodeGolf.Web
             services.Configure<GameAdminSettings>(this.Configuration);
             services.Configure<RecaptchaSettings>(this.Configuration.GetSection("Recaptcha"));
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc(o => { o.EnableEndpointRouting = false; }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddWebMarkupMin(options =>
                 {
                     options.AllowMinificationInDevelopmentEnvironment = false;
@@ -129,7 +131,7 @@ namespace CodeGolf.Web
                             {
                                 response.EnsureSuccessStatusCode();
 
-                                var user = JObject.Parse(await response.Content.ReadAsStringAsync());
+                                var user = JsonDocument.Parse(await response.Content.ReadAsStringAsync()).RootElement;
 
                                 context.RunClaimActions(user);
                             }
@@ -148,7 +150,7 @@ namespace CodeGolf.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IRunner runner, CodeGolfContext codeGolfContext)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IRunner runner, CodeGolfContext codeGolfContext)
         {
             if (env.IsDevelopment())
             {
@@ -215,10 +217,12 @@ namespace CodeGolf.Web
             app.UseSpaStaticFiles(sfOptions);
 
             app.UseAuthentication();
+            app.UseAuthorization();
             app.UseWebMarkupMin();
+            app.UseRouting();
 
             app.UseCookiePolicy();
-            app.UseSignalR(routes => { routes.MapHub<RefreshHub>("/refreshHub"); });
+            app.UseEndpoints(endpoints => { endpoints.MapHub<RefreshHub>("/refreshHub"); });
             app.UseMvc();
 
             app.UseSpa(
