@@ -5,7 +5,6 @@
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using CodeGolf.Domain.ChallengeInterfaces;
     using CodeGolf.Service;
     using CodeGolf.Service.Dtos;
     using CodeGolf.Web.Attributes;

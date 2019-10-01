@@ -27,7 +27,6 @@ namespace CodeGolf.Web
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using Newtonsoft.Json.Linq;
     using WebMarkupMin.AspNetCore2;
 
     public class Startup

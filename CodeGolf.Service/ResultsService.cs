@@ -9,8 +9,6 @@
     using CodeGolf.Domain.Repositories;
     using CodeGolf.Service.Dtos;
 
-    using Optional.Unsafe;
-
     public class ResultsService : IResultsService
     {
         private readonly IGameRepository gameRepository;
