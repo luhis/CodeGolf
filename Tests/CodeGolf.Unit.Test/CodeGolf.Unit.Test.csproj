@@ -20,7 +20,7 @@
     <PackageReference Include="FluentAssertions.OneOf" Version="0.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.3.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="16.3.52" />
+    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="16.4.16" />
     <PackageReference Include="Moq" Version="4.13.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
