@@ -19,6 +19,7 @@ dotnet publish ./CodeGolf.ExecutionServer -o ../executionServer -c Release -r li
 echo "Creating files and folders"
 touch ./publish/appsettings.Production.json
 mkdir ./publish/db
+mkdir ./publish/ClientApp
 
 echo "Setting file ownership"
 chown -R www-data:www-data ./publish/wwwroot
