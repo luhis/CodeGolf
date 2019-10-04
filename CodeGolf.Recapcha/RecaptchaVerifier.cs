@@ -3,9 +3,9 @@
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
+    using System.Text.Json;
     using System.Threading.Tasks;
     using Microsoft.Extensions.Options;
-    using Newtonsoft.Json;
 
     public class RecaptchaVerifier : IRecaptchaVerifier
     {
@@ -31,7 +31,7 @@
                 using (var result = await client.PostAsync(Api, content))
                 {
                     var s = await result.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<ReCaptchaResponse>(s).Success;
+                    return JsonSerializer.Deserialize<ReCaptchaResponse>(s).Success;
                 }
             }
         }
