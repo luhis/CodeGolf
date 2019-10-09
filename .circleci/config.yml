@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  dotnettest:
     docker:
       - image: mcr.microsoft.com/dotnet/core/sdk:3.0
     working_directory: /build/
@@ -13,3 +13,27 @@ jobs:
             dotnet clean
             dotnet test
             popd
+
+  jstest:
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout
+      - restore_cache:
+          key: npm-cache-v1-{{ checksum "./CodeGolf.Web/ClientApp/package.json" }}
+      - run:
+          name: Install Dependencies
+          command: yarn --cwd ./CodeGolf.Web/ClientApp/ install
+      - save_cache:
+          key: npm-cache-v1-{{ checksum "./CodeGolf.Web/ClientApp/package.json" }}
+          paths:
+            - /home/circleci/.npm
+      - run:
+          name: Run Tests
+          command: yarn --cwd ./CodeGolf.Web/ClientApp/ test
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - dotnettest
+      - jstest
