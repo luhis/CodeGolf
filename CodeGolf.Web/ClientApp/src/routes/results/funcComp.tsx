@@ -1,6 +1,6 @@
-import { FunctionalComponent, h } from "preact";
-import { Circular } from "styled-loaders";
+import { Fragment, FunctionalComponent, h } from "preact";
 
+import Loading from "../../components/loading";
 import { ifLoaded, LoadingState, Result } from "../../types/types";
 
 interface Props {
@@ -29,7 +29,7 @@ const FuncComp: FunctionalComponent<Readonly<Props>> = ({ results }) => (
         </tr>
       </thead>
       <tbody>
-        {ifLoaded(results, r => r.map(a => <Row key={a.rank} {...a} />), () => [<Circular key={1} />])}
+{ifLoaded(results, r => <Fragment>{r.map(a => <Row key={a.rank} {...a} />)}</Fragment>, () => <Loading/>)}
       </tbody>
     </table>
   </section>);

@@ -1,8 +1,8 @@
 import { Editor, EditorConfiguration } from "codemirror";
 import { AnyComponent, FunctionalComponent, h } from "preact";
 import { Controlled as CodeMirror, IControlledCodeMirror } from "react-codemirror2";
-import { Circular } from "styled-loaders";
 
+import Loading from "../../components/loading";
 import { AttemptWithCode, ifLoaded, LoadingState } from "../../types/types";
 
 import "codemirror/lib/codemirror.css";
@@ -33,6 +33,6 @@ const FuncComp: FunctionalComponent<Readonly<Props>> = ({ result }) => ifLoaded(
                     e.refresh();
                 }, 250);
             }} />
-    </section>), () => <Circular />);
+    </section>), () => <Loading/>);
 
 export default FuncComp;

@@ -24,6 +24,7 @@ namespace CodeGolf.Web
     using Microsoft.AspNetCore.HttpOverrides;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Routing;
+    using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
@@ -163,7 +164,7 @@ namespace CodeGolf.Web
                 app.UseHsts();
             }
 
-            var minifiedGAScriptHash = "qEShyXJhwl9qHYlR7p7AwHlpnpEclnzFsPGivkRFOzM=";
+            const string minifiedGaScriptHash = "qEShyXJhwl9qHYlR7p7AwHlpnpEclnzFsPGivkRFOzM=";
 
             app.UseSecurityHeaders(
                 policies => policies.AddDefaultSecurityHeaders()
@@ -176,7 +177,7 @@ namespace CodeGolf.Web
                                     .From("https://www.googletagmanager.com").From("https://www.gstatic.com")
                                     .From("https://www.google-analytics.com")
                                     .WithHash256("fJYxG/MUxs9b4moaAfLG0e5TxMp0nppc6ulRT3MfHLU=")
-                                    .WithHash256(minifiedGAScriptHash);
+                                    .WithHash256(minifiedGaScriptHash);
                                 if (env.IsDevelopment())
                                 {
                                     scripts.UnsafeEval();
@@ -186,7 +187,7 @@ namespace CodeGolf.Web
                                     .From("https://*.githubusercontent.com");
                                 b.AddFrameSource().Self().From("https://www.google.com");
                                 b.AddStyleSrc().Self().UnsafeInline().Blob();
-                                b.AddConnectSrc().Self().From("https://localhost:8080");
+                                b.AddConnectSrc().Self().From("https://localhost:*");
                             }));
 
             app.UseForwardedHeaders(
@@ -232,10 +233,11 @@ namespace CodeGolf.Web
                         if (env.IsDevelopment())
                         {
                             // run npm process with client app
-                            // spa.UseReactDevelopmentServer(npmScript: "start:development");
+                            spa.UseReactDevelopmentServer(npmScript: "dev");
+
                             // if you just prefer to proxy requests from client app, use proxy to SPA dev server instead:
                             // app should be already running before starting a .NET client
-                            spa.UseProxyToSpaDevelopmentServer("http://localhost:8080"); // your Vue app port
+                            // spa.UseProxyToSpaDevelopmentServer("http://localhost:8080"); // your Vue app port
                         }
                     });
             codeGolfContext.SeedDatabase();

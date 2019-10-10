@@ -1,8 +1,8 @@
 import { FunctionalComponent, h } from "preact";
-import { Circular } from "styled-loaders";
 
 import ChallengeComp from "../../components/challenge";
 import CodeEditor from "../../components/codeEditor";
+import Loading from "../../components/loading";
 import ErrorsComp from "../../components/results";
 import { Hole, ifLoaded, LoadingState, RunResult } from "../../types/types";
 
@@ -39,7 +39,7 @@ const HasChallenge: FunctionalComponent<{
         />
 
         {ifLoaded(errors, e =>
-          <ErrorsComp errors={e} returnType={challenge.challengeSet.returnType} />, () => <Circular />)}
+          <ErrorsComp errors={e} returnType={challenge.challengeSet.returnType} />, () => <Loading/>)}
       </div>
     </div>) : <PleaseWait />
 );
@@ -49,7 +49,7 @@ const FuncComp: FunctionalComponent<Readonly<Props>> = ({ code, errors, challeng
     <h1 class="title">Game</h1>
     {ifLoaded(challenge, c =>
       <HasChallenge challenge={c} code={code} errors={errors} codeChanged={codeChanged} onCodeClick={onCodeClick} submitCode={submitCode} />,
-      () => <Circular />)}
+      () => <Loading/>)}
   </section>);
 };
 
