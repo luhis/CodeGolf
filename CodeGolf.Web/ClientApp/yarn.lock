@@ -783,10 +783,10 @@
   dependencies:
     "@fortawesome/fontawesome-common-types" "^0.2.25"
 
-"@fortawesome/react-fontawesome@^0.1.5":
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/@fortawesome/react-fontawesome/-/react-fontawesome-0.1.5.tgz#8bc3cd5c617749534787a35e29caa7a6cff705c9"
-  integrity sha512-WYDKTgyAWOncujWhhzhW7k8sgO5Eo2pZTUL51yNzSQNBUwwr6rNKg/JUSE3iebaU1XShHw74aKc1kJ+jvtRNew==
+"@fortawesome/react-fontawesome@^0.1.6":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@fortawesome/react-fontawesome/-/react-fontawesome-0.1.6.tgz#b798b96401e25d07c30bbe1b9ec0e6d8a33760a5"
+  integrity sha512-DNqt2t4JQ0YQKi832XzByk1wlQzgugwwCCNQHsFyz1z/zA9dtypSvsvVwMIaWXMljalYzKAA2zHX13C1DIxKAw==
   dependencies:
     prop-types "^15.5.10"
 
@@ -2008,10 +2008,10 @@ builtins@^1.0.3:
   resolved "https://registry.yarnpkg.com/builtins/-/builtins-1.0.3.tgz#cb94faeb61c8696451db36534e1422f94f0aee88"
   integrity sha1-y5T662HIaWRR2zZTThQi+U8K7og=
 
-bulma-toast@^1.5.2:
-  version "1.5.2"
-  resolved "https://registry.yarnpkg.com/bulma-toast/-/bulma-toast-1.5.2.tgz#a4cf2e29d14a92c10a63b589f315f253abcf94be"
-  integrity sha512-vvfjvPawZWtOVLzn43POYwv4IYsLqUzYEPtsgPr8GPMRNsM9jyzsMXpsZchb2RxX9rVCSFrn5MikGi4hoyR0zw==
+bulma-toast@^1.5.3:
+  version "1.5.3"
+  resolved "https://registry.yarnpkg.com/bulma-toast/-/bulma-toast-1.5.3.tgz#2e167e90d2e1f7f6f93183ab8c65d350af9d8628"
+  integrity sha512-lY1JMUiI9K8ZDEBnZIkElL3iH3/BBmnFbymosy1uvr8i+xp8hnjjWfOnnhZl5mtfcaoWuoYiIbUW71Ss0tXH2w==
 
 bulma@^0.7.5:
   version "0.7.5"
