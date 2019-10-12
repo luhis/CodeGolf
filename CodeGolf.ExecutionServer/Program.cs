@@ -24,7 +24,7 @@
             await Task.WhenAll(host.RunAsync(source.Token), Task.Run(() =>
             {
                 Console.WriteLine("Press any key to shutdown.");
-                Console.ReadKey();
+                Console.Read();
                 source.Cancel();
             }));
 

@@ -31,7 +31,7 @@
                 using (var result = await client.PostAsync(Api, content))
                 {
                     var s = await result.Content.ReadAsStringAsync();
-                    return JsonSerializer.Deserialize<ReCaptchaResponse>(s).Success;
+                    return JsonSerializer.Deserialize<ReCaptchaResponse>(s, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true }).Success;
                 }
             }
         }
