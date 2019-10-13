@@ -8,6 +8,8 @@ import { Challenge, ChallengeSet } from "../../types/types";
 
 interface Props { readonly challenge: ChallengeSet; readonly onCodeClick?: () => void; }
 
+const MD = Markdown as unknown as FunctionalComponent<{readonly markdown: string}>;
+
 const X: FunctionalComponent<{ readonly challenge: Challenge, readonly returnType: string; }> = ({ challenge, returnType }) =>
     (<div
         class="panel-block"
@@ -18,7 +20,7 @@ const Comp: FunctionalComponent<Readonly<Props>> = ({ challenge, onCodeClick }) 
         <p>{challenge.title}</p>
     </div>
     <div class="panel-block">
-        <div class="content"><Markdown markdown={challenge.description} /></div>
+        <div class="content"><MD markdown={challenge.description} /></div>
     </div>
     {challenge.challenges.map(a => <X key={a.expectedResult.toString()} challenge={a} returnType={challenge.returnType} />)}
     <div class="panel-block">
