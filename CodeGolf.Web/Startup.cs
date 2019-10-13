@@ -70,7 +70,7 @@ namespace CodeGolf.Web
 
             services.Configure<WebSiteSettings>(this.Configuration);
             services.Configure<GameAdminSettings>(this.Configuration);
-            services.Configure<RecaptchaSettings>(this.Configuration.GetSection("Recaptcha"));
+            services.Configure<RecaptchaSettings>(this.Configuration.GetSection("Recaptcha"), o => o.BindNonPublicProperties = true);
 
             services.AddMvc(o => { o.EnableEndpointRouting = false; }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddWebMarkupMin(options =>
