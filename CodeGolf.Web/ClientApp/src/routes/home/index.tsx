@@ -1,5 +1,8 @@
 import { FunctionalComponent, h } from "preact";
 
+import Dashboard from "../../images/Dashboard.png";
+import Game from "../../images/Game.png";
+
 const Comp: FunctionalComponent = () => <div>
     <section class="section">
         <div class="container">
@@ -34,6 +37,20 @@ const Comp: FunctionalComponent = () => <div>
             <h2 class="subtitle">
                 Currently supporting C# 7.3.
         </h2>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h1 class="title">Screenshots</h1>
+            <h2 class="subtitle">
+                <figure class="image">
+                    <img src={Game}/>
+                </figure>
+                <figure class="image">
+                    <img src={Dashboard}/>
+                </figure>
+            </h2>
         </div>
     </section>
 </div>;

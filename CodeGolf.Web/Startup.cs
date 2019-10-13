@@ -184,7 +184,7 @@ namespace CodeGolf.Web
                                 }
 
                                 b.AddImgSrc().Self().From("https://www.google-analytics.com")
-                                    .From("https://*.githubusercontent.com");
+                                    .From("https://*.githubusercontent.com").From("data:");
                                 b.AddFrameSource().Self().From("https://www.google.com");
                                 b.AddStyleSrc().Self().UnsafeInline().Blob();
                                 b.AddConnectSrc().Self().From("https://localhost:*");
