@@ -1,7 +1,7 @@
 import { FunctionalComponent, h } from "preact";
-import { Circular } from "styled-loaders";
 
 import CreateGame from "../../components/createGame";
+import Loading from "../../components/loading";
 import { Game, Guid, ifLoaded, LoadingState, Round } from "../../types/types";
 
 const Row: FunctionalComponent<{ readonly g: Game, readonly resetGame: ((g: Guid) => void) }> = ({ g, resetGame }) =>
@@ -37,6 +37,6 @@ const FuncComp: FunctionalComponent<Readonly<Props>> = ({ myGames, allChallenges
             <button className="button" onClick={() => toggleCreate(!showCreate)}>Create New</button>
         </div>),
         () =>
-            <Circular />);
+            <Loading/>);
 
 export default FuncComp;

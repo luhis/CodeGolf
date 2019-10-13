@@ -1,8 +1,8 @@
 import { FunctionalComponent, h } from "preact";
-import { Circular } from "styled-loaders";
 
 import Attempts from "../../components/attempts";
 import ChallengeComp from "../../components/challenge";
+import Loading from "../../components/loading";
 import { Attempt, Hole, ifLoaded, LoadingState } from "../../types/types";
 import Controls from "./controls";
 import Times from "./times";
@@ -24,11 +24,11 @@ const FuncComp: FunctionalComponent<Readonly<Props>> = ({ current, attempts, nex
         <span class="title">Attempts</span>
         <div class="columns">
             <div class="column">
-                {ifLoaded(attempts, a=> <Attempts attempts={a} />, () => <Circular />)}
+                {ifLoaded(attempts, a=> <Attempts attempts={a} />, () => <Loading/>)}
             </div>
             <div class="column">
                 <Controls hole={current} nextHole={nextHole} endHole={endHole} />
-                {ifLoaded(current, c => <LeftCol hole={c} />, () => <Circular />)}
+                {ifLoaded(current, c => <LeftCol hole={c} />, () => <Loading/>)}
             </div>
         </div>
     </section>);

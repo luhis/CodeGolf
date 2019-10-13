@@ -1,12 +1,11 @@
 import { FunctionalComponent, h } from "preact";
-import ReCAPTCHA from "preact-google-recaptcha";
-import { Circular } from "styled-loaders";
+import ReCAPTCHA from "react-google-recaptcha";
 
 import ChallengeComp from "../../components/challenge";
 import CodeEditor from "../../components/codeEditor";
+import Loading from "../../components/loading";
 import ErrorsComp from "../../components/results";
 import { ChallengeSet, ifLoaded, LoadingState, RunResult } from "../../types/types";
-
 interface Props {
   readonly code: string;
   readonly errors: LoadingState<RunResult | undefined>;
@@ -36,10 +35,10 @@ const FuncComp: FunctionalComponent<Readonly<Props>> = ({ code, errors, challeng
         {ifLoaded(challenge, c => <ChallengeComp
           challenge={c}
           onCodeClick={onCodeClick}
-        />, () => <Circular />)}
+        />, () => <Loading/>)}
         {challenge.type === "Loaded" && errors.type === "Loaded" ?
           errors.data ? <ErrorsComp errors={errors.data} returnType={challenge.data.returnType} /> : null
-          : <Circular />}
+          : <Loading/>}
       </div>
     </div>
     <ReCAPTCHA

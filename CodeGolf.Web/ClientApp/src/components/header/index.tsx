@@ -1,4 +1,5 @@
 import { Component, FunctionalComponent, h, RenderableProps } from "preact";
+import { Link } from "preact-router";
 
 import { isAdmin, isLoggedIn } from "../../api/accessApi";
 import SignOut from "../signOut";
@@ -13,14 +14,14 @@ const FuncComp: FunctionalComponent<State & { readonly toggleMenu: (() => void) 
             </a>
         </div><div class={"navbar-menu " + (showMenu ? "is-active" : "")}>
             <div class="navbar-start">
-                <a class="navbar-item" href="/">Home</a>
-                <a class="navbar-item" href="/demo">Demo</a>
-                {loggedIn ? <a class="navbar-item" href="/game">Game</a> : null}
+                <Link class="navbar-item" href="/">Home</Link>
+                <Link class="navbar-item" href="/demo">Demo</Link>
+                {loggedIn ? <Link class="navbar-item" href="/game">Game</Link> : null}
                 {loggedIn ? <SignOut /> : null}
                 {!loggedIn ? <a href="/account/signin" class="navbar-item">Sign In with GitHub</a> : null}
 
-                {admin ? <a class="navbar-item" href="/dashboard">Dashboard</a> : null}
-                {admin ? <a class="navbar-item" href="/admin">Admin</a> : null}
+                {admin ? <Link class="navbar-item" href="/dashboard">Dashboard</Link> : null}
+                {admin ? <Link class="navbar-item" href="/admin">Admin</Link> : null}
                 <a class="navbar-item" target="_blank" rel="noopener" href="https://codegolf.stackexchange.com/questions/173/tips-for-code-golfing-in-c">Tips</a>
             </div>
         </div>
