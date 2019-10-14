@@ -14,6 +14,7 @@
     using CodeGolf.ServiceInterfaces;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.Extensions.Logging;
     using Optional;
     using ResultOrError = Optional.Option<object, string>;
 
@@ -38,14 +39,18 @@
 
         private readonly FunctionValidator functionValidator;
 
+        private readonly ILogger logger;
+
         public Runner(
             ISyntaxTreeTransformer syntaxTreeTransformer,
             IExecutionService svc,
-            IErrorMessageTransformer errorMessageTransformer)
+            IErrorMessageTransformer errorMessageTransformer,
+            ILogger<Runner> logger)
         {
             this.syntaxTreeTransformer = syntaxTreeTransformer;
             this.svc = svc;
             this.errorMessageTransformer = errorMessageTransformer;
+            this.logger = logger;
             this.functionValidator = new FunctionValidator(FunctionName);
         }
 
@@ -80,8 +85,9 @@
                                 {
                                     return await this.InvokeAsync(success, args, paramTypes.ToArray(), returnType);
                                 }
-                                catch (Exception)
+                                catch (Exception ex)
                                 {
+                                    this.logger.LogError("Runner error", ex);
                                     return new[]
                                                {
                                                    Option.None<object, string>(
