@@ -44,10 +44,10 @@ const Comp: FunctionalComponent = () => <div>
         <div class="container">
             <h1 class="title">Screenshots</h1>
             <h2 class="subtitle">
-                <figure class="image">
+                <figure>
                     <img src={Game}/>
                 </figure>
-                <figure class="image">
+                <figure>
                     <img src={Dashboard}/>
                 </figure>
             </h2>
