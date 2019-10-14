@@ -1,14 +1,12 @@
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Markdown from "markdown-to-jsx";
 import { FunctionalComponent, h } from "preact";
-import Markdown from "preact-markdown";
 
 import { getChallengeOverView, getFunctionDeclaration } from "../../funcDeclaration";
 import { Challenge, ChallengeSet } from "../../types/types";
 
 interface Props { readonly challenge: ChallengeSet; readonly onCodeClick?: () => void; }
-
-const MD = Markdown as unknown as FunctionalComponent<{readonly markdown: string}>;
 
 const X: FunctionalComponent<{ readonly challenge: Challenge, readonly returnType: string; }> = ({ challenge, returnType }) =>
     (<div
@@ -20,13 +18,16 @@ const Comp: FunctionalComponent<Readonly<Props>> = ({ challenge, onCodeClick }) 
         <p>{challenge.title}</p>
     </div>
     <div class="panel-block">
-        <div class="content"><MD markdown={challenge.description} /></div>
+        <div class="content">
+            <Markdown>{challenge.description}
+            </Markdown>
+        </div>
     </div>
     {challenge.challenges.map(a => <X key={a.expectedResult.toString()} challenge={a} returnType={challenge.returnType} />)}
     <div class="panel-block">
         <FontAwesomeIcon icon={faInfoCircle} className="has-text-info" />&nbsp;
         Create a function like&nbsp;
-  <code
+        <code
             class={onCodeClick ? "is-clickable" : ""}
             onClick={onCodeClick}
         >{getFunctionDeclaration(challenge)}</code>
