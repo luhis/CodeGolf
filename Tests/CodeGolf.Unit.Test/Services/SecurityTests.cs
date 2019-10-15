@@ -10,13 +10,18 @@ namespace CodeGolf.Unit.Test.Services
     using CodeGolf.Persistence.Static;
     using CodeGolf.Service;
     using CodeGolf.Service.Dtos;
+
     using FluentAssertions;
+
+    using Microsoft.Extensions.Logging;
+    using Moq;
+
     using Xunit;
 
     public class SecurityTests
     {
         private readonly ICodeGolfService codeGolfService = new CodeGolfService(
-            new Runner(new SyntaxTreeTransformer(), new ExecutionService(), new ErrorMessageTransformer()),
+            new Runner(new SyntaxTreeTransformer(), new ExecutionService(), new ErrorMessageTransformer(), new Mock<ILogger<Runner>>().Object),
             new Scorer(),
             new ChallengeRepository());
 

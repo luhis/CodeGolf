@@ -10,6 +10,8 @@ namespace CodeGolf.Unit.Test.Services
     using CodeGolf.Unit.Test.Tooling;
 
     using FluentAssertions;
+    using Microsoft.Extensions.Logging;
+    using Moq;
 
     using Xunit;
 
@@ -18,7 +20,8 @@ namespace CodeGolf.Unit.Test.Services
         private readonly IRunner runner = new Runner(
             new SyntaxTreeTransformer(),
             new ExecutionService(),
-            new ErrorMessageTransformer());
+            new ErrorMessageTransformer(),
+            new Mock<ILogger<Runner>>().Object);
 
         [Fact]
         public async Task ReturnHelloWorld()
