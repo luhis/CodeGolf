@@ -35,7 +35,7 @@ const Comp: FunctionalComponent = () => <div>
         <div class="container">
             <h1 class="title">Which version of C# do you support?</h1>
             <h2 class="subtitle">
-                Currently supporting C# 7.3.
+                Currently supporting C# 8.
         </h2>
         </div>
     </section>
@@ -47,6 +47,7 @@ const Comp: FunctionalComponent = () => <div>
                 <figure>
                     <img src={Game}/>
                 </figure>
+                <br/>
                 <figure>
                     <img src={Dashboard}/>
                 </figure>

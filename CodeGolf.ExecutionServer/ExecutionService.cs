@@ -14,7 +14,7 @@
 
     public class ExecutionService : IExecutionService
     {
-        private const int ExecutionTimeoutMilliseconds = 1000;
+        private const int ExecutionTimeoutMilliseconds = 2_000;
 
         public Task<ValueTuple<T, string>[]> Execute<T>(
             CompileResult compileResult,
