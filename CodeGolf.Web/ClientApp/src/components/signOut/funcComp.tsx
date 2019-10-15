@@ -2,8 +2,8 @@ import { FunctionalComponent, h } from "preact";
 
 interface Props {
     readonly showModal: boolean;
-    readonly toggleModal: (() => void);
-    readonly signOutFunc: (() => Promise<void>);
+    readonly toggleModal: () => void;
+    readonly signOutFunc: () => Promise<void>;
 }
 
 const LinkComp: FunctionalComponent<{ readonly toggleModal: (() => void); }> =
