@@ -2160,10 +2160,10 @@ bulma-toast@^1.5.3:
   resolved "https://registry.yarnpkg.com/bulma-toast/-/bulma-toast-1.5.3.tgz#2e167e90d2e1f7f6f93183ab8c65d350af9d8628"
   integrity sha512-lY1JMUiI9K8ZDEBnZIkElL3iH3/BBmnFbymosy1uvr8i+xp8hnjjWfOnnhZl5mtfcaoWuoYiIbUW71Ss0tXH2w==
 
-bulma@^0.7.5:
-  version "0.7.5"
-  resolved "https://registry.yarnpkg.com/bulma/-/bulma-0.7.5.tgz#35066c37f82c088b68f94450be758fc00a967208"
-  integrity sha512-cX98TIn0I6sKba/DhW0FBjtaDpxTelU166pf7ICXpCCuplHWyu6C9LYZmL5PEsnePIeJaiorsTEzzNk3Tsm1hw==
+bulma@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/bulma/-/bulma-0.8.0.tgz#ac1606431703a4761b18a4a2d5cc1fa864a2aece"
+  integrity sha512-nhf3rGyiZh/VM7FrSJ/5KeLlfaFkXz0nYcXriynfPH4vVpnxnqyEwaNGdNCVzHyyCA3cHgkQAMpdF/SFbFGZfA==
 
 bytes@3.0.0:
   version "3.0.0"
@@ -8091,10 +8091,10 @@ preact-router@^3.0.1:
   resolved "https://registry.yarnpkg.com/preact-router/-/preact-router-3.0.1.tgz#a42ef8a25b42847870658c636bb7c65a1deadb5f"
   integrity sha512-vPnOBm9k79zWKLiOHnG72Mcq71XeEUXo/iWrHyQv8LQVzPT8SUeFauT1cqE/5R2+PPx2yA0tk77YmfbAcXHgUg==
 
-preact@^10.0.0:
-  version "10.0.0"
-  resolved "https://registry.yarnpkg.com/preact/-/preact-10.0.0.tgz#c528f04ac6c792a04d8c98a5144d8b13e0cf2aed"
-  integrity sha512-v5geBMq8xlX7Ai8ed0QFXIs7/SQ+4lzdu3fpApRspZ6IiFDRHeEXQ3fqns0jDsXseHjYqgWlK1QxqdWF4QrdFw==
+preact@^10.0.1:
+  version "10.0.1"
+  resolved "https://registry.yarnpkg.com/preact/-/preact-10.0.1.tgz#16451887a8490dd534d60d1bc7d2ff4a70f7e0ee"
+  integrity sha512-lq7jo1rwwCd1YkiBcuOxRc3I0y1FZACa6O7tgNXt47QZJtSlLEE53f/FDNsLtiB2IVQTHbaey20TjSPmejhDyQ==
 
 prelude-ls@~1.1.2:
   version "1.1.2"
