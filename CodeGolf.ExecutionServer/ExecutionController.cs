@@ -8,40 +8,46 @@
     using System.Linq;
     using System.Reflection;
     using System.Runtime.Loader;
+    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
     using CodeGolf.ServiceInterfaces;
+    using Microsoft.AspNetCore.Mvc;
 
-    public class ExecutionService : IExecutionService
+    [ApiController]
+    [Route("[controller]")]
+    public class ExecutionController : ControllerBase
     {
         private const int ExecutionTimeoutMilliseconds = 2_000;
 
-        public Task<ValueTuple<T, string>[]> Execute<T>(
-            CompileResult compileResult,
-            string className,
-            string funcName,
-            object[][] argSets,
-            Type[] paramTypes)
+        [HttpPost("[action]")]
+        public async Task<ValueTuple<object, string>[]> Execute(
+            ExecutionParams p)
         {
-            using (var dll = new MemoryStream(compileResult.Dll))
-            using (var pdb = new MemoryStream(compileResult.Pdb))
+            using (StreamReader reader = new StreamReader(this.Request.Body, Encoding.UTF8))
+            {
+                var a = await reader.ReadToEndAsync();
+            }
+
+            using (var dll = new MemoryStream(p.CompileResult.Dll))
+            using (var pdb = new MemoryStream(p.CompileResult.Pdb))
             {
                 var obj = AssemblyLoadContext.Default.LoadFromStream(dll, pdb);
-                var type = obj.GetType(className);
+                var type = obj.GetType(p.ClassName);
                 var inst = Activator.CreateInstance(type);
-                var fun = GetMethod(funcName, type);
-                return Task.WhenAll(
-                    argSets.Select(
+                var fun = GetMethod(p.FuncName, type);
+                return await Task.WhenAll(
+                    p.ArgSets.Select(
                         async a =>
                         {
-                            var castArgs = CastArgs(a, paramTypes);
-                            var source = new CancellationTokenSource();
+                            var castArgs = CastArgs(a, p.ParamTypes.Select(Type.GetType).ToArray()).ToArray();
+                            using var source = new CancellationTokenSource();
                             source.CancelAfter(TimeSpan.FromMilliseconds(ExecutionTimeoutMilliseconds));
                             try
                             {
-                                return ValueTuple.Create<T, string>(
-                                    await Task<T>.Factory.StartNew(
-                                        () => (T)fun.Invoke(
+                                return ValueTuple.Create<object, string>(
+                                    await Task<object>.Factory.StartNew(
+                                        () => fun.Invoke(
                                             inst,
                                             BindingFlags.Default | BindingFlags.InvokeMethod,
                                             null,
@@ -57,13 +63,14 @@
                                 var final = GetFinalException(e);
                                 var line = new StackTrace(final, true).GetFrame(0).GetFileLineNumber();
                                 return ValueTuple.Create(
-                                    default(T),
+                                    default(object),
                                     $"Runtime Error line {line} - {final.Message}");
                             }
                         }));
             }
         }
 
+        [HttpGet("[action]")]
         public Task Ping()
         {
             return Task.CompletedTask;
