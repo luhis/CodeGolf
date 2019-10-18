@@ -69,9 +69,11 @@ namespace CodeGolf.Web
                 options.AppendTrailingSlash = false;
             });
 
-            services.Configure<WebSiteSettings>(this.Configuration);
-            services.Configure<GameAdminSettings>(this.Configuration);
-            services.Configure<RecaptchaSettings>(this.Configuration.GetSection("Recaptcha"), o => o.BindNonPublicProperties = true);
+            void Action(BinderOptions o) => o.BindNonPublicProperties = true;
+
+            services.Configure<WebSiteSettings>(this.Configuration, Action);
+            services.Configure<GameAdminSettings>(this.Configuration, Action);
+            services.Configure<RecaptchaSettings>(this.Configuration.GetSection("Recaptcha"), Action);
 
             services.AddMvc(o => { o.EnableEndpointRouting = false; }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddWebMarkupMin(options =>
