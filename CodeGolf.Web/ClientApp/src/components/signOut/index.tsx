@@ -1,27 +1,20 @@
-import { Component, h, RenderableProps } from "preact";
+import { FunctionalComponent, h } from "preact";
+import { useState } from "preact/hooks";
 
 import { signOut } from "../../api/accessApi";
 import FuncComp from "./funcComp";
-
-interface State {
-    readonly showModal: boolean;
-}
 
 const signOutAndRedirect = async () => {
     await signOut();
     window.location.replace("/");
 };
 
-export default class Comp extends Component<{}, State> {
+const C: FunctionalComponent<{}> = () => {
+    const [state, update] = useState({showModal: false });
 
-    constructor() {
-        super();
-        this.state = { showModal: false };
-    }
+    const toggleModal = () => update(s => ({ ...s, showModal: !s.showModal }));
 
-    public readonly render = (_: RenderableProps<{}>, state: Readonly<State>) =>
-        <FuncComp {...state} signOutFunc={signOutAndRedirect} toggleModal={this.toggleModal} />
+    return (<FuncComp {...state} signOutFunc={signOutAndRedirect} toggleModal={toggleModal} />);
+};
 
-    private readonly toggleModal = () => this.setState(s => ({ ...s, showModal: !s.showModal }));
-
-}
+export default C;
