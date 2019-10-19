@@ -9,7 +9,7 @@ const signOutAndRedirect = async () => {
     window.location.replace("/");
 };
 
-const C: FunctionalComponent<{}> = () => {
+const C: FunctionalComponent = () => {
     const [state, update] = useState({showModal: false });
 
     const toggleModal = () => update(s => ({ ...s, showModal: !s.showModal }));
