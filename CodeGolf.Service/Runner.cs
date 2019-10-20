@@ -131,8 +131,8 @@
             this.TryCompile(WrapInClass(string.Empty, cancellationToken), (_, __) => true, cancellationToken);
         }
 
-        private static Option<object, string> ToOpt<T>(ValueTuple<T, string> t) =>
-            t.Item2 == null ? Option.Some<object, string>(t.Item1) : Option.None<object, string>(t.Item2);
+        private static Option<object, string> ToOpt<T>(Option<T, string> t) =>
+            t.Match(some => Option.Some<object, string>(some), Option.None<object, string>);
 
         private static SyntaxTree WrapInClass(string function, CancellationToken cancellationToken)
         {
@@ -174,6 +174,12 @@
             if (returnType == typeof(string[]))
             {
                 return (await this.svc.Execute<string[]>(compileResult, ClassName, FunctionName, args, paramTypes))
+                    .Select(ToOpt).ToArray();
+            }
+
+            if (returnType == typeof(string))
+            {
+                return (await this.svc.Execute<string>(compileResult, ClassName, FunctionName, args, paramTypes))
                     .Select(ToOpt).ToArray();
             }
 

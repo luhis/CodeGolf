@@ -9,6 +9,12 @@
 
   <ItemGroup>
     <PackageReference Include="Ensure.That" Version="8.1.1" />
+    <PackageReference Include="Google.Protobuf" Version="3.10.0" />
+    <PackageReference Include="Grpc.Net.Client" Version="2.24.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.24.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.3.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.0.0" />
@@ -32,5 +38,8 @@
 
   <ItemGroup>
     <AdditionalFiles Include="..\stylecop.json" Link="Properties\stylecop.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Protobuf Include="..\CodeGolf.ServiceInterfaces\execute.proto" />
   </ItemGroup>
 </Project>

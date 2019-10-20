@@ -1,7 +1,6 @@
 namespace CodeGolf.Web
 {
     using System;
-    using System.Net;
     using CodeGolf.Persistence;
     using CodeGolf.Service;
     using CodeGolf.ServiceInterfaces;
@@ -26,7 +25,7 @@ namespace CodeGolf.Web
             collection.AddSingleton<RecaptchaAttribute>();
             collection.AddSingleton<GameAdminAuthAttribute>();
             collection.AddSingleton<ChallengeSetMapper>();
-            collection.AddHttpClient<IExecutionService, ExecutionProxy>();
+            collection.AddSingleton<IExecutionService, ExecutionProxy>();
         }
 
         private static DbContextOptions<CodeGolfContext> GetDbOptions(IServiceProvider a) => new DbContextOptionsBuilder<CodeGolfContext>()

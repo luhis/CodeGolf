@@ -8,12 +8,8 @@
             this.Pdb = pdb;
         }
 
-        public CompileResult()
-        {
-        }
+        public byte[] Dll { get; }
 
-        public byte[] Dll { get; set; }
-
-        public byte[] Pdb { get; set; }
+        public byte[] Pdb { get; }
     }
 }

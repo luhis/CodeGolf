@@ -2,6 +2,6 @@
 {
     public static class SharedSettings
     {
-        public static int PortNumber => 60025;
+        public static int PortNumber => 60026;
     }
 }

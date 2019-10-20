@@ -2,42 +2,51 @@
 {
     using System;
     using System.Linq;
-    using System.Net.Http;
     using System.Text.Json;
     using System.Threading.Tasks;
+    using CodeGolf.ExecutionService;
     using CodeGolf.ServiceInterfaces;
+    using Google.Protobuf;
+    using Grpc.Net.Client;
+    using Optional;
 
     public class ExecutionProxy : IExecutionService
     {
-        private readonly HttpClient httpClient;
         private readonly string host = "localhost";
+        private readonly Executer.ExecuterClient client;
 
-        public ExecutionProxy(HttpClient httpClient)
+        public ExecutionProxy()
         {
-            this.httpClient = httpClient;
+            var channel = GrpcChannel.ForAddress($"https://{this.host}:{SharedSettings.PortNumber}");
+            this.client = new Executer.ExecuterClient(channel);
         }
 
-        async Task<ValueTuple<T, string>[]> IExecutionService.Execute<T>(
-            CompileResult compileResult,
+        async Task<Option<T, string>[]> IExecutionService.Execute<T>(
+            ServiceInterfaces.CompileResult compileResult,
             string className,
             string funcName,
             object[][] args,
             Type[] paramTypes)
         {
-            var r = await this.httpClient.PostAsJsonAsync(
-                $"http://{this.host}:{SharedSettings.PortNumber}/execution/execute",
-                new ExecutionParams(compileResult, className, funcName, args, paramTypes.Select(a => a.FullName).ToArray()));
-            if (!r.IsSuccessStatusCode)
+            var rx = await this.client.ExecuteAsync(new ExecuteRequest
             {
-                throw new Exception($"Failed to call API: {r.ReasonPhrase}");
-            }
+                CompileResult = new ExecutionService.CompileResult()
+                {
+                    Dll = ByteString.CopyFrom(compileResult.Dll),
+                    Pdb = ByteString.CopyFrom(compileResult.Pdb)
+                },
+                ClassName = className,
+                FuncName = funcName,
+                Args = { args.Select(a => new ArgSet() { Arg = { a.Select(b => b.ToString()) } }) }, // todo
+                ParamTypes = { paramTypes.Select(a => a.FullName) }
+            });
 
-            return JsonSerializer.Deserialize<ValueTuple<T, string>[]>(await r.Content.ReadAsStringAsync());
+            return rx.Result.Select(a => a.Result_ != null ? Option.Some<T, string>(JsonSerializer.Deserialize<T>(a.Result_)) : Option.None<T, string>(a.Error)).ToArray();
         }
 
-        Task IExecutionService.Ping()
+        async Task IExecutionService.Ping()
         {
-            return this.httpClient.GetAsync($"http://{this.host}:{SharedSettings.PortNumber}/execution/ping");
+            await this.client.PingAsync(new PingRequest());
         }
     }
 }

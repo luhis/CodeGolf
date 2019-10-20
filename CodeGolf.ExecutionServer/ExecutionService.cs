@@ -8,46 +8,37 @@
     using System.Linq;
     using System.Reflection;
     using System.Runtime.Loader;
-    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
     using CodeGolf.ServiceInterfaces;
-    using Microsoft.AspNetCore.Mvc;
+    using Optional;
+    using CompileResult = CodeGolf.ServiceInterfaces.CompileResult;
 
-    [ApiController]
-    [Route("[controller]")]
-    public class ExecutionController : ControllerBase
+    public class ExecutionService : IExecutionService
     {
         private const int ExecutionTimeoutMilliseconds = 2_000;
 
-        [HttpPost("[action]")]
-        public async Task<ValueTuple<object, string>[]> Execute(
-            ExecutionParams p)
+        async Task<Option<T, string>[]> IExecutionService.Execute<T>(CompileResult compileResult, string className, string funcName, object[][] args, Type[] paramTypes)
         {
-            using (StreamReader reader = new StreamReader(this.Request.Body, Encoding.UTF8))
-            {
-                var a = await reader.ReadToEndAsync();
-            }
-
-            using (var dll = new MemoryStream(p.CompileResult.Dll))
-            using (var pdb = new MemoryStream(p.CompileResult.Pdb))
+            using (var dll = new MemoryStream(compileResult.Dll))
+            using (var pdb = new MemoryStream(compileResult.Pdb))
             {
                 var obj = AssemblyLoadContext.Default.LoadFromStream(dll, pdb);
-                var type = obj.GetType(p.ClassName);
+                var type = obj.GetType(className);
                 var inst = Activator.CreateInstance(type);
-                var fun = GetMethod(p.FuncName, type);
+                var fun = GetMethod(funcName, type);
                 return await Task.WhenAll(
-                    p.ArgSets.Select(
+                    args.Select(
                         async a =>
                         {
-                            var castArgs = CastArgs(a, p.ParamTypes.Select(Type.GetType).ToArray()).ToArray();
+                            var castArgs = CastArgs(a, paramTypes).ToArray();
                             using var source = new CancellationTokenSource();
                             source.CancelAfter(TimeSpan.FromMilliseconds(ExecutionTimeoutMilliseconds));
                             try
                             {
-                                return ValueTuple.Create<object, string>(
-                                    await Task<object>.Factory.StartNew(
-                                        () => fun.Invoke(
+                                return Optional.Option.Some<T, string>(
+                                    await Task<T>.Factory.StartNew(
+                                        () => (T)fun.Invoke(
                                             inst,
                                             BindingFlags.Default | BindingFlags.InvokeMethod,
                                             null,
@@ -55,23 +46,20 @@
                                             CultureInfo.InvariantCulture),
                                         source.Token,
                                         TaskCreationOptions.None,
-                                        TaskScheduler.Current),
-                                    null);
+                                        TaskScheduler.Current));
                             }
                             catch (Exception e)
                             {
                                 var final = GetFinalException(e);
                                 var line = new StackTrace(final, true).GetFrame(0).GetFileLineNumber();
-                                return ValueTuple.Create(
-                                    default(object),
+                                return Optional.Option.None<T, string>(
                                     $"Runtime Error line {line} - {final.Message}");
                             }
                         }));
             }
         }
 
-        [HttpGet("[action]")]
-        public Task Ping()
+        Task IExecutionService.Ping()
         {
             return Task.CompletedTask;
         }

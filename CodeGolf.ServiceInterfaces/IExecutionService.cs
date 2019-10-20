@@ -2,10 +2,11 @@
 {
     using System;
     using System.Threading.Tasks;
+    using Optional;
 
     public interface IExecutionService
     {
-        Task<ValueTuple<T, string>[]> Execute<T>(
+        Task<Option<T, string>[]> Execute<T>(
             CompileResult compileResult,
             string className,
             string funcName,
