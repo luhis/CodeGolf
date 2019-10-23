@@ -219,13 +219,16 @@ namespace CodeGolf.Web
             app.UseSpaStaticFiles(sfOptions);
 
             app.UseAuthentication();
+            app.UseRouting();
             app.UseAuthorization();
             app.UseWebMarkupMin();
-            app.UseRouting();
 
             app.UseCookiePolicy();
-            app.UseEndpoints(endpoints => { endpoints.MapHub<RefreshHub>("/refreshHub"); });
-            app.UseMvc();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapHub<RefreshHub>("/refreshHub");
+                endpoints.MapControllers();
+            });
 
             app.UseSpa(
                 spa =>
