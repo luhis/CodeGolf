@@ -107,5 +107,23 @@ Swap all the vowels in the word with the corresponding:
 /___\
  VvV"),
                 });
+
+        public static readonly ChallengeSet<string> SpiralNumbers = new ChallengeSet<string>(
+            Guid.Parse("08d16a48-4dbb-4f93-9c69-41ff0ab5a418"),
+            "Spiral Numbers",
+            @"Write a program or function that takes in a square side length, and generated a square with the numbers spiraling around the cells",
+            new[] { new ParamDescription(typeof(int), "i") },
+            new[]
+            {
+                new Challenge<string>(
+                    new object[] { 1 },
+                    "| 1|"),
+                new Challenge<string>(
+                    new object[] { 2 },
+                    "| 1| 2|\n| 4| 3|"),
+                new Challenge<string>(
+                    new object[] { 3 },
+                    "| 1| 2| 3|\n| 8| 9| 4|\n| 7| 6| 5|"),
+            });
     }
 }
