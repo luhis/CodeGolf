@@ -69,11 +69,10 @@ namespace CodeGolf.Web
                 options.AppendTrailingSlash = false;
             });
 
-            void Action(BinderOptions o) => o.BindNonPublicProperties = true;
+            static void BindNonPublic(BinderOptions o) => o.BindNonPublicProperties = true;
 
-            services.Configure<WebSiteSettings>(this.Configuration, Action);
-            services.Configure<GameAdminSettings>(this.Configuration, Action);
-            services.Configure<RecaptchaSettings>(this.Configuration.GetSection("Recaptcha"), Action);
+            services.Configure<GameAdminSettings>(this.Configuration, BindNonPublic);
+            services.Configure<RecaptchaSettings>(this.Configuration.GetSection("Recaptcha"), BindNonPublic);
 
             services.AddMvc(o => { o.EnableEndpointRouting = false; }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddWebMarkupMin(options =>
@@ -166,8 +165,6 @@ namespace CodeGolf.Web
                 app.UseHsts();
             }
 
-            const string minifiedGaScriptHash = "qEShyXJhwl9qHYlR7p7AwHlpnpEclnzFsPGivkRFOzM=";
-
             app.UseSecurityHeaders(
                 policies => policies.AddDefaultSecurityHeaders()
                     .AddStrictTransportSecurityMaxAgeIncludeSubDomains(maxAgeInSeconds: 63072000)
@@ -178,8 +175,7 @@ namespace CodeGolf.Web
                                 var scripts = b.AddScriptSrc().Self().From("https://www.google.com")
                                     .From("https://www.googletagmanager.com").From("https://www.gstatic.com")
                                     .From("https://www.google-analytics.com")
-                                    .WithHash256("fJYxG/MUxs9b4moaAfLG0e5TxMp0nppc6ulRT3MfHLU=")
-                                    .WithHash256(minifiedGaScriptHash);
+                                    .WithHash256("fJYxG/MUxs9b4moaAfLG0e5TxMp0nppc6ulRT3MfHLU=");
                                 if (env.IsDevelopment())
                                 {
                                     scripts.UnsafeEval();
