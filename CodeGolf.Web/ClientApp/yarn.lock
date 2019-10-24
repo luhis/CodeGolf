@@ -3712,7 +3712,7 @@ envinfo@^7.3.1:
   resolved "https://registry.yarnpkg.com/envinfo/-/envinfo-7.3.1.tgz#892e42f7bf858b3446d9414ad240dbaf8da52f09"
   integrity sha512-GvXiDTqLYrORVSCuJCsWHPXF5BFvoWMQA9xX4YVjPT1jyS3aZEHUBwjzxU/6LTPF9ReHgVEbX7IEN5UvSXHw/A==
 
-enzyme-adapter-preact-pure@^2.1.0:
+enzyme-adapter-preact-pure@2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/enzyme-adapter-preact-pure/-/enzyme-adapter-preact-pure-2.1.0.tgz#5b6b5afb60ed4e764bdcc1dba827eee0568084f3"
   integrity sha512-C1kcVqqA9GuSIFTUdX3aXjLoTrr0Z6aUn6DZqFOBhjGtHXOXrCycwsdPaF0x+/y1286/LaZxQvi8iBaMay4/Ew==
@@ -3720,7 +3720,7 @@ enzyme-adapter-preact-pure@^2.1.0:
     array.prototype.flatmap "^1.2.1"
     preact-render-to-string "^4.1.0"
 
-enzyme@^3.10.0:
+enzyme@3.10.0:
   version "3.10.0"
   resolved "https://registry.yarnpkg.com/enzyme/-/enzyme-3.10.0.tgz#7218e347c4a7746e133f8e964aada4a3523452f6"
   integrity sha512-p2yy9Y7t/PFbPoTvrWde7JIYB2ZyGC+NgTNbVEGvZ5/EyoYSr9aG/2rSbVvyNvMHEhw9/dmGUJHWtfQIEiX9pg==
@@ -5904,7 +5904,7 @@ jest-pnp-resolver@^1.2.1:
   resolved "https://registry.yarnpkg.com/jest-pnp-resolver/-/jest-pnp-resolver-1.2.1.tgz#ecdae604c077a7fbc70defb6d517c3c1c898923a"
   integrity sha512-pgFw2tm54fzgYvc/OHrnysABEObZCUNFnhjoRjaVOCN8NYc032/gVjPaHD4Aq6ApkSieWtfKAFQtmDKAmhupnQ==
 
-jest-preset-preact@^1.0.0:
+jest-preset-preact@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/jest-preset-preact/-/jest-preset-preact-1.0.0.tgz#9692d39b386ead2e0c0fa5d08f1514f6b5a3ef03"
   integrity sha512-//ZFM5oDnAQgROUOcK7HgNrsBmYnDnvLbwDpYmyrHJnZKXIfQG+6Fz7ghJ1o+djT85MzkCcwqrYScdfxk9P37Q==
