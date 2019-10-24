@@ -173,9 +173,8 @@ namespace CodeGolf.Web
                             {
                                 b.AddDefaultSrc().Self();
                                 var scripts = b.AddScriptSrc().Self().From("https://www.google.com")
-                                    .From("https://www.googletagmanager.com").From("https://www.gstatic.com")
-                                    .From("https://www.google-analytics.com")
-                                    .WithHash256("fJYxG/MUxs9b4moaAfLG0e5TxMp0nppc6ulRT3MfHLU=");
+                                    .From("https://www.gstatic.com")
+                                    .From("https://www.google-analytics.com");
                                 if (env.IsDevelopment())
                                 {
                                     scripts.UnsafeEval();
