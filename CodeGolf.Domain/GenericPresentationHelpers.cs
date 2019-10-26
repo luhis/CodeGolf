@@ -69,6 +69,6 @@
         private static string ToCommaSep<T>(T[] arr) =>
             arr == null ? "null" : string.Join(", ", arr.Select(a => a == null ? "null" : WrapIfString(a, typeof(T))));
 
-        private static string WrapIfString(object o, Type t) => t == typeof(string) ? $"\"{o}\"" : o.ToString();
+        private static string WrapIfString(object o, Type t) => t == typeof(string) ? $"{o}" : o.ToString();
     }
 }

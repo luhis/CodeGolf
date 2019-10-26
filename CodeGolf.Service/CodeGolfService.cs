@@ -46,11 +46,11 @@
                         var results = await challenge.GetResults(compiled);
                         if (results.Any(a => a.Error != null))
                         {
-                            return (OneOf<int, IReadOnlyList<ChallengeResult>, IReadOnlyList<CompileErrorMessage>>)results.ToList();
+                            return results.ToList();
                         }
                         else
                         {
-                            return (OneOf<int, IReadOnlyList<ChallengeResult>, IReadOnlyList<CompileErrorMessage>>)this.scorer.Score(code);
+                            return this.scorer.Score(code);
                         }
                     },
                 err => Task.FromResult((OneOf<int, IReadOnlyList<ChallengeResult>, IReadOnlyList<CompileErrorMessage>>)err.ToArray()));
@@ -58,7 +58,7 @@
 
         IChallengeSet ICodeGolfService.GetDemoChallenge()
         {
-            return Challenges.FizzBuzz;
+            return Challenges.RocketScience;
         }
 
         string ICodeGolfService.WrapCode(string code, CancellationToken cancellationToken)

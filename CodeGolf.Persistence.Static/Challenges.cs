@@ -96,7 +96,7 @@ Swap all the vowels in the word with the corresponding:
  |_|
 /___\
  VvV"),
-                    new Challenge<string>(new object[] { "earth" }, @"  |
+                    new Challenge<string>(new object[] { "Earth" }, @"  |
  /_\
  |E|
  |a|

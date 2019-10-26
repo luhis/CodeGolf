@@ -31,3 +31,7 @@ div.navbar-menu {
 .editor {
     border: 1px solid #dbdbdb;
 }
+
+pre.result {
+    padding: 0;
+}

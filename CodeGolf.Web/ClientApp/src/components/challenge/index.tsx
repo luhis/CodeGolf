@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Markdown from "markdown-to-jsx";
 import { FunctionalComponent, h } from "preact";
 
-import { getChallengeOverView, getFunctionDeclaration } from "../../funcDeclaration";
+import { getFunctionDeclaration, getInput } from "../../funcDeclaration";
 import { Challenge, ChallengeSet } from "../../types/types";
 
 interface Props { readonly challenge: ChallengeSet; readonly onCodeClick?: () => void; }
@@ -11,7 +11,9 @@ interface Props { readonly challenge: ChallengeSet; readonly onCodeClick?: () =>
 const X: FunctionalComponent<{ readonly challenge: Challenge, readonly returnType: string; }> = ({ challenge, returnType }) =>
     (<div
         class="panel-block"
-    >{getChallengeOverView(challenge, returnType)}</div>);
+    >{getInput(challenge)} =>
+    <pre class="result">{challenge.expectedResult}</pre>
+    </div>);
 
 const Comp: FunctionalComponent<Readonly<Props>> = ({ challenge, onCodeClick }) => (<div class="panel">
     <div class="panel-heading">

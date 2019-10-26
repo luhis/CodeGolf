@@ -2,7 +2,7 @@ import { faCheckCircle, faExclamationTriangle } from "@fortawesome/free-solid-sv
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FunctionalComponent, h } from "preact";
 
-import { getChallengeOverView } from "../../funcDeclaration";
+import { getInput } from "../../funcDeclaration";
 import { CodeError, CompileError, RunError, RunErrorSet } from "../../types/types";
 
 interface Props { readonly errors: RunErrorSet | CompileError; readonly returnType: string; }
@@ -12,13 +12,13 @@ const CompileErrorView: FunctionalComponent<{ readonly error: CodeError }> = ({ 
     <strong>{`(${error.line},${error.col}) ${error.message}`}</strong>
 </p>);
 
-const RunErrorView: FunctionalComponent<{ readonly error: RunError, readonly returnType: string }> = ({ error, returnType }) => error.error ? (<p>
-    <FontAwesomeIcon icon={faExclamationTriangle} />
-    {getChallengeOverView(error.challenge, returnType)}&nbsp;
-    <strong>{`${error.error.message} Expected: ${error.error.expected} Received: ${error.error.found}`}</strong>
+const RunErrorView: FunctionalComponent<{ readonly error: RunError, readonly returnType: string }> = ({ error }) => error.error ? (<p>
+    <FontAwesomeIcon icon={faExclamationTriangle} />&nbsp;
+    Input: {getInput(error.challenge)}&nbsp;
+    <strong>{error.error.message} Expected: <pre class="result">{error.error.expected}</pre> Received: <pre class="result">{error.error.found}</pre></strong>
 </p>) : (<p class="has-text-success has-background-white">
-    <FontAwesomeIcon icon={faCheckCircle} />
-    {getChallengeOverView(error.challenge, returnType)}&nbsp;
+    <FontAwesomeIcon icon={faCheckCircle} />&nbsp;
+    Input: {getInput(error.challenge)}&nbsp;
     <strong>Pass</strong>
 </p>);
 
