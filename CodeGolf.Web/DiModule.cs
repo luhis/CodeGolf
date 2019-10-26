@@ -19,7 +19,7 @@ namespace CodeGolf.Web
     {
         public static void Add(IServiceCollection collection)
         {
-            collection.AddSingleton<DbContextOptions<CodeGolfContext>>(GetDbOptions);
+            collection.AddSingleton(GetDbOptions);
             collection.AddSingleton<IIdentityTools, IdentityTools>();
             collection.AddSingleton<IGetIp, GetIp>();
             collection.AddSingleton<ISignalRNotifier, SignalRNotifier>();

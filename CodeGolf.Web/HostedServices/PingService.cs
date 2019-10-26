@@ -9,7 +9,7 @@
 
     public class PingService : BackgroundService
     {
-        private readonly ILogger<PingService> logger;
+        private readonly ILogger logger;
         private readonly IExecutionService svc;
 
         public PingService(IExecutionService svc, ILogger<PingService> logger)
@@ -20,20 +20,27 @@
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            this.logger.LogDebug($"{nameof(PingService)} is starting.");
-
-            stoppingToken.Register(() =>
-                this.logger.LogDebug($"{nameof(PingService)} background task is stopping."));
-
-            while (!stoppingToken.IsCancellationRequested)
+            try
             {
-                this.logger.LogDebug($"{nameof(PingService)} task doing background work.");
+                this.logger.LogDebug($"{nameof(PingService)} is starting.");
 
-                await this.svc.Ping();
-                await Task.Delay(TimeSpan.FromSeconds(30), stoppingToken);
+                stoppingToken.Register(() =>
+                    this.logger.LogDebug($"{nameof(PingService)} background task is stopping."));
+
+                while (!stoppingToken.IsCancellationRequested)
+                {
+                    this.logger.LogDebug($"{nameof(PingService)} task doing background work.");
+
+                    await this.svc.Ping();
+                    await Task.Delay(TimeSpan.FromSeconds(30), stoppingToken);
+                }
+
+                this.logger.LogDebug($"{nameof(PingService)} background task is stopping.");
             }
-
-            this.logger.LogDebug($"{nameof(PingService)} background task is stopping.");
+            catch (Exception e)
+            {
+                this.logger.LogError($"{nameof(PingService)} crashed: {e.Message}", e);
+            }
         }
     }
 }

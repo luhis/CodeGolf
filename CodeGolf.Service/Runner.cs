@@ -87,7 +87,7 @@
                                 }
                                 catch (Exception ex)
                                 {
-                                    this.logger.LogError("Runner error", ex);
+                                    this.logger.LogError($"Runner error: {ex.Message}", ex);
                                     return new[]
                                                {
                                                    Option.None<object, string>(

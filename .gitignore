@@ -11,6 +11,7 @@ lib/
 *.userosscache
 *.sln.docstates
 appsettings.Development.json
+appsettings.Production.json
 codeGolf.db
 codeGolf.db-wal
 codeGolf.db-shm
