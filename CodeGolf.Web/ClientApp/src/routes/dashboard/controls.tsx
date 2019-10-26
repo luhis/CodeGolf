@@ -1,4 +1,5 @@
 import { FunctionalComponent, h } from "preact";
+import { Link } from "preact-router";
 
 import { Hole, LoadingState } from "../../types/types";
 
@@ -11,7 +12,7 @@ const GetButton: FunctionalComponent<Props> = ({ hole, endHole, nextHole }) => {
                 return <button onClick={nextHole} class="button">Next Hole</button>;
             }
 
-            return <button onClick={nextHole} class="button">End Game</button>;
+            return <Link href="/results" class="button">End Game</Link>;
         }
 
         return <button onClick={endHole} class="button">End Hole</button>;
