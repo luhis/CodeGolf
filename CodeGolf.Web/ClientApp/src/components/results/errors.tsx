@@ -15,7 +15,7 @@ const CompileErrorView: FunctionalComponent<{ readonly error: CodeError }> = ({ 
 const RunErrorView: FunctionalComponent<{ readonly error: RunError, readonly returnType: string }> = ({ error, returnType }) => error.error ? (<p>
     <FontAwesomeIcon icon={faExclamationTriangle} />
     {getChallengeOverView(error.challenge, returnType)}&nbsp;
-    <strong>{`${error.error}`}</strong>
+    <strong>{`${error.error.message} Expected: ${error.error.expected} Received: ${error.error.found}`}</strong>
 </p>) : (<p class="has-text-success has-background-white">
     <FontAwesomeIcon icon={faCheckCircle} />
     {getChallengeOverView(error.challenge, returnType)}&nbsp;

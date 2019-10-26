@@ -10,7 +10,8 @@ type ChallengeResult = Challenge & { readonly found?: object; };
 export type RunResult = Score | CompileError | RunErrorSet;
 
 export interface CodeError { readonly line: number; readonly col: number; readonly endCol: number; readonly message: string; }
-export interface RunError { readonly error?: string; readonly challenge: ChallengeResult; }
+interface TestFail {readonly message: string; readonly expected: string; readonly found: string;}
+export interface RunError { readonly error?: TestFail; readonly challenge: ChallengeResult; }
 export type LoadingState<T> = Loading | Loaded<T>;
 
 export const ifLoaded = <T, TT>(l: LoadingState<T>, some: ((t: T) => TT), none: (() => TT)) => l.type === "Loaded" ? some(l.data) : none();
