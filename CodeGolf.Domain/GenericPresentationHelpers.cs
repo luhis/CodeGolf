@@ -41,12 +41,6 @@
             }
         }
 
-        public static string DisplayFunction(IChallenge challenge, IReadOnlyList<ParamDescription> paramTypes, Type returnType)
-        {
-            var zipped = challenge.Args.Zip(paramTypes, ValueTuple.Create).Select(a => WrapIfString(a.Item1, a.Item2.Type));
-            return $"({string.Join(", ", zipped)}) => {WrapIfArray(challenge.ExpectedResult, returnType)}";
-        }
-
         public static string GetAlias(Type t)
         {
             if (Aliases.ContainsKey(t))
