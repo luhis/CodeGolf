@@ -72,8 +72,8 @@ namespace CodeGolf.Unit.Test.Services
                     this.noParams,
                     new[] { new Challenge<string>(new object[0], "Hello World") }),
                 CancellationToken.None);
-            r.AsT1.First().Error.Should().BeEquivalentTo(
-                "Return value incorrect. Expected: \"Hello World\", Found: \"Hello X World\"");
+            r.AsT1.First().Error.Should().BeEquivalentTo(new Error(
+                "Return value incorrect.", "\"Hello World\"", "\"Hello X World\""));
         }
     }
 }
