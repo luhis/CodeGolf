@@ -48,7 +48,7 @@
             "severity": "warning",
             "options": "allow-destructuring"
         },
-        "prefer-const-enum": { "severity": "warning" },
+        "prefer-const-enum": false,
         "semicolon": [true, "always"],
         "quotemark": [true, "double"],
         "align": true,
@@ -68,7 +68,7 @@
         "no-object-mutation": true,
         "no-delete": true,
         "no-method-signature": true
-    
+
         // Functional style rules
         //"no-this": true
         //"no-class": true,

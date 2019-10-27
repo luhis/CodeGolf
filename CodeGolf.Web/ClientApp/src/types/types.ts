@@ -19,7 +19,7 @@ export const ifLoaded = <T, TT>(l: LoadingState<T>, some: ((t: T) => TT), none: 
 export interface ParamDescription { readonly type: string; readonly suggestedName: string; }
 export interface Challenge { readonly args: ReadonlyArray<string>; readonly expectedResult: object; }
 
-const enum GuidTypes { GameId, AttemptId, ChallengeSetId, RoundId, HoleId }
+enum GuidTypes { GameId, AttemptId, ChallengeSetId, RoundId, HoleId }
 
 export type GameId = string & GuidTypes.GameId;
 export type AttemptId = string & GuidTypes.AttemptId;
