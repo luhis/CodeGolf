@@ -21,11 +21,11 @@ export interface Challenge { readonly args: ReadonlyArray<string>; readonly expe
 
 enum GuidTypes { GameId, AttemptId, ChallengeSetId, RoundId, HoleId }
 
-export type GameId = string & GuidTypes.GameId;
-export type AttemptId = string & GuidTypes.AttemptId;
-export type ChallengeSetId = string & GuidTypes.ChallengeSetId;
-export type RoundId = string & GuidTypes.RoundId;
-export type HoleId = string & GuidTypes.HoleId;
+export type GameId = string & { readonly type: GuidTypes.GameId};
+export type AttemptId = string & { readonly type: GuidTypes.AttemptId};
+export type ChallengeSetId = string & { readonly type: GuidTypes.ChallengeSetId};
+export type RoundId = string & { readonly type: GuidTypes.RoundId};
+export type HoleId = string & { readonly type: GuidTypes.HoleId};
 
 export interface ChallengeSet {
     readonly id: ChallengeSetId;

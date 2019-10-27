@@ -15,7 +15,7 @@ it("renders Admin without crashing", () => {
   render(<Admin myGames={{type: "Loading"}} allChallenges={{type: "Loading"}} showCreate={false} toggleCreate={((_: boolean) => undefined)} resetGame={(() => undefined)} />);
 });
 
-const games = [{id: "" as GameId, accessKey:"", rounds: [{id: "id" as GameId, name: "name"}] }] as ReadonlyArray<Game>;
+const games = [{id: "" as GameId, accessKey:"", rounds: [{id: "id" as RoundId, name: "name"}] }] as ReadonlyArray<Game>;
 const challenges = [{id: "" as RoundId, name: ""}] as ReadonlyArray<Round>;
 
 it("renders Admin with content without crashing", () => {
