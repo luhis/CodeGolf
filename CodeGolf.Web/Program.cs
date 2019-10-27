@@ -6,10 +6,7 @@
 
     public static class Program
     {
-        public static Task Main(string[] args)
-        {
-            return CreateWebHostBuilder(args).Build().RunAsync();
-        }
+        public static Task Main(string[] args) => CreateWebHostBuilder(args).Build().RunAsync();
 
         private static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
