@@ -9,14 +9,14 @@ import Demo from "../routes/demo/funcComp";
 import GameComp from "../routes/game/funcComp";
 import Home from "../routes/home";
 import Results from "../routes/results/funcComp";
-import { Game, Round } from "../types/types";
+import { Game, GameId, Round, RoundId } from "../types/types";
 
 it("renders Admin without crashing", () => {
   render(<Admin myGames={{type: "Loading"}} allChallenges={{type: "Loading"}} showCreate={false} toggleCreate={((_: boolean) => undefined)} resetGame={(() => undefined)} />);
 });
 
-const games = [{id: "", accessKey:"", rounds: [{id: "id", name: "name"}] }] as ReadonlyArray<Game>;
-const challenges = [{id: "", name: ""}] as ReadonlyArray<Round>;
+const games = [{id: "" as GameId, accessKey:"", rounds: [{id: "id" as GameId, name: "name"}] }] as ReadonlyArray<Game>;
+const challenges = [{id: "" as RoundId, name: ""}] as ReadonlyArray<Round>;
 
 it("renders Admin with content without crashing", () => {
   render(<Admin myGames={{type: "Loaded", data: games}} allChallenges={{type: "Loaded", data: challenges}} showCreate={false} toggleCreate={((_: boolean) => undefined)} resetGame={(() => undefined)} />);

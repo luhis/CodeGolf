@@ -19,10 +19,16 @@ export const ifLoaded = <T, TT>(l: LoadingState<T>, some: ((t: T) => TT), none: 
 export interface ParamDescription { readonly type: string; readonly suggestedName: string; }
 export interface Challenge { readonly args: ReadonlyArray<string>; readonly expectedResult: object; }
 
-export type Guid = string & {};
+const enum GuidTypes { GameId, AttemptId, ChallengeSetId, RoundId, HoleId }
+
+export type GameId = string & GuidTypes.GameId;
+export type AttemptId = string & GuidTypes.AttemptId;
+export type ChallengeSetId = string & GuidTypes.ChallengeSetId;
+export type RoundId = string & GuidTypes.RoundId;
+export type HoleId = string & GuidTypes.HoleId;
 
 export interface ChallengeSet {
-    readonly id: Guid;
+    readonly id: ChallengeSetId;
     readonly title: string;
     readonly description: string;
     readonly returnType: string;
@@ -32,7 +38,7 @@ export interface ChallengeSet {
 
 export interface Attempt {
     readonly rank: number;
-    readonly id: Guid;
+    readonly id: AttemptId;
     readonly loginName: string;
     readonly avatar: string;
     readonly score: number;
@@ -50,16 +56,16 @@ export interface Result {
 
 export interface Hole {
     readonly challengeSet: ChallengeSet; readonly start: Date;
-    readonly end: Date; readonly closedAt?: Date; readonly hasNext: boolean; readonly hole: { readonly holeId: Guid };
+    readonly end: Date; readonly closedAt?: Date; readonly hasNext: boolean; readonly hole: { readonly holeId: HoleId };
 }
 
 export interface Round {
-    readonly id: Guid;
+    readonly id: RoundId;
     readonly name: string;
 }
 
 export interface Game {
-    readonly id: Guid;
+    readonly id: GameId;
     readonly accessKey: string;
     readonly rounds: ReadonlyArray<Round>;
 }

@@ -4,16 +4,19 @@ import { Component, h, RenderableProps } from "preact";
 
 import { getCurrentHole, submitChallenge, tryCompile } from "../../api/playerApi";
 import { getFunctionDeclaration } from "../../funcDeclaration";
-import { Hole, ifLoaded, LoadingState, RunResult } from "../../types/types";
+import { GameId, Hole, ifLoaded, LoadingState, RunResult } from "../../types/types";
 import FuncComp from "./funcComp";
 import Notification from "./notification";
 
 interface State {
+  readonly gameId: GameId | undefined ;
   readonly challenge: LoadingState<Hole | undefined>;
   readonly code: string;
   readonly errors: LoadingState<RunResult | undefined>;
   readonly connection: HubConnection;
 }
+
+const compile = async (c: Hole | undefined, code: string) => c ? await tryCompile(c.challengeSet.id, code) : [];
 
 export default class Comp extends Component<{}, State> {
   private readonly tryCompile = debounce(async () => {
@@ -22,8 +25,8 @@ export default class Comp extends Component<{}, State> {
       type: "Loaded",
       data: {
         type: "CompileError",
-        errors: await tryCompile(ifLoaded(this.state.challenge, c => c ? c.challengeSet.id : "", () => ""), this.state.code)
-      } as RunResult
+        errors: await ifLoaded(this.state.challenge, c => compile(c, this.state.code), () => Promise.resolve([]))
+      }
     } as LoadingState<RunResult>;
     this.setState(s => ({ ...s, errors }));
   }, 1000);
@@ -35,7 +38,7 @@ export default class Comp extends Component<{}, State> {
       const challenge = await getCurrentHole();
       this.setState(s => ({ ...s, challenge: { type: "Loaded", data: challenge }, errors: { type: "Loaded", data: undefined }, code: "" }));
     });
-    this.state = { challenge: { type: "Loading" }, code: "", errors: { type: "Loaded", data: undefined }, connection };
+    this.state = { challenge: { type: "Loading" }, code: "", errors: { type: "Loaded", data: undefined }, connection, gameId: undefined };
   }
   public readonly componentDidMount = async () => {
     const challenge = await getCurrentHole();

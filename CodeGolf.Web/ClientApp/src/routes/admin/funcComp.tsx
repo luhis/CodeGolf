@@ -2,9 +2,9 @@ import { FunctionalComponent, h } from "preact";
 
 import CreateGame from "../../components/createGame";
 import Loading from "../../components/loading";
-import { Game, Guid, ifLoaded, LoadingState, Round } from "../../types/types";
+import { Game, GameId, ifLoaded, LoadingState, Round } from "../../types/types";
 
-const Row: FunctionalComponent<{ readonly g: Game, readonly resetGame: ((g: Guid) => void) }> = ({ g, resetGame }) =>
+const Row: FunctionalComponent<{ readonly g: Game, readonly resetGame: ((g: GameId) => void) }> = ({ g, resetGame }) =>
     (<article class="message">
         <div class="message-header">
             <p>Code: {g.accessKey}</p>
@@ -25,7 +25,7 @@ interface Props {
     readonly allChallenges: LoadingState<ReadonlyArray<Round>>;
     readonly showCreate: boolean;
     readonly toggleCreate: (state: boolean) => void;
-    readonly resetGame: (g: Guid) => void;
+    readonly resetGame: (g: GameId) => void;
 }
 
 const FuncComp: FunctionalComponent<Readonly<Props>> = ({ myGames, allChallenges, showCreate, toggleCreate, resetGame }) =>

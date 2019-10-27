@@ -1,12 +1,12 @@
 import { Component, h, RenderableProps } from "preact";
 
 import { getAttempt } from "../../api/adminApi";
-import { AttemptWithCode, Guid, LoadingState } from "../../types/types";
+import { AttemptId, AttemptWithCode, LoadingState } from "../../types/types";
 import FuncComp from "./funcComp";
 
 type State = LoadingState<AttemptWithCode>;
 
-interface Props { readonly attemptId: Guid; }
+interface Props { readonly attemptId: AttemptId; }
 
 export default class Comp extends Component<Props, State> {
   constructor() {

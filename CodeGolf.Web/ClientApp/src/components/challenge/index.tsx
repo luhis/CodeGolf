@@ -8,7 +8,7 @@ import { Challenge, ChallengeSet } from "../../types/types";
 
 interface Props { readonly challenge: ChallengeSet; readonly onCodeClick?: () => void; }
 
-const X: FunctionalComponent<{ readonly challenge: Challenge, readonly returnType: string; }> = ({ challenge, returnType }) =>
+const X: FunctionalComponent<{ readonly challenge: Challenge, readonly returnType: string; }> = ({ challenge }) =>
     (<div
         class="panel-block"
     >{getInput(challenge)} =>

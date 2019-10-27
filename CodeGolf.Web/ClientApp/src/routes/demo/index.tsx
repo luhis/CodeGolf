@@ -8,12 +8,17 @@ import FuncComp from "./funcComp";
 
 interface State { readonly challenge: LoadingState<ChallengeSet>; readonly code: string; readonly errors: LoadingState<RunResult | undefined>; }
 
+const compile = async (c: ChallengeSet | undefined, code: string) => c ? await tryCompile(c.id, code) : [];
+
 export default class Comp extends Component<{}, State> {
   private readonly tryCompile = debounce(async () => {
     this.setState(s => ({ ...s, errors: { type: "Loading" } }));
     const errors = {
       type: "Loaded",
-      data: { type: "CompileError", errors: await tryCompile(this.state.challenge.type === "Loaded" ? this.state.challenge.data.id : "", this.state.code) }
+      data: {
+        type: "CompileError",
+        errors: await ifLoaded(this.state.challenge, c => compile(c, this.state.code), () => Promise.resolve([]))
+      }
     } as LoadingState<RunResult>;
     this.setState(s => ({ ...s, errors }));
   }, 1000);
