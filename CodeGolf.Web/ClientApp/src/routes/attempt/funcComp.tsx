@@ -1,14 +1,10 @@
-import { Editor, EditorConfiguration } from "codemirror";
 import { FunctionalComponent, h } from "preact";
-import { Controlled as CodeMirror, IControlledCodeMirror } from "react-codemirror2";
+
+import Editor from "@monaco-editor/react";
 
 import Loading from "../../components/loading";
 import { AttemptWithCode, ifLoaded, LoadingState } from "../../types/types";
 
-import "codemirror/lib/codemirror.css";
-import "codemirror/mode/clike/clike";
-
-const CM = CodeMirror as unknown as FunctionalComponent<IControlledCodeMirror>;
 interface Props {
     readonly result: LoadingState<AttemptWithCode>;
 }
@@ -24,15 +20,10 @@ const FuncComp: FunctionalComponent<Readonly<Props>> = ({ result }) => ifLoaded(
                 {data.loginName} {data.score} {data.timeStamp}
             </span>
         </div>
-        <CM value={data.code}
-            className="editor"
-            onBeforeChange={() => undefined}
-            options={{ lineNumbers: true, mode: "text/x-csharp" } as EditorConfiguration}
-            editorDidMount={(e: Editor) => {
-                setTimeout(() => {
-                    e.refresh();
-                }, 250);
-            }} />
+        <Editor
+            value={data.code}
+            height="40vh"
+            language="csharp"/>
     </section>), () => <Loading/>);
 
 export default FuncComp;

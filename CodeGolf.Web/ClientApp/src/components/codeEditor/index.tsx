@@ -1,18 +1,14 @@
-import { Editor, TextMarker } from "codemirror";
+import { ControlledEditor } from "@monaco-editor/react";
 import { FunctionalComponent, h } from "preact";
 import { useRef } from "preact/hooks";
-import { Controlled as CodeMirror, IControlledCodeMirror } from "react-codemirror2";
 
 import { RunResult } from "../../types/types";
 
-import "codemirror/lib/codemirror.css";
-import "codemirror/mode/clike/clike";
-
 interface Props {
     readonly code: string;
+    readonly errors?: RunResult;
     readonly codeChanged: (s: string) => void;
     readonly submitCode: (s: string) => void;
-    readonly errors?: RunResult;
 }
 
 const openInAction = (actionName: ("debug" | "preview"), code: string) =>
@@ -22,20 +18,25 @@ const getScore = (code: string) => code
     .replace(/\s/g, "")
     .length;
 
-const setErrors = (editorComp: Editor, errors?: RunResult) => {
-    const doc = editorComp.getDoc();
-
-    doc.getAllMarks().map((a: TextMarker) => a.clear());
+const setErrors = (editorComp: any, errors?: RunResult) => {
+    const doc = editorComp.getModel();
+    const monaco = (window as any).monaco;
     if (errors && errors.type === "CompileError" && errors.errors.length > 0) {
-        errors.errors.map(e => doc.markText({ line: e.line - 1, ch: e.col }, { line: e.line - 1, ch: e.endCol },
-            { className: "underline" }));
+        monaco.editor.setModelMarkers(doc, "error", errors.errors.map(e => ({
+            startLineNumber: e.line - 1,
+            startColumn: e.col + 1,
+            endLineNumber: e.line -1,
+            endColumn: e.endCol + 1,
+            message: "error"
+        })));
+    }
+    else {
+        monaco.editor.setModelMarkers(doc, "error", []);
     }
 };
 
-const CM = CodeMirror as unknown as FunctionalComponent<IControlledCodeMirror>;
-
 const Comp: FunctionalComponent<Readonly<Props>> = ({ code, codeChanged, submitCode, errors }) => {
-    const editor = useRef<Editor | undefined>(undefined);
+    const editor = useRef<any | undefined>(undefined);
     if (editor.current) {
         setErrors(editor.current, errors);
     }
@@ -43,19 +44,13 @@ const Comp: FunctionalComponent<Readonly<Props>> = ({ code, codeChanged, submitC
         <div class="field">
             <label class="label">Code</label>
             <div class="control">
-                <CM
+                <ControlledEditor
                     value={code}
-                    className="editor"
-                    options={{ lineNumbers: true, mode: "text/x-csharp" }}
-                    editorDidMount={(e: Editor) => {
-                        // tslint:disable-next-line: no-object-mutation
-                        editor.current = e;
-                        setTimeout(() => {
-                            e.refresh();
-                        }, 250);
-                    }}
-
-                    onBeforeChange={(_: unknown, __: unknown, s: string) => codeChanged(s)} />
+                    height="40vh"
+                    language="csharp"
+                    // tslint:disable-next-line: no-object-mutation
+                    editorDidMount={(_: () => string, e: any) => editor.current = e}
+                    onChange={(_: unknown, s: string) => codeChanged(s)} />
             </div>
         </div>
         <div class="field">
