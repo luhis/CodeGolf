@@ -1,5 +1,6 @@
 import { Editor, TextMarker } from "codemirror";
 import { FunctionalComponent, h } from "preact";
+import { useRef } from "preact/hooks";
 import { Controlled as CodeMirror, IControlledCodeMirror } from "react-codemirror2";
 
 import { RunResult } from "../../types/types";
@@ -19,10 +20,7 @@ const openInAction = (actionName: ("debug" | "preview"), code: string) =>
 
 const getScore = (code: string) => code
     .replace(/\s/g, "")
-    .length.toString();
-
-// tslint:disable-next-line: no-let
-let editor = undefined as (Editor | undefined);
+    .length;
 
 const setErrors = (editorComp: Editor, errors?: RunResult) => {
     const doc = editorComp.getDoc();
@@ -37,8 +35,9 @@ const setErrors = (editorComp: Editor, errors?: RunResult) => {
 const CM = CodeMirror as unknown as FunctionalComponent<IControlledCodeMirror>;
 
 const Comp: FunctionalComponent<Readonly<Props>> = ({ code, codeChanged, submitCode, errors }) => {
-    if (editor) {
-        setErrors(editor, errors);
+    const editor = useRef<Editor | undefined>(undefined);
+    if (editor.current) {
+        setErrors(editor.current, errors);
     }
     return (<div>
         <div class="field">
@@ -49,7 +48,8 @@ const Comp: FunctionalComponent<Readonly<Props>> = ({ code, codeChanged, submitC
                     className="editor"
                     options={{ lineNumbers: true, mode: "text/x-csharp" }}
                     editorDidMount={(e: Editor) => {
-                        editor = e;
+                        // tslint:disable-next-line: no-object-mutation
+                        editor.current = e;
                         setTimeout(() => {
                             e.refresh();
                         }, 250);
