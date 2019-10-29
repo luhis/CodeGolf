@@ -8480,10 +8480,10 @@ preact-router@3.1.0:
   resolved "https://registry.yarnpkg.com/preact-router/-/preact-router-3.1.0.tgz#fed59487f812baef4a63aa63175e280fa3608151"
   integrity sha512-OeiSIl6C4ecfKl4wmEkkz5LO68PuNYuSWk1dxpjmTIMsXVRxm0PWw6PudAISQBjYmzMY9Z6NBfXoZjQDLV3l7g==
 
-preact@10.0.2:
-  version "10.0.2"
-  resolved "https://registry.yarnpkg.com/preact/-/preact-10.0.2.tgz#fd65b1cdd3c864ce482749466dfb97fb4f363bea"
-  integrity sha512-itBKz7eM5DFpwzsO/XVb9MM0BJwhsZadPnXRAZwrs31I07gcWMS61QKrjzz69At2L4wBIkRneyx5AnlxHfrgVw==
+preact@10.0.3:
+  version "10.0.3"
+  resolved "https://registry.yarnpkg.com/preact/-/preact-10.0.3.tgz#01e037240334aa7b478dbaa693ee2cb378da3757"
+  integrity sha512-PpoOHxUd550lxSXu2iE2PRKuz/Jm0MSCCiThXEj4DsAWSRg7lCb76YFrNEenFDlEPy0RmDT5xeJPsIueaFAplw==
 
 prelude-ls@~1.1.2:
   version "1.1.2"
