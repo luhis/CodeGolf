@@ -165,6 +165,7 @@ namespace CodeGolf.Web
                 app.UseHsts();
             }
 
+            const string monacoHash = "+w9x3gaUtwchFo1AI6q4N4R2TrkXYr7IsIlGpAPu3mQ=";
             app.UseSecurityHeaders(
                 policies => policies.AddDefaultSecurityHeaders()
                     .AddStrictTransportSecurityMaxAgeIncludeSubDomains(maxAgeInSeconds: 63072000)
@@ -172,9 +173,11 @@ namespace CodeGolf.Web
                         b =>
                             {
                                 b.AddDefaultSrc().Self();
-                                var scripts = b.AddScriptSrc().Self().From("https://www.google.com")
+                                var scripts = b.AddScriptSrc().Self()
+                                    .From("https://www.google.com")
                                     .From("https://www.gstatic.com")
-                                    .From("https://www.google-analytics.com");
+                                    .From("https://www.google-analytics.com")
+                                    .From("https://cdn.jsdelivr.net").WithHash256(monacoHash);
                                 if (env.IsDevelopment())
                                 {
                                     scripts.UnsafeEval();
@@ -183,7 +186,7 @@ namespace CodeGolf.Web
                                 b.AddImgSrc().Self().From("https://www.google-analytics.com")
                                     .From("https://*.githubusercontent.com").From("data:");
                                 b.AddFrameSource().Self().From("https://www.google.com");
-                                b.AddStyleSrc().Self().UnsafeInline().Blob();
+                                b.AddStyleSrc().Self().UnsafeInline().Blob().From("https://cdn.jsdelivr.net");
                                 b.AddConnectSrc().Self().From("https://localhost:*");
                             }));
 
