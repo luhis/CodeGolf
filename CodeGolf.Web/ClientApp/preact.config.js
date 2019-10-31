@@ -1,7 +1,6 @@
 import { resolve } from "path";
 import envVars from "preact-cli-plugin-env-vars";
 import CopyWebpackPlugin from "copy-webpack-plugin";
-import LodashModuleReplacementPlugin from "lodash-webpack-plugin";
 
 export default function(config, env, helpers) {
     // Switch css-loader for typings-for-css-modules-loader, which is a wrapper
@@ -22,11 +21,6 @@ export default function(config, env, helpers) {
             { context: `${__dirname}/src/assets`, from: `*.*` }
         ])
     );
-
-    // helpers.getLoadersByName(config, "babel-loader").forEach(({ loader }) => {
-    //     loader.options.plugins.push(babelPluginLodash)
-    // });
-    config.plugins.push(new LodashModuleReplacementPlugin({}));
 
     // Use any `index` file, not just index.js
     config.resolve.alias["preact-cli-entrypoint"] = resolve(

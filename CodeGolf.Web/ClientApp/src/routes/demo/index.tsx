@@ -1,4 +1,4 @@
-import { debounce } from "lodash";
+import { debounce } from "micro-dash";
 import { Component, h, RenderableProps } from "preact";
 
 import { getDemoChallenge, submitDemo, tryCompile } from "../../api/playerApi";

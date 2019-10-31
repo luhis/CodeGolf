@@ -1,5 +1,5 @@
 import { HubConnection } from "@aspnet/signalr";
-import { debounce } from "lodash";
+import { debounce } from "micro-dash";
 import { Component, h, RenderableProps } from "preact";
 
 import { getCurrentHole, submitChallenge, tryCompile } from "../../api/playerApi";
