@@ -1,8 +1,7 @@
-import { faCode } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FunctionalComponent, h } from "preact";
 
 import { Attempt } from "../../types/types";
+import Icon from "../icons";
 
 const Row: FunctionalComponent<{ readonly attempt: Attempt }> = ({ attempt }) => (<tr>
   <td>{attempt.rank}.</td>
@@ -12,7 +11,7 @@ const Row: FunctionalComponent<{ readonly attempt: Attempt }> = ({ attempt }) =>
   <td>{attempt.timeStamp.toLocaleTimeString()}</td>
   <td>
     <a target="_blank" href={`/attempt/${attempt.id}`} class="button">
-      <FontAwesomeIcon icon={faCode} />&nbsp;View Code
+      <Icon icon="code" />&nbsp;View Code
     </a>
   </td>
 </tr>);

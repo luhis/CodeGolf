@@ -1,10 +1,9 @@
-import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Markdown from "markdown-to-jsx";
 import { FunctionalComponent, h } from "preact";
 
 import { getFunctionDeclaration, getInput } from "../../funcDeclaration";
 import { Challenge, ChallengeSet } from "../../types/types";
+import Icon from "../icons";
 
 interface Props { readonly challenge: ChallengeSet; readonly onCodeClick?: () => void; }
 
@@ -27,7 +26,7 @@ const Comp: FunctionalComponent<Readonly<Props>> = ({ challenge, onCodeClick }) 
     </div>
     {challenge.challenges.map(a => <X key={a.expectedResult.toString()} challenge={a} returnType={challenge.returnType} />)}
     <div class="panel-block">
-        <FontAwesomeIcon icon={faInfoCircle} className="has-text-info" />&nbsp;
+        <Icon icon="info-circle" className="has-text-info" />&nbsp;
         Create a function like&nbsp;
         <code
             class={onCodeClick ? "is-clickable" : ""}

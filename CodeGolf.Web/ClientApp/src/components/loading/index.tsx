@@ -1,8 +1,8 @@
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FunctionalComponent, h } from "preact";
 
+import Icon from "../icons";
+
 const FuncComp: FunctionalComponent = () =>
- <div><FontAwesomeIcon icon={faSpinner} spin={true} size={"2x"} /> Loading...</div>;
+ <div><Icon icon="spinner" spin={true} size={"2x"} /> Loading...</div>;
 
 export default FuncComp;
