@@ -46,7 +46,7 @@
     "@fortawesome/fontawesome-svg-core": "1.2.25",
     "@fortawesome/free-solid-svg-icons": "5.11.2",
     "@fortawesome/react-fontawesome": "0.1.7",
-    "@monaco-editor/react": "^2.1.1",
+    "@monaco-editor/react": "2.1.1",
     "@types/codemirror": "0.0.79",
     "@types/lodash": "4.14.144",
     "axios": "0.19.0",
