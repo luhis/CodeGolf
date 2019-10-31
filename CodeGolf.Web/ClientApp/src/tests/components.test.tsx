@@ -2,12 +2,101 @@ import { render } from "enzyme";
 import { h } from "preact";
 
 import Attempts from "../components/attempts";
-import { AttemptId } from "../types/types";
+import Challenge from "../components/challenge";
+import CookieConsent from "../components/cookieConsent";
+import CreateGame from "../components/createGame";
+import Footer from "../components/footer";
+import Header from "../components/header";
+import Icons from "../components/icons";
+import Loading from "../components/loading";
+import Results from "../components/results";
+import SignOut from "../components/signOut";
+import { AttemptId, ChallengeSetId } from "../types/types";
 
-it("renders Attempts without crashing", () => {
-    render(<Attempts attempts={[]}/>);
+describe("Attempts", () => {
+    it("renders without crashing", () => {
+        render(<Attempts attempts={[]} />);
+    });
+
+    it("renders with content without crashing", () => {
+        render(<Attempts attempts={[{ rank: 1, id: "avatar" as AttemptId, loginName: "login", avatar: "aaaa", score: 1, timeStamp: new Date(1) }]} />);
+    });
 });
 
-it("renders Attempts with content without crashing", () => {
-    render(<Attempts attempts={[{rank: 1, id: "avatar" as AttemptId, loginName: "login", avatar: "aaaa", score: 1, timeStamp: new Date(1) }]}/>);
+describe("Challenge", () => {
+    it("renders without crashing", () => {
+        render(
+            <Challenge
+                challenge={
+                    {
+                        id: "id" as ChallengeSetId,
+                        title: "title",
+                        description: "description",
+                        challenges: [],
+                        returnType: "rtn",
+                        params: []
+                    }} />);
+    });
+
+    it("renders with content without crashing", () => {
+        render(<Challenge challenge={{
+            id: "id" as ChallengeSetId,
+            title: "title",
+            description: "description",
+            challenges: [{ args: ["int", "string"], expectedResult: 1 as unknown as object }],
+            returnType: "rtn",
+            params: [{ suggestedName: "s", type: "string" }]
+        }} />);
+    });
+});
+
+describe("CookieConsent", () => {
+    it("renders without crashing", () => {
+        render(<CookieConsent />);
+    });
+});
+
+describe("SignOut", () => {
+    it("renders without crashing", () => {
+        render(<SignOut />);
+    });
+});
+
+describe("Loading", () => {
+    it("renders without crashing", () => {
+        render(<Loading />);
+    });
+});
+
+describe("Icons", () => {
+    it("renders without crashing", () => {
+        render(<Icons icon="code" />);
+    });
+});
+
+describe("Header", () => {
+    it("renders without crashing", () => {
+        render(<Header />);
+    });
+});
+
+describe("Footer", () => {
+    it("renders without crashing", () => {
+        render(<Footer />);
+    });
+});
+
+describe("CreateGame", () => {
+    it("renders without crashing", () => {
+        render(<CreateGame challenges={[]} hide={() => undefined} />);
+    });
+});
+
+describe("Results", () => {
+    it("renders without crashing", () => {
+        render(<Results />);
+    });
+    it("renders without crashing", () => {
+        render(<Results errors={{ type: "CompileError", errors: [{col: 1, endCol: 2, line: 1, message: "message" }] }} />);
+    });
 });

@@ -6,10 +6,9 @@ import Success from "./success";
 
 interface Props {
     readonly errors?: RunResult;
-    readonly returnType: string;
 }
 
-const Comp: FunctionalComponent<Props> = ({ errors, returnType }) => {
+const Comp: FunctionalComponent<Props> = ({ errors }) => {
     if (!errors)
     {
         return null;
@@ -17,7 +16,7 @@ const Comp: FunctionalComponent<Props> = ({ errors, returnType }) => {
     switch (errors.type) {
         case "RunError":
         case "CompileError":
-            return <ErrorsView errors={errors} returnType={returnType} />;
+            return <ErrorsView errors={errors} />;
         case "Score":
             return <Success score={errors} />;
     }
