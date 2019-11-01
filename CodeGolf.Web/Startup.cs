@@ -166,6 +166,9 @@ namespace CodeGolf.Web
             }
 
             const string monacoHash = "+w9x3gaUtwchFo1AI6q4N4R2TrkXYr7IsIlGpAPu3mQ=";
+            const string googleCom = "https://www.google.com";
+            const string googleAnal = "https://www.google-analytics.com";
+            const string jsDelivr = "https://cdn.jsdelivr.net";
             app.UseSecurityHeaders(
                 policies => policies.AddDefaultSecurityHeaders()
                     .AddStrictTransportSecurityMaxAgeIncludeSubDomains(maxAgeInSeconds: 63072000)
@@ -174,20 +177,21 @@ namespace CodeGolf.Web
                             {
                                 b.AddDefaultSrc().Self();
                                 var scripts = b.AddScriptSrc().Self()
-                                    .From("https://www.google.com")
+                                    .From(googleCom)
                                     .From("https://www.gstatic.com")
-                                    .From("https://www.google-analytics.com")
-                                    .From("https://cdn.jsdelivr.net").WithHash256(monacoHash);
+                                    .From(googleAnal)
+                                    .From(jsDelivr).WithHash256(monacoHash);
                                 if (env.IsDevelopment())
                                 {
                                     scripts.UnsafeEval();
                                 }
 
-                                b.AddImgSrc().Self().From("https://www.google-analytics.com")
+                                b.AddImgSrc().Self().From(googleAnal)
                                     .From("https://*.githubusercontent.com").From("data:");
-                                b.AddFrameSource().Self().From("https://www.google.com");
-                                b.AddStyleSrc().Self().UnsafeInline().Blob().From("https://cdn.jsdelivr.net");
+                                b.AddFrameSource().Self().From(googleCom);
+                                b.AddStyleSrc().Self().UnsafeInline().Blob().From(jsDelivr);
                                 b.AddConnectSrc().Self().From("https://localhost:*");
+                                // b.AddWorkerSrc().Self().Blob();
                             }));
 
             app.UseForwardedHeaders(
