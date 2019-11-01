@@ -39,7 +39,7 @@ const HasChallenge: FunctionalComponent<{
         />
 
         {ifLoaded(errors, e =>
-          <ErrorsComp errors={e} returnType={challenge.challengeSet.returnType} />, () => <Loading/>)}
+          <ErrorsComp errors={e} />, () => <Loading/>)}
       </div>
     </div>) : <PleaseWait />
 );

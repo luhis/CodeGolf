@@ -191,6 +191,7 @@ namespace CodeGolf.Web
                                 b.AddFrameSource().Self().From(googleCom);
                                 b.AddStyleSrc().Self().UnsafeInline().Blob().From(jsDelivr);
                                 b.AddConnectSrc().Self().From("https://localhost:*");
+
                                 // b.AddWorkerSrc().Self().Blob();
                             }));
 
