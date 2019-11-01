@@ -7,9 +7,9 @@
     "start": "per-env",
     "start:production": "npm run -s serve",
     "start:development": "npm run -s dev",
-    "build": "preact build  --no-prerender --template ./src/template.html --dest ../../app/publish/ClientApp/",
+    "build": "preact build --no-esm --no-prerender --template ./src/template.html --dest ../../app/publish/ClientApp/",
     "serve": "preact build && preact serve",
-    "dev": "preact watch  --template ./src/template.html && echo Starting the development server",
+    "dev": "preact watch --no-esm  --template ./src/template.html && echo Starting the development server",
     "lint": "tslint --project .",
     "test": "jest ./tests",
     "precommit": "lint-staged"
