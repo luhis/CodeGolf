@@ -10,7 +10,7 @@ export interface RunResultSet { readonly type: "RunResultSet"; readonly errors: 
 export type RunResult = Score | CompileError | RunResultSet;
 
 export interface CodeError { readonly line: number; readonly col: number; readonly endCol: number; readonly message: string; }
-interface TestFail { readonly message: string; readonly expected: string; readonly found: string; }
+interface TestFail { readonly message: string; readonly found: string; }
 export type LoadingState<T> = Loading | Loaded<T>;
 
 export const ifLoaded = <T, TT>(l: LoadingState<T>, some: ((t: T) => TT), none: (() => TT)) => l.type === "Loaded" ? some(l.data) : none();

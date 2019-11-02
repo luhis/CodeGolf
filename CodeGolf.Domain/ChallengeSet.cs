@@ -56,7 +56,7 @@
                                     if (!AreEqual(challenge.Item2.ExpectedResult, res))
                                     {
                                         return new Error(
-                                            "Return value incorrect.", GenericPresentationHelpers.WrapIfArray(challenge.Item2.ExpectedResult, typeof(T)), GenericPresentationHelpers.WrapIfArray(res, typeof(T)));
+                                            "Return value incorrect.", GenericPresentationHelpers.WrapIfArray(res, typeof(T)));
                                     }
 
                                     return null;
