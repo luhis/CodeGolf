@@ -62,7 +62,7 @@
                                     return null;
                                 },
                             s => new Error(s));
-                        return new ChallengeResult(errors, challenge.Item2);
+                        return new ChallengeResult(errors);
                     }).ToList();
         }
 

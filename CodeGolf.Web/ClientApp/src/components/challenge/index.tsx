@@ -8,8 +8,8 @@ import Icon from "../icons";
 
 interface Props {
     readonly challengeSet: ChallengeSet;
-    readonly onCodeClick?: () => void;
     readonly errors: LoadingState<RunResult | undefined>;
+    readonly onCodeClick?: () => void;
 }
 
 const Row: FunctionalComponent<{ readonly challenge: Challenge, readonly runError?: RunError }> = ({ challenge, runError }) =>
@@ -18,13 +18,15 @@ const Row: FunctionalComponent<{ readonly challenge: Challenge, readonly runErro
         <td><pre class="result">{challenge.expectedResult}</pre></td>
         <td>
             {runError ?
-                <pre class={ClassNames("result", runError.error ? "has-background-danger" : "has-background-success")}>{runError.error ? runError.error.found : "Success"}</pre>
+                <pre class={ClassNames("result", runError.error ? "has-background-danger" : "has-background-success")}>
+                    {runError.error ? runError.error.found : challenge.expectedResult}
+                </pre>
                 : null}
         </td>
     </tr>);
 
 const Comp: FunctionalComponent<Readonly<Props>> = ({ challengeSet, onCodeClick, errors }) => {
-    const getError = (index: number) => ifLoaded(errors, some => some && some.type === "RunError" ? some.errors[index] : undefined, () => undefined);
+    const getError = (index: number) => ifLoaded(errors, some => some && some.type === "RunResultSet" ? some.errors[index] : undefined, () => undefined);
     const pairs = challengeSet.challenges.map((challenge, index) => ({ challenge, result: getError(index) }));
     return (<div class="panel">
         <div class="panel-heading">

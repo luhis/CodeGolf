@@ -4,11 +4,10 @@ interface Loaded<T> { readonly type: "Loaded"; readonly data: T; }
 
 export interface Score { readonly type: "Score"; readonly val: number; }
 export interface CompileError { readonly type: "CompileError"; readonly errors: ReadonlyArray<CodeError>; }
-export interface RunError { readonly error?: TestFail; readonly challenge: ChallengeResult; }
-export interface RunErrorSet { readonly type: "RunError"; readonly errors: ReadonlyArray<RunError>; }
-type ChallengeResult = Challenge & { readonly found?: object; };
+export interface RunError { readonly error?: TestFail; }
+export interface RunResultSet { readonly type: "RunResultSet"; readonly errors: ReadonlyArray<RunError>; }
 
-export type RunResult = Score | CompileError | RunErrorSet;
+export type RunResult = Score | CompileError | RunResultSet;
 
 export interface CodeError { readonly line: number; readonly col: number; readonly endCol: number; readonly message: string; }
 interface TestFail { readonly message: string; readonly expected: string; readonly found: string; }

@@ -9,8 +9,7 @@ interface Props {
 }
 
 const Comp: FunctionalComponent<Props> = ({ errors }) => {
-    if (!errors)
-    {
+    if (!errors) {
         return null;
     }
     switch (errors.type) {

@@ -26,7 +26,7 @@ export const submitChallenge = (code: string, holeId: HoleId) => axios
             return { type: "CompileError", errors: data.compileErrors } as RunResult;
         }
         if (data.runErrors) {
-            return { type: "RunError", errors: data.runErrors } as RunResult;
+            return { type: "RunResultSet", errors: data.runErrors } as RunResult;
         }
         throw new Error("failed to convert");
     });
@@ -53,7 +53,7 @@ export const submitDemo = (code: string, reCaptcha: string): Promise<RunResult> 
             return { type: "CompileError", errors: data.compileErrors };
         }
         if (data.runErrors) {
-            return { type: "RunError", errors: data.runErrors };
+            return { type: "RunResultSet", errors: data.runErrors };
         }
         throw new Error("failed to convert");
     });
