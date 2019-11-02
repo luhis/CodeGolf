@@ -7,7 +7,7 @@
     "start": "per-env",
     "start:production": "npm run -s serve",
     "start:development": "npm run -s dev",
-    "build": "preact build --no-esm --no-prerender --template ./src/template.html --dest ../../app/publish/ClientApp/",
+    "build": "preact build --no-esm --no-prerender --template ./src/template.html --dest ../../publish/ClientApp/",
     "serve": "preact build && preact serve",
     "dev": "preact watch --no-esm  --template ./src/template.html && echo Starting the development server",
     "lint": "tslint --project .",
