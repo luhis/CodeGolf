@@ -1,7 +1,6 @@
 namespace CodeGolf.Web
 {
     using System;
-    using System.Net;
     using CodeGolf.Persistence;
     using CodeGolf.Service;
     using CodeGolf.ServiceInterfaces;
@@ -10,7 +9,6 @@ namespace CodeGolf.Web
     using CodeGolf.Web.Mappers;
     using CodeGolf.Web.Tooling;
     using CodeGolf.Web.WebServices;
-    using JKang.IpcServiceFramework;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -27,8 +25,7 @@ namespace CodeGolf.Web
             collection.AddSingleton<RecaptchaAttribute>();
             collection.AddSingleton<GameAdminAuthAttribute>();
             collection.AddSingleton<ChallengeSetMapper>();
-            collection.AddSingleton<IpcServiceClient<IExecutionService>>(a => new IpcServiceClientBuilder<IExecutionService>()
-                .UseTcp(IPAddress.Loopback, SharedSettings.PortNumber).Build());
+            collection.AddSingleton<IExecutionService, ExecutionProxy>();
         }
 
         private static DbContextOptions<CodeGolfContext> GetDbOptions(IServiceProvider a) => new DbContextOptionsBuilder<CodeGolfContext>()

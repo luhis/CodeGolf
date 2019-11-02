@@ -11,17 +11,14 @@
     using System.Threading;
     using System.Threading.Tasks;
     using CodeGolf.ServiceInterfaces;
+    using Optional;
+    using CompileResult = CodeGolf.ServiceInterfaces.CompileResult;
 
     public class ExecutionService : IExecutionService
     {
         private const int ExecutionTimeoutMilliseconds = 2_000;
 
-        public Task<ValueTuple<T, string>[]> Execute<T>(
-            CompileResult compileResult,
-            string className,
-            string funcName,
-            object[][] argSets,
-            Type[] paramTypes)
+        async Task<Option<T, string>[]> IExecutionService.Execute<T>(CompileResult compileResult, string className, string funcName, object[][] args, Type[] paramTypes)
         {
             using (var dll = new MemoryStream(compileResult.Dll))
             using (var pdb = new MemoryStream(compileResult.Pdb))
@@ -30,16 +27,16 @@
                 var type = obj.GetType(className);
                 var inst = Activator.CreateInstance(type);
                 var fun = GetMethod(funcName, type);
-                return Task.WhenAll(
-                    argSets.Select(
+                return await Task.WhenAll(
+                    args.Select(
                         async a =>
                         {
-                            var castArgs = CastArgs(a, paramTypes);
-                            var source = new CancellationTokenSource();
+                            var castArgs = CastArgs(a, paramTypes).ToArray();
+                            using var source = new CancellationTokenSource();
                             source.CancelAfter(TimeSpan.FromMilliseconds(ExecutionTimeoutMilliseconds));
                             try
                             {
-                                return ValueTuple.Create<T, string>(
+                                return Optional.Option.Some<T, string>(
                                     await Task<T>.Factory.StartNew(
                                         () => (T)fun.Invoke(
                                             inst,
@@ -49,22 +46,20 @@
                                             CultureInfo.InvariantCulture),
                                         source.Token,
                                         TaskCreationOptions.None,
-                                        TaskScheduler.Current),
-                                    null);
+                                        TaskScheduler.Current));
                             }
                             catch (Exception e)
                             {
                                 var final = GetFinalException(e);
                                 var line = new StackTrace(final, true).GetFrame(0).GetFileLineNumber();
-                                return ValueTuple.Create(
-                                    default(T),
+                                return Optional.Option.None<T, string>(
                                     $"Runtime Error line {line} - {final.Message}");
                             }
                         }));
             }
         }
 
-        public Task Ping()
+        Task IExecutionService.Ping()
         {
             return Task.CompletedTask;
         }

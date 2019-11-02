@@ -39,7 +39,7 @@ const FuncComp: FunctionalComponent<Readonly<Props>> = ({ code, errors, challeng
           onCodeClick={onCodeClick}
           errors={errors}
         />, () => <Loading />)}
-        {challenge.type === "Loaded" && errors.type === "Loaded" ?
+        {errors.type === "Loaded" ?
           errors.data && (errors.data.type === "Score" || errors.data.type === "CompileError") ? <ErrorsComp errors={errors.data} /> : null
           : <Loading />}
       </div>

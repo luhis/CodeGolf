@@ -1,0 +1,44 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "CodeGolf.ExecutionService";
+
+service Executer {
+	rpc Ping (PingRequest) returns (PingResponse);
+	rpc Execute (ExecuteRequest) returns (ExecuteResponse);
+}
+
+message PingRequest {
+
+}
+
+message PingResponse {
+
+}
+
+message ExecuteRequest {
+	CompileResult CompileResult = 1;
+	string className = 2;
+	string funcName = 3;
+	repeated ArgSet args = 4;
+	repeated string paramTypes = 5;
+}
+
+message ArgSet {
+	repeated string arg = 1;
+}
+
+message ExecuteResponse {
+	repeated Result result = 1;
+}
+
+message CompileResult {
+	bytes Dll = 1;
+	bytes Pdb = 2;
+}
+
+message Result {
+	oneof ResultOptions {
+		string result = 1;
+		string error = 2;
+	}
+}

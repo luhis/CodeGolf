@@ -1,8 +1,23 @@
-import { Component, FunctionalComponent, h, RenderableProps } from "preact";
+import { Component, Fragment, FunctionalComponent, FunctionComponent, h, RenderableProps } from "preact";
 import { Link } from "preact-router";
 
 import { isAdmin, isLoggedIn } from "../../api/accessApi";
 import SignOut from "../signOut";
+
+const AdminSection: FunctionComponent<{ readonly admin: boolean }> = ({ admin }) => admin ?
+    (<Fragment>
+        <Link class="navbar-item" href="/dashboard">Dashboard</Link>
+        <Link class="navbar-item" href="/admin">Admin</Link>
+    </Fragment>) : null;
+
+const LoggedInSection: FunctionComponent<{ readonly loggedIn: boolean }> = ({ loggedIn }) => loggedIn ?
+    (<Fragment>
+        <Link class="navbar-item" href="/game">Game</Link>
+        <SignOut />
+    </Fragment>) : null;
+
+const SignIn: FunctionalComponent<{ readonly loggedIn: boolean }> =
+    ({ loggedIn }) => !loggedIn ? <a href="/account/signin" class="navbar-item">Sign In with GitHub</a> : null;
 
 const FuncComp: FunctionalComponent<State & { readonly toggleMenu: (() => void) }> = ({ admin, loggedIn, toggleMenu, showMenu }) =>
     (<nav class="navbar" role="navigation" aria-label="main navigation">
@@ -16,12 +31,9 @@ const FuncComp: FunctionalComponent<State & { readonly toggleMenu: (() => void) 
             <div class="navbar-start">
                 <Link class="navbar-item" href="/">Home</Link>
                 <Link class="navbar-item" href="/demo">Demo</Link>
-                {loggedIn ? <Link class="navbar-item" href="/game">Game</Link> : null}
-                {loggedIn ? <SignOut /> : null}
-                {!loggedIn ? <a href="/account/signin" class="navbar-item">Sign In with GitHub</a> : null}
-
-                {admin ? <Link class="navbar-item" href="/dashboard">Dashboard</Link> : null}
-                {admin ? <Link class="navbar-item" href="/admin">Admin</Link> : null}
+                <LoggedInSection loggedIn={loggedIn} />
+                <SignIn loggedIn={loggedIn} />
+                <AdminSection admin={admin} />
                 <a class="navbar-item" target="_blank" rel="noopener" href="https://codegolf.stackexchange.com/questions/173/tips-for-code-golfing-in-c">Tips</a>
             </div>
         </div>

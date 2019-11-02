@@ -1,32 +1,52 @@
 ﻿namespace CodeGolf.Service
 {
     using System;
+    using System.Linq;
+    using System.Text.Json;
     using System.Threading.Tasks;
+    using CodeGolf.ExecutionService;
     using CodeGolf.ServiceInterfaces;
-    using JKang.IpcServiceFramework;
+    using Google.Protobuf;
+    using Grpc.Net.Client;
+    using Optional;
 
     public class ExecutionProxy : IExecutionService
     {
-        private readonly IpcServiceClient<IExecutionService> svc;
+        private readonly string host = "localhost";
+        private readonly Executer.ExecuterClient client;
 
-        public ExecutionProxy(IpcServiceClient<IExecutionService> svc)
+        public ExecutionProxy()
         {
-            this.svc = svc;
+            var channel = GrpcChannel.ForAddress($"https://{this.host}:{SharedSettings.PortNumber}");
+            this.client = new Executer.ExecuterClient(channel);
         }
 
-        Task<ValueTuple<T, string>[]> IExecutionService.Execute<T>(
-            CompileResult compileResult,
+        async Task<Option<T, string>[]> IExecutionService.Execute<T>(
+            ServiceInterfaces.CompileResult compileResult,
             string className,
             string funcName,
             object[][] args,
             Type[] paramTypes)
         {
-            return this.svc.InvokeAsync(a => a.Execute<T>(compileResult, className, funcName, args, paramTypes));
+            var rx = await this.client.ExecuteAsync(new ExecuteRequest
+            {
+                CompileResult = new ExecutionService.CompileResult()
+                {
+                    Dll = ByteString.CopyFrom(compileResult.Dll),
+                    Pdb = ByteString.CopyFrom(compileResult.Pdb)
+                },
+                ClassName = className,
+                FuncName = funcName,
+                Args = { args.Select(a => new ArgSet() { Arg = { a.Select(b => b.ToString()) } }) }, // todo
+                ParamTypes = { paramTypes.Select(a => a.FullName) }
+            });
+
+            return rx.Result.Select(a => a.Result_ != null ? Option.Some<T, string>(JsonSerializer.Deserialize<T>(a.Result_)) : Option.None<T, string>(a.Error)).ToArray();
         }
 
-        Task IExecutionService.Ping()
+        async Task IExecutionService.Ping()
         {
-            return this.svc.InvokeAsync(a => a.Ping());
+            await this.client.PingAsync(new PingRequest());
         }
     }
 }
