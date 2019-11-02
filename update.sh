@@ -13,8 +13,8 @@ echo "Client Build"
 yarn --cwd ./CodeGolf.Web/ClientApp/ build
 
 echo "Run build"
-dotnet publish ./CodeGolf.Web -o ../publish -c Release -r linux-x64
-dotnet publish ./CodeGolf.ExecutionServer -o ../executionServer -c Release -r linux-x64
+dotnet publish ./CodeGolf.Web -o ./publish -c Release -r linux-x64
+dotnet publish ./CodeGolf.ExecutionServer -o ./executionServer -c Release -r linux-x64
 
 echo "Creating files and folders"
 touch ./publish/appsettings.Production.json
