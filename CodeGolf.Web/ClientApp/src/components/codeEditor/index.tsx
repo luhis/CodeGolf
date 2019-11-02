@@ -25,7 +25,7 @@ const setErrors = (editorComp: any, errors?: RunResult) => {
         monaco.editor.setModelMarkers(doc, "error", errors.errors.map(e => ({
             startLineNumber: e.line - 1,
             startColumn: e.col + 1,
-            endLineNumber: e.line -1,
+            endLineNumber: e.line - 1,
             endColumn: e.endCol + 1,
             message: "error"
         })));
@@ -50,7 +50,9 @@ const Comp: FunctionalComponent<Readonly<Props>> = ({ code, codeChanged, submitC
                     language="csharp"
                     // tslint:disable-next-line: no-object-mutation
                     editorDidMount={(_: () => string, e: any) => editor.current = e}
-                    onChange={(_: unknown, s: string) => codeChanged(s)} />
+                    onChange={(_: unknown, s: string) => codeChanged(s)}
+                    options={{minimap: {enabled: false}}}
+                />
             </div>
         </div>
         <div class="field">

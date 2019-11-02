@@ -14,9 +14,9 @@ interface Props {
     readonly endHole: () => Promise<void>;
 }
 
-const LeftCol: FunctionalComponent<{ readonly hole?: Hole }> = ({ hole }) => (hole ? <div>
+const RightCol: FunctionalComponent<{ readonly hole?: Hole }> = ({ hole }) => (hole ? <div>
     <Times start={hole.start} end={hole.end} />
-    <ChallengeComp challenge={hole.challengeSet} onCodeClick={undefined} />
+    <ChallengeComp challengeSet={hole.challengeSet} onCodeClick={undefined} errors={{ type: "Loaded", data: undefined }} />
 </div> : null);
 
 const FuncComp: FunctionalComponent<Readonly<Props>> = ({ current, attempts, nextHole, endHole }) =>
@@ -24,11 +24,11 @@ const FuncComp: FunctionalComponent<Readonly<Props>> = ({ current, attempts, nex
         <span class="title">Attempts</span>
         <div class="columns">
             <div class="column">
-                {ifLoaded(attempts, a=> <Attempts attempts={a} />, () => <Loading/>)}
+                {ifLoaded(attempts, a => <Attempts attempts={a} />, () => <Loading />)}
             </div>
             <div class="column">
                 <Controls hole={current} nextHole={nextHole} endHole={endHole} />
-                {ifLoaded(current, c => <LeftCol hole={c} />, () => <Loading/>)}
+                {ifLoaded(current, c => <RightCol hole={c} />, () => <Loading />)}
             </div>
         </div>
     </section>);

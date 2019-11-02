@@ -34,12 +34,13 @@ const HasChallenge: FunctionalComponent<{
       </div>
       <div class="column is-half">
         <ChallengeComp
-          challenge={challenge.challengeSet}
+          challengeSet={challenge.challengeSet}
+          errors={errors}
           onCodeClick={onCodeClick}
         />
 
         {ifLoaded(errors, e =>
-          <ErrorsComp errors={e} />, () => <Loading/>)}
+          e && (e.type === "Score" || e.type === "CompileError") ? <ErrorsComp errors={e} /> : null, () => <Loading />)}
       </div>
     </div>) : <PleaseWait />
 );
@@ -49,7 +50,7 @@ const FuncComp: FunctionalComponent<Readonly<Props>> = ({ code, errors, challeng
     <h1 class="title">Game</h1>
     {ifLoaded(challenge, c =>
       <HasChallenge challenge={c} code={code} errors={errors} codeChanged={codeChanged} onCodeClick={onCodeClick} submitCode={submitCode} />,
-      () => <Loading/>)}
+      () => <Loading />)}
   </section>);
 };
 

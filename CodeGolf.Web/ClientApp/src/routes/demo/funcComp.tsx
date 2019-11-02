@@ -1,4 +1,5 @@
 import { FunctionalComponent, h } from "preact";
+import { useRef } from "preact/hooks";
 import ReCAPTCHA from "react-google-recaptcha";
 
 import ChallengeComp from "../../components/challenge";
@@ -6,6 +7,7 @@ import CodeEditor from "../../components/codeEditor";
 import Loading from "../../components/loading";
 import ErrorsComp from "../../components/results";
 import { ChallengeSet, ifLoaded, LoadingState, RunResult } from "../../types/types";
+
 interface Props {
   readonly code: string;
   readonly errors: LoadingState<RunResult | undefined>;
@@ -14,17 +16,17 @@ interface Props {
   readonly onCodeClick: () => void;
   readonly submitCode: (code: string, recaptcha: string) => void;
 }
-// tslint:disable-next-line: no-let
-let recaptchaInstance: any = null;
-
-const executeCaptcha = () => {
-  recaptchaInstance.execute();
-};
 
 const FuncComp: FunctionalComponent<Readonly<Props>> = ({ code, errors, challenge, codeChanged, onCodeClick, submitCode }) => {
   const verifyCallback = (response: string) => {
     submitCode(code, response);
   };
+  const recaptchaInstance = useRef<any | undefined>(undefined);
+
+  const executeCaptcha = () => {
+    recaptchaInstance.current.execute();
+  };
+
   return (<section class="section">
     <h1 class="title">Demo</h1>
     <div class="columns">
@@ -33,16 +35,18 @@ const FuncComp: FunctionalComponent<Readonly<Props>> = ({ code, errors, challeng
       </div>
       <div class="column is-half">
         {ifLoaded(challenge, c => <ChallengeComp
-          challenge={c}
+          challengeSet={c}
           onCodeClick={onCodeClick}
-        />, () => <Loading/>)}
+          errors={errors}
+        />, () => <Loading />)}
         {challenge.type === "Loaded" && errors.type === "Loaded" ?
-          errors.data ? <ErrorsComp errors={errors.data} /> : null
-          : <Loading/>}
+          errors.data && (errors.data.type === "Score" || errors.data.type === "CompileError") ? <ErrorsComp errors={errors.data} /> : null
+          : <Loading />}
       </div>
     </div>
     <ReCAPTCHA
-      ref={e => recaptchaInstance = e}
+      // tslint:disable-next-line: no-object-mutation
+      ref={e => recaptchaInstance.current = e}
       sitekey={process.env.PREACT_APP_RECAPTCHA_SITEKEY as string}
       size="invisible"
       onChange={verifyCallback}

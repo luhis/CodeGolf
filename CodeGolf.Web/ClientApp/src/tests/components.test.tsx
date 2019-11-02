@@ -27,7 +27,7 @@ describe("Challenge", () => {
     it("renders without crashing", () => {
         render(
             <Challenge
-                challenge={
+                challengeSet={
                     {
                         id: "id" as ChallengeSetId,
                         title: "title",
@@ -35,18 +35,22 @@ describe("Challenge", () => {
                         challenges: [],
                         returnType: "rtn",
                         params: []
-                    }} />);
+                    }}
+                errors={{type: "Loading"}}
+            />);
     });
 
     it("renders with content without crashing", () => {
-        render(<Challenge challenge={{
+        render(<Challenge challengeSet={{
             id: "id" as ChallengeSetId,
             title: "title",
             description: "description",
             challenges: [{ args: ["int", "string"], expectedResult: 1 as unknown as object }],
             returnType: "rtn",
             params: [{ suggestedName: "s", type: "string" }]
-        }} />);
+        }}
+            errors={{type: "Loaded", data: undefined}}
+        />);
     });
 });
 
@@ -94,9 +98,9 @@ describe("CreateGame", () => {
 
 describe("Results", () => {
     it("renders without crashing", () => {
-        render(<Results />);
+        render(<Results errors={undefined} />);
     });
     it("renders without crashing", () => {
-        render(<Results errors={{ type: "CompileError", errors: [{col: 1, endCol: 2, line: 1, message: "message" }] }} />);
+        render(<Results errors={{ type: "CompileError", errors: [{ col: 1, endCol: 2, line: 1, message: "message" }] }} />);
     });
 });
