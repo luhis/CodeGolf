@@ -1,4 +1,4 @@
-import { HubConnectionBuilder } from "@aspnet/signalr";
+import { HubConnectionBuilder, LogLevel } from "@aspnet/signalr";
 import { toast } from "bulma-toast";
 
 const template = (name: string, score: number, avatarUri: string) =>
@@ -9,7 +9,7 @@ const template = (name: string, score: number, avatarUri: string) =>
     </div>`;
 
 const setup = (onUpdate: (() => void)) => {
-    const connection = new HubConnectionBuilder().withUrl("/refreshHub").build();
+    const connection = new HubConnectionBuilder().withUrl("/refreshHub").configureLogging(LogLevel.Error).build();
     connection.on("newTopScore", (name: string, score: number, avatarUri: string) => {
         toast({
             message: template(name, score, avatarUri),

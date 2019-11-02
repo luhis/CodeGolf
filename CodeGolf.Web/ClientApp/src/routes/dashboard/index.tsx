@@ -1,4 +1,4 @@
-import { HubConnection, HubConnectionBuilder } from "@aspnet/signalr";
+import { HubConnection, HubConnectionBuilder, LogLevel } from "@aspnet/signalr";
 import { Component, h, RenderableProps } from "preact";
 import { route } from "preact-router";
 
@@ -15,7 +15,7 @@ interface State {
 export default class Comp extends Component<{}, State> {
   constructor() {
     super();
-    const connection = new HubConnectionBuilder().withUrl("/refreshHub").build();
+    const connection = new HubConnectionBuilder().withUrl("/refreshHub").configureLogging(LogLevel.Error).build();
     connection.on("newAnswer", this.getResults);
     this.state = { currentHole: { type: "Loading" }, attempts: { type: "Loaded", data: [] }, connection };
   }
