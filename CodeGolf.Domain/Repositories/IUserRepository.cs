@@ -6,8 +6,6 @@
 
     public interface IUserRepository
     {
-        Task<Option<User>> GetByUserName(string userName, CancellationToken cancellationToken);
-
         Task<Option<User>> GetByUserId(int userId, CancellationToken cancellationToken);
 
         Task AddOrUpdate(User user, CancellationToken cancellationToken);

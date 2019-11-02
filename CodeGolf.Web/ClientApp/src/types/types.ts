@@ -4,14 +4,14 @@ interface Loaded<T> { readonly type: "Loaded"; readonly data: T; }
 
 export interface Score { readonly type: "Score"; readonly val: number; }
 export interface CompileError { readonly type: "CompileError"; readonly errors: ReadonlyArray<CodeError>; }
+export interface RunError { readonly error?: TestFail; readonly challenge: ChallengeResult; }
 export interface RunErrorSet { readonly type: "RunError"; readonly errors: ReadonlyArray<RunError>; }
 type ChallengeResult = Challenge & { readonly found?: object; };
 
 export type RunResult = Score | CompileError | RunErrorSet;
 
 export interface CodeError { readonly line: number; readonly col: number; readonly endCol: number; readonly message: string; }
-interface TestFail {readonly message: string; readonly expected: string; readonly found: string;}
-export interface RunError { readonly error?: TestFail; readonly challenge: ChallengeResult; }
+interface TestFail { readonly message: string; readonly expected: string; readonly found: string; }
 export type LoadingState<T> = Loading | Loaded<T>;
 
 export const ifLoaded = <T, TT>(l: LoadingState<T>, some: ((t: T) => TT), none: (() => TT)) => l.type === "Loaded" ? some(l.data) : none();
@@ -21,11 +21,11 @@ export interface Challenge { readonly args: ReadonlyArray<string>; readonly expe
 
 enum GuidTypes { GameId, AttemptId, ChallengeSetId, RoundId, HoleId }
 
-export type GameId = string & { readonly type: GuidTypes.GameId};
-export type AttemptId = string & { readonly type: GuidTypes.AttemptId};
-export type ChallengeSetId = string & { readonly type: GuidTypes.ChallengeSetId};
-export type RoundId = string & { readonly type: GuidTypes.RoundId};
-export type HoleId = string & { readonly type: GuidTypes.HoleId};
+export type GameId = string & { readonly type: GuidTypes.GameId };
+export type AttemptId = string & { readonly type: GuidTypes.AttemptId };
+export type ChallengeSetId = string & { readonly type: GuidTypes.ChallengeSetId };
+export type RoundId = string & { readonly type: GuidTypes.RoundId };
+export type HoleId = string & { readonly type: GuidTypes.HoleId };
 
 export interface ChallengeSet {
     readonly id: ChallengeSetId;

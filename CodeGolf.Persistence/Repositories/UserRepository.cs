@@ -15,11 +15,6 @@
             this.context = context;
         }
 
-        Task<Option<User>> IUserRepository.GetByUserName(string userName, CancellationToken cancellationToken)
-        {
-            return this.context.Users.SingleOrNone(a => a.LoginName == userName, cancellationToken);
-        }
-
         Task<Option<User>> IUserRepository.GetByUserId(int userId, CancellationToken cancellationToken)
         {
             return this.context.Users.SingleOrNone(a => a.UserId == userId, cancellationToken);
