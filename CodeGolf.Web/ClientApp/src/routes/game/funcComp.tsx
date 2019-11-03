@@ -4,7 +4,7 @@ import ChallengeComp from "../../components/challenge";
 import CodeEditor from "../../components/codeEditor";
 import Loading from "../../components/loading";
 import ErrorsComp from "../../components/results";
-import { Hole, ifLoaded, LoadingState, RunResult } from "../../types/types";
+import { Hole, ifLoaded, LoadingState, RunResult, RunResultSet } from "../../types/types";
 
 interface Funcs {
   readonly codeChanged: (s: string) => Promise<void>;
@@ -22,6 +22,12 @@ const PleaseWait: FunctionalComponent = () => (<div class="notification is-info"
   Please wait for the hole to begin
 </div>);
 
+const onlyRunErrors = (l: LoadingState<RunResult | undefined>): LoadingState<RunResultSet | undefined> =>
+  ifLoaded<RunResult | undefined, LoadingState<RunResultSet | undefined>>(
+    l,
+    some => ({ type: "Loaded", data: (some && some.type === "RunResultSet" ? some : undefined) }),
+    () => ({ type: "Loading" }));
+
 const HasChallenge: FunctionalComponent<{
   readonly code: string;
   readonly challenge: Hole | undefined;
@@ -35,7 +41,7 @@ const HasChallenge: FunctionalComponent<{
       <div class="column is-half">
         <ChallengeComp
           challengeSet={challenge.challengeSet}
-          errors={errors}
+          errors={onlyRunErrors(errors)}
           onCodeClick={onCodeClick}
         />
 

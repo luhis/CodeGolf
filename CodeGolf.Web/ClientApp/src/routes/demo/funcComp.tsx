@@ -6,7 +6,7 @@ import ChallengeComp from "../../components/challenge";
 import CodeEditor from "../../components/codeEditor";
 import Loading from "../../components/loading";
 import ErrorsComp from "../../components/results";
-import { ChallengeSet, ifLoaded, LoadingState, RunResult } from "../../types/types";
+import { ChallengeSet, ifLoaded, LoadingState, RunResult, RunResultSet } from "../../types/types";
 
 interface Props {
   readonly code: string;
@@ -16,6 +16,12 @@ interface Props {
   readonly onCodeClick: () => void;
   readonly submitCode: (code: string, recaptcha: string) => void;
 }
+
+const onlyRunErrors = (l: LoadingState<RunResult | undefined>): LoadingState<RunResultSet | undefined> =>
+  ifLoaded<RunResult | undefined, LoadingState<RunResultSet | undefined>>(
+    l,
+    some => ({ type: "Loaded", data: (some && some.type === "RunResultSet" ? some : undefined) }),
+    () => ({ type: "Loading" }));
 
 const FuncComp: FunctionalComponent<Readonly<Props>> = ({ code, errors, challenge, codeChanged, onCodeClick, submitCode }) => {
   const verifyCallback = (response: string) => {
@@ -37,7 +43,7 @@ const FuncComp: FunctionalComponent<Readonly<Props>> = ({ code, errors, challeng
         {ifLoaded(challenge, c => <ChallengeComp
           challengeSet={c}
           onCodeClick={onCodeClick}
-          errors={errors}
+          errors={onlyRunErrors(errors)}
         />, () => <Loading />)}
         {errors.type === "Loaded" ?
           errors.data && (errors.data.type === "Score" || errors.data.type === "CompileError") ? <ErrorsComp errors={errors.data} /> : null

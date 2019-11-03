@@ -1,7 +1,6 @@
 
-import { FunctionalComponent, h } from "preact";
-
 import Editor from "@monaco-editor/react";
+import { FunctionalComponent, h } from "preact";
 
 import Loading from "../../components/loading";
 import { ifLoaded, LoadingState } from "../../types/types";
@@ -14,7 +13,9 @@ const FuncComp: FunctionalComponent<Readonly<Props>> = ({ result }) => ifLoaded(
     <section class="section is-fluid">
         <Editor value={data}
             height="40vh"
-            language="csharp" />
-    </section>), () => <Loading/>);
+            language="csharp"
+            options={{ minimap: { enabled: false } }}
+        />
+    </section>), () => <Loading />);
 
 export default FuncComp;

@@ -3,12 +3,12 @@ import Markdown from "markdown-to-jsx";
 import { Fragment, FunctionalComponent, h } from "preact";
 
 import { getFunctionDeclaration, getInput } from "../../funcDeclaration";
-import { Challenge, ChallengeSet, ifLoaded, LoadingState, RunError, RunResult } from "../../types/types";
+import { Challenge, ChallengeSet, ifLoaded, LoadingState, RunError, RunResultSet } from "../../types/types";
 import Icon from "../icons";
 
 interface Props {
     readonly challengeSet: ChallengeSet;
-    readonly errors: LoadingState<RunResult | undefined>;
+    readonly errors: LoadingState<RunResultSet | undefined>;
     readonly onCodeClick?: () => void;
 }
 
@@ -34,7 +34,7 @@ const Row: FunctionalComponent<{ readonly challenge: Challenge, readonly runErro
 
 const Comp: FunctionalComponent<Props> = ({ challengeSet, onCodeClick, errors }) => {
     const getError = (index: number) => ifLoaded(errors, some => some && some.type === "RunResultSet" ? some.errors[index] : undefined, () => undefined);
-    const showResults = ifLoaded(errors, some => some && some.type === "RunResultSet", () => false);
+    const showResults = ifLoaded(errors, some => !!some, () => false);
     const pairs = challengeSet.challenges.map((challenge, index) => ({ challenge, result: getError(index) }));
     return (<div class="panel">
         <div class="panel-heading">
