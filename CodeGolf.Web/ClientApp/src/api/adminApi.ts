@@ -29,7 +29,7 @@ export const getAttempt = (attemptId: AttemptId) => axios.get<AttemptWithCode>(`
 
 export const getMyGames = () => axios.get<ReadonlyArray<Game>>("/api/Admin/MyGames").then(getData);
 
-export const resetGame = (gameId: GameId)=> axios.post<AttemptWithCode>(`/api/Admin/Reset/${gameId}`).then(getData);
+export const resetGame = (gameId: GameId) => axios.post<AttemptWithCode>(`/api/Admin/Reset/${gameId}`).then(getData);
 
 export const getAllChallenges = () => axios.get<ReadonlyArray<Round>>("/api/Admin/AllChallenges").then(getData);
 

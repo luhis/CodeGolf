@@ -51,7 +51,7 @@ const Comp: FunctionalComponent<Readonly<Props>> = ({ code, codeChanged, submitC
                     // tslint:disable-next-line: no-object-mutation
                     editorDidMount={(_: () => string, e: any) => editor.current = e}
                     onChange={(_: unknown, s: string) => codeChanged(s)}
-                    options={{minimap: {enabled: false}}}
+                    options={{ minimap: { enabled: false } }}
                 />
             </div>
         </div>
