@@ -12,24 +12,29 @@ interface Props {
     readonly onCodeClick?: () => void;
 }
 
-const Row: FunctionalComponent<{ readonly challenge: Challenge, readonly runError?: RunError }> = ({ challenge, runError }) =>
-    (<tr>
-        <td>{getInput(challenge)} =></td>
-        <td><pre class="result">{challenge.expectedResult}</pre></td>
-        <td>
-            {runError ?
-                <Fragment>
-                    <pre class={ClassNames("result", runError.error ? "has-background-danger" : "has-background-success")}>
-                        {runError.error ? runError.error.found : challenge.expectedResult}
-                    </pre>
-                    {runError.error ? runError.error.message : null}
-                </Fragment>
-                : null}
-        </td>
-    </tr>);
+const ResultsCell: FunctionalComponent<{ readonly challenge: Challenge, readonly runError?: RunError }> =
+    ({ challenge, runError }) => (<td>
+        {runError ?
+            <Fragment>
+                <pre class={ClassNames("result", runError.error ? "has-background-danger" : "has-background-success")}>
+                    {runError.error ? runError.error.found : challenge.expectedResult}
+                </pre>
+                {runError.error ? runError.error.message : null}
+            </Fragment>
+            : null}
+    </td>);
+
+const Row: FunctionalComponent<{ readonly challenge: Challenge, readonly runError?: RunError, readonly showResults: boolean }> =
+    ({ challenge, runError, showResults }) =>
+        (<tr>
+            <td>{getInput(challenge)} =></td>
+            <td><pre class="result">{challenge.expectedResult}</pre></td>
+            {showResults ? <ResultsCell challenge={challenge} runError={runError} /> : null}
+        </tr>);
 
 const Comp: FunctionalComponent<Readonly<Props>> = ({ challengeSet, onCodeClick, errors }) => {
     const getError = (index: number) => ifLoaded(errors, some => some && some.type === "RunResultSet" ? some.errors[index] : undefined, () => undefined);
+    const showResults = ifLoaded(errors, some => !!some, () => false);
     const pairs = challengeSet.challenges.map((challenge, index) => ({ challenge, result: getError(index) }));
     return (<div class="panel">
         <div class="panel-heading">
@@ -37,7 +42,8 @@ const Comp: FunctionalComponent<Readonly<Props>> = ({ challengeSet, onCodeClick,
         </div>
         <div class="panel-block">
             <div class="content">
-                <Markdown>{challengeSet.description}
+                <Markdown>
+                    {challengeSet.description}
                 </Markdown>
             </div>
         </div>
@@ -46,11 +52,11 @@ const Comp: FunctionalComponent<Readonly<Props>> = ({ challengeSet, onCodeClick,
                 <tr>
                     <th>Input</th>
                     <th>Expected</th>
-                    <th>Received</th>
+                    {showResults ? <th>Received</th> : null}
                 </tr>
             </thead>
             <tbody>
-                {pairs.map(a => <Row key={a.challenge.expectedResult.toString()} challenge={a.challenge} runError={a.result} />)}
+                {pairs.map(a => <Row key={a.challenge.expectedResult.toString()} challenge={a.challenge} runError={a.result} showResults={showResults} />)}
             </tbody>
         </table>
         <div class="panel-block">
