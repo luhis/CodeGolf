@@ -18,9 +18,11 @@ const getScore = (code: string) => code
     .replace(/\s/g, "")
     .length;
 
-const setErrors = (editorComp: any, errors?: RunResult) => {
+interface RefThingey { readonly getModel: () => unknown; }
+
+const setErrors = (editorComp: RefThingey, errors?: RunResult) => {
     const doc = editorComp.getModel();
-    const monaco = (window as any).monaco;
+    const monaco = window.monaco;
     if (errors && errors.type === "CompileError" && errors.errors.length > 0) {
         monaco.editor.setModelMarkers(doc, "error", errors.errors.map(e => ({
             startLineNumber: e.line - 1,
@@ -36,7 +38,7 @@ const setErrors = (editorComp: any, errors?: RunResult) => {
 };
 
 const Comp: FunctionalComponent<Readonly<Props>> = ({ code, codeChanged, submitCode, errors }) => {
-    const editor = useRef<any | undefined>(undefined);
+    const editor = useRef<RefThingey | undefined>(undefined);
     if (editor.current) {
         setErrors(editor.current, errors);
     }
@@ -49,7 +51,7 @@ const Comp: FunctionalComponent<Readonly<Props>> = ({ code, codeChanged, submitC
                     height="40vh"
                     language="csharp"
                     // tslint:disable-next-line: no-object-mutation
-                    editorDidMount={(_: () => string, e: any) => editor.current = e}
+                    editorDidMount={(_: () => string, e: RefThingey) => editor.current = e}
                     onChange={(_: unknown, s: string) => codeChanged(s)}
                     options={{ minimap: { enabled: false } }}
                 />
