@@ -83,20 +83,20 @@ Swap all the vowels in the word with the corresponding:
                 {
                     new Challenge<string>(
                         new object[] { string.Empty },
-@"  |
+                        NormaliseNewLines(@"  |
  /_\
  |_|
 /___\
- VvV"),
+ VvV")),
                     new Challenge<string>(
                         new object[] { "a" },
-@"  |
+                        NormaliseNewLines(@"  |
  /_\
  |a|
  |_|
 /___\
- VvV"),
-                    new Challenge<string>(new object[] { "Earth" }, @"  |
+ VvV")),
+                    new Challenge<string>(new object[] { "Earth" }, NormaliseNewLines(@"  |
  /_\
  |E|
  |a|
@@ -105,7 +105,7 @@ Swap all the vowels in the word with the corresponding:
  |h|
  |_|
 /___\
- VvV"),
+ VvV")),
                 });
 
         public static readonly ChallengeSet<string> SpiralNumbers = new ChallengeSet<string>(
@@ -125,5 +125,7 @@ Swap all the vowels in the word with the corresponding:
                     new object[] { 3 },
                     "| 1| 2| 3|\n| 8| 9| 4|\n| 7| 6| 5|"),
             });
+
+        private static string NormaliseNewLines(string s) => s.Replace("\r\n", "\n");
     }
 }
