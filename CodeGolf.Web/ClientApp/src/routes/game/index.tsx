@@ -47,7 +47,7 @@ export default class Comp extends Component<{}, State> {
   public readonly componentWillUnmount = () => {
     this.state.connection.stop();
   }
-  public readonly render = (_: RenderableProps<{}>, { errors, code, challenge }: Readonly<State>) =>
+  public readonly render = (_: RenderableProps<{}>, { errors, code, challenge }: State) =>
     <FuncComp code={code} errors={errors} challenge={challenge} codeChanged={this.codeChanged} submitCode={this.submitCode} onCodeClick={this.onCodeClick} />
 
   private readonly codeChanged = async (code: string) => {

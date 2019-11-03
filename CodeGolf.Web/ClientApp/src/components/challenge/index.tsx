@@ -32,9 +32,9 @@ const Row: FunctionalComponent<{ readonly challenge: Challenge, readonly runErro
             {showResults ? <ResultsCell challenge={challenge} runError={runError} /> : null}
         </tr>);
 
-const Comp: FunctionalComponent<Readonly<Props>> = ({ challengeSet, onCodeClick, errors }) => {
+const Comp: FunctionalComponent<Props> = ({ challengeSet, onCodeClick, errors }) => {
     const getError = (index: number) => ifLoaded(errors, some => some && some.type === "RunResultSet" ? some.errors[index] : undefined, () => undefined);
-    const showResults = ifLoaded(errors, some => !!some, () => false);
+    const showResults = ifLoaded(errors, some => some && some.type === "RunResultSet", () => false);
     const pairs = challengeSet.challenges.map((challenge, index) => ({ challenge, result: getError(index) }));
     return (<div class="panel">
         <div class="panel-heading">

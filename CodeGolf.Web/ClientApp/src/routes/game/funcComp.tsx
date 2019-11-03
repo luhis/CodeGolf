@@ -45,7 +45,7 @@ const HasChallenge: FunctionalComponent<{
     </div>) : <PleaseWait />
 );
 
-const FuncComp: FunctionalComponent<Readonly<Props>> = ({ code, errors, challenge, codeChanged, onCodeClick, submitCode }) => {
+const FuncComp: FunctionalComponent<Props> = ({ code, errors, challenge, codeChanged, onCodeClick, submitCode }) => {
   return (<section class="section">
     <h1 class="title">Game</h1>
     {ifLoaded(challenge, c =>

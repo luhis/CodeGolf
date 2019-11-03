@@ -15,6 +15,6 @@ export default class Comp extends Component<{}, State> {
     const results = await getFinalResults();
     this.setState(() => ({ type: "Loaded", data: results }));
   }
-  public readonly render = (_: RenderableProps<{}>, res: Readonly<State>) =>
+  public readonly render = (_: RenderableProps<{}>, res: State) =>
     <FuncComp results={res} />
 }
