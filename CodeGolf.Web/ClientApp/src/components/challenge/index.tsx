@@ -1,6 +1,6 @@
 import ClassNames from "classnames";
 import Markdown from "markdown-to-jsx";
-import { FunctionalComponent, h } from "preact";
+import { Fragment, FunctionalComponent, h } from "preact";
 
 import { getFunctionDeclaration, getInput } from "../../funcDeclaration";
 import { Challenge, ChallengeSet, ifLoaded, LoadingState, RunError, RunResult } from "../../types/types";
@@ -18,9 +18,12 @@ const Row: FunctionalComponent<{ readonly challenge: Challenge, readonly runErro
         <td><pre class="result">{challenge.expectedResult}</pre></td>
         <td>
             {runError ?
-                <pre class={ClassNames("result", runError.error ? "has-background-danger" : "has-background-success")}>
-                    {runError.error ? runError.error.found : challenge.expectedResult}
-                </pre>
+                <Fragment>
+                    <pre class={ClassNames("result", runError.error ? "has-background-danger" : "has-background-success")}>
+                        {runError.error ? runError.error.found : challenge.expectedResult}
+                    </pre>
+                    {runError.error ? runError.error.message : null}
+                </Fragment>
                 : null}
         </td>
     </tr>);
