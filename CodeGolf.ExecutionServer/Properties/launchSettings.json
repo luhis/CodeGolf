@@ -2,11 +2,11 @@
   "profiles": {
     "CodeGolf.ExecutionServer": {
       "commandName": "Project",
-      "launchBrowser": false,
+      "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "https://localhost:60026/"
+      "applicationUrl": "http://localhost:60026/"
     }
   }
 }
