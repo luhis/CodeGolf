@@ -20,7 +20,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="16.4.16" />
-    <PackageReference Include="OneOf" Version="2.1.150" />
+    <PackageReference Include="OneOf" Version="2.1.151" />
     <PackageReference Include="Optional" Version="5.0.0-alpha" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
