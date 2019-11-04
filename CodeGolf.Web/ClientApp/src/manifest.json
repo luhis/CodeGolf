@@ -1,6 +1,6 @@
 {
-  "name": "codeGolf",
-  "short_name": "codeGolf",
+  "name": "Code Golf",
+  "short_name": "Code Golf",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",
