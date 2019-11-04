@@ -60,5 +60,6 @@
         "incremental": true,
         "noEmitOnError": true
     },
-    "include": ["src/**/*.tsx", "src/**/*.ts"]
+    "include": ["src/**/*.tsx", "src/**/*.ts"],
+    "exclude": ["src/tests/*"]
 }

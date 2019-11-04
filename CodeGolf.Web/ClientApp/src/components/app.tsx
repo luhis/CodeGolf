@@ -1,4 +1,5 @@
 import "bulma";
+
 import { FunctionalComponent, h } from "preact";
 import { Route, Router } from "preact-router";
 import ReactGA from "react-ga";

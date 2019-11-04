@@ -172,6 +172,7 @@ namespace CodeGolf.Web
             app.UseSecurityHeaders(
                 policies => policies.AddDefaultSecurityHeaders()
                     .AddStrictTransportSecurityMaxAgeIncludeSubDomains(maxAgeInSeconds: 63072000)
+                    .RemoveServerHeader()
                     .AddContentSecurityPolicy(
                         b =>
                             {
