@@ -4,15 +4,16 @@ import { Component, h, RenderableProps } from "preact";
 
 import { getCurrentHole, submitChallenge, tryCompile } from "../../api/playerApi";
 import { getFunctionDeclaration } from "../../funcDeclaration";
-import { GameId, Hole, ifLoaded, LoadingState, RunResult } from "../../types/types";
+import { CompileError, GameId, Hole, ifLoaded, LoadingState, RunResultSet, Score } from "../../types/types";
 import FuncComp from "./funcComp";
 import Notification from "./notification";
 
 interface State {
-  readonly gameId: GameId | undefined ;
+  readonly gameId: GameId | undefined;
   readonly challenge: LoadingState<Hole | undefined>;
   readonly code: string;
-  readonly errors: LoadingState<RunResult | undefined>;
+  readonly errors: LoadingState<Score | CompileError | undefined>;
+  readonly runErrors: RunResultSet | undefined;
   readonly connection: HubConnection;
 }
 
@@ -27,7 +28,7 @@ export default class Comp extends Component<{}, State> {
         type: "CompileError",
         errors: await ifLoaded(this.state.challenge, c => compile(c, this.state.code), () => Promise.resolve([]))
       }
-    } as LoadingState<RunResult>;
+    } as LoadingState<CompileError>;
     this.setState(s => ({ ...s, errors }));
   }, 1000);
 
@@ -38,7 +39,7 @@ export default class Comp extends Component<{}, State> {
       const challenge = await getCurrentHole();
       this.setState(s => ({ ...s, challenge: { type: "Loaded", data: challenge }, errors: { type: "Loaded", data: undefined }, code: "" }));
     });
-    this.state = { challenge: { type: "Loading" }, code: "", errors: { type: "Loaded", data: undefined }, connection, gameId: undefined };
+    this.state = { challenge: { type: "Loading" }, code: "", errors: { type: "Loaded", data: undefined }, runErrors: undefined, connection, gameId: undefined };
   }
   public readonly componentDidMount = async () => {
     const challenge = await getCurrentHole();
@@ -47,8 +48,8 @@ export default class Comp extends Component<{}, State> {
   public readonly componentWillUnmount = () => {
     this.state.connection.stop();
   }
-  public readonly render = (_: RenderableProps<{}>, { errors, code, challenge }: State) =>
-    <FuncComp code={code} errors={errors} challenge={challenge} codeChanged={this.codeChanged} submitCode={this.submitCode} onCodeClick={this.onCodeClick} />
+  public readonly render = (_: RenderableProps<{}>, { errors, runErrors, code, challenge }: State) =>
+    <FuncComp code={code} errors={errors} runErrors={runErrors} challenge={challenge} codeChanged={this.codeChanged} submitCode={this.submitCode} onCodeClick={this.onCodeClick} />
 
   private readonly codeChanged = async (code: string) => {
     this.setState(s => ({ ...s, code }));
@@ -68,8 +69,17 @@ export default class Comp extends Component<{}, State> {
     ifLoaded(this.state.challenge, async c => {
       if (c) {
         this.setState(s => ({ ...s, code, errors: { type: "Loading" } }));
-        const res = { type: "Loaded", data: await submitChallenge(code, c.hole.holeId) } as LoadingState<RunResult>;
-        this.setState(_ => ({ errors: res }));
+        const r = await submitChallenge(code, c.hole.holeId);
+        if (r.type === "RunResultSet") {
+          this.setState(s => ({ ...s, errors: { type: "Loaded", data: undefined }, runErrors: r }));
+        }
+        else if(r.type === "Score") {
+          const passedChallenges = c.challengeSet.challenges.map(_ => ({error: undefined}));
+          this.setState(s => ({ ...s, errors: { type: "Loaded", data: r }, runErrors: { type: "RunResultSet", errors: passedChallenges } }));
+        }
+        else {
+          this.setState(s => ({ ...s, errors: { type: "Loaded", data: r } }));
+        }
       }
     }, () => undefined);
   }

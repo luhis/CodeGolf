@@ -36,7 +36,7 @@ describe("Challenge", () => {
                         returnType: "rtn",
                         params: []
                     }}
-                errors={{type: "Loading"}}
+                errors={undefined}
             />);
     });
 
@@ -49,7 +49,7 @@ describe("Challenge", () => {
             returnType: "rtn",
             params: [{ suggestedName: "s", type: "string" }]
         }}
-            errors={{type: "Loaded", data: undefined}}
+            errors={undefined}
         />);
     });
 });

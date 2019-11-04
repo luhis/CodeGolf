@@ -50,13 +50,17 @@ it("renders Dashboard without crashing", () => {
 it("renders Demo without crashing", () => {
   shallow(<Demo
     code="aaa"
-    errors={{ type: "Loading" }} challenge={{ type: "Loading" }} codeChanged={_ => Promise.resolve()} onCodeClick={() => undefined} submitCode={(_, __) => undefined} />);
+    errors={{ type: "Loading" }}
+    runErrors={undefined}
+    challenge={{ type: "Loading" }} codeChanged={_ => Promise.resolve()} onCodeClick={() => undefined} submitCode={(_, __) => undefined} />);
 });
 
 it("renders GameComp without crashing", () => {
   shallow(<GameComp
     code="aaa"
-    errors={{ type: "Loading" }} challenge={{ type: "Loading" }} codeChanged={_ => Promise.resolve()} onCodeClick={() => undefined} submitCode={(_) => undefined} />);
+    errors={{ type: "Loading" }}
+    runErrors={{type: "RunResultSet", errors: []}}
+    challenge={{ type: "Loading" }} codeChanged={_ => Promise.resolve()} onCodeClick={() => undefined} submitCode={(_) => undefined} />);
 });
 
 it("renders Results without crashing", () => {

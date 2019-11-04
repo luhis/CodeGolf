@@ -6,24 +6,19 @@ import ChallengeComp from "../../components/challenge";
 import CodeEditor from "../../components/codeEditor";
 import Loading from "../../components/loading";
 import ErrorsComp from "../../components/results";
-import { ChallengeSet, ifLoaded, LoadingState, RunResult, RunResultSet } from "../../types/types";
+import { ChallengeSet, CompileError, ifLoaded, LoadingState, RunResultSet, Score } from "../../types/types";
 
 interface Props {
   readonly code: string;
-  readonly errors: LoadingState<RunResult | undefined>;
+  readonly errors: LoadingState<Score | CompileError | undefined>;
+  readonly runErrors: RunResultSet | undefined;
   readonly challenge: LoadingState<ChallengeSet>;
   readonly codeChanged: (s: string) => Promise<void>;
   readonly onCodeClick: () => void;
   readonly submitCode: (code: string, recaptcha: string) => void;
 }
 
-const onlyRunErrors = (l: LoadingState<RunResult | undefined>): LoadingState<RunResultSet | undefined> =>
-  ifLoaded<RunResult | undefined, LoadingState<RunResultSet | undefined>>(
-    l,
-    some => ({ type: "Loaded", data: (some && some.type === "RunResultSet" ? some : undefined) }),
-    () => ({ type: "Loading" }));
-
-const FuncComp: FunctionalComponent<Readonly<Props>> = ({ code, errors, challenge, codeChanged, onCodeClick, submitCode }) => {
+const FuncComp: FunctionalComponent<Readonly<Props>> = ({ code, errors, runErrors, challenge, codeChanged, onCodeClick, submitCode }) => {
   const verifyCallback = (response: string) => {
     submitCode(code, response);
   };
@@ -43,11 +38,10 @@ const FuncComp: FunctionalComponent<Readonly<Props>> = ({ code, errors, challeng
         {ifLoaded(challenge, c => <ChallengeComp
           challengeSet={c}
           onCodeClick={onCodeClick}
-          errors={onlyRunErrors(errors)}
+          errors={runErrors}
         />, () => <Loading />)}
-        {errors.type === "Loaded" ?
-          errors.data && (errors.data.type === "Score" || errors.data.type === "CompileError") ? <ErrorsComp errors={errors.data} /> : null
-          : <Loading />}
+        {ifLoaded(errors, some =>
+          some ? <ErrorsComp errors={some} /> : null, () => <Loading />)}
       </div>
     </div>
     <ReCAPTCHA

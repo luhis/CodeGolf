@@ -16,7 +16,7 @@ interface Props {
 
 const RightCol: FunctionalComponent<{ readonly hole?: Hole }> = ({ hole }) => (hole ? <div>
     <Times start={hole.start} end={hole.end} />
-    <ChallengeComp challengeSet={hole.challengeSet} onCodeClick={undefined} errors={{ type: "Loaded", data: undefined }} />
+    <ChallengeComp challengeSet={hole.challengeSet} onCodeClick={undefined} errors={undefined} />
 </div> : null);
 
 const FuncComp: FunctionalComponent<Readonly<Props>> = ({ current, attempts, nextHole, endHole }) =>

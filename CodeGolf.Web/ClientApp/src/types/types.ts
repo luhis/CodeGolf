@@ -4,7 +4,7 @@ interface Loaded<T> { readonly type: "Loaded"; readonly data: T; }
 
 export interface Score { readonly type: "Score"; readonly val: number; }
 export interface CompileError { readonly type: "CompileError"; readonly errors: ReadonlyArray<CodeError>; }
-export interface RunError { readonly error?: TestFail; }
+export interface RunError { readonly error: TestFail | undefined; }
 export interface RunResultSet { readonly type: "RunResultSet"; readonly errors: ReadonlyArray<RunError>; }
 
 export type RunResult = Score | CompileError | RunResultSet;
