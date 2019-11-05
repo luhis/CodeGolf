@@ -48,7 +48,7 @@
     "@fortawesome/react-fontawesome": "0.1.7",
     "@monaco-editor/react": "2.1.1",
     "@types/classnames": "2.2.9",
-    "@types/codemirror": "0.0.79",
+    "@types/codemirror": "0.0.80",
     "axios": "0.19.0",
     "bulma": "0.8.0",
     "bulma-toast": "1.5.3",
