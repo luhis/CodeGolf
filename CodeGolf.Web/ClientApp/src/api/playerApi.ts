@@ -59,4 +59,4 @@ export const submitDemo = (code: string, reCaptcha: string): Promise<RunResult> 
     });
 
 export const getCsFile = (style: ("debug" | "preview"), code: string) =>
-    axios.get<string>(`/api/code/${style}?Code=${escape(code)}`, { headers: { "Content-Encoding": "identity" } }).then(getData);
+    axios.post<string>(`/api/code/${style}?Code=${escape(code)}`, JSON.stringify({code}), {headers: JsonHeaders}).then(getData);

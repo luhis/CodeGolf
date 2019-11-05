@@ -18,13 +18,13 @@
             this.codeGolfService = codeGolfService;
         }
 
-        [HttpGet("[action]")]
+        [HttpPost("[action]")]
         public ActionResult<string> Preview(string code, CancellationToken cancellationToken)
         {
             return this.codeGolfService.WrapCode(code ?? string.Empty, cancellationToken);
         }
 
-        [HttpGet("[action]")]
+        [HttpPost("[action]")]
         public ActionResult<string> Debug(string code, CancellationToken cancellationToken)
         {
             return this.codeGolfService.DebugCode(code ?? string.Empty, cancellationToken);
