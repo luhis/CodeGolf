@@ -1,7 +1,8 @@
 import { Component, h, RenderableProps } from "preact";
 
 import { getAttempt } from "../../api/adminApi";
-import { AttemptId, AttemptWithCode, LoadingState } from "../../types/types";
+import { LoadingState } from "../../types/appTypes";
+import { AttemptId, AttemptWithCode } from "../../types/types";
 import FuncComp from "./funcComp";
 
 type State = LoadingState<AttemptWithCode>;

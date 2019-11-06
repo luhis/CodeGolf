@@ -6,7 +6,8 @@ import ChallengeComp from "../../components/challenge";
 import CodeEditor from "../../components/codeEditor";
 import Loading from "../../components/loading";
 import ErrorsComp from "../../components/results";
-import { ChallengeSet, CompileError, ifLoaded, LoadingState, RunResultSet, Score } from "../../types/types";
+import { ifLoaded, LoadingState } from "../../types/appTypes";
+import { ChallengeSet, CompileError, RunResultSet, Score } from "../../types/types";
 
 interface Props {
   readonly code: string;

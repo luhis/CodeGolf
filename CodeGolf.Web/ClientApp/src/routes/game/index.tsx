@@ -4,7 +4,8 @@ import { Component, h, RenderableProps } from "preact";
 
 import { getCurrentHole, submitChallenge, tryCompile } from "../../api/playerApi";
 import { getFunctionDeclaration } from "../../funcDeclaration";
-import { CompileError, GameId, Hole, ifLoaded, LoadingState, RunResultSet, Score } from "../../types/types";
+import { ifLoaded, LoadingState } from "../../types/appTypes";
+import { CompileError, GameId, Hole, RunResultSet, Score } from "../../types/types";
 import FuncComp from "./funcComp";
 import Notification from "./notification";
 

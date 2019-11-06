@@ -1,7 +1,3 @@
-
-interface Loading { readonly type: "Loading"; }
-interface Loaded<T> { readonly type: "Loaded"; readonly data: T; }
-
 export interface Score { readonly type: "Score"; readonly val: number; }
 export interface CompileError { readonly type: "CompileError"; readonly errors: ReadonlyArray<CodeError>; }
 export interface RunError { readonly error: TestFail | undefined; }
@@ -11,9 +7,6 @@ export type RunResult = Score | CompileError | RunResultSet;
 
 export interface CodeError { readonly line: number; readonly col: number; readonly endCol: number; readonly message: string; }
 interface TestFail { readonly message: string; readonly found: string; }
-export type LoadingState<T> = Loading | Loaded<T>;
-
-export const ifLoaded = <T, TT>(l: LoadingState<T>, some: ((t: T) => TT), none: (() => TT)) => l.type === "Loaded" ? some(l.data) : none();
 
 export interface ParamDescription { readonly type: string; readonly suggestedName: string; }
 export interface Challenge { readonly args: ReadonlyArray<string>; readonly expectedResult: object; }

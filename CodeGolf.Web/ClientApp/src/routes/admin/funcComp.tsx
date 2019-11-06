@@ -2,7 +2,8 @@ import { FunctionalComponent, h } from "preact";
 
 import CreateGame from "../../components/createGame";
 import Loading from "../../components/loading";
-import { Game, GameId, ifLoaded, LoadingState, Round } from "../../types/types";
+import { ifLoaded, LoadingState } from "../../types/appTypes";
+import { Game, GameId, Round } from "../../types/types";
 
 const Row: FunctionalComponent<{ readonly g: Game, readonly resetGame: ((g: GameId) => void) }> = ({ g, resetGame }) =>
     (<article class="message">

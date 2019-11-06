@@ -1,7 +1,8 @@
 import { FunctionalComponent, h } from "preact";
 import { Link } from "preact-router";
 
-import { Hole, LoadingState } from "../../types/types";
+import { LoadingState } from "../../types/appTypes";
+import { Hole } from "../../types/types";
 
 interface Props { readonly hole: LoadingState<Hole | undefined>; readonly endHole: () => Promise<void>; readonly nextHole: () => Promise<void>; }
 

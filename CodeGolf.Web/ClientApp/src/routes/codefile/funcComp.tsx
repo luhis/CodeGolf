@@ -3,7 +3,7 @@ import Editor from "@monaco-editor/react";
 import { FunctionalComponent, h } from "preact";
 
 import Loading from "../../components/loading";
-import { ifLoaded, LoadingState } from "../../types/types";
+import { ifLoaded, LoadingState } from "../../types/appTypes";
 
 interface Props {
     readonly result: LoadingState<string>;

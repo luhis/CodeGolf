@@ -2,7 +2,8 @@ import Editor from "@monaco-editor/react";
 import { FunctionalComponent, h } from "preact";
 
 import Loading from "../../components/loading";
-import { AttemptWithCode, ifLoaded, LoadingState } from "../../types/types";
+import { ifLoaded, LoadingState } from "../../types/appTypes";
+import { AttemptWithCode } from "../../types/types";
 
 interface Props {
     readonly result: LoadingState<AttemptWithCode>;

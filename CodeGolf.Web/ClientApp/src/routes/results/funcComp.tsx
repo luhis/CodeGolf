@@ -1,7 +1,8 @@
 import { Fragment, FunctionalComponent, h } from "preact";
 
 import Loading from "../../components/loading";
-import { ifLoaded, LoadingState, Result } from "../../types/types";
+import { ifLoaded, LoadingState } from "../../types/appTypes";
+import { Result } from "../../types/types";
 
 interface Props {
   readonly results: LoadingState<ReadonlyArray<Result>>;
@@ -29,7 +30,7 @@ const FuncComp: FunctionalComponent<Readonly<Props>> = ({ results }) => (
         </tr>
       </thead>
       <tbody>
-{ifLoaded(results, r => <Fragment>{r.map(a => <Row key={a.rank} {...a} />)}</Fragment>, () => <Loading/>)}
+        {ifLoaded(results, r => <Fragment>{r.map(a => <Row key={a.rank} {...a} />)}</Fragment>, () => <Loading />)}
       </tbody>
     </table>
   </section>);

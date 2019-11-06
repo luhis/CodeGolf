@@ -4,7 +4,8 @@ import ChallengeComp from "../../components/challenge";
 import CodeEditor from "../../components/codeEditor";
 import Loading from "../../components/loading";
 import ErrorsComp from "../../components/results";
-import { CompileError, Hole, ifLoaded, LoadingState, RunResultSet, Score } from "../../types/types";
+import { ifLoaded, LoadingState } from "../../types/appTypes";
+import { CompileError, Hole, RunResultSet, Score } from "../../types/types";
 
 interface Funcs {
   readonly codeChanged: (s: string) => Promise<void>;

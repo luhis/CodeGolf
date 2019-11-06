@@ -1,7 +1,7 @@
 import { Component, h, RenderableProps } from "preact";
 
 import { getCsFile } from "../../api/playerApi";
-import { LoadingState } from "../../types/types";
+import { LoadingState } from "../../types/appTypes";
 import FuncComp from "./funcComp";
 
 type State = LoadingState<string>;

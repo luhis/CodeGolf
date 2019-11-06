@@ -3,7 +3,8 @@ import { Component, h, RenderableProps } from "preact";
 
 import { getDemoChallenge, submitDemo, tryCompile } from "../../api/playerApi";
 import { getFunctionDeclaration } from "../../funcDeclaration";
-import { ChallengeSet, CompileError, ifLoaded, LoadingState, RunResultSet, Score } from "../../types/types";
+import { ifLoaded, LoadingState } from "../../types/appTypes";
+import { ChallengeSet, CompileError, RunResultSet, Score } from "../../types/types";
 import FuncComp from "./funcComp";
 
 interface State {

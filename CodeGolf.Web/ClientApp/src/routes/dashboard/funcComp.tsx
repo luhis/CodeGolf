@@ -3,7 +3,8 @@ import { FunctionalComponent, h } from "preact";
 import Attempts from "../../components/attempts";
 import ChallengeComp from "../../components/challenge";
 import Loading from "../../components/loading";
-import { Attempt, Hole, ifLoaded, LoadingState } from "../../types/types";
+import { ifLoaded, LoadingState } from "../../types/appTypes";
+import { Attempt, Hole } from "../../types/types";
 import Controls from "./controls";
 import Times from "./times";
 

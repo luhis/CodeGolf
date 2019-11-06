@@ -1,7 +1,8 @@
 import { Component, h, RenderableProps } from "preact";
 
 import { getAllChallenges, getMyGames, resetGame } from "../../api/adminApi";
-import { Game, LoadingState, Round } from "../../types/types";
+import { LoadingState } from "../../types/appTypes";
+import { Game, Round } from "../../types/types";
 import FuncComp from "./funcComp";
 
 interface State {

@@ -3,7 +3,8 @@ import { Component, h, RenderableProps } from "preact";
 import { route } from "preact-router";
 
 import { endHole, getCurrentChallenge, getResults, nextHole } from "../../api/adminApi";
-import { Attempt, Hole, ifLoaded, LoadingState } from "../../types/types";
+import { ifLoaded, LoadingState } from "../../types/appTypes";
+import { Attempt, Hole } from "../../types/types";
 import FuncComp from "./funcComp";
 
 interface State {
