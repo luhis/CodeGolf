@@ -26,9 +26,9 @@ const PleaseWait: FunctionalComponent = () => (<div class="notification is-info"
 
 const HasChallenge: FunctionalComponent<{
   readonly code: string;
-  readonly challenge: Hole | undefined;
-  readonly runErrors: RunResultSet | undefined;
   readonly errors: LoadingState<Score | CompileError | undefined>;
+  readonly runErrors: RunResultSet | undefined;
+  readonly challenge: Hole | undefined;
 } & Funcs> = ({ challenge, code, errors, runErrors, codeChanged, submitCode, onCodeClick }) => (
   challenge ?
     (<div class="columns">

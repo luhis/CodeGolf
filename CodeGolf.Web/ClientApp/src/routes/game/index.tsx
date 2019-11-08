@@ -74,8 +74,8 @@ export default class Comp extends Component<{}, State> {
         if (r.type === "RunResultSet") {
           this.setState(s => ({ ...s, errors: { type: "Loaded", data: undefined }, runErrors: r }));
         }
-        else if(r.type === "Score") {
-          const passedChallenges = c.challengeSet.challenges.map(_ => ({error: undefined}));
+        else if (r.type === "Score") {
+          const passedChallenges = c.challengeSet.challenges.map(_ => ({ error: undefined }));
           this.setState(s => ({ ...s, errors: { type: "Loaded", data: r }, runErrors: { type: "RunResultSet", errors: passedChallenges } }));
         }
         else {
