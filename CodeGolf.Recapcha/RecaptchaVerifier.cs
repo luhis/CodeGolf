@@ -9,7 +9,7 @@
 
     public class RecaptchaVerifier : IRecaptchaVerifier
     {
-        private static readonly string Api = "https://www.google.com/recaptcha/api/siteverify";
+        private const string Api = "https://www.google.com/recaptcha/api/siteverify";
         private readonly RecaptchaSettings settings;
 
         public RecaptchaVerifier(IOptions<RecaptchaSettings> settings)

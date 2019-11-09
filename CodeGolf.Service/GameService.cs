@@ -93,7 +93,7 @@
                         await this.signalRNotifier.NewAnswer();
                         if (await this.IsBestScore(holeId, newId, cancellationToken))
                         {
-                            await this.signalRNotifier.NewTopScore(user.LoginName, score, user.AvatarUri);
+                            await this.signalRNotifier.NewTopScore(user.LoginName, score, user.AvatarUri.ToString());
                         }
                     },
                 _ => Task.CompletedTask,

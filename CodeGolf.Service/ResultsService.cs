@@ -39,7 +39,7 @@
                                     return new ResultDto(
                                         i + 1,
                                         user.Map(a => a.LoginName).ValueOr(string.Empty),
-                                        user.Match(a => a.AvatarUri, () => string.Empty),
+                                        user.Match(a => a.AvatarUri.ToString(), () => string.Empty),
                                         r.Sum(a => PosToPoints(a.Item1)));
                                 }))).ToList();
         }
