@@ -5642,9 +5642,10 @@ methods@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/methods/-/methods-1.1.2.tgz#5529a4d67654134edcc5266656835b0f851afcee"
 
-micro-dash@6.4.0:
-  version "6.4.0"
-  resolved "https://registry.yarnpkg.com/micro-dash/-/micro-dash-6.4.0.tgz#6050f6fb05b71eb711261cfaf9fdac3718ca1e49"
+micro-dash@6.5.0:
+  version "6.5.0"
+  resolved "https://registry.yarnpkg.com/micro-dash/-/micro-dash-6.5.0.tgz#d339d181e4aa200bd6f29e3d0c0b15067165f4c8"
+  integrity sha512-EFe14MelLPjTERinh9GX1EuDqne11nEZmcZgxWHSy5O8yMb+YW95uoVr9E7Ayg5npH5Vexb8pIMdEnU0PKOo5Q==
   dependencies:
     tslib "^1.9.0"
     utility-types "^3.4.1"
