@@ -57,7 +57,7 @@
     "identity-obj-proxy": "3.0.0",
     "jest": "24.9.0",
     "markdown-to-jsx": "6.10.3",
-    "micro-dash": "6.4.0",
+    "micro-dash": "6.5.0",
     "node-sass": "4.13.0",
     "per-env": "1.0.2",
     "preact": "10.0.4",
