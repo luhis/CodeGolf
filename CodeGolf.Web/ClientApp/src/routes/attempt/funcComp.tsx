@@ -1,4 +1,4 @@
-import Editor from "@monaco-editor/react";
+import { ControlledEditor } from "@monaco-editor/react";
 import { FunctionalComponent, h } from "preact";
 
 import Loading from "../../components/loading";
@@ -20,11 +20,11 @@ const FuncComp: FunctionalComponent<Readonly<Props>> = ({ result }) => ifLoaded(
                 {data.loginName} {data.score} {data.timeStamp}
             </span>
         </div>
-        <Editor
+        <ControlledEditor
             value={data.code}
-            height="40vh"
+            height="60vh"
             language="csharp"
-            options={{ minimap: { enabled: false } }}
+            options={{ minimap: { enabled: false }, readOnly: true }}
         />
     </section>), () => <Loading />);
 
