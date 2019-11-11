@@ -1,6 +1,6 @@
 import { Component, h, RenderableProps } from "preact";
 
-import { AddGame } from "../../api/adminApi";
+import { addGame } from "../../api/adminApi";
 import { GameId, Round } from "../../types/types";
 import FuncComp from "./funcComp";
 
@@ -21,6 +21,6 @@ export default class Comp extends Component<Props, State> {
     }
 
     public readonly render = (props: RenderableProps<Props>, state: Readonly<State>) =>
-        <FuncComp {...props} {...state} save={() => AddGame({ id: "" as GameId, accessKey: state.accessKey, rounds: [] })} />
+        <FuncComp {...props} {...state} save={() => addGame({ id: "" as GameId, accessKey: state.accessKey, rounds: [] })} />
 
 }

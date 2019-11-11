@@ -33,6 +33,6 @@ export const resetGame = (gameId: GameId) => axios.post<AttemptWithCode>(`/api/A
 
 export const getAllChallenges = () => axios.get<ReadonlyArray<Round>>("/api/Admin/AllChallenges").then(getData);
 
-export const AddGame = (g: Game) => axios.post<Game>("/api/Admin/CreateGame", JSON.stringify(g), {
+export const addGame = (g: Game) => axios.post<Game>("/api/Admin/CreateGame", JSON.stringify(g), {
   headers: JsonHeaders
 });
