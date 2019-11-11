@@ -25,6 +25,7 @@ export default class Comp extends Component<{}, State> {
     }
 
     public readonly render = (_: RenderableProps<{}>, state: Readonly<State>) =>
-        <FuncComp {...state} toggleCreate={(show: boolean) => this.setState(s => ({ ...s, showCreate: show }))} resetGame={resetGame} />
+        <FuncComp {...state} toggleCreate={this.setShowCreate} resetGame={resetGame} />
 
+    private readonly setShowCreate = (show: boolean) => this.setState(s => ({ ...s, showCreate: show }));
 }

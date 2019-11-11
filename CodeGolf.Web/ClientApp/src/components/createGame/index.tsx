@@ -21,6 +21,8 @@ export default class Comp extends Component<Props, State> {
     }
 
     public readonly render = (props: RenderableProps<Props>, state: Readonly<State>) =>
-        <FuncComp {...props} {...state} save={() => addGame({ id: "" as GameId, accessKey: state.accessKey, rounds: [] })} />
+        <FuncComp {...props} {...state} save={this.addGame} />
+
+    private readonly addGame = () => addGame({ id: "" as GameId, accessKey: this.state.accessKey, rounds: [] });
 
 }
