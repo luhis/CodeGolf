@@ -11,7 +11,7 @@
     {
         Option<CompileRunner, IReadOnlyList<CompileErrorMessage>> Compile(string function, IReadOnlyList<Type> paramTypes, Type returnType, CancellationToken cancellationToken);
 
-        Option<IReadOnlyList<CompileErrorMessage>> TryCompile(string function, IReadOnlyList<Type> paramTypes, Type returnType, CancellationToken cancellationToken);
+        Option<IReadOnlyList<CompileErrorMessage>> TryCompile(string function, CancellationToken cancellationToken);
 
         string Wrap(string function, CancellationToken cancellationToken);
 

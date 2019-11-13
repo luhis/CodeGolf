@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { ChallengeSet, ChallengeSetId, CodeError, HoleId, RunError, RunResult } from "../types/types";
+import { ChallengeSet, CodeError, HoleId, RunError, RunResult } from "../types/types";
 import { getData, HoleInt, JsonHeaders, MapHole } from "./utils";
 
 interface Result { readonly score?: number; readonly runErrors?: ReadonlyArray<RunError>; readonly compileErrors?: ReadonlyArray<CodeError>; }
@@ -31,8 +31,8 @@ export const submitChallenge = (code: string, holeId: HoleId) => axios
         throw new Error("failed to convert");
     });
 
-export const tryCompile = (challengeId: ChallengeSetId, code: string) => axios
-    .post<ReadonlyArray<CodeError>>(`/api/code/TryCompile/${challengeId}`, JSON.stringify(code), {
+export const tryCompile = (code: string) => axios
+    .post<ReadonlyArray<CodeError>>(`/api/code/TryCompile`, JSON.stringify(code), {
         headers: JsonHeaders
     })
     .then(getData);
@@ -59,4 +59,4 @@ export const submitDemo = (code: string, reCaptcha: string): Promise<RunResult> 
     });
 
 export const getCsFile = (style: ("debug" | "preview"), code: string) =>
-    axios.post<string>(`/api/code/${style}?Code=${escape(code)}`, undefined, {headers: JsonHeaders}).then(getData);
+    axios.post<string>(`/api/code/${style}?Code=${escape(code)}`, undefined, { headers: JsonHeaders }).then(getData);

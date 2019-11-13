@@ -7,13 +7,11 @@
     using System.Threading.Tasks;
     using CodeGolf.Domain;
     using CodeGolf.Domain.ChallengeInterfaces;
-    using CodeGolf.Domain.Repositories;
     using CodeGolf.Persistence.Static;
     using CodeGolf.Service.Dtos;
     using EnsureThat;
     using OneOf;
     using Optional;
-    using Optional.Unsafe;
 
     public class CodeGolfService : ICodeGolfService
     {
@@ -21,13 +19,10 @@
 
         private readonly IScorer scorer;
 
-        private readonly IChallengeRepository gameRepository;
-
-        public CodeGolfService(IRunner runner, IScorer scorer, IChallengeRepository gameRepository)
+        public CodeGolfService(IRunner runner, IScorer scorer)
         {
             this.runner = runner;
             this.scorer = scorer;
-            this.gameRepository = gameRepository;
         }
 
         Task<OneOf<int, IReadOnlyList<ChallengeResult>, IReadOnlyList<CompileErrorMessage>>> ICodeGolfService.Score(
@@ -73,13 +68,10 @@
             return this.runner.DebugCode(code, cancellationToken);
         }
 
-        Option<IReadOnlyList<CompileErrorMessage>> ICodeGolfService.TryCompile(Guid challengeId, string code, CancellationToken cancellationToken)
+        Option<IReadOnlyList<CompileErrorMessage>> ICodeGolfService.TryCompile(string code, CancellationToken cancellationToken)
         {
-            var challenge = this.gameRepository.GetById(challengeId).ValueOrFailure();
             return this.runner.TryCompile(
                 code,
-                challenge.Params.Select(a => a.Type).ToArray(),
-                challenge.ReturnType,
                 cancellationToken);
         }
     }

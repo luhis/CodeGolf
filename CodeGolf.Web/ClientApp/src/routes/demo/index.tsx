@@ -14,8 +14,6 @@ interface State {
   readonly errors: LoadingState<Score | CompileError | undefined>;
 }
 
-const compile = async (c: ChallengeSet | undefined, code: string) => c ? await tryCompile(c.id, code) : [];
-
 export default class Comp extends Component<{}, State> {
   private readonly tryCompile = debounce(async () => {
     this.setState(s => ({ ...s, errors: { type: "Loading" } }));
@@ -23,7 +21,7 @@ export default class Comp extends Component<{}, State> {
       type: "Loaded",
       data: {
         type: "CompileError",
-        errors: await ifLoaded(this.state.challenge, c => compile(c, this.state.code), () => Promise.resolve([]))
+        errors: await tryCompile(this.state.code)
       }
     } as LoadingState<CompileError>;
     this.setState(s => ({ ...s, errors }));

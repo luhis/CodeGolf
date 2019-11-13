@@ -1,6 +1,5 @@
 ﻿namespace CodeGolf.Service
 {
-    using System;
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
@@ -20,6 +19,6 @@
 
         string DebugCode(string code, CancellationToken cancellationToken);
 
-        Option<IReadOnlyList<CompileErrorMessage>> TryCompile(Guid challengeId, string code, CancellationToken cancellationToken);
+        Option<IReadOnlyList<CompileErrorMessage>> TryCompile(string code, CancellationToken cancellationToken);
     }
 }

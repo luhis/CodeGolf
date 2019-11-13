@@ -104,8 +104,6 @@
 
         Option<IReadOnlyList<CompileErrorMessage>> IRunner.TryCompile(
             string function,
-            IReadOnlyList<Type> paramTypes,
-            Type returnType,
             CancellationToken cancellationToken)
         {
             var syntaxTree = WrapInClass(function, cancellationToken);
@@ -237,31 +235,29 @@
                                 allowUnsafe: false));
 
                         using (var dll = new MemoryStream())
+                        using (var pdb = new MemoryStream())
                         {
-                            using (var pdb = new MemoryStream())
+                            var result = compilation.Emit(dll, pdb, cancellationToken: cancellationToken);
+
+                            if (result.Diagnostics.Any(IsStoppable))
                             {
-                                var result = compilation.Emit(dll, pdb, cancellationToken: cancellationToken);
+                                var failures = result.Diagnostics.Where(IsStoppable).Select(
+                                    a =>
+                                        {
+                                            var ls = a.Location.GetMappedLineSpan();
+                                            return this.errorMessageTransformer.Transform(
+                                                new CompileErrorMessage(
+                                                    ls.StartLinePosition.Line + 1,
+                                                    ls.Span.Start.Character,
+                                                    ls.Span.End.Character,
+                                                    a.GetMessage()));
+                                        });
 
-                                if (result.Diagnostics.Any(IsStoppable))
-                                {
-                                    var failures = result.Diagnostics.Where(IsStoppable).Select(
-                                        a =>
-                                            {
-                                                var ls = a.Location.GetMappedLineSpan();
-                                                return this.errorMessageTransformer.Transform(
-                                                    new CompileErrorMessage(
-                                                        ls.StartLinePosition.Line + 1,
-                                                        ls.Span.Start.Character,
-                                                        ls.Span.End.Character,
-                                                        a.GetMessage()));
-                                            });
-
-                                    return Option.None<T, IReadOnlyList<CompileErrorMessage>>(failures.ToList());
-                                }
-                                else
-                                {
-                                    return Option.Some<T, IReadOnlyList<CompileErrorMessage>>(onSuccess(dll, pdb));
-                                }
+                                return Option.None<T, IReadOnlyList<CompileErrorMessage>>(failures.ToList());
+                            }
+                            else
+                            {
+                                return Option.Some<T, IReadOnlyList<CompileErrorMessage>>(onSuccess(dll, pdb));
                             }
                         }
                     });
