@@ -20,14 +20,14 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: npm-cache-v1-{{ checksum "./CodeGolf.Web/ClientApp/package.json" }}
+          key: yarn-packages-{{ checksum "./CodeGolf.Web/ClientApp/yarn.lock" }}
       - run:
           name: Install Dependencies
-          command: yarn --cwd ./CodeGolf.Web/ClientApp/ install
+          command: yarn --cwd ./CodeGolf.Web/ClientApp/ install --frozen-lockfile
       - save_cache:
-          key: npm-cache-v1-{{ checksum "./CodeGolf.Web/ClientApp/package.json" }}
+          key: yarn-packages-{{ checksum "./CodeGolf.Web/ClientApp/yarn.lock" }}
           paths:
-            - /home/circleci/.npm
+            - ~/.cache/yarn
       - run:
           name: Run Tests
           command: |
