@@ -8,7 +8,6 @@ namespace CodeGolf.Unit.Test.Services
 
     using CodeGolf.Domain;
     using CodeGolf.ExecutionServer;
-    using CodeGolf.Persistence.Static;
     using CodeGolf.Service;
     using CodeGolf.Service.Dtos;
 
@@ -23,8 +22,7 @@ namespace CodeGolf.Unit.Test.Services
     {
         private readonly ICodeGolfService codeGolfService = new CodeGolfService(
             new Runner(new SyntaxTreeTransformer(), new ExecutionService(), new ErrorMessageTransformer(), new Mock<ILogger<Runner>>().Object),
-            new Scorer(),
-            new ChallengeRepository());
+            new Scorer());
 
         private readonly IReadOnlyList<ParamDescription> noParams =
             new ParamDescription[] { };
