@@ -2,7 +2,7 @@
 
 echo "Update Source"
 git pull
-yarn --cwd ./CodeGolf.Web/ClientApp/ install --prod
+yarn --cwd ./CodeGolf.Web/ClientApp/ install --prod --frozen-lockfile
 
 echo "Stop codegolf service"
 systemctl stop kestrel-codegolf.service
