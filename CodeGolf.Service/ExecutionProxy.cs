@@ -7,7 +7,6 @@
     using CodeGolf.ExecutionService;
     using CodeGolf.ServiceInterfaces;
     using Google.Protobuf;
-    using Grpc.Core;
     using Grpc.Net.Client;
     using Optional;
 
