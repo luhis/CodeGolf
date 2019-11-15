@@ -148,6 +148,13 @@ namespace CodeGolf.Web
 
             services.AddSignalR();
             services.AddHostedService<PingService>();
+
+            services.AddOpenApiDocument(x =>
+            {
+                x.Description = "Code Golf OpenAPI document.";
+                x.GenerateExamples = true;
+                x.Title = "Code Golf API";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -166,6 +173,7 @@ namespace CodeGolf.Web
             }
 
             const string monacoHash = "+w9x3gaUtwchFo1AI6q4N4R2TrkXYr7IsIlGpAPu3mQ=";
+            const string swaggerHash = "o9YqryvYsqgDW0dwRml5lTp2xj7JFP318EeoJJNQS94=";
             const string googleCom = "https://www.google.com";
             const string googleAnal = "https://www.google-analytics.com";
             const string jsDelivr = "https://cdn.jsdelivr.net";
@@ -181,7 +189,7 @@ namespace CodeGolf.Web
                                     .From(googleCom)
                                     .From("https://www.gstatic.com")
                                     .From(googleAnal)
-                                    .From(jsDelivr).WithHash256(monacoHash);
+                                    .From(jsDelivr).WithHash256(monacoHash).WithHash256(swaggerHash);
                                 if (env.IsDevelopment())
                                 {
                                     scripts.UnsafeEval();
@@ -231,6 +239,9 @@ namespace CodeGolf.Web
                 endpoints.MapHub<RefreshHub>("/refreshHub");
                 endpoints.MapControllers();
             });
+
+            app.UseOpenApi(); // serve OpenAPI/Swagger documents
+            app.UseSwaggerUi3(); // serve Swagger UI
 
             app.UseSpa(
                 spa =>

@@ -21,6 +21,11 @@
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="16.4.16" />
     <PackageReference Include="NetEscapades.AspNetCore.SecurityHeaders" Version="0.11.0" />
+    <PackageReference Include="NSwag.AspNetCore" Version="13.1.5" />
+    <PackageReference Include="NSwag.MSBuild" Version="13.1.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -44,9 +49,15 @@
     <None Include="..\CodeGolf.ruleset" Link="CodeGolf.ruleset" />
   </ItemGroup>
 
-
   <ItemGroup>
     <AdditionalFiles Include="..\stylecop.json" Link="Properties\stylecop.json" />
   </ItemGroup>
+
+  <Target Name="NSwag" AfterTargets="Build">
+    <Copy SourceFiles="@(Reference)" DestinationFolder="$(OutDir)References" />
+    <Exec Command="$(NSwagExe_Core30) aspnetcore2openapi /assembly:$(TargetPath) /variables:Configuration=$(Configuration) /output:swagger.json" />
+    <Exec Command="$(NSwagExe_Core30) openapi2tsclient /input:swagger.json /GenerateClientInterfaces:true /GenerateOptionalParameters:false /ImportRequiredTypes:true /MarkOptionalProperties:false /UseGetBaseUrlMethod:false /output:ClientApp\clients\clients.ts /Template:Axios" />
+    <RemoveDir Directories="$(OutDir)References" />
+  </Target>
 
 </Project>
