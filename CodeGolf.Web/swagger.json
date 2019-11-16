@@ -1,0 +1,857 @@
+﻿{
+  "x-generator": "NSwag v13.1.5.0 (NJsonSchema v10.0.27.0 (Newtonsoft.Json v12.0.0.0))",
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Code Golf API",
+    "description": "Code Golf OpenAPI document.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/access/isloggedin": {
+      "get": {
+        "tags": [
+          "Access"
+        ],
+        "operationId": "Access_IsLoggedIn",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/access/isadmin": {
+      "get": {
+        "tags": [
+          "Access"
+        ],
+        "operationId": "Access_IsAdmin",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/access/signout": {
+      "post": {
+        "tags": [
+          "Access"
+        ],
+        "operationId": "Access_SignOut",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/account/signin": {
+      "get": {
+        "tags": [
+          "Account"
+        ],
+        "operationId": "Account_SignIn",
+        "parameters": [
+          {
+            "name": "returnUrl",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "/",
+              "nullable": true
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/endhole": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "Admin_EndHole",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/admin/nexthole": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "Admin_NextHole",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/admin/results/{holeId}": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "Admin_Results",
+        "parameters": [
+          {
+            "name": "holeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AttemptDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/currenthole": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "Admin_CurrentHole",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HoleDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/finalscores": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "Admin_FinalScores",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ResultDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/attempt/{attemptId}": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "Admin_Attempt",
+        "parameters": [
+          {
+            "name": "attemptId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AttemptCodeDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/mygames": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "Admin_MyGames",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GameDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/reset/{gameId}": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "Admin_Reset",
+        "parameters": [
+          {
+            "name": "gameId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/admin/allchallenges": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "Admin_AllChallenges",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChallengeOverView"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/challenge/demochallenge": {
+      "get": {
+        "tags": [
+          "Challenge"
+        ],
+        "operationId": "Challenge_DemoChallenge",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChallengeSetDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/challenge/currentchallenge": {
+      "get": {
+        "tags": [
+          "Challenge"
+        ],
+        "operationId": "Challenge_CurrentChallenge",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HoleDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/challenge/submitdemo": {
+      "post": {
+        "tags": [
+          "Challenge"
+        ],
+        "operationId": "Challenge_SubmitDemo",
+        "requestBody": {
+          "x-name": "code",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubmissionResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/challenge/submitchallenge/{holeId}": {
+      "post": {
+        "tags": [
+          "Challenge"
+        ],
+        "operationId": "Challenge_SubmitChallenge",
+        "parameters": [
+          {
+            "name": "holeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 2
+          }
+        ],
+        "requestBody": {
+          "x-name": "code",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubmissionResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/code/preview": {
+      "post": {
+        "tags": [
+          "Code"
+        ],
+        "operationId": "Code_Preview",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/code/debug": {
+      "post": {
+        "tags": [
+          "Code"
+        ],
+        "operationId": "Code_Debug",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/code/trycompile": {
+      "post": {
+        "tags": [
+          "Code"
+        ],
+        "operationId": "Code_TryCompile",
+        "requestBody": {
+          "x-name": "code",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CompileErrorMessage"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AttemptDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "rank": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "loginName": {
+            "type": "string",
+            "nullable": true
+          },
+          "avatar": {
+            "type": "string",
+            "nullable": true
+          },
+          "score": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "timeStamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "HoleDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "hole": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Hole"
+              }
+            ]
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "closedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "hasNext": {
+            "type": "boolean"
+          },
+          "challengeSet": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ChallengeSetDto"
+              }
+            ]
+          }
+        }
+      },
+      "Hole": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "holeId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "challengeId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "duration": {
+            "type": "string",
+            "format": "time-span"
+          },
+          "rank": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "ChallengeSetDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "returnType": {
+            "type": "string",
+            "nullable": true
+          },
+          "params": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ParamsDescriptionDto"
+            }
+          },
+          "challenges": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ChallengeDto"
+            }
+          }
+        }
+      },
+      "ParamsDescriptionDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "suggestedName": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ChallengeDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "args": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "expectedResult": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ResultDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "rank": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "loginName": {
+            "type": "string",
+            "nullable": true
+          },
+          "avatarUri": {
+            "type": "string",
+            "nullable": true
+          },
+          "score": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "AttemptCodeDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "loginName": {
+            "type": "string",
+            "nullable": true
+          },
+          "avatar": {
+            "type": "string",
+            "nullable": true
+          },
+          "score": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "code": {
+            "type": "string",
+            "nullable": true
+          },
+          "timeStamp": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GameDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "accessKey": {
+            "type": "string",
+            "nullable": true
+          },
+          "rounds": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/RoundDto"
+            }
+          }
+        }
+      },
+      "RoundDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ChallengeOverView": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "SubmissionResult": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "score": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "runErrors": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ChallengeResult"
+            }
+          },
+          "compileErrors": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/CompileErrorMessage"
+            }
+          }
+        }
+      },
+      "ChallengeResult": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "error": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Error"
+              }
+            ]
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "found": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "CompileErrorMessage": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "line": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "col": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "endCol": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      }
+    }
+  }
+}
