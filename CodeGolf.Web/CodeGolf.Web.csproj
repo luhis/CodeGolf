@@ -56,7 +56,6 @@
   <Target Name="NSwag" AfterTargets="Build">
     <Copy SourceFiles="@(Reference)" DestinationFolder="$(OutDir)References" />
     <Exec Command="$(NSwagExe_Core30) aspnetcore2openapi /assembly:$(TargetPath) /variables:Configuration=$(Configuration) /output:swagger.json" />
-    <Exec Command="$(NSwagExe_Core30) openapi2tsclient /input:swagger.json /GenerateClientInterfaces:true /GenerateOptionalParameters:false /ImportRequiredTypes:true /MarkOptionalProperties:false /UseGetBaseUrlMethod:false /output:ClientApp\clients\clients.ts /Template:Axios" />
     <RemoveDir Directories="$(OutDir)References" />
   </Target>
 
