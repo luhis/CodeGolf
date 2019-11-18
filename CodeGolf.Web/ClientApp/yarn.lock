@@ -1807,9 +1807,10 @@ builtins@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/builtins/-/builtins-1.0.3.tgz#cb94faeb61c8696451db36534e1422f94f0aee88"
 
-bulma-toast@1.5.3:
-  version "1.5.3"
-  resolved "https://registry.yarnpkg.com/bulma-toast/-/bulma-toast-1.5.3.tgz#2e167e90d2e1f7f6f93183ab8c65d350af9d8628"
+bulma-toast@1.5.4:
+  version "1.5.4"
+  resolved "https://registry.yarnpkg.com/bulma-toast/-/bulma-toast-1.5.4.tgz#ee72a1f49a1da07c49c0507ffa4ade6c1d3026f8"
+  integrity sha512-yLGeupj1WOCgOS6Gtik2eyJ2aA55nFwDyTeLSoTDdRRdWsWbBcMsna3j7ZATiQTZ4o5BI05X4z/qCKc9qMysUA==
 
 bulma@0.8.0:
   version "0.8.0"
