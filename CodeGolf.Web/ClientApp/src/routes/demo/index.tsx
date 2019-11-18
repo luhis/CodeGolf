@@ -2,7 +2,6 @@ import { debounce } from "micro-dash";
 import { Component, h, RenderableProps } from "preact";
 
 import { getDemoChallenge, submitDemo, tryCompile } from "../../api/playerApi";
-import { getFunctionDeclaration } from "../../funcDeclaration";
 import { ifLoaded, LoadingState } from "../../types/appTypes";
 import { ChallengeSet, CompileError, RunResultSet, Score } from "../../types/types";
 import FuncComp from "./funcComp";
@@ -35,19 +34,11 @@ export default class Comp extends Component<{}, State> {
     this.setState(s => ({ ...s, challenge: { type: "Loaded", data: challenge } }));
   }
   public readonly render = (_: RenderableProps<{}>, { errors, runErrors, code, challenge }: State) =>
-    <FuncComp code={code} runErrors={runErrors} errors={errors} challenge={challenge} codeChanged={this.codeChanged} submitCode={this.submitCode} onCodeClick={this.onCodeClick} />
+    <FuncComp code={code} runErrors={runErrors} errors={errors} challenge={challenge} codeChanged={this.codeChanged} submitCode={this.submitCode} />
 
   private readonly codeChanged = async (code: string) => {
     this.setState(s => ({ ...s, code }));
     this.tryCompile();
-  }
-  private readonly onCodeClick = () => {
-    if (this.state.code === "") {
-      ifLoaded(this.state.challenge, c => {
-        const funcDec = getFunctionDeclaration(c);
-        this.setState(s => ({ ...s, code: funcDec }));
-      }, () => undefined);
-    }
   }
   private readonly submitCode = async (code: string, reCaptcha: string) => {
     this.setState(s => ({ ...s, errors: { type: "Loading" } }));

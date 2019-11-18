@@ -6,6 +6,7 @@ import ChallengeComp from "../../components/challenge";
 import CodeEditor from "../../components/codeEditor";
 import Loading from "../../components/loading";
 import ErrorsComp from "../../components/results";
+import { getFunctionDeclaration } from "../../funcDeclaration";
 import { ifLoaded, LoadingState } from "../../types/appTypes";
 import { ChallengeSet, CompileError, RunResultSet, Score } from "../../types/types";
 
@@ -15,11 +16,10 @@ interface Props {
   readonly runErrors: RunResultSet | undefined;
   readonly challenge: LoadingState<ChallengeSet>;
   readonly codeChanged: (s: string) => Promise<void>;
-  readonly onCodeClick: () => void;
   readonly submitCode: (code: string, recaptcha: string) => void;
 }
 
-const FuncComp: FunctionalComponent<Readonly<Props>> = ({ code, errors, runErrors, challenge, codeChanged, onCodeClick, submitCode }) => {
+const FuncComp: FunctionalComponent<Readonly<Props>> = ({ code, errors, runErrors, challenge, codeChanged, submitCode }) => {
   const verifyCallback = (response: string) => {
     submitCode(code, response);
   };
@@ -33,12 +33,16 @@ const FuncComp: FunctionalComponent<Readonly<Props>> = ({ code, errors, runError
     <h1 class="title">Demo</h1>
     <div class="columns">
       <div class="column is-half">
-        <CodeEditor code={code} codeChanged={codeChanged} errors={ifLoaded(errors, e => e, () => undefined)} submitCode={executeCaptcha} />
+        <CodeEditor
+          code={ifLoaded(challenge, c => getFunctionDeclaration(c), () => "")}
+          codeChanged={codeChanged}
+          errors={ifLoaded(errors, e => e, () => undefined)}
+          submitCode={executeCaptcha} />
       </div>
       <div class="column is-half">
         {ifLoaded(challenge, c => <ChallengeComp
           challengeSet={c}
-          onCodeClick={onCodeClick}
+          onCodeClick={undefined}
           errors={runErrors}
         />, () => <Loading />)}
         {ifLoaded(errors, some =>
