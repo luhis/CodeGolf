@@ -8,8 +8,6 @@ jobs:
       - checkout
       - run:
           name: Run result
-          environment:
-            ASPNETCORE_ENVIRONMENT: Production
           command: |
             pushd ./Tests/CodeGolf.Unit.Test/
             dotnet clean

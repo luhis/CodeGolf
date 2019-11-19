@@ -9,7 +9,7 @@
     "start:development": "npm run -s dev",
     "build": "preact build --no-esm --no-prerender --template ./src/template.html --dest ../../publish/ClientApp/",
     "serve": "preact build && preact serve",
-    "dev": "preact watch --no-esm  --template ./src/template.html && echo Starting the development server",
+    "dev": "yarn install && preact watch --no-esm  --template ./src/template.html && echo Starting the development server",
     "lint": "tslint --project .",
     "test": "jest ./tests",
     "precommit": "lint-staged"
