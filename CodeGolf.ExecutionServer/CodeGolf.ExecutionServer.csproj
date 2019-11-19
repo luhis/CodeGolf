@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore" Version="2.25.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.0.1" />
     <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="16.4.33" />
     <PackageReference Include="Optional" Version="5.0.0-alpha" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
