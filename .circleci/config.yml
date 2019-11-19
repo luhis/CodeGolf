@@ -11,7 +11,7 @@ jobs:
           command: |
             pushd ./Tests/CodeGolf.Unit.Test/
             dotnet clean
-            dotnet test
+            ASPNETCORE_ENVIRONMENT=Production dotnet test
             popd
 
   jstest:
