@@ -2,7 +2,7 @@ version: 2
 jobs:
   dotnettest:
     docker:
-      - image: mcr.microsoft.com/dotnet/core/sdk:3.0
+      - image: mcr.microsoft.com/dotnet/core/sdk:3.0.1
     working_directory: /build/
     steps:
       - checkout
