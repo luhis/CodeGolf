@@ -11,6 +11,7 @@ jobs:
           command: |
             pushd ./Tests/CodeGolf.Unit.Test/
             dotnet clean
+            dotnet build
             dotnet test
             popd
 
