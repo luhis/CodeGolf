@@ -9,11 +9,10 @@ jobs:
       - run:
           name: Run result
           command: |
-            pushd ./Tests/CodeGolf.Unit.Test/
+            cd ./Tests/CodeGolf.Unit.Test/
             dotnet clean
             dotnet build
             dotnet test
-            popd
 
   jstest:
     docker:
