@@ -9,6 +9,7 @@ jobs:
       - run:
           name: Run result
           command: |
+            apk update && apk add libc6-compat
             cd ./Tests/CodeGolf.Unit.Test/
             dotnet clean
             dotnet build
