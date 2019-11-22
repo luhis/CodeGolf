@@ -229,8 +229,8 @@ namespace CodeGolf.Web
             app.UseStaticFiles();
             app.UseSpaStaticFiles(sfOptions);
 
-            app.UseAuthentication().UseAuthorization();
             app.UseRouting();
+            app.UseAuthentication().UseAuthorization();
             app.UseWebMarkupMin();
 
             app.UseCookiePolicy();
