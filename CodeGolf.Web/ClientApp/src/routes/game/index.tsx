@@ -1,5 +1,5 @@
 import { HubConnection } from "@aspnet/signalr";
-import { debounce } from "micro-dash";
+import debounce from "lodash.debounce";
 import { Component, h, RenderableProps } from "preact";
 
 import { getCurrentHole, submitChallenge, tryCompile } from "../../api/playerApi";
@@ -47,7 +47,7 @@ export default class Comp extends Component<{}, State> {
     await this.state.connection.stop();
   }
   public readonly render = (_: RenderableProps<{}>, { errors, runErrors, challenge }: State) =>
-    <FuncComp  errors={errors} runErrors={runErrors} challenge={challenge} codeChanged={this.codeChanged} submitCode={this.submitCode} />
+    <FuncComp errors={errors} runErrors={runErrors} challenge={challenge} codeChanged={this.codeChanged} submitCode={this.submitCode} />
 
   private readonly codeChanged = async (code: string) => {
     this.setState(s => ({ ...s, code }));
