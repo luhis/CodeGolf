@@ -26,8 +26,8 @@ chown -R www-data:www-data ./publish/wwwroot
 chown -R www-data:www-data ./publish/db
 
 echo "Setting up services"
-cp ./kestrel-codegolf.service /etc/systemd/system/kestrel-codegolf.service
-cp ./execution-codegolf.service /etc/systemd/system/execution-codegolf.service
+cp ./DeploymentConfig/kestrel-codegolf.service /etc/systemd/system/kestrel-codegolf.service
+cp ./DeploymentConfig/execution-codegolf.service /etc/systemd/system/execution-codegolf.service
 systemctl enable kestrel-codegolf.service
 systemctl enable execution-codegolf.service
 
