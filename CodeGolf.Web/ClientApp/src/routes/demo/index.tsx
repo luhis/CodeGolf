@@ -2,6 +2,7 @@ import debounce from "lodash.debounce";
 import { Component, h, RenderableProps } from "preact";
 
 import { getDemoChallenge, submitDemo, tryCompile } from "../../api/playerApi";
+import { getFunctionDeclaration } from "../../funcDeclaration";
 import { ifLoaded, LoadingState } from "../../types/appTypes";
 import { ChallengeSet, CompileError, RunResultSet, Score } from "../../types/types";
 import FuncComp from "./funcComp";
@@ -15,7 +16,6 @@ interface State {
 
 export default class Comp extends Component<{}, State> {
   private readonly tryCompile = debounce(async () => {
-    this.setState(s => ({ ...s, errors: { type: "Loading" } }));
     const errors = {
       type: "Loaded",
       data: {
@@ -25,6 +25,12 @@ export default class Comp extends Component<{}, State> {
     } as LoadingState<CompileError>;
     this.setState(s => ({ ...s, errors }));
   }, 1000);
+
+  private readonly codeChanged = debounce(async (code: string) => {
+    this.setState(s => ({ ...s, code, errors: { type: "Loading" } }));
+    await this.tryCompile();
+  }, 250);
+
   constructor() {
     super();
     this.state = { challenge: { type: "Loading" }, code: "", errors: { type: "Loaded", data: undefined }, runErrors: undefined };
@@ -34,11 +40,14 @@ export default class Comp extends Component<{}, State> {
     this.setState(s => ({ ...s, challenge: { type: "Loaded", data: challenge } }));
   }
   public readonly render = (_: RenderableProps<{}>, { errors, runErrors, code, challenge }: State) =>
-    <FuncComp code={code} runErrors={runErrors} errors={errors} challenge={challenge} codeChanged={this.codeChanged} submitCode={this.submitCode} />
-
-  private readonly codeChanged = async (code: string) => {
-    this.setState(s => ({ ...s, code }));
-    this.tryCompile();
+    <FuncComp code={code} runErrors={runErrors} errors={errors} challenge={challenge} codeChanged={this.codeChanged} submitCode={this.submitCode} onCodeClick={this.onCodeClick} />
+  private readonly onCodeClick = () => {
+    if (this.state.code === "") {
+      ifLoaded(this.state.challenge, c => {
+        const funcDec = getFunctionDeclaration(c);
+        this.setState(s => ({ ...s, code: funcDec }));
+      }, () => undefined);
+    }
   }
   private readonly submitCode = async (code: string, reCaptcha: string) => {
     this.setState(s => ({ ...s, errors: { type: "Loading" } }));
