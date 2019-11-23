@@ -8,8 +8,17 @@
 
         public static bool Equal<T>(T a, T b)
         {
-            if (typeof(T) == typeof(string))
+            if (a == null && b == null)
             {
+                return true;
+            }
+            else if (typeof(T) == typeof(string))
+            {
+                if ((a == null) ^ (b == null))
+                {
+                    return false;
+                }
+
                 return string.Equals(Normalise(a.ToString()), Normalise(b.ToString()), StringComparison.InvariantCultureIgnoreCase);
             }
             else
