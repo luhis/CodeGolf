@@ -52,8 +52,7 @@
                         var errors = challenge.Item1.Match(
                             success =>
                                 {
-                                    var x = success;
-                                    var res = x != null ? (T[])x : null;
+                                    var res = success != null ? (T[])success : null;
                                     if (!AreEqual(challenge.Item2.ExpectedResult, res))
                                     {
                                         return new Error("Return value incorrect.", GenericPresentationHelpers.WrapIfArray(res, typeof(T[])));
@@ -80,7 +79,7 @@
                 return false;
             }
 
-            return expect.Zip(actual, ValueTuple.Create).All(t => string.Equals(t.Item1, t.Item2));
+            return expect.Zip(actual, ValueTuple.Create).All(t => EqualityComparer.Equal(t.Item1, t.Item2));
         }
 
         private void ValidateParameters(IChallenge challenge)

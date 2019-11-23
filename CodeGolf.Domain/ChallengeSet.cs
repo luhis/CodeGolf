@@ -52,11 +52,10 @@
                         var errors = challenge.Item1.Match(
                             success =>
                                 {
-                                    var res = success;
-                                    if (!AreEqual(challenge.Item2.ExpectedResult, res))
+                                    if (!EqualityComparer.Equal(challenge.Item2.ExpectedResult, success))
                                     {
                                         return new Error(
-                                            "Return value incorrect.", GenericPresentationHelpers.WrapIfArray(res, typeof(T)));
+                                            "Return value incorrect.", GenericPresentationHelpers.WrapIfArray(success, typeof(T)));
                                     }
 
                                     return null;
@@ -64,11 +63,6 @@
                             s => new Error(s));
                         return new ChallengeResult(errors);
                     }).ToList();
-        }
-
-        private static bool AreEqual(object expect, object actual)
-        {
-            return expect.Equals(actual);
         }
 
         private static bool IsMisMatched(ValueTuple<object, Type> t) => t.Item1.GetType() != t.Item2;
