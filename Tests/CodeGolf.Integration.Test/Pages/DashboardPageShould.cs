@@ -8,13 +8,13 @@
     using FluentAssertions;
     using Xunit;
 
-    public class DashboardPageShould : IClassFixture<ClientFixture>
+    public class DashboardPageShould : IClassFixture<CustomWebApplicationFactory<CodeGolf.Web.Startup>>
     {
         private readonly HttpClient client;
 
-        public DashboardPageShould(ClientFixture client)
+        public DashboardPageShould(CustomWebApplicationFactory<CodeGolf.Web.Startup> client)
         {
-            this.client = client.Client;
+            this.client = client.CreateClient();
         }
 
         [Fact(Skip = "Need to fix auth mock")]

@@ -7,13 +7,13 @@
     using FluentAssertions;
     using Xunit;
 
-    public class GamePageShould : IClassFixture<ClientFixture>
+    public class GamePageShould : IClassFixture<CustomWebApplicationFactory<CodeGolf.Web.Startup>>
     {
         private readonly HttpClient client;
 
-        public GamePageShould(ClientFixture fixture)
+        public GamePageShould(CustomWebApplicationFactory<CodeGolf.Web.Startup> fixture)
         {
-            this.client = fixture.Client;
+            this.client = fixture.CreateClient();
         }
 
         [Fact(Skip = "Need to fix auth mock")]

@@ -7,13 +7,13 @@
     using FluentAssertions;
     using Xunit;
 
-    public class HomePageShould : IClassFixture<ClientFixture>
+    public class HomePageShould : IClassFixture<CustomWebApplicationFactory<CodeGolf.Web.Startup>>
     {
         private readonly HttpClient client;
 
-        public HomePageShould(ClientFixture fixture)
+        public HomePageShould(CustomWebApplicationFactory<CodeGolf.Web.Startup> fixture)
         {
-            this.client = fixture.Client;
+            this.client = fixture.CreateClient();
         }
 
         [Fact]
