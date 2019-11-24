@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  dotnettest:
+  dotnetunittest:
     docker:
       - image: mcr.microsoft.com/dotnet/core/sdk:3.0.101-alpine
     working_directory: /build/
@@ -15,9 +15,24 @@ jobs:
             apk add glibc-2.30-r0.apk
             cd ./Tests/CodeGolf.Unit.Test/
             dotnet clean
-            dotnet build
             dotnet test
 
+  dotnetintegrationtest:
+    docker:
+      - image: mcr.microsoft.com/dotnet/core/sdk:3.0.101-alpine
+    working_directory: /build/
+    steps:
+      - checkout
+      - run:
+          name: Run result
+          command: |
+            apk --no-cache add ca-certificates wget
+            wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub
+            wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.30-r0/glibc-2.30-r0.apk
+            apk add glibc-2.30-r0.apk
+            cd ./Tests/CodeGolf.Integration.Test/
+            dotnet test
+            
   jstest:
     docker:
       - image: circleci/node:10
@@ -41,5 +56,6 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - dotnettest
+      - dotnetunittest
+      - dotnetintegrationtest
       - jstest

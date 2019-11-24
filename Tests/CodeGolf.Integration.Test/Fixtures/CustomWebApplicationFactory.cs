@@ -1,12 +1,14 @@
 ﻿namespace CodeGolf.Integration.Test.Fixtures
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using CodeGolf.Integration.Test.Tooling;
     using CodeGolf.Persistence;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc.Testing;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
 
@@ -31,7 +33,7 @@
                 // Add ApplicationDbContext using an in-memory database for testing.
                 services.AddDbContext<CodeGolfContext>(options =>
                 {
-                   options.UseInMemoryDatabase("InMemoryDbForTesting");
+                    options.UseInMemoryDatabase("InMemoryDbForTesting");
                 });
 
                 // Build the service provider.
@@ -63,6 +65,14 @@
                     }
                 }
             });
+
+            builder.ConfigureAppConfiguration((_, configurationBuilder) =>
+                configurationBuilder.AddInMemoryCollection(new[]
+                {
+                    new KeyValuePair<string, string>("GitHub:ClientId", "aaa"),
+                    new KeyValuePair<string, string>("GitHub:ClientSecret", "aaa"),
+                    new KeyValuePair<string, string>("DbPath", "Data Source=codeGolf.db"),
+                }));
         }
     }
 }
