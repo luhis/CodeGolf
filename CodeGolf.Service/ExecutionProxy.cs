@@ -12,15 +12,14 @@
 
     public class ExecutionProxy : IExecutionService
     {
-        private readonly string host = "localhost";
         private readonly Executer.ExecuterClient client;
 
-        public ExecutionProxy()
+        public ExecutionProxy(string host)
         {
             AppContext.SetSwitch(
                 "System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
             var channel = GrpcChannel.ForAddress(
-                $"http://{this.host}:{SharedSettings.PortNumber}");
+                $"http://{host}:{SharedSettings.PortNumber}");
             this.client = new Executer.ExecuterClient(channel);
         }
 

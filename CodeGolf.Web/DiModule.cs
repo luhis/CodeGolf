@@ -25,7 +25,10 @@ namespace CodeGolf.Web
             collection.AddSingleton<RecaptchaAttribute>();
             collection.AddSingleton<GameAdminAuthAttribute>();
             collection.AddSingleton<ChallengeSetMapper>();
-            collection.AddSingleton<IExecutionService, ExecutionProxy>();
+            collection.AddSingleton<IExecutionService>(_ =>
+            {
+                return new ExecutionProxy("localhost");
+            });
         }
 
         private static DbContextOptions<CodeGolfContext> GetDbOptions(IServiceProvider a) => new DbContextOptionsBuilder<CodeGolfContext>()
