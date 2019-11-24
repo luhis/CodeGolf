@@ -2,6 +2,7 @@
 {
     using System;
     using System.Linq;
+    using CodeGolf.Integration.Test.Tooling;
     using CodeGolf.Persistence;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc.Testing;
@@ -51,7 +52,7 @@
                     try
                     {
                         // Seed the database with test data.
-                        // Utilities.InitializeDbForTests(db);
+                        DbInitialiser.InitializeDbForTests(db);
                     }
                     catch (Exception ex)
                     {
