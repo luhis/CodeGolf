@@ -31,4 +31,8 @@
     <ProjectReference Include="..\..\CodeGolf.Web\CodeGolf.Web.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <AdditionalFiles Include="..\..\stylecop.json" Link="Properties\stylecop.json" />
+  </ItemGroup>
+
 </Project>
