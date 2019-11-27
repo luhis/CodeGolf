@@ -3,6 +3,9 @@ import envVars from "preact-cli-plugin-env-vars";
 import CopyWebpackPlugin from "copy-webpack-plugin";
 
 export default function(config, env, helpers) {
+    if (env.isProd) {
+        config.devtool = false; // disable sourcemaps
+    }
     // Switch css-loader for typings-for-css-modules-loader, which is a wrapper
     // that automatically generates .d.ts files for loaded CSS
     helpers.getLoadersByName(config, "css-loader").forEach(({ loader }) => {
