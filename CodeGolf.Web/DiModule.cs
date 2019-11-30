@@ -1,6 +1,7 @@
 namespace CodeGolf.Web
 {
     using System;
+    using CodeGolf.ExecutionServer;
     using CodeGolf.Persistence;
     using CodeGolf.Service;
     using CodeGolf.ServiceInterfaces;
@@ -12,6 +13,7 @@ namespace CodeGolf.Web
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Options;
 
     public static class DiModule
     {
@@ -25,7 +27,13 @@ namespace CodeGolf.Web
             collection.AddSingleton<RecaptchaAttribute>();
             collection.AddSingleton<GameAdminAuthAttribute>();
             collection.AddSingleton<ChallengeSetMapper>();
-            collection.AddSingleton<IExecutionService, ExecutionProxy>();
+            collection.AddSingleton<ExecutionProxy>();
+            collection.AddSingleton<ExecutionService>();
+            collection.AddSingleton<IExecutionService>(s =>
+            {
+                var settings = s.GetRequiredService<IOptions<ExecutionSettings>>();
+                return settings.Value.UseRemoteService ? (IExecutionService)s.GetRequiredService<ExecutionProxy>() : (IExecutionService)s.GetRequiredService<ExecutionService>();
+            });
         }
 
         private static DbContextOptions<CodeGolfContext> GetDbOptions(IServiceProvider a) => new DbContextOptionsBuilder<CodeGolfContext>()
