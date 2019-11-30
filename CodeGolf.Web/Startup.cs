@@ -12,6 +12,7 @@ namespace CodeGolf.Web
     using CodeGolf.Persistence;
     using CodeGolf.Recaptcha;
     using CodeGolf.Service;
+    using CodeGolf.ServiceInterfaces;
     using CodeGolf.Web.Attributes;
     using CodeGolf.Web.HostedServices;
     using CodeGolf.Web.Hubs;
@@ -73,6 +74,7 @@ namespace CodeGolf.Web
 
             services.Configure<GameAdminSettings>(this.Configuration, BindNonPublic);
             services.Configure<RecaptchaSettings>(this.Configuration.GetSection("Recaptcha"), BindNonPublic);
+            services.Configure<ExecutionSettings>(this.Configuration.GetSection("Execution"), BindNonPublic);
 
             services.AddMvc(o => { o.EnableEndpointRouting = false; }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddWebMarkupMin(options =>

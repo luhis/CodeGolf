@@ -8,18 +8,19 @@
     using CodeGolf.ServiceInterfaces;
     using Google.Protobuf;
     using Grpc.Net.Client;
+    using Microsoft.Extensions.Options;
     using Optional;
 
     public class ExecutionProxy : IExecutionService
     {
         private readonly Executer.ExecuterClient client;
 
-        public ExecutionProxy(string host)
+        public ExecutionProxy(IOptions<ExecutionSettings> settings)
         {
             AppContext.SetSwitch(
                 "System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
             var channel = GrpcChannel.ForAddress(
-                $"http://{host}:{SharedSettings.PortNumber}");
+                $"http://{settings.Value.ServiceHost}:{SharedSettings.PortNumber}");
             this.client = new Executer.ExecuterClient(channel);
         }
 
