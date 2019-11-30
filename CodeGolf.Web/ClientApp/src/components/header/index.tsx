@@ -1,14 +1,15 @@
 import { Component, Fragment, FunctionalComponent, FunctionComponent, h, RenderableProps } from "preact";
 import { Link } from "preact-router";
 
-import { isAdmin, isLoggedIn } from "../../api/accessApi";
+import { getAccess } from "../../api/accessApi";
+import { Access } from "../../types/types";
 import SignOut from "../signOut";
 
 const AdminSection: FunctionComponent<{ readonly admin: boolean }> = ({ admin }) => admin ?
-    (<Fragment>
-        <Link class="navbar-item" href="/dashboard">Dashboard</Link>
-        <Link class="navbar-item" href="/admin">Admin</Link>
-    </Fragment>) : null;
+    (<Link class="navbar-item" href="/admin">Admin</Link>) : null;
+
+const DashboardSection: FunctionComponent<{ readonly showDashboard: boolean }> = ({ showDashboard }) => showDashboard ?
+    (<Link class="navbar-item" href="/dashboard">Dashboard</Link>) : null;
 
 const LoggedInSection: FunctionComponent<{ readonly loggedIn: boolean }> = ({ loggedIn }) => loggedIn ?
     (<Fragment>
@@ -19,7 +20,7 @@ const LoggedInSection: FunctionComponent<{ readonly loggedIn: boolean }> = ({ lo
 const SignIn: FunctionalComponent<{ readonly loggedIn: boolean }> =
     ({ loggedIn }) => !loggedIn ? <a href="/account/signin" class="navbar-item">Sign In with GitHub</a> : null;
 
-const FuncComp: FunctionalComponent<State & { readonly toggleMenu: (() => void) }> = ({ admin, loggedIn, toggleMenu, showMenu }) =>
+const FuncComp: FunctionalComponent<State & { readonly toggleMenu: (() => void) }> = ({ access, toggleMenu, showMenu }) =>
     (<nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
             <a role="button" class={"navbar-burger burger " + (showMenu ? "is-active" : "")} aria-label="menu" aria-expanded="false" onClick={toggleMenu}>
@@ -31,25 +32,25 @@ const FuncComp: FunctionalComponent<State & { readonly toggleMenu: (() => void) 
             <div class="navbar-start">
                 <Link class="navbar-item" href="/">Home</Link>
                 <Link class="navbar-item" href="/demo">Demo</Link>
-                <LoggedInSection loggedIn={loggedIn} />
-                <SignIn loggedIn={loggedIn} />
-                <AdminSection admin={admin} />
+                <LoggedInSection loggedIn={access.isLoggedIn} />
+                <SignIn loggedIn={access.isLoggedIn} />
+                <DashboardSection showDashboard={access.showDashboard} />
+                <AdminSection admin={access.isAdmin} />
                 <a class="navbar-item" target="_blank" rel="noopener" href="https://codegolf.stackexchange.com/questions/173/tips-for-code-golfing-in-c">Tips</a>
             </div>
         </div>
     </nav >);
 
-interface State { readonly admin: boolean; readonly loggedIn: boolean; readonly showMenu: boolean; }
+interface State { readonly access: Access; readonly showMenu: boolean; }
 
 export default class Comp extends Component<{}, State> {
     constructor() {
         super();
-        this.state = { loggedIn: false, admin: false, showMenu: false };
+        this.state = { access: { isAdmin: false, isLoggedIn: false, showDashboard: false }, showMenu: false };
     }
     public readonly componentDidMount = async () => {
-        const admin = await isAdmin();
-        const loggedIn = await isLoggedIn();
-        this.setState(s => ({ ...s, admin, loggedIn }));
+        const access = await getAccess();
+        this.setState(s => ({ ...s, access }));
     }
     public readonly render = (_: RenderableProps<{}>, s: Readonly<State>) =>
         <FuncComp {...s} toggleMenu={this.ToggleMenu} />

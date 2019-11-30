@@ -18,7 +18,6 @@
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    [ServiceFilter(typeof(GameAdminAuthAttribute))]
     public class AdminController : ControllerBase
     {
         private readonly IDashboardService dashboardService;
@@ -34,6 +33,7 @@
             this.adminService = adminService;
         }
 
+        [ServiceFilter(typeof(GameAdminAuthAttribute))]
         [HttpPost("[action]")]
         public async Task EndHole(CancellationToken cancellationToken)
         {
@@ -43,6 +43,7 @@
                 () => Task.CompletedTask);
         }
 
+        [ServiceFilter(typeof(GameAdminAuthAttribute))]
         [HttpPost("[action]")]
         public Task NextHole(CancellationToken cancellationToken)
         {
@@ -63,6 +64,7 @@
                 () => null);
         }
 
+        [ServiceFilter(typeof(GameAdminAuthAttribute))]
         [HttpGet("[action]")]
         public async Task<ActionResult<IReadOnlyList<ResultDto>>> FinalScores(CancellationToken cancellationToken)
         {
@@ -70,6 +72,7 @@
             return new ActionResult<IReadOnlyList<ResultDto>>(r);
         }
 
+        [ServiceFilter(typeof(GameAdminAuthAttribute))]
         [HttpGet("[action]/{attemptId}")]
         public async Task<ActionResult<AttemptCodeDto>> Attempt(Guid attemptId, CancellationToken cancellationToken)
         {
@@ -79,6 +82,7 @@
                 () => this.NotFound());
         }
 
+        [ServiceFilter(typeof(GameAdminAuthAttribute))]
         [HttpGet("[action]")]
         public async Task<ActionResult<IReadOnlyList<GameDto>>> MyGames(CancellationToken cancellationToken)
         {
@@ -92,12 +96,14 @@
             return new ActionResult<IReadOnlyList<GameDto>>(x);
         }
 
+        [ServiceFilter(typeof(GameAdminAuthAttribute))]
         [HttpPost("[action]/{gameId}")]
         public Task Reset(CancellationToken cancellationToken)
         {
             return this.adminService.ResetGame();
         }
 
+        [ServiceFilter(typeof(GameAdminAuthAttribute))]
         [HttpGet("[action]")]
         public async Task<IReadOnlyList<ChallengeOverView>> AllChallenges(CancellationToken cancellationToken)
         {

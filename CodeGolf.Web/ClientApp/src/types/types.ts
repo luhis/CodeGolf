@@ -37,6 +37,12 @@ export interface Attempt {
     readonly timeStamp: Date;
 }
 
+export interface Access {
+    readonly isAdmin: boolean;
+    readonly isLoggedIn: boolean;
+    readonly showDashboard: boolean;
+}
+
 export type AttemptWithCode = Attempt & { readonly code: string };
 
 export interface Result {

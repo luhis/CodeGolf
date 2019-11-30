@@ -7,39 +7,19 @@
     "version": "1.0.0"
   },
   "paths": {
-    "/api/access/isloggedin": {
+    "/api/access/getaccess": {
       "get": {
         "tags": [
           "Access"
         ],
-        "operationId": "Access_IsLoggedIn",
+        "operationId": "Access_GetAccess",
         "responses": {
           "200": {
             "description": "",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "boolean"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/access/isadmin": {
-      "get": {
-        "tags": [
-          "Access"
-        ],
-        "operationId": "Access_IsAdmin",
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "boolean"
+                  "$ref": "#/components/schemas/AccessDto"
                 }
               }
             }
@@ -515,6 +495,21 @@
   },
   "components": {
     "schemas": {
+      "AccessDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "isLoggedIn": {
+            "type": "boolean"
+          },
+          "isAdmin": {
+            "type": "boolean"
+          },
+          "showDashboard": {
+            "type": "boolean"
+          }
+        }
+      },
       "AttemptDto": {
         "type": "object",
         "additionalProperties": false,

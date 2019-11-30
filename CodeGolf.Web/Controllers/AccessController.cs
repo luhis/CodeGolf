@@ -2,6 +2,7 @@
 {
     using System.Threading.Tasks;
     using CodeGolf.Web.Attributes;
+    using CodeGolf.Web.Models;
     using CodeGolf.Web.Tooling;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Mvc;
@@ -21,16 +22,11 @@
         }
 
         [HttpGet("[action]")]
-        public bool IsLoggedIn()
-        {
-            return this.identityTools.GetIdentity(this.HttpContext).HasValue;
-        }
-
-        [HttpGet("[action]")]
-        public bool IsAdmin()
+        public AccessDto GetAccess()
         {
             var id = this.identityTools.GetIdentity(this.HttpContext);
-            return id.Match(some => this.gameAdminSettings.AdminGithubNames.Contains(some.LoginName), () => false);
+            var isAdmin = id.Match(some => this.gameAdminSettings.AdminGithubNames.Contains(some.LoginName), () => false);
+            return new AccessDto(id.HasValue, isAdmin, isAdmin || this.gameAdminSettings.AllowNonAdminDashboard);
         }
 
         [HttpPost("[action]")]
