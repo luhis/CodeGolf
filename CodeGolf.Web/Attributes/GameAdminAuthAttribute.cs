@@ -53,7 +53,7 @@
                     }
                 },
                 () => { context.Result = new ForbidResult(); });
-            return Task.CompletedTask;
+            return next();
         }
     }
 }
