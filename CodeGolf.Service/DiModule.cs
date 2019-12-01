@@ -16,7 +16,6 @@
             collection.AddTransient<IAdminService, AdminService>();
             collection.AddTransient<IBestAttemptsService, BestAttemptsService>();
             collection.AddTransient<IResultsService, ResultsService>();
-            collection.AddTransient<CancellationTokenInjector>();
         }
     }
 }

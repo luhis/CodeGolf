@@ -14,6 +14,7 @@
     using Optional;
     using CompileResult = CodeGolf.ServiceInterfaces.CompileResult;
 
+    // todo this should be split out to allow GRPC bypass without importing in all the other crap
     public class ExecutionService : IExecutionService
     {
         private const int ExecutionTimeoutMilliseconds = 2_000;

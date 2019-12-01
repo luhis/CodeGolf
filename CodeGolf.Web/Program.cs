@@ -1,15 +1,18 @@
 ﻿namespace CodeGolf.Web
 {
     using System.Threading.Tasks;
-    using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Hosting;
 
     public static class Program
     {
-        public static Task Main(string[] args) => CreateWebHostBuilder(args).Build().RunAsync();
+        public static Task Main(string[] args) => CreateHostBuilder(args).Build().RunAsync();
 
-        private static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+        private static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                });
     }
 }

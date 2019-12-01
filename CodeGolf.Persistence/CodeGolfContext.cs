@@ -20,7 +20,10 @@
 
         public void SeedDatabase()
         {
-            this.Database.Migrate();
+            if (this.Database.ProviderName != "Microsoft.EntityFrameworkCore.InMemory")
+            {
+                this.Database.Migrate();
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

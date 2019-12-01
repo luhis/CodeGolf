@@ -6,7 +6,6 @@
     {
         public static void InitializeDbForTests(CodeGolfContext db)
         {
-            db.SeedDatabase();
         }
     }
 }
