@@ -9,10 +9,14 @@
             this.ShowDashboard = showDashboard;
         }
 
-        public bool IsLoggedIn { get; }
+        private AccessDto()
+        {
+        }
 
-        public bool IsAdmin { get; }
+        public bool IsLoggedIn { get; private set; }
 
-        public bool ShowDashboard { get; }
+        public bool IsAdmin { get; private set; }
+
+        public bool ShowDashboard { get; private set; }
     }
 }
