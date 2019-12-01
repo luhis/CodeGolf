@@ -6,7 +6,9 @@
     using CodeGolf.Integration.Test.Tooling;
     using CodeGolf.Persistence;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Mvc.Authorization;
     using Microsoft.AspNetCore.Mvc.Testing;
+    using Microsoft.AspNetCore.TestHost;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -74,6 +76,14 @@
                     new KeyValuePair<string, string>("DbPath", "Data Source=codeGolf.db"),
                     new KeyValuePair<string, string>("Execution:UseRemoteService", "false"),
                 }));
+
+            builder.ConfigureTestServices(
+                services => services.AddMvc(
+                    options =>
+                    {
+                        options.Filters.Add(new AllowAnonymousFilter());
+                        options.Filters.Add(new FakeUserFilter());
+                    }));
         }
     }
 }

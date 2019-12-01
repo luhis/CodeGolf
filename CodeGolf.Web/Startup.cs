@@ -67,7 +67,7 @@ namespace CodeGolf.Web
             services.Configure<RecaptchaSettings>(this.Configuration.GetSection("Recaptcha"), BindNonPublic);
             services.Configure<ExecutionSettings>(this.Configuration.GetSection("Execution"), BindNonPublic);
 
-            services.AddMvc(o => { o.EnableEndpointRouting = false; }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddCustomResponseCompression();
 
             services.AddGitHubAuth(this.Configuration);
