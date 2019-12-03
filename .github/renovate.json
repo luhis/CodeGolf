@@ -1,9 +1,34 @@
 {
+  
+  "extends": [
+    "config:base",
+    "group:definitelyTyped",
+    "group:fortawesome",
+    "group:linters",
+    "group:reactMonorepo"
+  ],
   "extends": [
     "config:base"
   ],
   "labels": [
     "library"
+  ],
+  "packageRules": [
+    {
+      "packageNames": [
+        "Microsoft.EntityFrameworkCore"
+      ],
+      "packagePatterns": [
+        "^Microsoft\\.EntityFrameworkCore\\..+$"
+      ],
+      "groupName": "Microsoft.EntityFrameworkCore monorepo"
+    },
+    {
+      "groupName": "NSwag monorepo",
+      "sourceUrlPrefixes": [
+        "https://github.com/RicoSuter/NSwag"
+      ]
+    }
   ],
   "postUpdateOptions": [
     "yarnDedupeHighest"
