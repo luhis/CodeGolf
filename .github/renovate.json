@@ -7,9 +7,6 @@
     "group:linters",
     "group:reactMonorepo"
   ],
-  "extends": [
-    "config:base"
-  ],
   "labels": [
     "library"
   ],
