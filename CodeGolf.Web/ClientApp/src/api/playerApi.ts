@@ -1,13 +1,13 @@
 import axios from "axios";
 
 import { ChallengeSet, CodeError, HoleId, RunError, RunResult } from "../types/types";
-import { getData, HoleInt, JsonHeaders, MapHole } from "./utils";
+import { getData, HoleInt, JsonHeaders, mapHole } from "./utils";
 
 interface Result { readonly score?: number; readonly runErrors?: ReadonlyArray<RunError>; readonly compileErrors?: ReadonlyArray<CodeError>; }
 
 export const getCurrentHole = () => axios
     .get<HoleInt | undefined>("/api/Challenge/CurrentChallenge")
-    .then(getData).then(MapHole);
+    .then(getData).then(mapHole);
 
 export const getDemoChallenge = () => axios
     .get<ChallengeSet>("/api/Challenge/DemoChallenge")

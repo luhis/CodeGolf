@@ -4,7 +4,7 @@ import { ChallengeSet, Hole } from "../types/types";
 
 export const utzParse = (date: string) => new Date(date + "z");
 
-export const MapHole = (h?: HoleInt) => {
+export const mapHole = (h?: HoleInt) => {
     if (h) {
         return { ...h, start: utzParse(h.start), end: utzParse(h.end), closedAt: h.closedAt ? utzParse(h.closedAt) : undefined } as Hole;
     }

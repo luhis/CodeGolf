@@ -1,7 +1,7 @@
 import axios from "axios";
 
 import { Attempt, AttemptId, AttemptWithCode, Game, GameId, HoleId, Result, Round } from "../types/types";
-import { getData, HoleInt, JsonHeaders, MapHole, utzParse } from "./utils";
+import { getData, HoleInt, JsonHeaders, mapHole, utzParse } from "./utils";
 
 interface AttemptInt {
   readonly rank: number;
@@ -14,7 +14,7 @@ interface AttemptInt {
 
 export const getCurrentChallenge = () => axios
   .get<HoleInt | undefined>("/api/Admin/CurrentHole").then(getData)
-  .then(MapHole);
+  .then(mapHole);
 
 export const getResults = (holeId: HoleId) => axios.get<ReadonlyArray<AttemptInt>>(`/api/Admin/Results/${holeId}`)
   .then(getData).then(attempts => attempts.map(a => ({ ...a, timeStamp: utzParse(a.timeStamp) } as Attempt)));
