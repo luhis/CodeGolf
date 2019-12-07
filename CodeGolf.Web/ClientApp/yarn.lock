@@ -8621,7 +8621,7 @@ tryer@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/tryer/-/tryer-1.0.1.tgz#f2c85406800b9b0f74c9f7465b81eaad241252f8"
 
-ts-date@^2.3.0:
+ts-date@2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/ts-date/-/ts-date-2.3.0.tgz#0ea81ce782cb8c6c735ed861ce29f4724ea9ceab"
   integrity sha512-resLEXEBSGVCB2xoSfqIRUapTCyq+9OwumXSKoWMp/QkvOvYkKC6B5oppxME4u4Ouq8tQJqxBL7/48P6dxyZqw==
