@@ -1,3 +1,5 @@
+import { ValidDate } from "ts-date";
+
 export interface Score { readonly type: "Score"; readonly val: number; }
 export interface CompileError { readonly type: "CompileError"; readonly errors: ReadonlyArray<CodeError>; }
 export interface RunError { readonly error: TestFail | undefined; }
@@ -34,7 +36,7 @@ export interface Attempt {
     readonly loginName: string;
     readonly avatar: string;
     readonly score: number;
-    readonly timeStamp: Date;
+    readonly timeStamp: ValidDate;
 }
 
 export interface Access {
@@ -53,8 +55,8 @@ export interface Result {
 }
 
 export interface Hole {
-    readonly challengeSet: ChallengeSet; readonly start: Date;
-    readonly end: Date; readonly closedAt?: Date; readonly hasNext: boolean; readonly hole: { readonly holeId: HoleId };
+    readonly challengeSet: ChallengeSet; readonly start: ValidDate;
+    readonly end: ValidDate; readonly closedAt?: ValidDate; readonly hasNext: boolean; readonly hole: { readonly holeId: HoleId };
 }
 
 export interface Round {
