@@ -16,6 +16,8 @@ jobs:
             cd ./Tests/CodeGolf.Unit.Test/
             dotnet clean
             dotnet test
+            apk add --no-cache bash
+            bash <(wget -qO- https://codecov.io/bash)
 
   dotnetintegrationtest:
     docker:
@@ -32,6 +34,8 @@ jobs:
             apk add glibc-2.30-r0.apk
             cd ./Tests/CodeGolf.Integration.Test/
             dotnet test
+            apk add --no-cache bash
+            bash <(wget -qO- https://codecov.io/bash)
             
   jstest:
     docker:
@@ -51,6 +55,7 @@ jobs:
           name: Run Tests
           command: |
             yarn --cwd ./CodeGolf.Web/ClientApp/ test
+            bash <(curl -s https://codecov.io/bash)
             yarn --cwd ./CodeGolf.Web/ClientApp/ build
 workflows:
   version: 2
