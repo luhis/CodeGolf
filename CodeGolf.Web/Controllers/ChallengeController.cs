@@ -54,6 +54,7 @@
             return SubmissionResultMapper.Map(await this.codeGolfService.Score(code ?? string.Empty, demo, cancellationToken));
         }
 
+        [Authorize]
         [HttpPost("[action]/{holeId}")]
         public async Task<SubmissionResult> SubmitChallenge([FromBody]string code, Guid holeId, CancellationToken cancellationToken)
         {

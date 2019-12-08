@@ -1,6 +1,8 @@
 ﻿namespace CodeGolf.Integration.Test.Controllers
 {
+    using System.Net;
     using System.Net.Http;
+    using System.Net.Http.Headers;
     using System.Threading.Tasks;
     using CodeGolf.Integration.Test.Fixtures;
     using CodeGolf.Web;
@@ -14,15 +16,16 @@
 
         public AdminControllerShould(CustomWebApplicationFactory<CodeGolf.Web.Startup> fixture)
         {
-            this.client = fixture.CreateClient(new WebApplicationFactoryClientOptions() { HandleCookies = false });
+            this.client = fixture.CreateClient(new WebApplicationFactoryClientOptions() { HandleCookies = false, AllowAutoRedirect = false });
+            this.client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        [Fact(Skip = "Auth needs work")]
+        [Fact]
         public async Task RejectEndHoleFromAnon()
         {
-            var response = await this.client.PostAsync("/api/admin/endhole", null);
+            var response = await this.client.PostAsJsonAsync<object>("/api/admin/endhole", null);
             var b = await response.Content.ReadAsStringAsync();
-            response.StatusCode.Should().Be(403);
+            response.StatusCode.Should().Be(HttpStatusCode.Redirect);
         }
     }
 }
