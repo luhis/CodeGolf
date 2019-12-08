@@ -15,9 +15,9 @@ jobs:
             apk add glibc-2.30-r0.apk
             cd ./Tests/CodeGolf.Unit.Test/
             dotnet clean
-            dotnet test
-            apk add --no-cache bash
-            bash <(wget -qO- https://codecov.io/bash)
+            dotnet test --collect:"Integration Test Coverage"
+            apk add --no-cache bash curl
+            bash -c "bash <(curl -s https://codecov.io/bash)"
 
   dotnetintegrationtest:
     docker:
@@ -33,9 +33,9 @@ jobs:
             wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.30-r0/glibc-2.30-r0.apk
             apk add glibc-2.30-r0.apk
             cd ./Tests/CodeGolf.Integration.Test/
-            dotnet test
-            apk add --no-cache bash
-            bash <(wget -qO- https://codecov.io/bash)
+            dotnet test --collect:"Unit Test Coverage"
+            apk add --no-cache bash curl
+            bash -c "bash <(curl -s https://codecov.io/bash)"
             
   jstest:
     docker:

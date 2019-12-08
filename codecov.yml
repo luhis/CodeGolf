@@ -1,0 +1,14 @@
+coverage:
+  status:
+    projects:
+      dotnet:
+        flags: dotnet
+      npm:
+        flags: npm          
+flags:
+  dotnet:
+    paths:
+      - .
+  npm:
+    paths:
+      - CodeGolf.Web/ClientApp
