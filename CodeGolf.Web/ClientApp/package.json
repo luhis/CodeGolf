@@ -53,7 +53,7 @@
     "bulma": "0.8.0",
     "bulma-toast": "1.5.4",
     "classnames": "2.2.6",
-    "copy-webpack-plugin": "5.0.5",
+    "copy-webpack-plugin": "5.1.0",
     "css-loader": "1.0.1",
     "identity-obj-proxy": "3.0.0",
     "jest": "24.9.0",
