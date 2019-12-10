@@ -13,9 +13,7 @@ jobs:
             wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub
             wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.30-r0/glibc-2.30-r0.apk
             apk add glibc-2.30-r0.apk
-            cd ./Tests/CodeGolf.Unit.Test/
-            dotnet clean
-            dotnet test --collect:"Integration Test Coverage"
+            dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=\"lcov,opencover\"
             apk add --no-cache bash curl
             bash -c "bash <(curl -s https://codecov.io/bash)"
 
@@ -32,8 +30,7 @@ jobs:
             wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub
             wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.30-r0/glibc-2.30-r0.apk
             apk add glibc-2.30-r0.apk
-            cd ./Tests/CodeGolf.Integration.Test/
-            dotnet test --collect:"Unit Test Coverage"
+            dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=\"lcov,opencover\"
             apk add --no-cache bash curl
             bash -c "bash <(curl -s https://codecov.io/bash)"
             
