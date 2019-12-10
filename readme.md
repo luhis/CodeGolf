@@ -1,5 +1,6 @@
 [![CircleCI](https://circleci.com/gh/luhis/CodeGolf.svg?style=svg)](https://circleci.com/gh/luhis/CodeGolf)
 [![BCH compliance](https://bettercodehub.com/edge/badge/luhis/CodeGolf?branch=master)](https://bettercodehub.com/)
+[![codecov](https://codecov.io/gh/luhis/CodeGolf/branch/master/graph/badge.svg)](https://codecov.io/gh/luhis/CodeGolf)
 
 # Code Golf
 
