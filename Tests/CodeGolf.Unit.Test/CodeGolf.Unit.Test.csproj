@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
 
     <IsPackable>false</IsPackable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -22,7 +22,7 @@
     </PackageReference>
     <PackageReference Include="FluentAssertions" Version="5.9.0" />
     <PackageReference Include="FluentAssertions.OneOf" Version="0.0.5" />
-    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.1.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
     <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="16.4.33" />
     <PackageReference Include="Moq" Version="4.13.1" />
