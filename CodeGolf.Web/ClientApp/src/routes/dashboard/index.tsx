@@ -17,15 +17,13 @@ const connection = new HubConnectionBuilder().withUrl("/refreshHub").configureLo
 
 const Comp: FunctionComponent = () => {
   const [state, setState] = useState<State>({ currentHole: { type: "Loading" }, attempts: { type: "Loaded", data: [] } });
-  const getResultsX = async (currentHole: LoadingState<Hole | undefined>) => {
-    return ifLoaded(currentHole, async hole => {
-      if (hole) {
-        const results = await getResults(hole.hole.holeId);
-        setState(s => ({ ...s, attempts: { type: "Loaded", data: results } }));
-      }
+  const getResultsX = async (currentHole: LoadingState<Hole | undefined>) => ifLoaded(currentHole, async hole => {
+    if (hole) {
+      const results = await getResults(hole.hole.holeId);
+      setState(s => ({ ...s, attempts: { type: "Loaded", data: results } }));
+    }
 
-    }, () => Promise.resolve());
-  };
+  }, () => Promise.resolve());
 
   const getHole = async () => {
     try {
@@ -47,14 +45,12 @@ const Comp: FunctionComponent = () => {
       await connection.start().catch(console.error);
       await getHole();
     };
-    // tslint:disable-next-line: no-floating-promises
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     a();
-    return () => {
-      return connection.stop();
-    };
+    return () => connection.stop();
   }, []);
   useEffect(() => {
-    // tslint:disable-next-line: no-floating-promises
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     getResultsX(state.currentHole);
     connection.on("newAnswer", () => getResultsX(state.currentHole));
   }, [state.currentHole]);
@@ -66,7 +62,7 @@ const Comp: FunctionComponent = () => {
       nextHole={doThenUpdateHole(nextHole)}
       endHole={doThenUpdateHole(f)} />);
   },
-    () => null);
+  () => null);
 };
 
 export default Comp;

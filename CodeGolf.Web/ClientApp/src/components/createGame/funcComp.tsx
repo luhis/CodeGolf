@@ -2,7 +2,7 @@ import { FunctionalComponent, h } from "preact";
 
 import { Round } from "../../types/types";
 
-interface Props { readonly hide: () => void; readonly save: () => void; readonly challenges: ReadonlyArray<Round>; }
+interface Props { readonly hide: () => void, readonly save: () => void, readonly challenges: ReadonlyArray<Round> }
 
 const Modal: FunctionalComponent<Props> = ({ hide, save }) =>
   (<div class="modal is-active">

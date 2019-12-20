@@ -13,7 +13,7 @@ const Row: FunctionalComponent<{ readonly g: Game, readonly resetGame: ((g: Game
     <div class="message-body">
       <div class="message-content">
         Rounds:
-                <ul>
+        <ul>
           {g.rounds.map(b => <li key={b.id}>{b.name}</li>)}
         </ul>
         <button class="button" onClick={() => resetGame(g.id)}>Reset Game</button>
@@ -34,10 +34,10 @@ const FuncComp: FunctionalComponent<Readonly<Props>> = ({ myGames, allChallenges
     (<div><section class="accordions">
       {g.map((a: Game) => <Row g={a} resetGame={resetGame} key={a.id} />)}
     </section>
-      {ifLoaded(allChallenges, c => (showCreate ? <CreateGame hide={() => toggleCreate(false)} challenges={c} /> : null), () => null)}
-      <button className="button" onClick={() => toggleCreate(!showCreate)}>Create New</button>
+    {ifLoaded(allChallenges, c => (showCreate ? <CreateGame hide={() => toggleCreate(false)} challenges={c} /> : null), () => null)}
+    <button className="button" onClick={() => toggleCreate(!showCreate)}>Create New</button>
     </div>),
-    () =>
-      <Loading />);
+  () =>
+    <Loading />);
 
 export default FuncComp;

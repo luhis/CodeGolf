@@ -37,12 +37,12 @@ const FuncComp: FunctionalComponent<State & { readonly toggleMenu: (() => void) 
         <SignIn loggedIn={access.isLoggedIn} />
         <DashboardSection showDashboard={access.showDashboard} />
         <AdminSection admin={access.isAdmin} />
-        <a class="navbar-item" target="_blank" rel="noopener" href="https://codegolf.stackexchange.com/questions/173/tips-for-code-golfing-in-c">Tips</a>
+        <a class="navbar-item" target="_blank" rel="noopener noreferrer" href="https://codegolf.stackexchange.com/questions/173/tips-for-code-golfing-in-c">Tips</a>
       </div>
     </div>
   </nav >);
 
-interface State { readonly access: Access; readonly showMenu: boolean; }
+interface State { readonly access: Access, readonly showMenu: boolean }
 
 const Comp: FunctionalComponent = () => {
   const [state, setState] = useState<State>({ access: { isAdmin: false, isLoggedIn: false, showDashboard: false }, showMenu: false });
@@ -51,7 +51,7 @@ const Comp: FunctionalComponent = () => {
       const access = await getAccess();
       setState(s => ({ ...s, access }));
     };
-    // tslint:disable-next-line: no-floating-promises
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     f();
   }, []);
   const ToggleMenu = () => setState(s => ({ ...s, showMenu: !s.showMenu }));

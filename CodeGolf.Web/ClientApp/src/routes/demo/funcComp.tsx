@@ -46,7 +46,7 @@ const FuncComp: FunctionalComponent<Readonly<Props>> = ({ code, runResult, runEr
       </div>
     </div>
     <ReCAPTCHA
-      // tslint:disable-next-line: no-object-mutation
+      // eslint-disable-next-line functional/immutable-data
       ref={e => recaptchaInstance.current = e}
       sitekey={process.env.PREACT_APP_RECAPTCHA_SITEKEY as string}
       size="invisible"

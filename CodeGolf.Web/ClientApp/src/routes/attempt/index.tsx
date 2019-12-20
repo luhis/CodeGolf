@@ -8,7 +8,7 @@ import FuncComp from "./funcComp";
 
 type State = LoadingState<AttemptWithCode>;
 
-interface Props { readonly attemptId: AttemptId; }
+interface Props { readonly attemptId: AttemptId }
 
 const Comp: FunctionComponent<Props> = ({ attemptId }) => {
   const [state, setState] = useState<State>({ type: "Loading" });
@@ -17,7 +17,7 @@ const Comp: FunctionComponent<Props> = ({ attemptId }) => {
       const results = await getAttempt(attemptId);
       setState(() => ({ type: "Loaded", data: results }));
     };
-    // tslint:disable-next-line: no-floating-promises
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     a();
   }, []);
   return <FuncComp result={state} />;

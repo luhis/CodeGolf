@@ -6,7 +6,7 @@ interface Props {
   readonly signOutFunc: () => Promise<void>;
 }
 
-const LinkComp: FunctionalComponent<{ readonly toggleModal: (() => void); }> =
+const LinkComp: FunctionalComponent<{ readonly toggleModal: (() => void) }> =
   ({ toggleModal }) => <a class="navbar-item" onClick={toggleModal}>Sign Out</a>;
 
 const FuncComp: FunctionalComponent<Readonly<Props>> = ({ showModal, toggleModal, signOutFunc }) => showModal ? (
@@ -19,7 +19,7 @@ const FuncComp: FunctionalComponent<Readonly<Props>> = ({ showModal, toggleModal
       </header>
       <section class="modal-card-body">
         Are you sure you want to sign out?
-            </section>
+      </section>
       <footer class="modal-card-foot">
         <button class="button is-success" onClick={signOutFunc}>Sign Out</button>
         <button class="button" onClick={toggleModal}>Cancel</button>

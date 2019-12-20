@@ -20,7 +20,7 @@ const comp: FunctionalComponent<{}> = () => {
       const challenges = await getAllChallenges();
       setState(s => ({ ...s, myGames: { type: "Loaded", data: games }, allChallenges: { type: "Loaded", data: challenges } }));
     };
-    // tslint:disable-next-line: no-floating-promises
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     fetchData();
   }, []);
 

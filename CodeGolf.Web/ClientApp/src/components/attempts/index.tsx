@@ -10,13 +10,13 @@ const Row: FunctionalComponent<{ readonly attempt: Attempt }> = ({ attempt }) =>
   <td>{attempt.score}</td>
   <td>{attempt.timeStamp.toLocaleTimeString()}</td>
   <td>
-    <a target="_blank" href={`/attempt/${attempt.id}`} class="button">
+    <a target="_blank" rel="noopener noreferrer" href={`/attempt/${attempt.id}`} class="button">
       <Icon icon="code" />&nbsp;View Code
     </a>
   </td>
 </tr>);
 
-interface Props { readonly attempts: ReadonlyArray<Attempt>; }
+interface Props { readonly attempts: ReadonlyArray<Attempt> }
 
 const comp: FunctionalComponent<Readonly<Props>> = ({ attempts }) => (<table class="table is-striped is-fullwidth">
   <thead>

@@ -18,7 +18,7 @@ const getScore = (code: string) => code
   .replace(/\s/g, "")
   .length;
 
-interface RefThingey { readonly getModel: () => unknown; }
+interface RefThingey { readonly getModel: () => unknown }
 
 const setErrors = (editorComp: RefThingey, errors?: RunResult) => {
   const doc = editorComp.getModel();
@@ -50,7 +50,7 @@ const Comp: FunctionalComponent<Readonly<Props>> = ({ code, codeChanged, submitC
           value={code}
           height="40vh"
           language="csharp"
-          // tslint:disable-next-line: no-object-mutation
+          // eslint-disable-next-line functional/immutable-data
           editorDidMount={(_: () => string, e: RefThingey) => editor.current = e}
           onChange={(_: unknown, s: string) => codeChanged(s)}
           options={{ minimap: { enabled: false } }}

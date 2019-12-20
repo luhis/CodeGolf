@@ -1,7 +1,7 @@
-import { mount, render, shallow } from "enzyme";
+import { render, shallow } from "enzyme";
 import { h } from "preact";
-import * as Hooks from "preact/hooks";
-import { parseIso } from "ts-date";
+//import * as Hooks from "preact/hooks";
+import { newValidDateOrThrow } from "ts-date";
 
 import AdminContainer from "../routes/admin";
 import Admin from "../routes/admin/funcComp";
@@ -9,15 +9,15 @@ import AttemptContainer from "../routes/attempt";
 import Attempt from "../routes/attempt/funcComp";
 import CodeFileContainer from "../routes/codefile";
 import CodeFile from "../routes/codefile/funcComp";
-import DashboardIndex from "../routes/dashboard";
+//import DashboardIndex from "../routes/dashboard";
 import Dashboard from "../routes/dashboard/funcComp";
 import Demo from "../routes/demo/funcComp";
 import GameComp from "../routes/game/funcComp";
-import GameContainer from "../routes/game";
+//import GameContainer from "../routes/game";
 import Home from "../routes/home";
 import ResultsContainer from "../routes/results";
 import Results from "../routes/results/funcComp";
-import { Game, GameId, Round, RoundId, ChallengeSetId, Hole, HoleId } from "../types/types";
+import { Game, GameId, Round, RoundId, ChallengeSetId, Hole, HoleId, AttemptId } from "../types/types";
 import { LoadingState } from "../types/appTypes";
 
 const games = [{ id: "" as GameId, accessKey: "", rounds: [{ id: "id" as RoundId, name: "name" }] }] as ReadonlyArray<Game>;
@@ -46,7 +46,7 @@ describe("Attempt", () => {
   });
 
   it("renders Attempt Container without crashing", () => {
-    render(<AttemptContainer />);
+    render(<AttemptContainer attemptId={"" as AttemptId}/>);
   });
 
   // const attemptWithCode = {avatar: "ava.png", code:"return hello world", loginName: "", score:1, timeStamp: new Date()};
@@ -59,7 +59,7 @@ describe("CodeFile should", () => {
     render(<CodeFile result={{ type: "Loading" }} />);
   });
   it("renders CodeFileContainer without crashing", () => {
-    render(<CodeFileContainer />);
+    render(<CodeFileContainer code="a" type="debug" />);
   });
 });
 
@@ -165,7 +165,7 @@ describe("Game should", () => {
           challenges: [],
           returnType: "rtn",
           params: []
-        }, start: parseIso("2000-1-1"), end: parseIso("2000-1-1"), closedAt: undefined, hasNext: true, hole: { holeId: "aaa" as HoleId }
+        }, start: newValidDateOrThrow("2000-1-1"), end: newValidDateOrThrow("2000-1-1"), closedAt: undefined, hasNext: true, hole: { holeId: "aaa" as HoleId }
       }
     };
     shallow(<GameComp

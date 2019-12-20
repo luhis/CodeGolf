@@ -1,0 +1,8 @@
+src/template.html
+src/manifest.json
+node_modules
+dist
+**/*.snap
+**/*.png
+**/*.css
+**/assets/**/*
