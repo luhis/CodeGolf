@@ -88,7 +88,6 @@
   "jest": {
     "preset": "jest-preset-preact",
     "setupFiles": [
-      "<rootDir>/src/tests/__mocks__/browserMocks.js",
       "<rootDir>/src/tests/__mocks__/setupTests.js"
     ],
     "testMatch": [
