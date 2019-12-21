@@ -7,9 +7,11 @@
     using System.Threading.Tasks;
     using CodeGolf.Service;
     using CodeGolf.Service.Dtos;
+    using CodeGolf.Service.Handlers;
     using CodeGolf.Web.Attributes;
     using CodeGolf.Web.Mappers;
     using CodeGolf.Web.Models;
+    using MediatR;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using GameDto = CodeGolf.Web.Models.GameDto;
@@ -21,15 +23,15 @@
     public class AdminController : ControllerBase
     {
         private readonly IDashboardService dashboardService;
-        private readonly IResultsService resultsService;
+        private readonly IMediator mediator;
         private readonly ChallengeSetMapper challengeSetMapper;
         private readonly IAdminService adminService;
 
-        public AdminController(IDashboardService dashboardService, ChallengeSetMapper challengeSetMapper, IResultsService resultsService, IAdminService adminService)
+        public AdminController(IDashboardService dashboardService, ChallengeSetMapper challengeSetMapper, IMediator mediator, IAdminService adminService)
         {
             this.dashboardService = dashboardService;
             this.challengeSetMapper = challengeSetMapper;
-            this.resultsService = resultsService;
+            this.mediator = mediator;
             this.adminService = adminService;
         }
 
@@ -68,7 +70,7 @@
         [HttpGet("[action]")]
         public async Task<ActionResult<IReadOnlyList<ResultDto>>> FinalScores(CancellationToken cancellationToken)
         {
-            var r = await this.resultsService.GetFinalScores(cancellationToken);
+            var r = await this.mediator.Send(new FinalScores(), cancellationToken);
             return new ActionResult<IReadOnlyList<ResultDto>>(r);
         }
 

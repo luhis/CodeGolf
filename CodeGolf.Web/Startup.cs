@@ -10,6 +10,7 @@ namespace CodeGolf.Web
     using CodeGolf.Web.Extensions;
     using CodeGolf.Web.HostedServices;
     using CodeGolf.Web.Hubs;
+    using MediatR;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -78,6 +79,7 @@ namespace CodeGolf.Web
                 });
 
             services.AddSignalR();
+            services.AddMediatR(typeof(GameService).Assembly);
             services.AddHostedService<PingService>();
 
             services.AddOpenApiDocument(x =>

@@ -15,7 +15,6 @@
             collection.AddTransient<IErrorMessageTransformer, ErrorMessageTransformer>();
             collection.AddTransient<IAdminService, AdminService>();
             collection.AddTransient<IBestAttemptsService, BestAttemptsService>();
-            collection.AddTransient<IResultsService, ResultsService>();
         }
     }
 }

@@ -1,15 +1,15 @@
-﻿namespace CodeGolf.Service
+﻿namespace CodeGolf.Service.Handlers
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-
     using CodeGolf.Domain.Repositories;
     using CodeGolf.Service.Dtos;
+    using MediatR;
 
-    public class ResultsService : IResultsService
+    public class FinalScoresHandler : IRequestHandler<FinalScores, IReadOnlyList<ResultDto>>
     {
         private readonly IGameRepository gameRepository;
 
@@ -17,14 +17,14 @@
 
         private readonly IBestAttemptsService bestAttemptsService;
 
-        public ResultsService(IGameRepository gameRepository, IUserRepository userRepository, IBestAttemptsService bestAttemptsService)
+        public FinalScoresHandler(IGameRepository gameRepository, IUserRepository userRepository, IBestAttemptsService bestAttemptsService)
         {
             this.gameRepository = gameRepository;
             this.userRepository = userRepository;
             this.bestAttemptsService = bestAttemptsService;
         }
 
-        async Task<IReadOnlyList<ResultDto>> IResultsService.GetFinalScores(CancellationToken cancellationToken)
+        async Task<IReadOnlyList<ResultDto>> IRequestHandler<FinalScores, IReadOnlyList<ResultDto>>.Handle(FinalScores request, CancellationToken cancellationToken)
         {
             var holes = await Task.WhenAll(
                             this.gameRepository.GetGame().Holes.Select(
