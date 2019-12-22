@@ -9,6 +9,7 @@ import Footer from "../components/footer";
 import Header from "../components/header";
 import Icons from "../components/icons";
 import Loading from "../components/loading";
+import Privacy from "../components/privacy";
 import Results from "../components/results";
 import SignOut from "../components/signOut";
 import { AttemptId, ChallengeSetId } from "../types/types";
@@ -96,11 +97,20 @@ describe("CreateGame", () => {
     });
 });
 
+describe("Privacy", () => {
+    it("renders without crashing", () => {
+        render(<Privacy />);
+    });
+});
+
 describe("Results", () => {
     it("renders without crashing", () => {
         render(<Results errors={undefined} />);
     });
     it("renders without crashing", () => {
         render(<Results errors={{ type: "CompileError", errors: [{ col: 1, endCol: 2, line: 1, message: "message" }] }} />);
+    });
+    it("renders without crashing", () => {
+        render(<Results errors={{ type: "Score", val: 99 }} />);
     });
 });
