@@ -2,6 +2,7 @@ import { render, shallow } from "enzyme";
 import { h } from "preact";
 
 import Admin from "../routes/admin/funcComp";
+import AdminIndex from "../routes/admin/index";
 import Attempt from "../routes/attempt/funcComp";
 import CodeFile from "../routes/codefile/funcComp";
 import Dashboard from "../routes/dashboard/funcComp";
@@ -22,6 +23,10 @@ describe("Admin", () => {
   it("renders Admin with content without crashing", () => {
     render(<Admin myGames={{ type: "Loaded", data: games }} allChallenges={{ type: "Loaded", data: challenges }} showCreate={false} toggleCreate={((_: boolean) => undefined)} resetGame={(() => undefined)} />);
   });
+});
+
+it("renders Admin Index without crashing", () => {
+  render(<AdminIndex />);
 });
 
 it("renders Home without crashing", () => {
@@ -79,6 +84,33 @@ it("renders GameComp without crashing", () => {
     challenge={{ type: "Loading" }} codeChanged={_ => Promise.resolve()} onCodeClick={() => undefined} submitCode={(_) => undefined} />);
 });
 
+it("renders GameComp with errors without crashing", () => {
+  shallow(<GameComp
+    code="aaa"
+    errors={{ type: "Loaded", data: { type: "CompileError", errors: [{ line: 1, col: 2, endCol: 3, message: "error" }] } }}
+    runErrors={{ type: "RunResultSet", errors: [] }}
+    challenge={{ type: "Loading" }} codeChanged={_ => Promise.resolve()} onCodeClick={() => undefined} submitCode={(_) => undefined} />);
+});
+
+it("renders Demo with score without crashing", () => {
+  shallow(<GameComp
+    code="aaa"
+    errors={{ type: "Loaded", data: { type: "Score", val: 30 } }}
+    runErrors={undefined}
+    challenge={{ type: "Loading" }} codeChanged={_ => Promise.resolve()} onCodeClick={() => undefined} submitCode={(_) => undefined} />);
+});
+
 it("renders Results without crashing", () => {
   render(<Results results={{ type: "Loading" }} />);
+});
+
+it("renders Results with items without crashing", () => {
+  render(<Results results={{
+    type: "Loaded", data: [{
+      score: 10,
+      rank: 1,
+      loginName: "matt",
+      avatarUri: "avatar.png"
+    }]
+  }} />);
 });
