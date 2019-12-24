@@ -90,7 +90,7 @@ describe("Demo should", () => {
     shallow(<Demo
       code="aaa"
       errors={{ type: "Loading" }}
-      runErrors={{type: "RunResultSet", errors: [{error: {message: "aaa", found: ""}}]}}
+      runErrors={{ type: "RunResultSet", errors: [{ error: { message: "aaa", found: "" } }] }}
       challenge={{ type: "Loading" }}
       codeChanged={_ => Promise.resolve()}
       onCodeClick={() => undefined}

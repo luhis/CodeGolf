@@ -7,7 +7,7 @@
         public static void Add(IServiceCollection services)
         {
             services.AddSingleton<IGetCaptchaValue, GetCaptchaValue>();
-            services.AddSingleton<IRecaptchaVerifier, RecaptchaVerifier>();
+            services.AddHttpClient<IRecaptchaVerifier, RecaptchaVerifier>();
         }
     }
 }
