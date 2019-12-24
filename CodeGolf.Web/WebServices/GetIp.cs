@@ -5,6 +5,6 @@ namespace CodeGolf.Web.WebServices
 
     public class GetIp : IGetIp
     {
-        IPAddress IGetIp.GetIp(HttpRequest req) => req.HttpContext.Connection.RemoteIpAddress;
+        IPAddress IGetIp.GetIp(HttpContext httpContext) => httpContext.Connection.RemoteIpAddress;
     }
 }

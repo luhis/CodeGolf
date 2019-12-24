@@ -27,7 +27,7 @@
         {
             if (string.Equals(context.HttpContext.Request.Method, "POST", StringComparison.InvariantCultureIgnoreCase))
             {
-                var ip = this.getIp.GetIp(context.HttpContext.Request);
+                var ip = this.getIp.GetIp(context.HttpContext);
                 var recaptcha = this.getCaptchaValue.Get(context.HttpContext.Request);
                 if (!await this.recaptchaVerifier.IsValid(recaptcha, ip))
                 {
@@ -42,7 +42,7 @@
         {
             if (string.Equals(context.HttpContext.Request.Method, "POST", StringComparison.InvariantCultureIgnoreCase))
             {
-                var ip = this.getIp.GetIp(context.HttpContext.Request);
+                var ip = this.getIp.GetIp(context.HttpContext);
                 var recaptcha = context.HttpContext.Request.Headers["g-recaptcha-response"];
                 if (!await this.recaptchaVerifier.IsValid(recaptcha, ip))
                 {

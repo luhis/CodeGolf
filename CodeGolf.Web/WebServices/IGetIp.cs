@@ -5,6 +5,6 @@ namespace CodeGolf.Web.WebServices
 
     public interface IGetIp
     {
-        IPAddress GetIp(HttpRequest req);
+        IPAddress GetIp(HttpContext httpContext);
     }
 }

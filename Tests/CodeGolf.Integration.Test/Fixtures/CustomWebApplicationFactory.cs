@@ -5,6 +5,8 @@
     using System.Linq;
     using CodeGolf.Integration.Test.Tooling;
     using CodeGolf.Persistence;
+    using CodeGolf.Recaptcha;
+    using CodeGolf.Web.WebServices;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc.Authorization;
     using Microsoft.AspNetCore.Mvc.Testing;
@@ -22,14 +24,13 @@
         {
             builder.ConfigureServices(services =>
             {
-                // Remove the app's ApplicationDbContext registration.
-                var descriptor = services.SingleOrDefault(
-                    d => d.ServiceType ==
-                         typeof(DbContextOptions<CodeGolfContext>));
+                var toRemove = new[] { typeof(DbContextOptions<CodeGolfContext>), typeof(IGetIp), typeof(IRecaptchaVerifier) };
+                var descriptor = services.Where(
+                    d => toRemove.Contains(d.ServiceType)).ToList();
 
-                if (descriptor != null)
+                foreach (var d in descriptor)
                 {
-                    services.Remove(descriptor);
+                    services.Remove(d);
                 }
 
                 // Add ApplicationDbContext using an in-memory database for testing.
@@ -37,6 +38,8 @@
                 {
                     options.UseInMemoryDatabase("InMemoryDbForTesting");
                 });
+                services.AddSingleton<IGetIp, GetMockIp>();
+                services.AddSingleton<IRecaptchaVerifier, MockRecaptchaVerifier>();
 
                 // Build the service provider.
                 var sp = services.BuildServiceProvider();
