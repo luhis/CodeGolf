@@ -7,7 +7,10 @@
     using CodeGolf.Persistence;
     using CodeGolf.Recaptcha;
     using CodeGolf.Web.WebServices;
+    using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Authorization;
     using Microsoft.AspNetCore.Mvc.Testing;
     using Microsoft.AspNetCore.TestHost;
@@ -20,13 +23,29 @@
         : WebApplicationFactory<TStartup>
         where TStartup : class
     {
+        private static readonly IReadOnlyList<Type> ToRemove = new[]
+        {
+            typeof(DbContextOptions<CodeGolfContext>),
+            typeof(IGetIp),
+            typeof(IRecaptchaVerifier),
+            typeof(IAuthenticationService),
+            typeof(IClaimsTransformation),
+            typeof(IAuthenticationHandlerProvider),
+            typeof(IAuthenticationSchemeProvider),
+            ////typeof(IAuthorizationService),
+            ////typeof(IAuthorizationEvaluator),
+            typeof(IAuthorizationHandler),
+            ////typeof(IAuthorizationHandlerContextFactory),
+            ////typeof(IAuthorizationHandlerProvider),
+            ////typeof(IAuthorizationPolicyProvider),
+        };
+
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             builder.ConfigureServices(services =>
             {
-                var toRemove = new[] { typeof(DbContextOptions<CodeGolfContext>), typeof(IGetIp), typeof(IRecaptchaVerifier) };
                 var descriptor = services.Where(
-                    d => toRemove.Contains(d.ServiceType)).ToList();
+                    d => ToRemove.Contains(d.ServiceType)).ToList();
 
                 foreach (var d in descriptor)
                 {
@@ -81,12 +100,12 @@
                 }));
 
             builder.ConfigureTestServices(
-                services => services.AddMvc(
-                    options =>
-                    {
-                        options.Filters.Add(new AllowAnonymousFilter());
-                        options.Filters.Add(new FakeUserFilter());
-                    }));
+                services =>
+                {
+                    services.AddAuthentication("Test")
+                    .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>(
+                        "Test", options => { });
+                });
         }
     }
 }

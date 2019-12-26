@@ -37,16 +37,17 @@
         public static IServiceCollection AddGitHubAuth(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = "GitHub";
-            })
-            .AddCookie(configureOptions: cookieAuthenticationOptions => cookieAuthenticationOptions.Events.OnRedirectToAccessDenied = context =>
-            {
-                context.Response.StatusCode = 403;
-                return Task.CompletedTask;
-            })
+                {
+                    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = "GitHub";
+                })
+            .AddCookie(configureOptions: cookieAuthenticationOptions =>
+                cookieAuthenticationOptions.Events.OnRedirectToAccessDenied = context =>
+                {
+                    context.Response.StatusCode = 403;
+                    return Task.CompletedTask;
+                })
             .AddOAuth("GitHub", options =>
             {
                 options.ClientId = configuration["GitHub:ClientId"];
