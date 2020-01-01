@@ -105,12 +105,12 @@ describe("Privacy", () => {
 
 describe("Results", () => {
     it("renders without crashing", () => {
-        render(<Results errors={undefined} />);
+        render(<Results runResult={undefined} />);
     });
     it("renders without crashing", () => {
-        render(<Results errors={{ type: "CompileError", errors: [{ col: 1, endCol: 2, line: 1, message: "message" }] }} />);
+        render(<Results runResult={{ type: "CompileError", errors: [{ col: 1, endCol: 2, line: 1, message: "message" }] }} />);
     });
     it("renders without crashing", () => {
-        render(<Results errors={{ type: "Score", val: 99 }} />);
+        render(<Results runResult={{ type: "Score", val: 99 }} />);
     });
 });

@@ -56,7 +56,7 @@ describe("Demo should", () => {
   it("renders Demo without crashing", () => {
     shallow(<Demo
       code="aaa"
-      errors={{ type: "Loading" }}
+      runResult={{ type: "Loading" }}
       runErrors={undefined}
       challenge={{ type: "Loading" }}
       codeChanged={_ => Promise.resolve()}
@@ -67,7 +67,7 @@ describe("Demo should", () => {
   it("renders Demo with errors without crashing", () => {
     shallow(<Demo
       code="aaa"
-      errors={{ type: "Loaded", data: { type: "CompileError", errors: [{ line: 1, col: 2, endCol: 3, message: "error" }] } }}
+      runResult={{ type: "Loaded", data: { type: "CompileError", errors: [{ line: 1, col: 2, endCol: 3, message: "error" }] } }}
       runErrors={undefined}
       challenge={{ type: "Loading" }}
       codeChanged={_ => Promise.resolve()}
@@ -78,7 +78,7 @@ describe("Demo should", () => {
   it("renders Demo with score without crashing", () => {
     shallow(<Demo
       code="aaa"
-      errors={{ type: "Loaded", data: { type: "Score", val: 30 } }}
+      runResult={{ type: "Loaded", data: { type: "Score", val: 30 } }}
       runErrors={undefined}
       challenge={{ type: "Loading" }}
       codeChanged={_ => Promise.resolve()}
@@ -89,7 +89,7 @@ describe("Demo should", () => {
   it("renders Demo without crashing", () => {
     shallow(<Demo
       code="aaa"
-      errors={{ type: "Loading" }}
+      runResult={{ type: "Loading" }}
       runErrors={{ type: "RunResultSet", errors: [{ error: { message: "aaa", found: "" } }] }}
       challenge={{ type: "Loading" }}
       codeChanged={_ => Promise.resolve()}
@@ -101,7 +101,7 @@ describe("Demo should", () => {
 it("renders GameComp without crashing", () => {
   shallow(<GameComp
     code="aaa"
-    errors={{ type: "Loading" }}
+    runResult={{ type: "Loading" }}
     runErrors={{ type: "RunResultSet", errors: [] }}
     challenge={{ type: "Loading" }} codeChanged={_ => Promise.resolve()} onCodeClick={() => undefined} submitCode={(_) => undefined} />);
 });
@@ -109,7 +109,7 @@ it("renders GameComp without crashing", () => {
 it("renders GameComp with errors without crashing", () => {
   shallow(<GameComp
     code="aaa"
-    errors={{ type: "Loaded", data: { type: "CompileError", errors: [{ line: 1, col: 2, endCol: 3, message: "error" }] } }}
+    runResult={{ type: "Loaded", data: { type: "CompileError", errors: [{ line: 1, col: 2, endCol: 3, message: "error" }] } }}
     runErrors={{ type: "RunResultSet", errors: [] }}
     challenge={{ type: "Loading" }} codeChanged={_ => Promise.resolve()} onCodeClick={() => undefined} submitCode={(_) => undefined} />);
 });
@@ -117,7 +117,7 @@ it("renders GameComp with errors without crashing", () => {
 it("renders Demo with score without crashing", () => {
   shallow(<GameComp
     code="aaa"
-    errors={{ type: "Loaded", data: { type: "Score", val: 30 } }}
+    runResult={{ type: "Loaded", data: { type: "Score", val: 30 } }}
     runErrors={undefined}
     challenge={{ type: "Loading" }} codeChanged={_ => Promise.resolve()} onCodeClick={() => undefined} submitCode={(_) => undefined} />);
 });
