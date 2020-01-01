@@ -15,7 +15,7 @@ interface Funcs {
 
 type Props = {
   readonly code: string;
-  readonly errors: LoadingState<Score | CompileError | undefined>;
+  readonly runResult: LoadingState<Score | CompileError | undefined>;
   readonly runErrors: RunResultSet | undefined;
   readonly challenge: LoadingState<Hole | undefined>;
 } & Funcs;
@@ -26,14 +26,14 @@ const PleaseWait: FunctionalComponent = () => (<div class="notification is-info"
 
 const HasChallenge: FunctionalComponent<{
   readonly code: string;
-  readonly errors: LoadingState<Score | CompileError | undefined>;
+  readonly runResult: LoadingState<Score | CompileError | undefined>;
   readonly runErrors: RunResultSet | undefined;
   readonly challenge: Hole | undefined;
-} & Funcs> = ({ challenge, code, errors, runErrors, codeChanged, submitCode, onCodeClick }) => (
+} & Funcs> = ({ challenge, code, runResult, runErrors, codeChanged, submitCode, onCodeClick }) => (
   challenge ?
     (<div class="columns">
       <div class="column is-half">
-        <CodeEditor code={code} codeChanged={codeChanged} errors={ifLoaded(errors, e => e, () => undefined)} submitCode={submitCode} />
+        <CodeEditor code={code} codeChanged={codeChanged} runResult={ifLoaded(runResult, e => e, () => undefined)} submitCode={submitCode} />
       </div>
       <div class="column is-half">
         <ChallengeComp
@@ -42,17 +42,17 @@ const HasChallenge: FunctionalComponent<{
           onCodeClick={onCodeClick}
         />
 
-        {ifLoaded(errors, e =>
-          e ? <ErrorsComp errors={e} /> : null, () => <Loading />)}
+        {ifLoaded(runResult, e =>
+          e ? <ErrorsComp runResult={e} /> : null, () => <Loading />)}
       </div>
     </div>) : <PleaseWait />
 );
 
-const FuncComp: FunctionalComponent<Props> = ({ code, errors, runErrors, challenge, codeChanged, onCodeClick, submitCode }) => {
+const FuncComp: FunctionalComponent<Props> = ({ code, runResult, runErrors, challenge, codeChanged, onCodeClick, submitCode }) => {
   return (<section class="section">
     <h1 class="title">Game</h1>
     {ifLoaded(challenge, c =>
-      <HasChallenge challenge={c} code={code} errors={errors} runErrors={runErrors} codeChanged={codeChanged} onCodeClick={onCodeClick} submitCode={submitCode} />,
+      <HasChallenge challenge={c} code={code} runResult={runResult} runErrors={runErrors} codeChanged={codeChanged} onCodeClick={onCodeClick} submitCode={submitCode} />,
       () => <Loading />)}
   </section>);
 };

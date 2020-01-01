@@ -2,11 +2,11 @@ import { ControlledEditor } from "@monaco-editor/react";
 import { FunctionalComponent, h } from "preact";
 import { useRef } from "preact/hooks";
 
-import { RunResult } from "../../types/types";
+import { CompileError, RunResult, Score } from "../../types/types";
 
 interface Props {
     readonly code: string;
-    readonly errors?: RunResult;
+    readonly runResult: Score | CompileError | undefined;
     readonly codeChanged: (s: string) => void;
     readonly submitCode: (s: string) => void;
 }
@@ -37,10 +37,10 @@ const setErrors = (editorComp: RefThingey, errors?: RunResult) => {
     }
 };
 
-const Comp: FunctionalComponent<Readonly<Props>> = ({ code, codeChanged, submitCode, errors }) => {
+const Comp: FunctionalComponent<Readonly<Props>> = ({ code, codeChanged, submitCode, runResult }) => {
     const editor = useRef<RefThingey | undefined>(undefined);
     if (editor.current) {
-        setErrors(editor.current, errors);
+        setErrors(editor.current, runResult);
     }
     return (<div>
         <div class="field">

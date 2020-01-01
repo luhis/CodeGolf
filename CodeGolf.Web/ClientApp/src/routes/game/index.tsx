@@ -13,7 +13,7 @@ interface State {
   readonly gameId: GameId | undefined;
   readonly challenge: LoadingState<Hole | undefined>;
   readonly code: string;
-  readonly errors: LoadingState<Score | CompileError | undefined>;
+  readonly runResult: LoadingState<Score | CompileError | undefined>;
   readonly runErrors: RunResultSet | undefined;
   readonly connection: HubConnection;
 }
@@ -42,7 +42,7 @@ export default class Comp extends Component<{}, State> {
       const challenge = await getCurrentHole();
       this.setState(s => ({ ...s, challenge: { type: "Loaded", data: challenge }, errors: { type: "Loaded", data: undefined }, code: "" }));
     });
-    this.state = { challenge: { type: "Loading" }, code: "", errors: { type: "Loaded", data: undefined }, runErrors: undefined, connection, gameId: undefined };
+    this.state = { challenge: { type: "Loading" }, code: "", runResult: { type: "Loaded", data: undefined }, runErrors: undefined, connection, gameId: undefined };
   }
   public readonly componentDidMount = async () => {
     const challenge = await getCurrentHole();
@@ -51,8 +51,8 @@ export default class Comp extends Component<{}, State> {
   public readonly componentWillUnmount = async () => {
     await this.state.connection.stop();
   }
-  public readonly render = (_: RenderableProps<{}>, { errors, runErrors, challenge, code }: State) =>
-    <FuncComp code={code} onCodeClick={this.onCodeClick} errors={errors} runErrors={runErrors} challenge={challenge} codeChanged={this.codeChanged} submitCode={this.submitCode} />
+  public readonly render = (_: RenderableProps<{}>, { runResult, runErrors, challenge, code }: State) =>
+    <FuncComp code={code} onCodeClick={this.onCodeClick} runResult={runResult} runErrors={runErrors} challenge={challenge} codeChanged={this.codeChanged} submitCode={this.submitCode} />
   private readonly onCodeClick = () => {
     if (this.state.code === "") {
       ifLoaded(this.state.challenge, c => {

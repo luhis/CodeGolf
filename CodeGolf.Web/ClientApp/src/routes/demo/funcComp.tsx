@@ -11,7 +11,7 @@ import { ChallengeSet, CompileError, RunResultSet, Score } from "../../types/typ
 
 interface Props {
   readonly code: string;
-  readonly errors: LoadingState<Score | CompileError | undefined>;
+  readonly runResult: LoadingState<Score | CompileError | undefined>;
   readonly runErrors: RunResultSet | undefined;
   readonly challenge: LoadingState<ChallengeSet>;
   readonly codeChanged: (s: string) => Promise<void>;
@@ -19,7 +19,7 @@ interface Props {
   readonly submitCode: (code: string, recaptcha: string) => void;
 }
 
-const FuncComp: FunctionalComponent<Readonly<Props>> = ({ code, errors, runErrors, challenge, codeChanged, onCodeClick, submitCode }) => {
+const FuncComp: FunctionalComponent<Readonly<Props>> = ({ code, runResult, runErrors, challenge, codeChanged, onCodeClick, submitCode }) => {
   const verifyCallback = (response: string) => {
     submitCode(code, response);
   };
@@ -33,7 +33,7 @@ const FuncComp: FunctionalComponent<Readonly<Props>> = ({ code, errors, runError
     <h1 class="title">Demo</h1>
     <div class="columns">
       <div class="column is-half">
-        <CodeEditor code={code} codeChanged={codeChanged} errors={ifLoaded(errors, e => e, () => undefined)} submitCode={executeCaptcha} />
+        <CodeEditor code={code} codeChanged={codeChanged} runResult={ifLoaded(runResult, e => e, () => undefined)} submitCode={executeCaptcha} />
       </div>
       <div class="column is-half">
         {ifLoaded(challenge, c => <ChallengeComp
@@ -41,8 +41,8 @@ const FuncComp: FunctionalComponent<Readonly<Props>> = ({ code, errors, runError
           onCodeClick={onCodeClick}
           errors={runErrors}
         />, () => <Loading />)}
-        {ifLoaded(errors, some =>
-          some ? <ErrorsComp errors={some} /> : null, () => <Loading />)}
+        {ifLoaded(runResult, some =>
+          some ? <ErrorsComp runResult={some} /> : null, () => <Loading />)}
       </div>
     </div>
     <ReCAPTCHA

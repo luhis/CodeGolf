@@ -11,7 +11,7 @@ interface State {
   readonly challenge: LoadingState<ChallengeSet>;
   readonly code: string;
   readonly runErrors: RunResultSet | undefined;
-  readonly errors: LoadingState<Score | CompileError | undefined>;
+  readonly runResult: LoadingState<Score | CompileError | undefined>;
 }
 
 export default class Comp extends Component<{}, State> {
@@ -33,14 +33,14 @@ export default class Comp extends Component<{}, State> {
 
   constructor() {
     super();
-    this.state = { challenge: { type: "Loading" }, code: "", errors: { type: "Loaded", data: undefined }, runErrors: undefined };
+    this.state = { challenge: { type: "Loading" }, code: "", runResult: { type: "Loaded", data: undefined }, runErrors: undefined };
   }
   public readonly componentDidMount = async () => {
     const challenge = await getDemoChallenge();
     this.setState(s => ({ ...s, challenge: { type: "Loaded", data: challenge } }));
   }
-  public readonly render = (_: RenderableProps<{}>, { errors, runErrors, code, challenge }: State) =>
-    <FuncComp code={code} runErrors={runErrors} errors={errors} challenge={challenge} codeChanged={this.codeChanged} submitCode={this.submitCode} onCodeClick={this.onCodeClick} />
+  public readonly render = (_: RenderableProps<{}>, { runResult, runErrors, code, challenge }: State) =>
+    <FuncComp code={code} runErrors={runErrors} runResult={runResult} challenge={challenge} codeChanged={this.codeChanged} submitCode={this.submitCode} onCodeClick={this.onCodeClick} />
   private readonly onCodeClick = () => {
     if (this.state.code === "") {
       ifLoaded(this.state.challenge, c => {

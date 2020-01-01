@@ -5,18 +5,18 @@ import ErrorsView from "./errors";
 import Success from "./success";
 
 interface Props {
-    readonly errors: Score | CompileError | undefined;
+    readonly runResult: Score | CompileError | undefined;
 }
 
-const Comp: FunctionalComponent<Props> = ({ errors }) => {
-    if (!errors) {
+const Comp: FunctionalComponent<Props> = ({ runResult }) => {
+    if (!runResult) {
         return null;
     }
-    switch (errors.type) {
+    switch (runResult.type) {
         case "CompileError":
-            return <ErrorsView errors={errors} />;
+            return <ErrorsView errors={runResult} />;
         case "Score":
-            return <Success score={errors} />;
+            return <Success score={runResult} />;
     }
 };
 
