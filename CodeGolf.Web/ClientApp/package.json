@@ -32,7 +32,7 @@
   ],
   "devDependencies": {
     "@types/jest": "24.0.25",
-    "@types/webpack-env": "1.14.1",
+    "@types/webpack-env": "1.15.0",
     "enzyme": "3.11.0",
     "enzyme-adapter-preact-pure": "2.2.0",
     "husky": "3.1.0",
