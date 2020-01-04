@@ -2413,15 +2413,20 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-critters-webpack-plugin@^1.3.3:
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/critters-webpack-plugin/-/critters-webpack-plugin-1.3.3.tgz#e52a70042eecc81ea1201f947ef8b65b271bc71f"
+critters-webpack-plugin@^2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/critters-webpack-plugin/-/critters-webpack-plugin-2.5.0.tgz#32deb4c5b1590bc8f943638dbf379170043b7dab"
+  integrity sha512-O41TSPV2orAfrV6kSVC0SivZCtVkeypCNKb7xtrbqE/CfjrHeRaFaGuxglcjOI2IGf+oNg6E+ZoOktdlhXPTIQ==
   dependencies:
     css "^2.2.1"
+    cssnano "^4.1.7"
     jsdom "^12.0.0"
+    minimatch "^3.0.4"
     parse5 "^4.0.0"
+    postcss "^7.0.5"
     pretty-bytes "^4.0.2"
-    webpack-sources "^1.1.0"
+    webpack-log "^2.0.0"
+    webpack-sources "^1.3.0"
 
 cross-spawn-promise@^0.10.1:
   version "0.10.1"
@@ -2653,7 +2658,7 @@ cssnano-util-same-parent@^4.0.0:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/cssnano-util-same-parent/-/cssnano-util-same-parent-4.0.1.tgz#574082fb2859d2db433855835d9a8456ea18bbf3"
 
-cssnano@^4.1.10:
+cssnano@^4.1.10, cssnano@^4.1.7:
   version "4.1.10"
   resolved "https://registry.yarnpkg.com/cssnano/-/cssnano-4.1.10.tgz#0ac41f0b13d13d465487e111b778d42da631b8b2"
   dependencies:
@@ -7032,9 +7037,10 @@ preact-cli-plugin-env-vars@1.2.1:
     dotenv "^4.0.0"
     resolve-env-vars "^1.0.0"
 
-preact-cli@3.0.0-rc.6:
-  version "3.0.0-rc.6"
-  resolved "https://registry.yarnpkg.com/preact-cli/-/preact-cli-3.0.0-rc.6.tgz#7c23bc5105651a24c9d528014ff0917d9ddcbe15"
+preact-cli@3.0.0-rc.7:
+  version "3.0.0-rc.7"
+  resolved "https://registry.yarnpkg.com/preact-cli/-/preact-cli-3.0.0-rc.7.tgz#a58ab88ae6d0fb13224bcc39566915ad27be379b"
+  integrity sha512-zhqZ+t7gvEtr8Tr6dxymMRgmz507eIvfXeZn7wtZXgwMa2kC1VUAnC8uL9QGNgiCimyGwVDPWBxiYE3Uwekkew==
   dependencies:
     "@babel/core" "^7.5.5"
     "@babel/plugin-proposal-class-properties" "^7.5.5"
@@ -7055,7 +7061,7 @@ preact-cli@3.0.0-rc.6:
     compression-webpack-plugin "^3.0.0"
     console-clear "^1.0.0"
     copy-webpack-plugin "^5.0.4"
-    critters-webpack-plugin "^1.3.3"
+    critters-webpack-plugin "^2.5.0"
     cross-spawn-promise "^0.10.1"
     css-loader "^3.1.0"
     ejs-loader "^0.3.3"
@@ -9182,7 +9188,7 @@ webpack-plugin-replace@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/webpack-plugin-replace/-/webpack-plugin-replace-1.2.0.tgz#3f20db96237400433231e35ea76d9be3f7128916"
 
-webpack-sources@^1.0.1, webpack-sources@^1.1.0, webpack-sources@^1.4.0, webpack-sources@^1.4.1:
+webpack-sources@^1.0.1, webpack-sources@^1.1.0, webpack-sources@^1.3.0, webpack-sources@^1.4.0, webpack-sources@^1.4.1:
   version "1.4.3"
   resolved "https://registry.yarnpkg.com/webpack-sources/-/webpack-sources-1.4.3.tgz#eedd8ec0b928fbf1cbfe994e22d2d890f330a933"
   dependencies:
