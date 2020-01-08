@@ -40,6 +40,7 @@
                             b.AddStyleSrc().Self().UnsafeInline().Blob().From(jsDelivr);
                             b.AddConnectSrc().Self().From("https://localhost:*").From("https://github.com");
                             b.AddWorkerSrc().Self().Data();
+                            b.AddFontSrc().Self().From(jsDelivr);
                         }));
         }
 
