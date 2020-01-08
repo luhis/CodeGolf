@@ -32,7 +32,6 @@
   ],
   "devDependencies": {
     "@types/jest": "24.0.25",
-    "@types/webpack-env": "1.15.0",
     "enzyme": "3.11.0",
     "enzyme-adapter-preact-pure": "2.2.0",
     "husky": "4.0.1",
@@ -43,6 +42,7 @@
   },
   "dependencies": {
     "@aspnet/signalr": "1.1.4",
+    "@types/webpack-env": "1.15.0",
     "@fortawesome/fontawesome-svg-core": "1.2.26",
     "@fortawesome/free-solid-svg-icons": "5.12.0",
     "@fortawesome/react-fontawesome": "0.1.8",
