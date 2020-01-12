@@ -20,18 +20,18 @@ interface State {
 
 export default class Comp extends Component<{}, State> {
   private readonly tryCompile = debounce(async () => {
-    const errors = {
+    const runResult = {
       type: "Loaded",
       data: {
         type: "CompileError",
         errors: await tryCompile(this.state.code)
       }
     } as LoadingState<CompileError>;
-    this.setState(s => ({ ...s, errors }));
+    this.setState(s => ({ ...s, runResult }));
   }, 1000);
 
   private readonly codeChanged = debounce(async (code: string) => {
-    this.setState(s => ({ ...s, code, errors: { type: "Loading" } }));
+    this.setState(s => ({ ...s, code, runResult: { type: "Loading" } }));
     await this.tryCompile();
   }, 250);
 
@@ -40,7 +40,7 @@ export default class Comp extends Component<{}, State> {
     const connection = Notification(async () => {
       this.setState(s => ({ ...s, challenge: { type: "Loading" } }));
       const challenge = await getCurrentHole();
-      this.setState(s => ({ ...s, challenge: { type: "Loaded", data: challenge }, errors: { type: "Loaded", data: undefined }, code: "" }));
+      this.setState(s => ({ ...s, challenge: { type: "Loaded", data: challenge }, runResult: { type: "Loaded", data: undefined }, code: "" }));
     });
     this.state = { challenge: { type: "Loading" }, code: "", runResult: { type: "Loaded", data: undefined }, runErrors: undefined, connection, gameId: undefined };
   }
@@ -66,17 +66,17 @@ export default class Comp extends Component<{}, State> {
   private readonly submitCode = async (code: string) => {
     ifLoaded(this.state.challenge, async c => {
       if (c) {
-        this.setState(s => ({ ...s, code, errors: { type: "Loading" } }));
+        this.setState(s => ({ ...s, code, runResult: { type: "Loading" } }));
         const r = await submitChallenge(code, c.hole.holeId);
         if (r.type === "RunResultSet") {
-          this.setState(s => ({ ...s, errors: { type: "Loaded", data: undefined }, runErrors: r }));
+          this.setState(s => ({ ...s, runResult: { type: "Loaded", data: undefined }, runErrors: r }));
         }
         else if (r.type === "Score") {
           const passedChallenges = c.challengeSet.challenges.map(_ => ({ error: undefined }));
-          this.setState(s => ({ ...s, errors: { type: "Loaded", data: r }, runErrors: { type: "RunResultSet", errors: passedChallenges } }));
+          this.setState(s => ({ ...s, runResult: { type: "Loaded", data: r }, runErrors: { type: "RunResultSet", errors: passedChallenges } }));
         }
         else {
-          this.setState(s => ({ ...s, errors: { type: "Loaded", data: r } }));
+          this.setState(s => ({ ...s, runResult: { type: "Loaded", data: r } }));
         }
       }
     }, () => undefined);

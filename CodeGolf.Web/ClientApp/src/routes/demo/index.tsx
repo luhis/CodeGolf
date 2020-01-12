@@ -16,18 +16,18 @@ interface State {
 
 export default class Comp extends Component<{}, State> {
   private readonly tryCompile = debounce(async () => {
-    const errors = {
+    const runResult = {
       type: "Loaded",
       data: {
         type: "CompileError",
         errors: await tryCompile(this.state.code)
       }
     } as LoadingState<CompileError>;
-    this.setState(s => ({ ...s, errors }));
+    this.setState(s => ({ ...s, runResult }));
   }, 1000);
 
   private readonly codeChanged = debounce(async (code: string) => {
-    this.setState(s => ({ ...s, code, errors: { type: "Loading" } }));
+    this.setState(s => ({ ...s, code, runResult: { type: "Loading" } }));
     await this.tryCompile();
   }, 250);
 
@@ -50,17 +50,17 @@ export default class Comp extends Component<{}, State> {
     }
   }
   private readonly submitCode = async (code: string, reCaptcha: string) => {
-    this.setState(s => ({ ...s, errors: { type: "Loading" } }));
+    this.setState(s => ({ ...s, runResult: { type: "Loading" } }));
     const r = await submitDemo(code, reCaptcha);
     if (r.type === "RunResultSet") {
-      this.setState(s => ({ ...s, errors: { type: "Loaded", data: undefined }, runErrors: r }));
+      this.setState(s => ({ ...s, runResult: { type: "Loaded", data: undefined }, runErrors: r }));
     }
     else if (r.type === "Score") {
       const passedChallenges = ifLoaded(this.state.challenge, c => c.challenges.map(_ => ({ error: undefined })), () => []);
-      this.setState(s => ({ ...s, errors: { type: "Loaded", data: r }, runErrors: { type: "RunResultSet", errors: passedChallenges } }));
+      this.setState(s => ({ ...s, runResult: { type: "Loaded", data: r }, runErrors: { type: "RunResultSet", errors: passedChallenges } }));
     }
     else {
-      this.setState(s => ({ ...s, errors: { type: "Loaded", data: r } }));
+      this.setState(s => ({ ...s, runResult: { type: "Loaded", data: r } }));
     }
   }
 }
