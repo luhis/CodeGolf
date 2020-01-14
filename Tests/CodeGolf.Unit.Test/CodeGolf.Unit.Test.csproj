@@ -22,7 +22,7 @@
     </PackageReference>
     <PackageReference Include="FluentAssertions" Version="5.10.0" />
     <PackageReference Include="FluentAssertions.OneOf" Version="0.0.5" />
-    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.1.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
     <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="16.4.43" />
     <PackageReference Include="Moq" Version="4.13.1" />
