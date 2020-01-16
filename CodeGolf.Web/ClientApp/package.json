@@ -59,7 +59,7 @@
     "jest": "24.9.0",
     "lodash.debounce": "4.0.8",
     "markdown-to-jsx": "6.10.3",
-    "node-sass": "4.13.0",
+    "node-sass": "4.13.1",
     "per-env": "1.0.2",
     "preact": "10.2.1",
     "preact-cli": "3.0.0-rc.7",
