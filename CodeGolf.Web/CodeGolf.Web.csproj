@@ -22,7 +22,7 @@
     <PackageReference Include="MediatR" Version="8.0.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.1" />
-    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="16.4.43" />
+    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="16.4.45" />
     <PackageReference Include="NetEscapades.AspNetCore.SecurityHeaders" Version="0.11.0" />
     <PackageReference Include="NSwag.AspNetCore" Version="13.2.2" />
     <PackageReference Include="NSwag.MSBuild" Version="13.2.2">
