@@ -56,7 +56,7 @@
     "copy-webpack-plugin": "5.1.1",
     "css-loader": "1.0.1",
     "identity-obj-proxy": "3.0.0",
-    "jest": "24.9.0",
+    "jest": "25.1.0",
     "lodash.debounce": "4.0.8",
     "markdown-to-jsx": "6.10.3",
     "node-sass": "4.13.1",
