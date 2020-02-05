@@ -43,8 +43,8 @@
   },
   "dependencies": {
     "@aspnet/signalr": "1.1.4",
-    "@fortawesome/fontawesome-svg-core": "1.2.26",
-    "@fortawesome/free-solid-svg-icons": "5.12.0",
+    "@fortawesome/fontawesome-svg-core": "1.2.27",
+    "@fortawesome/free-solid-svg-icons": "5.12.1",
     "@fortawesome/react-fontawesome": "0.1.8",
     "@monaco-editor/react": "3.0.1",
     "@types/classnames": "2.2.9",
