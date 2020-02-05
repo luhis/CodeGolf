@@ -58,7 +58,7 @@
     "identity-obj-proxy": "3.0.0",
     "jest": "25.1.0",
     "lodash.debounce": "4.0.8",
-    "markdown-to-jsx": "6.10.3",
+    "markdown-to-jsx": "6.11.0",
     "node-sass": "4.13.1",
     "per-env": "1.0.2",
     "preact": "10.2.1",
