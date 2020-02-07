@@ -24,11 +24,12 @@
             using (var dll = new MemoryStream(compileResult.Dll))
             using (var pdb = new MemoryStream(compileResult.Pdb))
             {
+                var context = new CollectibleAssemblyLoadContext();
                 var obj = AssemblyLoadContext.Default.LoadFromStream(dll, pdb);
                 var type = obj.GetType(className);
                 var inst = Activator.CreateInstance(type);
                 var fun = GetMethod(funcName, type);
-                return await Task.WhenAll(
+                var r = await Task.WhenAll(
                     args.Select(
                         async a =>
                         {
@@ -57,6 +58,8 @@
                                     $"Runtime Error line {line} - {final.Message}");
                             }
                         }));
+                context.Unload();
+                return r;
             }
         }
 
