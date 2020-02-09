@@ -1,6 +1,7 @@
 import { mount, render, shallow } from "enzyme";
 import { h } from "preact";
 import * as Hooks from "preact/hooks";
+import { parseIso } from "ts-date";
 
 import AdminContainer from "../routes/admin";
 import Admin from "../routes/admin/funcComp";
@@ -16,7 +17,8 @@ import GameContainer from "../routes/game";
 import Home from "../routes/home";
 import ResultsContainer from "../routes/results";
 import Results from "../routes/results/funcComp";
-import { Game, GameId, Round, RoundId } from "../types/types";
+import { Game, GameId, Round, RoundId, ChallengeSetId, Hole, HoleId } from "../types/types";
+import { LoadingState } from "../types/appTypes";
 
 const games = [{ id: "" as GameId, accessKey: "", rounds: [{ id: "id" as RoundId, name: "name" }] }] as ReadonlyArray<Game>;
 const challenges = [{ id: "" as RoundId, name: "" }] as ReadonlyArray<Round>;
@@ -30,7 +32,7 @@ describe("Admin", () => {
     render(<Admin myGames={{ type: "Loaded", data: games }} allChallenges={{ type: "Loaded", data: challenges }} showCreate={false} toggleCreate={((_: boolean) => undefined)} resetGame={(() => undefined)} />);
   });
   it("renders Admin Index without crashing", async () => {
-    await mount(<AdminContainer />);
+    render(<AdminContainer />);
   });
 });
 
@@ -140,7 +142,38 @@ describe("Game should", () => {
       code="aaa"
       runResult={{ type: "Loaded", data: { type: "Score", val: 30 } }}
       runErrors={undefined}
-      challenge={{ type: "Loading" }} codeChanged={_ => Promise.resolve()} onCodeClick={() => undefined} submitCode={(_) => undefined} />);
+      challenge={{ type: "Loading" }}
+      codeChanged={_ => Promise.resolve()} onCodeClick={() => undefined} submitCode={(_) => undefined} />);
+  });
+
+  it("renders GameComp with n challenge without crashing", () => {
+    shallow(<GameComp
+      code="aaa"
+      runResult={{ type: "Loading" }}
+      runErrors={{ type: "RunResultSet", errors: [] }}
+      challenge={{ type: "Loaded", data: undefined }}
+      codeChanged={_ => Promise.resolve()} onCodeClick={() => undefined} submitCode={(_) => undefined} />);
+  });
+  it("renders GameComp with challenge without crashing", () => {
+
+    const x: LoadingState<Hole> = {
+      type: "Loaded", data: {
+        challengeSet: {
+          id: "id" as ChallengeSetId,
+          title: "title",
+          description: "description",
+          challenges: [],
+          returnType: "rtn",
+          params: []
+        }, start: parseIso("2000-1-1"), end: parseIso("2000-1-1"), closedAt: undefined, hasNext: true, hole: { holeId: "aaa" as HoleId }
+      }
+    };
+    shallow(<GameComp
+      code="aaa"
+      runResult={{ type: "Loading" }}
+      runErrors={{ type: "RunResultSet", errors: [] }}
+      challenge={x}
+      codeChanged={_ => Promise.resolve()} onCodeClick={() => undefined} submitCode={(_) => undefined} />);
   });
 });
 

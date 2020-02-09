@@ -55,8 +55,12 @@ export interface Result {
 }
 
 export interface Hole {
-    readonly challengeSet: ChallengeSet; readonly start: ValidDate;
-    readonly end: ValidDate; readonly closedAt?: ValidDate; readonly hasNext: boolean; readonly hole: { readonly holeId: HoleId };
+    readonly challengeSet: ChallengeSet;
+    readonly start: ValidDate;
+    readonly end: ValidDate;
+    readonly closedAt?: ValidDate;
+    readonly hasNext: boolean;
+    readonly hole: { readonly holeId: HoleId };
 }
 
 export interface Round {
