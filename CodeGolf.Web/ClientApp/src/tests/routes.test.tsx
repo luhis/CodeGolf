@@ -5,6 +5,7 @@ import Admin from "../routes/admin/funcComp";
 import AdminIndex from "../routes/admin/index";
 import Attempt from "../routes/attempt/funcComp";
 import CodeFile from "../routes/codefile/funcComp";
+import DashboardIndex from "../routes/dashboard";
 import Dashboard from "../routes/dashboard/funcComp";
 import Demo from "../routes/demo/funcComp";
 import GameComp from "../routes/game/funcComp";
@@ -23,10 +24,9 @@ describe("Admin", () => {
   it("renders Admin with content without crashing", () => {
     render(<Admin myGames={{ type: "Loaded", data: games }} allChallenges={{ type: "Loaded", data: challenges }} showCreate={false} toggleCreate={((_: boolean) => undefined)} resetGame={(() => undefined)} />);
   });
-});
-
-it("renders Admin Index without crashing", () => {
-  render(<AdminIndex />);
+  it("renders Admin Index without crashing", async () => {
+    render(<AdminIndex />);
+  });
 });
 
 it("renders Home without crashing", () => {
@@ -51,6 +51,9 @@ it("renders CodeFile without crashing", () => {
 it("renders Dashboard without crashing", () => {
   render(<Dashboard current={{ type: "Loading" }} attempts={{ type: "Loading" }} nextHole={() => Promise.resolve()} endHole={() => Promise.resolve()} />);
 });
+// it("renders Dashboard without crashing", () => {
+//   render(<DashboardIndex />);
+// });
 
 describe("Demo should", () => {
   it("renders Demo without crashing", () => {

@@ -1,4 +1,5 @@
-import { Component, h, RenderableProps } from "preact";
+import { FunctionalComponent, h } from "preact";
+import * as Hooks from "preact/hooks";
 
 import { getAllChallenges, getMyGames, resetGame } from "../../api/adminApi";
 import { LoadingState } from "../../types/appTypes";
@@ -11,21 +12,22 @@ interface State {
     readonly showCreate: boolean;
 }
 
-export default class Comp extends Component<{}, State> {
+const comp: FunctionalComponent<{}> = () => {
+    const [state, setState] = Hooks.useState<State>({ myGames: { type: "Loading" }, allChallenges: { type: "Loading" }, showCreate: false });
+    Hooks.useEffect(() => {
+        console.log("useEffect");
+        const fetchData = async () => {
+            const games = await getMyGames();
+            const challenges = await getAllChallenges();
+            setState(s => ({ ...s, myGames: { type: "Loaded", data: games }, allChallenges: { type: "Loaded", data: challenges } }));
+        };
+        // tslint:disable-next-line: no-floating-promises
+        fetchData();
+    }, []);
 
-    constructor() {
-        super();
-        this.state = { myGames: { type: "Loading" }, allChallenges: { type: "Loading" }, showCreate: false };
-    }
+    const setShowCreate = (show: boolean) => setState(s => ({ ...s, showCreate: show }));
 
-    public readonly componentDidMount = async () => {
-        const games = await getMyGames();
-        const challenges = await getAllChallenges();
-        this.setState(s => ({ ...s, myGames: { type: "Loaded", data: games }, allChallenges: { type: "Loaded", data: challenges } }));
-    }
+    return (<FuncComp {...state} toggleCreate={setShowCreate} resetGame={resetGame} />);
+};
 
-    public readonly render = (_: RenderableProps<{}>, state: Readonly<State>) =>
-        <FuncComp {...state} toggleCreate={this.setShowCreate} resetGame={resetGame} />
-
-    private readonly setShowCreate = (show: boolean) => this.setState(s => ({ ...s, showCreate: show }));
-}
+export default comp;
