@@ -18,7 +18,7 @@ const Comp: FunctionComponent<Props> = ({ type, code }) => {
         };
         // tslint:disable-next-line: no-floating-promises
         a();
-    });
+    }, []);
     return <FuncComp result={state} />;
 };
 

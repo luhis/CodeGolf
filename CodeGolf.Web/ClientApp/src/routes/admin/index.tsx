@@ -15,7 +15,6 @@ interface State {
 const comp: FunctionalComponent<{}> = () => {
     const [state, setState] = Hooks.useState<State>({ myGames: { type: "Loading" }, allChallenges: { type: "Loading" }, showCreate: false });
     Hooks.useEffect(() => {
-        console.log("useEffect");
         const fetchData = async () => {
             const games = await getMyGames();
             const challenges = await getAllChallenges();

@@ -19,7 +19,7 @@ const Comp: FunctionComponent<Props> = ({ attemptId }) => {
     };
     // tslint:disable-next-line: no-floating-promises
     a();
-  });
+  }, []);
   return <FuncComp result={state} />;
 };
 
