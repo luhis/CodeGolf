@@ -1169,10 +1169,10 @@
   resolved "https://registry.yarnpkg.com/@monaco-editor/react/-/react-3.1.0.tgz#16c3838fc54af71a80dde3eebb43477a7fbba77b"
   integrity sha512-Y+eay0U7MJgax5Fd0CG9k3tgcy/QkKPXSD7BNB0/w/p4ErQCYB5K/Mvm9bfRVwdJmYWihDa9cHOg53fLpJGiiA==
 
-"@preact/async-loader@^3.0.0-rc.8":
-  version "3.0.0-rc.8"
-  resolved "https://registry.yarnpkg.com/@preact/async-loader/-/async-loader-3.0.0-rc.8.tgz#d8259356e562c772a8b7213c4e5bed4741e125d8"
-  integrity sha512-1Qw6QrLd+OTNU3ka3ZZKQ9CSDjnmihu5dReEGhseuqT3ZBok3kvAnaPydq744/ePfmiOIhjI3qkNU4HiHQEVkQ==
+"@preact/async-loader@^3.0.0-rc.9":
+  version "3.0.0-rc.9"
+  resolved "https://registry.yarnpkg.com/@preact/async-loader/-/async-loader-3.0.0-rc.9.tgz#fe6a2e763379b7abedcfa6c45d3be28089eb93be"
+  integrity sha512-PjCi/xKyOv1gx/Q0iUX5p0CANMFv9gkimKzg104FNUKmksh5TgKFi1PkQ2Xn+OLgra8N00auAxOt3BMMvcrGgA==
   dependencies:
     kleur "^3.0.3"
     loader-utils "^1.1.0"
@@ -8382,10 +8382,10 @@ preact-cli-plugin-env-vars@1.2.1:
     dotenv "^4.0.0"
     resolve-env-vars "^1.0.0"
 
-preact-cli@3.0.0-rc.8:
-  version "3.0.0-rc.8"
-  resolved "https://registry.yarnpkg.com/preact-cli/-/preact-cli-3.0.0-rc.8.tgz#75cc04bddf04d32c4c5b668ce2d96fd928d2c596"
-  integrity sha512-uchd25Rt47I54yeAzyyy4b6r5G6ycWa+rrSS7pDw2LXiaMrbK7UlP72u5kyg8Yauej3dSX+Ept5jqlfdPCxuIQ==
+preact-cli@3.0.0-rc.9:
+  version "3.0.0-rc.9"
+  resolved "https://registry.yarnpkg.com/preact-cli/-/preact-cli-3.0.0-rc.9.tgz#23e63fda8b09abf86e1ee3cee42cd0dead4541ef"
+  integrity sha512-/4eRvULG77IzMqqG7LEOR7pDVpkLUEIu+iHlvUJaAWH4kE3PW3BBhE0UVc8cWJRCNeLhSwBHBraPGXNeQNis2Q==
   dependencies:
     "@babel/core" "^7.5.5"
     "@babel/plugin-proposal-class-properties" "^7.5.5"
@@ -8396,7 +8396,7 @@ preact-cli@3.0.0-rc.8:
     "@babel/plugin-transform-react-jsx" "^7.3.0"
     "@babel/preset-env" "^7.5.5"
     "@babel/preset-typescript" "^7.3.3"
-    "@preact/async-loader" "^3.0.0-rc.8"
+    "@preact/async-loader" "^3.0.0-rc.9"
     autoprefixer "^9.6.0"
     babel-esm-plugin "^0.7.0"
     babel-loader "^8.0.6"
