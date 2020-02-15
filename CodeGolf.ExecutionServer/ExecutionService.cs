@@ -7,7 +7,6 @@
     using System.IO;
     using System.Linq;
     using System.Reflection;
-    using System.Runtime.Loader;
     using System.Threading;
     using System.Threading.Tasks;
     using CodeGolf.ServiceInterfaces;
@@ -25,7 +24,7 @@
             using (var pdb = new MemoryStream(compileResult.Pdb))
             {
                 var context = new CollectibleAssemblyLoadContext();
-                var obj = AssemblyLoadContext.Default.LoadFromStream(dll, pdb);
+                var obj = context.LoadFromStream(dll, pdb);
                 var type = obj.GetType(className);
                 var inst = Activator.CreateInstance(type);
                 var fun = GetMethod(funcName, type);
