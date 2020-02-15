@@ -1,4 +1,5 @@
-import { Component, h, RenderableProps } from "preact";
+import { FunctionComponent, h } from "preact";
+import { useEffect, useState } from "preact/hooks";
 
 import { getFinalResults } from "../../api/adminApi";
 import { LoadingState } from "../../types/appTypes";
@@ -7,15 +8,17 @@ import FuncComp from "./funcComp";
 
 type State = LoadingState<ReadonlyArray<Result>>;
 
-export default class Comp extends Component<{}, State> {
-  constructor() {
-    super();
-    this.state = { type: "Loading" };
-  }
-  public readonly componentDidMount = async () => {
-    const results = await getFinalResults();
-    this.setState(() => ({ type: "Loaded", data: results }));
-  }
-  public readonly render = (_: RenderableProps<{}>, res: State) =>
-    <FuncComp results={res} />
-}
+const Comp: FunctionComponent = () => {
+  const [state, setState] = useState<State>({ type: "Loading" });
+  useEffect(() => {
+    const a = async () => {
+      const results = await getFinalResults();
+      setState(() => ({ type: "Loaded", data: results }));
+    };
+    // tslint:disable-next-line: no-floating-promises
+    a();
+  }, []);
+  return <FuncComp results={state} />;
+};
+
+export default Comp;
