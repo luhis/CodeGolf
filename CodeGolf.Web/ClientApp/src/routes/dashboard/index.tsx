@@ -1,4 +1,4 @@
-import { HubConnection, HubConnectionBuilder, LogLevel } from "@aspnet/signalr";
+import { HubConnectionBuilder, LogLevel } from "@aspnet/signalr";
 import { FunctionComponent, h } from "preact";
 import { route } from "preact-router";
 import { useEffect, useState } from "preact/hooks";
@@ -11,14 +11,13 @@ import FuncComp from "./funcComp";
 interface State {
   readonly currentHole: LoadingState<Hole | undefined>;
   readonly attempts: LoadingState<ReadonlyArray<Attempt>>;
-  readonly connection: HubConnection;
 }
 
 const connection = new HubConnectionBuilder().withUrl("/refreshHub").configureLogging(LogLevel.Error).build();
 connection.on("newAnswer", getResults);
 
 const Comp: FunctionComponent = () => {
-  const [state, setState] = useState<State>({ currentHole: { type: "Loading" }, attempts: { type: "Loaded", data: [] }, connection });
+  const [state, setState] = useState<State>({ currentHole: { type: "Loading" }, attempts: { type: "Loaded", data: [] } });
   const getResultsX = async () => {
     return ifLoaded(state.currentHole, async hole => {
       if (hole) {
@@ -42,21 +41,23 @@ const Comp: FunctionComponent = () => {
   const doThenUpdateHole = (f: () => Promise<void>) => async () => {
     await f();
     await getHole();
-    await getResultsX();
   };
 
   useEffect(() => {
     const a = async () => {
       await connection.start().catch(console.error);
       await getHole();
-      await getResultsX();
     };
     // tslint:disable-next-line: no-floating-promises
     a();
     return () => {
-      return state.connection.stop();
+      return connection.stop();
     };
   }, []);
+  useEffect(() => {
+    // tslint:disable-next-line: no-floating-promises
+    getResultsX();
+  }, [state.currentHole]);
   return ifLoaded(state.currentHole, x => {
     const f = x ? endHole : async () => { await endHole(); route("/results"); };
     return (<FuncComp
