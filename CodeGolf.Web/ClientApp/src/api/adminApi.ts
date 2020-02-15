@@ -19,9 +19,9 @@ export const getCurrentChallenge = () => axios
 export const getResults = (holeId: HoleId) => axios.get<ReadonlyArray<AttemptInt>>(`/api/Admin/Results/${holeId}`)
   .then(getData).then(attempts => attempts.map(a => ({ ...a, timeStamp: utzParse(a.timeStamp) } as Attempt)));
 
-export const nextHole = () => axios.post("/api/Admin/nextHole");
+export const nextHole = () => axios.post<void>("/api/Admin/nextHole").then(getData);
 
-export const endHole = () => axios.post("/api/Admin/endHole");
+export const endHole = () => axios.post<void>("/api/Admin/endHole").then(getData);
 
 export const getFinalResults = () => axios.get<ReadonlyArray<Result>>("/api/Admin/FinalScores").then(getData);
 
