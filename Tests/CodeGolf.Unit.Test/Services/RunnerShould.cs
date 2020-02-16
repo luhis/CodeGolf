@@ -113,7 +113,7 @@ namespace CodeGolf.Unit.Test.Services
             var r = await this.runner.Compile(code, new[] { typeof(string) }, typeof(string), CancellationToken.None)
                         .ExtractSuccess().Func(new[] { new object[] { "Hello world" } });
             r.First().ExtractErrors().Should()
-                .BeEquivalentTo("Runtime Error line 0 - Index was outside the bounds of the array.");
+                .BeEquivalentTo("Runtime Error line 2 - Index was outside the bounds of the array.");
         }
 
         [Fact]
@@ -129,7 +129,7 @@ namespace CodeGolf.Unit.Test.Services
             var r = await this.runner.Compile(code, new[] { typeof(string) }, typeof(string), CancellationToken.None).ExtractSuccess()
                 .Func(new[] { new object[] { "Hello world" } });
             r.First().ExtractErrors().Should()
-                .BeEquivalentTo("Runtime Error line 0 - A task was canceled.");
+                .BeEquivalentTo("Runtime Error line 4 - A task was canceled.");
         }
 
         [Fact]
@@ -144,7 +144,7 @@ namespace CodeGolf.Unit.Test.Services
         }";
             var r = await this.runner.Compile(code, new[] { typeof(string) }, typeof(string), CancellationToken.None)
                         .ExtractSuccess().Func(new[] { new object[] { "Hello world" } });
-            r.First().ExtractErrors().Should().BeEquivalentTo("Runtime Error line 0 - A task was canceled.");
+            r.First().ExtractErrors().Should().BeEquivalentTo("Runtime Error line 3 - A task was canceled.");
         }
 
         [Fact]
@@ -160,7 +160,7 @@ namespace CodeGolf.Unit.Test.Services
             var r = await this.runner.Compile(code, new[] { typeof(string) }, typeof(string), CancellationToken.None).ExtractSuccess()
                 .Func(new[] { new object[] { "Hello world" } });
             r.First().ExtractErrors().Should()
-                .BeEquivalentTo("Runtime Error line 0 - A task was canceled.");
+                .BeEquivalentTo("Runtime Error line 3 - A task was canceled.");
         }
 
         [Fact]
@@ -175,7 +175,7 @@ namespace CodeGolf.Unit.Test.Services
             var r = await this.runner.Compile(code, new[] { typeof(string) }, typeof(string), CancellationToken.None).ExtractSuccess()
                 .Func(new[] { new object[] { "Hello world" } });
             r.First().ExtractErrors().Should()
-                .BeEquivalentTo("Runtime Error line 0 - A task was canceled.");
+                .BeEquivalentTo("Runtime Error line 5 - A task was canceled.");
         }
 
         [Fact(Skip = "soon")]
