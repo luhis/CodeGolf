@@ -44,7 +44,7 @@
                 ParamTypes = { paramTypes.Select(a => a.FullName) }
             });
 
-            return rx.Result.Select(a => a.Result_ != null ? Option.Some<T, string>(JsonSerializer.Deserialize<T>(a.Result_)) : Option.None<T, string>(a.Error)).ToArray();
+            return rx.Result.Select(a => a.ResultOptionsCase == Result.ResultOptionsOneofCase.Result_ ? Option.Some<T, string>(JsonSerializer.Deserialize<T>(a.Result_)) : Option.None<T, string>(a.Error)).ToArray();
         }
 
         async Task IExecutionService.Ping()
