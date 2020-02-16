@@ -134,7 +134,7 @@
 
         private static SyntaxTree WrapInClass(string function, CancellationToken cancellationToken)
         {
-            var transformed = string.Join("\n", function.Split('\n').Select(s => "    " + s));
+            var transformed = string.Join("\n", function.Split('\n').Select(s => s));
             return CSharpSyntaxTree.ParseText(
                 "using System;\n" + "using System.Collections.Generic;\n" + "using System.Linq;\n\n"
                 + $"public class {ClassName}\n" + "{\n" +
