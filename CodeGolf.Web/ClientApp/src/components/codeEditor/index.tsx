@@ -25,11 +25,11 @@ const setErrors = (editorComp: RefThingey, errors?: RunResult) => {
     const monaco = window.monaco;
     if (errors && errors.type === "CompileError" && errors.errors.length > 0) {
         monaco.editor.setModelMarkers(doc, "error", errors.errors.map(e => ({
-            startLineNumber: e.line - 1,
+            startLineNumber: e.line ,
             startColumn: e.col + 1,
-            endLineNumber: e.line - 1,
+            endLineNumber: e.line,
             endColumn: e.endCol + 1,
-            message: "error"
+            message: e.message
         })));
     }
     else {
