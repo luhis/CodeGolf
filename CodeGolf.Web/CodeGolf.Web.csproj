@@ -57,10 +57,10 @@
     <AdditionalFiles Include="..\stylecop.json" Link="Properties\stylecop.json" />
   </ItemGroup>
 
-  <Target Name="NSwag" AfterTargets="Build">
+  <!--<Target Name="NSwag" AfterTargets="Build">
     <Copy SourceFiles="@(Reference)" DestinationFolder="$(OutDir)References" />
     <Exec Command="$(NSwagExe_Core31) aspnetcore2openapi /assembly:$(TargetPath) /variables:Configuration=$(Configuration) /output:swagger.json" />
     <RemoveDir Directories="$(OutDir)References" />
-  </Target>
+  </Target>-->
 
 </Project>
