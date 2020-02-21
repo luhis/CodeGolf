@@ -38,7 +38,12 @@
                                 .From("https://*.githubusercontent.com").From("data:");
                             b.AddFrameSource().Self().From(googleCom);
                             b.AddStyleSrc().Self().UnsafeInline().Blob().From(jsDelivr);
-                            b.AddConnectSrc().Self().From("https://localhost:*").From("https://github.com");
+                            var connect = b.AddConnectSrc().Self().From("https://github.com");
+                            if (env.IsDevelopment())
+                            {
+                                connect.From("https://localhost:*");
+                            }
+
                             b.AddWorkerSrc().Self().Data();
                             b.AddFontSrc().Self().From(jsDelivr);
                         }));
