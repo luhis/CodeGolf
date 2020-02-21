@@ -1,5 +1,6 @@
 import debounce from "lodash.debounce";
-import { Component, h, RenderableProps } from "preact";
+import { FunctionComponent, h } from "preact";
+import { useEffect, useState } from "preact/hooks";
 
 import { getDemoChallenge, submitDemo, tryCompile } from "../../api/playerApi";
 import { getFunctionDeclaration } from "../../funcDeclaration";
@@ -14,53 +15,65 @@ interface State {
   readonly runResult: LoadingState<Score | CompileError | undefined>;
 }
 
-export default class Comp extends Component<{}, State> {
-  private readonly tryCompile = debounce(async () => {
+const Comp: FunctionComponent = () => {
+  const [state, setState] = useState<State>({ challenge: { type: "Loading" }, code: "", runResult: { type: "Loaded", data: undefined }, runErrors: undefined });
+
+  useEffect(() => {
+    const f = async () => {
+      const challenge = await getDemoChallenge();
+      setState(s => ({ ...s, challenge: { type: "Loaded", data: challenge } }));
+    };
+    // tslint:disable-next-line: no-floating-promises
+    f();
+  }, []);
+
+  const tryCompileX = debounce(async (code) => {
     const runResult = {
       type: "Loaded",
       data: {
         type: "CompileError",
-        errors: await tryCompile(this.state.code)
+        errors: await tryCompile(code)
       }
     } as LoadingState<CompileError>;
-    this.setState(s => ({ ...s, runResult }));
+    setState(s => ({ ...s, runResult }));
   }, 1000);
 
-  private readonly codeChanged = debounce(async (code: string) => {
-    this.setState(s => ({ ...s, code, runResult: { type: "Loading" } }));
-    await this.tryCompile();
+  const codeChanged = debounce(async (code: string) => {
+    setState(s => ({ ...s, code, runResult: { type: "Loading" } }));
+    await tryCompileX(code);
   }, 250);
 
-  constructor() {
-    super();
-    this.state = { challenge: { type: "Loading" }, code: "", runResult: { type: "Loaded", data: undefined }, runErrors: undefined };
-  }
-  public readonly componentDidMount = async () => {
-    const challenge = await getDemoChallenge();
-    this.setState(s => ({ ...s, challenge: { type: "Loaded", data: challenge } }));
-  }
-  public readonly render = (_: RenderableProps<{}>, { runResult, runErrors, code, challenge }: State) =>
-    <FuncComp code={code} runErrors={runErrors} runResult={runResult} challenge={challenge} codeChanged={this.codeChanged} submitCode={this.submitCode} onCodeClick={this.onCodeClick} />
-  private readonly onCodeClick = () => {
-    if (this.state.code === "") {
-      ifLoaded(this.state.challenge, c => {
+  const onCodeClick = () => {
+    if (state.code === "") {
+      ifLoaded(state.challenge, c => {
         const funcDec = getFunctionDeclaration(c);
-        this.setState(s => ({ ...s, code: funcDec }));
+        setState(s => ({ ...s, code: funcDec }));
       }, () => undefined);
     }
-  }
-  private readonly submitCode = async (code: string, reCaptcha: string) => {
-    this.setState(s => ({ ...s, runResult: { type: "Loading" } }));
+  };
+
+  const submitCode = async (code: string, reCaptcha: string) => {
+    setState(s => ({ ...s, runResult: { type: "Loading" } }));
     const r = await submitDemo(code, reCaptcha);
     if (r.type === "RunResultSet") {
-      this.setState(s => ({ ...s, runResult: { type: "Loaded", data: undefined }, runErrors: r }));
+      setState(s => ({ ...s, runResult: { type: "Loaded", data: undefined }, runErrors: r }));
     }
     else if (r.type === "Score") {
-      const passedChallenges = ifLoaded(this.state.challenge, c => c.challenges.map(_ => ({ error: undefined })), () => []);
-      this.setState(s => ({ ...s, runResult: { type: "Loaded", data: r }, runErrors: { type: "RunResultSet", errors: passedChallenges } }));
+      const passedChallenges = ifLoaded(state.challenge, c => c.challenges.map(_ => ({ error: undefined })), () => []);
+      setState(s => ({ ...s, runResult: { type: "Loaded", data: r }, runErrors: { type: "RunResultSet", errors: passedChallenges } }));
     }
     else {
-      this.setState(s => ({ ...s, runResult: { type: "Loaded", data: r } }));
+      setState(s => ({ ...s, runResult: { type: "Loaded", data: r } }));
     }
-  }
-}
+  };
+  return (<FuncComp code={state.code}
+    runErrors={state.runErrors}
+    runResult={state.runResult}
+    challenge={state.challenge}
+    codeChanged={codeChanged}
+    submitCode={submitCode}
+    onCodeClick={onCodeClick} />
+  );
+};
+
+export default Comp;
