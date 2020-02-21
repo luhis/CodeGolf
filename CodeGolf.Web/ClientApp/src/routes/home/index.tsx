@@ -62,13 +62,13 @@ const Comp: FunctionalComponent = () => <div>
                 Front End:
                 <ul>
                     <li>Preact</li>
-                    <li>TypeScript 3.6</li>
+                    <li>TypeScript 3.8</li>
                     <li>Bulma</li>
                     <li>SignalR</li>
                 </ul>
                 Back End:
                 <ul>
-                    <li>DotNetCore 3.0</li>
+                    <li>DotNetCore 3.1</li>
                     <li>GRPC</li>
                     <li>SqLite</li>
                     <li>Roslyn</li>
