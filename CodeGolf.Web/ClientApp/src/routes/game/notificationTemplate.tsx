@@ -4,7 +4,8 @@ const Template: FunctionComponent<{ readonly name: string, readonly score: numbe
     ({ name, score, avatarUri }) =>
         (<div>
             <p>New Top Score!</p>
-            <figure class="image container is-48x48" > <img src={avatarUri} />
+            <figure class="image container is-48x48" >
+                <img src={avatarUri} />
             </figure >
             <p>{name}, {score} strokes</p>
         </div>);
