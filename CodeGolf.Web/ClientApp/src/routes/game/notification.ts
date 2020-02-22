@@ -13,7 +13,7 @@ const setup = (onUpdate: (() => void)) => {
             type: "is-info",
             dismissible: true,
             pauseOnHover: true,
-            duration: 5_000,
+            duration: 5000,
         });
     });
     connection.on("newRound", onUpdate);
