@@ -1,6 +1,7 @@
 import { HubConnection } from "@aspnet/signalr";
 import debounce from "lodash.debounce";
-import { Component, h, RenderableProps } from "preact";
+import { FunctionComponent, h } from "preact";
+import { useEffect, useState } from "preact/hooks";
 
 import { getCurrentHole, submitChallenge, tryCompile } from "../../api/playerApi";
 import { getFunctionDeclaration } from "../../funcDeclaration";
@@ -15,70 +16,78 @@ interface State {
   readonly code: string;
   readonly runResult: LoadingState<Score | CompileError | undefined>;
   readonly runErrors: RunResultSet | undefined;
-  readonly connection: HubConnection;
+  readonly connection: HubConnection | undefined;
 }
 
-export default class Comp extends Component<{}, State> {
-  private readonly tryCompile = debounce(async () => {
+const Comp: FunctionComponent = () => {
+  const [state, setState] = useState<State>(
+    { challenge: { type: "Loading" }, code: "", runResult: { type: "Loaded", data: undefined }, runErrors: undefined, connection: undefined, gameId: undefined });
+  const tryCompileX = debounce(async (code) => {
     const runResult = {
       type: "Loaded",
       data: {
         type: "CompileError",
-        errors: await tryCompile(this.state.code)
+        errors: await tryCompile(code)
       }
     } as LoadingState<CompileError>;
-    this.setState(s => ({ ...s, runResult }));
+    setState(s => ({ ...s, runResult }));
   }, 1000);
 
-  private readonly codeChanged = debounce(async (code: string) => {
-    this.setState(s => ({ ...s, code, runResult: { type: "Loading" } }));
-    await this.tryCompile();
+  const codeChanged = debounce(async (code: string) => {
+    setState(s => ({ ...s, code, runResult: { type: "Loading" } }));
+    await tryCompileX(code);
   }, 250);
-
-  constructor() {
-    super();
-    const connection = Notification(async () => {
-      this.setState(s => ({ ...s, challenge: { type: "Loading" } }));
-      const challenge = await getCurrentHole();
-      this.setState(s => ({ ...s, challenge: { type: "Loaded", data: challenge }, runResult: { type: "Loaded", data: undefined }, code: "" }));
-    });
-    this.state = { challenge: { type: "Loading" }, code: "", runResult: { type: "Loaded", data: undefined }, runErrors: undefined, connection, gameId: undefined };
-  }
-  public readonly componentDidMount = async () => {
-    const challenge = await getCurrentHole();
-    this.setState(s => ({ ...s, challenge: { type: "Loaded", data: challenge } }));
-  }
-  public readonly componentWillUnmount = async () => {
-    await this.state.connection.stop();
-  }
-  public readonly render = (_: RenderableProps<{}>, { runResult, runErrors, challenge, code }: State) =>
-    <FuncComp code={code} onCodeClick={this.onCodeClick} runResult={runResult} runErrors={runErrors} challenge={challenge} codeChanged={this.codeChanged} submitCode={this.submitCode} />
-  private readonly onCodeClick = () => {
-    if (this.state.code === "") {
-      ifLoaded(this.state.challenge, c => {
+  const onCodeClick = () => {
+    if (state.code === "") {
+      ifLoaded(state.challenge, c => {
         if (c) {
           const funcDec = getFunctionDeclaration(c.challengeSet);
-          this.setState(s => ({ ...s, code: funcDec }));
+          setState(s => ({ ...s, code: funcDec }));
         }
       }, () => undefined);
     }
   }
-  private readonly submitCode = async (code: string) => {
-    ifLoaded(this.state.challenge, async c => {
+  const submitCode = async (code: string) => {
+    ifLoaded(state.challenge, async c => {
       if (c) {
-        this.setState(s => ({ ...s, code, runResult: { type: "Loading" } }));
+        setState(s => ({ ...s, code, runResult: { type: "Loading" } }));
         const r = await submitChallenge(code, c.hole.holeId);
         if (r.type === "RunResultSet") {
-          this.setState(s => ({ ...s, runResult: { type: "Loaded", data: undefined }, runErrors: r }));
+          setState(s => ({ ...s, runResult: { type: "Loaded", data: undefined }, runErrors: r }));
         }
         else if (r.type === "Score") {
           const passedChallenges = c.challengeSet.challenges.map(_ => ({ error: undefined }));
-          this.setState(s => ({ ...s, runResult: { type: "Loaded", data: r }, runErrors: { type: "RunResultSet", errors: passedChallenges } }));
+          setState(s => ({ ...s, runResult: { type: "Loaded", data: r }, runErrors: { type: "RunResultSet", errors: passedChallenges } }));
         }
         else {
-          this.setState(s => ({ ...s, runResult: { type: "Loaded", data: r } }));
+          setState(s => ({ ...s, runResult: { type: "Loaded", data: r } }));
         }
       }
     }, () => undefined);
   }
-}
+
+  useEffect(() => {
+    const f = async () => {
+      const connection = Notification(async () => {
+        setState(s => ({ ...s, challenge: { type: "Loading" } }));
+        const c = await getCurrentHole();
+        setState(s => ({ ...s, challenge: { type: "Loaded", data: c }, runResult: { type: "Loaded", data: undefined }, code: "" }));
+      });
+      const challenge = await getCurrentHole();
+      setState(s => ({ ...s, challenge: { type: "Loaded", data: challenge }, connection }));
+    };
+    // tslint:disable-next-line: no-floating-promises
+    f();
+    return async () => {
+      if (state.connection) {
+        await state.connection.stop();
+      }
+    };
+  }, []);
+  return (<FuncComp code={state.code}
+    onCodeClick={onCodeClick}
+    runResult={state.runResult} runErrors={state.runErrors}
+    challenge={state.challenge} codeChanged={codeChanged} submitCode={submitCode} />);
+};
+
+export default  Comp;
