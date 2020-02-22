@@ -3,6 +3,7 @@
         "Kata",
         "Renderable",
         "Unmount",
+        "aspnet",
         "bulma",
         "clickable",
         "clike",
@@ -12,6 +13,7 @@
         "fortawesome",
         "preact",
         "recaptcha",
+        "signalr",
         "sitekey"
     ],
     "typescript.tsdk": "node_modules\\typescript\\lib"

@@ -1,22 +1,19 @@
 import { HubConnectionBuilder, LogLevel } from "@aspnet/signalr";
 import { toast } from "bulma-toast";
+import { VNode } from "preact";
+import render from "preact-render-to-string";
 
-const template = (name: string, score: number, avatarUri: string) =>
-    `<div>
-        <p>New Top Score!</p>
-        <figure class="image container is-48x48"><img src="${avatarUri}"><img/></figure>
-        <p>${name}, ${score} strokes</p>
-    </div>`;
+import NotificationTemplate from "./notificationTemplate";
 
 const setup = (onUpdate: (() => void)) => {
     const connection = new HubConnectionBuilder().withUrl("/refreshHub").configureLogging(LogLevel.Error).build();
     connection.on("newTopScore", (name: string, score: number, avatarUri: string) => {
         toast({
-            message: template(name, score, avatarUri),
+            message: render(NotificationTemplate({name, score, avatarUri}) as VNode),
             type: "is-info",
             dismissible: true,
             pauseOnHover: true,
-            duration: 5000,
+            duration: 5_000,
         });
     });
     connection.on("newRound", onUpdate);
