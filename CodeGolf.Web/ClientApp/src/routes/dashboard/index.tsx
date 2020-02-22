@@ -14,12 +14,11 @@ interface State {
 }
 
 const connection = new HubConnectionBuilder().withUrl("/refreshHub").configureLogging(LogLevel.Error).build();
-connection.on("newAnswer", getResults);
 
 const Comp: FunctionComponent = () => {
   const [state, setState] = useState<State>({ currentHole: { type: "Loading" }, attempts: { type: "Loaded", data: [] } });
-  const getResultsX = async () => {
-    return ifLoaded(state.currentHole, async hole => {
+  const getResultsX = async (currentHole: LoadingState<Hole | undefined>) => {
+    return ifLoaded(currentHole, async hole => {
       if (hole) {
         const results = await getResults(hole.hole.holeId);
         setState(s => ({ ...s, attempts: { type: "Loaded", data: results } }));
@@ -56,7 +55,8 @@ const Comp: FunctionComponent = () => {
   }, []);
   useEffect(() => {
     // tslint:disable-next-line: no-floating-promises
-    getResultsX();
+    getResultsX(state.currentHole);
+    connection.on("newAnswer", () => getResultsX(state.currentHole));
   }, [state.currentHole]);
   return ifLoaded(state.currentHole, x => {
     const f = x ? endHole : async () => { await endHole(); route("/results"); };
