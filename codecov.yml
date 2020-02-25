@@ -12,3 +12,6 @@ flags:
   npm:
     paths:
       - CodeGolf.Web/ClientApp
+      
+ignore:
+     - "**/obj/debug/**/*"
