@@ -21,6 +21,7 @@ namespace CodeGolf.Web
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using Microsoft.OpenApi.Models;
     using WebMarkupMin.AspNetCore3;
 
     public class Startup
@@ -82,11 +83,9 @@ namespace CodeGolf.Web
             services.AddMediatR(typeof(GameService).Assembly);
             services.AddHostedService<PingService>();
 
-            services.AddOpenApiDocument(x =>
+            services.AddSwaggerGen(c =>
             {
-                x.Description = "Code Golf OpenAPI document.";
-                x.GenerateExamples = true;
-                x.Title = "Code Golf API";
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Code Golf API", Version = "v1" });
             });
         }
 
@@ -127,9 +126,11 @@ namespace CodeGolf.Web
                 endpoints.MapHub<RefreshHub>("/refreshHub");
                 endpoints.MapControllers();
             });
-
-            app.UseOpenApi(); // serve OpenAPI/Swagger documents
-            app.UseSwaggerUi3(); // serve Swagger UI
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
 
             app.UseSpa(
                 spa =>

@@ -12,7 +12,8 @@
         public static IApplicationBuilder UseCustomSecurityHeaders(this IApplicationBuilder app, IWebHostEnvironment env)
         {
             const string monacoHash = "9wP2bPNKcIeKNbFmO1aoznAM2cev6QcApKNveuxCw9A=";
-            const string swaggerHash = "o9YqryvYsqgDW0dwRml5lTp2xj7JFP318EeoJJNQS94=";
+            const string swaggerHash = "hQoyAYxxdlQX6mYg//3SgDUdhiDx4sZq5ThHlCL8Ssg=";
+            const string swagger2Hash = "ip2mafwm8g4hzTmJd0ltVOzuizPeY1roJ3pkMwGXm8E=";
             const string googleCom = "https://www.google.com";
             const string googleAnal = "https://www.google-analytics.com";
             const string jsDelivr = "https://cdn.jsdelivr.net";
@@ -28,7 +29,10 @@
                                 .From(googleCom)
                                 .From("https://www.gstatic.com")
                                 .From(googleAnal)
-                                .From(jsDelivr).WithHash256(monacoHash).WithHash256(swaggerHash);
+                                .From(jsDelivr)
+                                .WithHash256(monacoHash)
+                                .WithHash256(swaggerHash)
+                                .WithHash256(swagger2Hash);
                             if (env.IsDevelopment())
                             {
                                 scripts.UnsafeEval();
