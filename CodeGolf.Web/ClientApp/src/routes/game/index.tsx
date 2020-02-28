@@ -46,7 +46,7 @@ const Comp: FunctionComponent = () => {
         }
       }, () => undefined);
     }
-  }
+  };
   const submitCode = async (code: string) => {
     ifLoaded(state.challenge, async c => {
       if (c) {
@@ -64,7 +64,7 @@ const Comp: FunctionComponent = () => {
         }
       }
     }, () => undefined);
-  }
+  };
 
   useEffect(() => {
     const f = async () => {

@@ -4,18 +4,18 @@ import { FontAwesomeIcon, FontAwesomeIconProps } from "@fortawesome/react-fontaw
 import { FunctionComponent, h } from "preact";
 
 library.add(
-    faCheckCircle,
-    faCode,
-    faExclamationTriangle,
-    faInfoCircle,
-    faSpinner,
+  faCheckCircle,
+  faCode,
+  faExclamationTriangle,
+  faInfoCircle,
+  faSpinner,
 );
 
 type IconString = Extract<IconName, "check-circle" | "code" | "exclamation-triangle" | "info-circle" | "spinner">;
 
-const Icon: FunctionComponent<Omit<FontAwesomeIconProps, "icon"> & {readonly icon: IconString}> = (props) => {
-    const {icon, ...rest} = props;
-    return <FontAwesomeIcon {...rest} icon={icon} />;
+const Icon: FunctionComponent<Omit<FontAwesomeIconProps, "icon"> & { readonly icon: IconString }> = (props) => {
+  const { icon, ...rest } = props;
+  return <FontAwesomeIcon {...rest} icon={icon} />;
 };
 
 export default Icon;

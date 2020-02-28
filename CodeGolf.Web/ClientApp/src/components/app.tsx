@@ -17,32 +17,32 @@ import Footer from "./footer";
 import Header from "./header";
 
 if (module.hot) {
-    // tslint:disable-next-line:no-var-requires
-    require("preact/debug");
+  // tslint:disable-next-line:no-var-requires
+  require("preact/debug");
 }
 
 ReactGA.initialize(process.env.PREACT_APP_GA_KEY as string);
 
 const Comp: FunctionalComponent = () => (
-    <div id="app">
-        <Header />
-        <div class="container is-fluid Site-content">
-            <main role="main">
-                <CookieConsent />
-                <Router>
-                    <Route path="/" component={Home} />
-                    <Route path="/admin/" component={Admin} />
-                    <Route path="/demo/" component={Demo} />
-                    <Route path="/dashboard/" component={Dashboard} />
-                    <Route path="/game/" component={Game} />
-                    <Route path="/results/" component={Results} />
-                    <Route path="/attempt/:attemptId" component={Attempt} />
-                    <Route path="/codefile/:type/" component={CodeFile} />
-                </Router>
-            </main>
-        </div>
-        <Footer />
+  <div id="app">
+    <Header />
+    <div class="container is-fluid Site-content">
+      <main role="main">
+        <CookieConsent />
+        <Router>
+          <Route path="/" component={Home} />
+          <Route path="/admin/" component={Admin} />
+          <Route path="/demo/" component={Demo} />
+          <Route path="/dashboard/" component={Dashboard} />
+          <Route path="/game/" component={Game} />
+          <Route path="/results/" component={Results} />
+          <Route path="/attempt/:attemptId" component={Attempt} />
+          <Route path="/codefile/:type/" component={CodeFile} />
+        </Router>
+      </main>
     </div>
+    <Footer />
+  </div>
 );
 
 export default Comp;
