@@ -1,5 +1,6 @@
-import { Component, Fragment, FunctionalComponent, FunctionComponent, h, RenderableProps } from "preact";
+import { Fragment, FunctionalComponent, FunctionComponent, h } from "preact";
 import { Link } from "preact-router";
+import { useEffect, useState } from "preact/hooks";
 
 import { getAccess } from "../../api/accessApi";
 import { Access } from "../../types/types";
@@ -43,16 +44,18 @@ const FuncComp: FunctionalComponent<State & { readonly toggleMenu: (() => void) 
 
 interface State { readonly access: Access; readonly showMenu: boolean; }
 
-export default class Comp extends Component<{}, State> {
-  constructor() {
-    super();
-    this.state = { access: { isAdmin: false, isLoggedIn: false, showDashboard: false }, showMenu: false };
-  }
-  public readonly componentDidMount = async () => {
-    const access = await getAccess();
-    this.setState(s => ({ ...s, access }));
-  }
-  public readonly render = (_: RenderableProps<{}>, s: Readonly<State>) =>
-    <FuncComp {...s} toggleMenu={this.ToggleMenu} />
-  private readonly ToggleMenu = () => this.setState(s => ({ ...s, showMenu: !s.showMenu }));
-}
+const Comp: FunctionalComponent = () => {
+  const [state, setState] = useState<State>({ access: { isAdmin: false, isLoggedIn: false, showDashboard: false }, showMenu: false });
+  useEffect(() => {
+    const f = async () => {
+      const access = await getAccess();
+      setState(s => ({ ...s, access }));
+    };
+    // tslint:disable-next-line: no-floating-promises
+    f();
+  }, []);
+  const ToggleMenu = () => setState(s => ({ ...s, showMenu: !s.showMenu }));
+  return <FuncComp {...state} toggleMenu={ToggleMenu} />;
+};
+
+export default Comp;

@@ -15,6 +15,7 @@
         "preact",
         "recaptcha",
         "signalr",
+        "signin",
         "sitekey"
     ],
     "typescript.tsdk": "node_modules\\typescript\\lib"

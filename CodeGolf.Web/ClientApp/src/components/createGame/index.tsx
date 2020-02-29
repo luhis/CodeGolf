@@ -1,4 +1,5 @@
-import { Component, h, RenderableProps } from "preact";
+import { FunctionalComponent, h } from "preact";
+import { useState } from "preact/hooks";
 
 import { addGame } from "../../api/adminApi";
 import { GameId, Round } from "../../types/types";
@@ -13,16 +14,10 @@ interface Props {
   readonly challenges: ReadonlyArray<Round>;
 }
 
-export default class Comp extends Component<Props, State> {
-
-  constructor() {
-    super();
-    this.state = { accessKey: "" };
-  }
-
-  public readonly render = (props: RenderableProps<Props>, state: Readonly<State>) =>
-    <FuncComp {...props} {...state} save={this.addGame} />
-
-  private readonly addGame = () => addGame({ id: "" as GameId, accessKey: this.state.accessKey, rounds: [] });
-
+const Comp: FunctionalComponent<Props> = (props) => {
+  const [state] = useState<State>({ accessKey: "" });
+  const addGameX = () => addGame({ id: "" as GameId, accessKey: state.accessKey, rounds: [] });
+  return <FuncComp {...props} {...state} save={addGameX} />;
 }
+
+export default Comp;
