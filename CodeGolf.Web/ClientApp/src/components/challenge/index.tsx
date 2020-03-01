@@ -27,7 +27,7 @@ const ResultsCell: FunctionalComponent<{ readonly challenge: Challenge, readonly
 const Row: FunctionalComponent<{ readonly challenge: Challenge, readonly runError?: RunError, readonly showResults: boolean }> =
   ({ challenge, runError, showResults }) =>
     (<tr>
-      <td>{getInput(challenge)} =></td>
+      <td>{getInput(challenge)} =&gt;</td>
       <td><pre class="result">{challenge.expectedResult}</pre></td>
       {showResults ? <ResultsCell challenge={challenge} runError={runError} /> : null}
     </tr>);
@@ -62,7 +62,7 @@ const Comp: FunctionalComponent<Props> = ({ challengeSet, onCodeClick, errors })
     <div class="panel-block">
       <Icon icon="info-circle" className="has-text-info" />&nbsp;
             Create a function like&nbsp;
-            <code class={onCodeClick ? "is-clickable" : ""} onClick={onCodeClick}>{getFunctionDeclaration(challengeSet)}</code>
+      <code class={onCodeClick ? "is-clickable" : ""} onClick={onCodeClick}>{getFunctionDeclaration(challengeSet)}</code>
     </div>
   </div>);
 };

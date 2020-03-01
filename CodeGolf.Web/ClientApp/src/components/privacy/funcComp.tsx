@@ -5,7 +5,7 @@ interface Props {
   readonly toggleModal: () => void;
 }
 
-const LinkComp: FunctionalComponent<{ readonly toggleModal: (() => void); }> =
+const LinkComp: FunctionalComponent<{ readonly toggleModal: (() => void) }> =
   ({ toggleModal }) => <a onClick={toggleModal}>Privacy Policy</a>;
 
 const FuncComp: FunctionalComponent<Readonly<Props>> = ({ showModal, toggleModal }) =>
@@ -20,7 +20,7 @@ const FuncComp: FunctionalComponent<Readonly<Props>> = ({ showModal, toggleModal
           </header>
           <section class="modal-card-body">
             Privacy policy goes here.
-            </section>
+          </section>
         </div>
       </div>) : null}
     <LinkComp toggleModal={toggleModal} />

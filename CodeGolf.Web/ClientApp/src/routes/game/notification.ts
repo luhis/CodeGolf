@@ -9,7 +9,7 @@ const setup = (onUpdate: (() => void)) => {
   const connection = new HubConnectionBuilder().withUrl("/refreshHub").configureLogging(LogLevel.Error).build();
   connection.on("newTopScore", (name: string, score: number, avatarUri: string) => {
     toast({
-      message: render(NotificationTemplate({ name, score, avatarUri }) as VNode),
+      message: render(NotificationTemplate({name, score, avatarUri}) as VNode),
       type: "is-info",
       dismissible: true,
       pauseOnHover: true,

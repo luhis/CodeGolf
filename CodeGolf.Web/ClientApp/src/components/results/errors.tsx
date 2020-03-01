@@ -3,7 +3,7 @@ import { FunctionalComponent, h } from "preact";
 import { CodeError, CompileError } from "../../types/types";
 import Icon from "../icons";
 
-interface Props { readonly errors: CompileError; }
+interface Props { readonly errors: CompileError }
 
 const CompileErrorView: FunctionalComponent<{ readonly error: CodeError }> = ({ error }) => (<p>
   <Icon icon="exclamation-triangle" />

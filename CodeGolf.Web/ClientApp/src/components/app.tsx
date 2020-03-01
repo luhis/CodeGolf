@@ -17,7 +17,6 @@ import Footer from "./footer";
 import Header from "./header";
 
 if (module.hot) {
-  // tslint:disable-next-line:no-var-requires
   require("preact/debug");
 }
 

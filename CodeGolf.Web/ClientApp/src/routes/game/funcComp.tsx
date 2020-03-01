@@ -48,13 +48,11 @@ const HasChallenge: FunctionalComponent<{
     </div>) : <PleaseWait />
 );
 
-const FuncComp: FunctionalComponent<Props> = ({ code, runResult, runErrors, challenge, codeChanged, onCodeClick, submitCode }) => {
-  return (<section class="section">
-    <h1 class="title">Game</h1>
-    {ifLoaded(challenge, c =>
-      <HasChallenge challenge={c} code={code} runResult={runResult} runErrors={runErrors} codeChanged={codeChanged} onCodeClick={onCodeClick} submitCode={submitCode} />,
-      () => <Loading />)}
-  </section>);
-};
+const FuncComp: FunctionalComponent<Props> = ({ code, runResult, runErrors, challenge, codeChanged, onCodeClick, submitCode }) => (<section class="section">
+  <h1 class="title">Game</h1>
+  {ifLoaded(challenge, c =>
+    <HasChallenge challenge={c} code={code} runResult={runResult} runErrors={runErrors} codeChanged={codeChanged} onCodeClick={onCodeClick} submitCode={submitCode} />,
+  () => <Loading />)}
+</section>);
 
 export default FuncComp;

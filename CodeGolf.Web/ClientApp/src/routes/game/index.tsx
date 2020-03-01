@@ -47,8 +47,9 @@ const Comp: FunctionComponent = () => {
       }, () => undefined);
     }
   };
+
   const submitCode = async (code: string) => {
-    ifLoaded(state.challenge, async c => {
+    await ifLoaded(state.challenge, async c => {
       if (c) {
         setState(s => ({ ...s, code, runResult: { type: "Loading" } }));
         const r = await submitChallenge(code, c.hole.holeId);
@@ -76,7 +77,7 @@ const Comp: FunctionComponent = () => {
       const challenge = await getCurrentHole();
       setState(s => ({ ...s, challenge: { type: "Loaded", data: challenge }, connection }));
     };
-    // tslint:disable-next-line: no-floating-promises
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     f();
     return async () => {
       if (state.connection) {
@@ -90,4 +91,4 @@ const Comp: FunctionComponent = () => {
     challenge={state.challenge} codeChanged={codeChanged} submitCode={submitCode} />);
 };
 
-export default  Comp;
+export default Comp;

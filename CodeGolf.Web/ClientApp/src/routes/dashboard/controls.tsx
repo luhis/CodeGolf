@@ -4,7 +4,7 @@ import { Link } from "preact-router";
 import { LoadingState } from "../../types/appTypes";
 import { Hole } from "../../types/types";
 
-interface Props { readonly hole: LoadingState<Hole | undefined>; readonly endHole: () => Promise<void>; readonly nextHole: () => Promise<void>; }
+interface Props { readonly hole: LoadingState<Hole | undefined>, readonly endHole: () => Promise<void>, readonly nextHole: () => Promise<void> }
 
 const GetButton: FunctionalComponent<Props> = ({ hole, endHole, nextHole }) => {
   if (hole.type === "Loaded" && hole.data) {
