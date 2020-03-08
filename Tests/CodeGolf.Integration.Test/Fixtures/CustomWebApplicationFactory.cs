@@ -10,12 +10,9 @@
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Authorization;
     using Microsoft.AspNetCore.Mvc.Testing;
     using Microsoft.AspNetCore.TestHost;
     using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
 
@@ -88,18 +85,7 @@
                             ex.Message);
                     }
                 }
-            });
-
-            builder.ConfigureAppConfiguration((_, configurationBuilder) =>
-                configurationBuilder.AddInMemoryCollection(new[]
-                {
-                    new KeyValuePair<string, string>("GitHub:ClientId", "aaa"),
-                    new KeyValuePair<string, string>("GitHub:ClientSecret", "aaa"),
-                    new KeyValuePair<string, string>("DbPath", "Data Source=codeGolf.db"),
-                    new KeyValuePair<string, string>("Execution:UseRemoteService", "false"),
-                }));
-
-            builder.ConfigureTestServices(
+            }).ConfigureTestServices(
                 services =>
                 {
                     services.AddAuthentication("Test")
