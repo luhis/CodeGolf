@@ -1,5 +1,8 @@
 ﻿namespace CodeGolf.Web.Extensions
 {
+    using System;
+    using System.IO;
+    using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Security.Claims;
@@ -11,6 +14,7 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
     using WebMarkupMin.AspNetCore3;
 
     public static class ServiceCollectionExtensions
@@ -37,17 +41,18 @@
         public static IServiceCollection AddGitHubAuth(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddAuthentication(options =>
-                {
-                    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = "GitHub";
-                })
-            .AddCookie(configureOptions: cookieAuthenticationOptions =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = "GitHub";
+            })
+            .AddCookie(cookieAuthenticationOptions =>
+            {
                 cookieAuthenticationOptions.Events.OnRedirectToAccessDenied = context =>
                 {
                     context.Response.StatusCode = 403;
                     return Task.CompletedTask;
-                })
+                };
+            })
             .AddOAuth("GitHub", options =>
             {
                 options.ClientId = configuration["GitHub:ClientId"];
