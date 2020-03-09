@@ -1,27 +1,43 @@
 ﻿namespace CodeGolf.Integration.Test.Controllers
 {
-    using System;
-    using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Text;
-    using System.Text.Json;
     using System.Threading.Tasks;
     using CodeGolf.Integration.Test.Fixtures;
+    using CodeGolf.Integration.Test.Tooling;
     using CodeGolf.Web;
-    using CodeGolf.Web.Models;
     using FluentAssertions;
+    using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Mvc.Testing;
+    using Microsoft.AspNetCore.TestHost;
+    using Microsoft.Extensions.DependencyInjection;
     using Xunit;
 
     public class ChallengeControllerShould : IClassFixture<CustomWebApplicationFactory<Startup>>
     {
         private readonly HttpClient client;
+        private readonly HttpClient authorisedClient;
 
         public ChallengeControllerShould(CustomWebApplicationFactory<CodeGolf.Web.Startup> fixture)
         {
             this.client = fixture.CreateClient(new WebApplicationFactoryClientOptions() { AllowAutoRedirect = false, HandleCookies = false });
+            this.authorisedClient = fixture.WithWebHostBuilder(builder =>
+                {
+                    builder.ConfigureTestServices(services =>
+                    {
+                        services
+                            .AddAuthentication(TestAuthHandler.TestAuthSchemeName)
+                            .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>(TestAuthHandler.TestAuthSchemeName, options => { });
+                    });
+                })
+                .CreateClient(new WebApplicationFactoryClientOptions
+                {
+                    AllowAutoRedirect = false
+                });
+
+            this.authorisedClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(TestAuthHandler.TestAuthSchemeName);
         }
 
         [Fact]
@@ -63,19 +79,17 @@
             response.StatusCode.Should().Be(HttpStatusCode.Redirect);
         }
 
-        [Fact(Skip = "Auth not overriding")]
+        [Fact]
         public async Task CurrentChallengeNotRedirectWhenLoggedIn()
         {
-            this.client.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Test");
-            var response = await this.client.GetAsync("/api/challenge/CurrentChallenge/");
+            var response = await this.authorisedClient.GetAsync("/api/challenge/CurrentChallenge/");
             response.EnsureSuccessStatusCode();
         }
 
-        [Fact(Skip = "Auth not overriding")]
+        [Fact(Skip = "Todo")]
         public async Task SubmitChallenge()
         {
-            var response = await this.client.PostAsync("/api/challenge/SubmitChallenge/33af8fe0-f316-4c1f-9315-7ac0b312c805", new StringContent("\"code\"", Encoding.UTF8, "application/json"));
+            var response = await this.authorisedClient.PostAsync("/api/challenge/SubmitChallenge/33af8fe0-f316-4c1f-9315-7ac0b312c805", new StringContent("\"code\"", Encoding.UTF8, "application/json"));
             var body = await response.Content.ReadAsStringAsync();
             response.EnsureSuccessStatusCode();
             ////var a = JsonSerializer.Deserialize<ChallengeSetDto>(body, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true, });

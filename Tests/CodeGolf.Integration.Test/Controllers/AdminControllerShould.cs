@@ -23,7 +23,7 @@
         [Fact]
         public async Task RejectEndHoleFromAnon()
         {
-            var response = await this.client.PostAsJsonAsync<object>("/api/admin/endhole", null);
+            var response = await this.client.PostAsJsonAsync<object>("/api/admin/endHole", null);
             var b = await response.Content.ReadAsStringAsync();
             response.StatusCode.Should().Be(HttpStatusCode.Redirect);
         }

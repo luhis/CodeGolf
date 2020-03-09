@@ -26,15 +26,15 @@
         private static readonly IReadOnlyList<Type> ToRemove = new[]
         {
             typeof(DbContextOptions<CodeGolfContext>),
-            typeof(IGetIp),
-            typeof(IRecaptchaVerifier),
-            typeof(IAuthenticationService),
-            typeof(IClaimsTransformation),
-            typeof(IAuthenticationHandlerProvider),
-            typeof(IAuthenticationSchemeProvider),
-            ////typeof(IAuthorizationService),
-            ////typeof(IAuthorizationEvaluator),
-            typeof(IAuthorizationHandler),
+            ////typeof(IGetIp),
+            ////typeof(IRecaptchaVerifier),
+            ////typeof(IAuthenticationService),
+            ////typeof(IClaimsTransformation),
+            ////typeof(IAuthenticationHandlerProvider),
+            ////typeof(IAuthenticationSchemeProvider),
+            ////////typeof(IAuthorizationService),
+            ////////typeof(IAuthorizationEvaluator),
+            ////typeof(IAuthorizationHandler),
             ////typeof(IAuthorizationHandlerContextFactory),
             ////typeof(IAuthorizationHandlerProvider),
             ////typeof(IAuthorizationPolicyProvider),
@@ -98,14 +98,6 @@
                     new KeyValuePair<string, string>("DbPath", "Data Source=codeGolf.db"),
                     new KeyValuePair<string, string>("Execution:UseRemoteService", "false"),
                 }));
-
-            builder.ConfigureTestServices(
-                services =>
-                {
-                    services.AddAuthentication("Test")
-                    .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>(
-                        "Test", options => { });
-                });
         }
     }
 }
