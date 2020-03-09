@@ -29,5 +29,6 @@
   ],
   "postUpdateOptions": [
     "yarnDedupeHighest"
-  ]
+  ],
+  "rebaseWhen": "behind-base-branch"
 }
