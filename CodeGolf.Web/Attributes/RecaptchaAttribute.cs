@@ -11,13 +11,11 @@
     public sealed class RecaptchaAttribute : Attribute, IAsyncActionFilter
     {
         private readonly IRecaptchaVerifier recaptchaVerifier;
-        private readonly IGetCaptchaValue getCaptchaValue;
         private readonly IGetIp getIp;
 
-        public RecaptchaAttribute(IRecaptchaVerifier recaptchaVerifier, IGetCaptchaValue getCaptchaValue, IGetIp getIp)
+        public RecaptchaAttribute(IRecaptchaVerifier recaptchaVerifier, IGetIp getIp)
         {
             this.recaptchaVerifier = recaptchaVerifier;
-            this.getCaptchaValue = getCaptchaValue;
             this.getIp = getIp;
         }
 

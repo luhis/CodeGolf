@@ -1,8 +1,5 @@
 ﻿namespace CodeGolf.Web.Extensions
 {
-    using System;
-    using System.IO;
-    using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Security.Claims;
@@ -14,7 +11,6 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Logging;
     using WebMarkupMin.AspNetCore3;
 
     public static class ServiceCollectionExtensions

@@ -14,18 +14,20 @@
     {
         private readonly GameAdminSettings gameAdminSettings;
         private readonly IIdentityTools identityTools;
+        private readonly IGameAdminChecker gameAdminChecker;
 
-        public AccessController(IOptions<GameAdminSettings> gameAdminSettings, IIdentityTools identityTools)
+        public AccessController(IOptions<GameAdminSettings> gameAdminSettings, IIdentityTools identityTools, IGameAdminChecker gameAdminChecker)
         {
             this.gameAdminSettings = gameAdminSettings.Value;
             this.identityTools = identityTools;
+            this.gameAdminChecker = gameAdminChecker;
         }
 
         [HttpGet("[action]")]
         public AccessDto GetAccess()
         {
             var id = this.identityTools.GetIdentity(this.HttpContext);
-            var isAdmin = id.Match(some => this.gameAdminSettings.AdminGithubNames.Contains(some.LoginName), () => false);
+            var isAdmin = this.gameAdminChecker.IsAdmin(this.HttpContext);
             return new AccessDto(id.HasValue, isAdmin, isAdmin || this.gameAdminSettings.AllowNonAdminDashboard);
         }
 
