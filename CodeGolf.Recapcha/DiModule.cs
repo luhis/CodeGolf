@@ -6,7 +6,6 @@
     {
         public static void Add(IServiceCollection services)
         {
-            services.AddSingleton<IGetCaptchaValue, GetCaptchaValue>();
             services.AddHttpClient<IRecaptchaVerifier, RecaptchaVerifier>();
         }
     }
