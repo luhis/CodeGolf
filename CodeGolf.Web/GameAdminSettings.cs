@@ -1,4 +1,4 @@
-﻿namespace CodeGolf.Web.Attributes
+﻿namespace CodeGolf.Web
 {
     using System.Collections.Generic;
 
