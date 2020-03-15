@@ -1,7 +1,6 @@
 ﻿namespace CodeGolf.Web.Controllers
 {
     using System.Threading.Tasks;
-    using CodeGolf.Web.Attributes;
     using CodeGolf.Web.Models;
     using CodeGolf.Web.Tooling;
     using Microsoft.AspNetCore.Authentication;

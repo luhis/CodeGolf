@@ -1,7 +1,5 @@
 ﻿namespace CodeGolf.Web.Tooling
 {
-    using CodeGolf.Web.Attributes;
-
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Options;
 
