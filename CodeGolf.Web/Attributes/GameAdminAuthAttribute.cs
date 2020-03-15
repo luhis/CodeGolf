@@ -21,9 +21,12 @@
             if (!this.gameAdminChecker.IsAdmin(context.HttpContext))
             {
                 context.Result = new ForbidResult();
+                return Task.CompletedTask;
             }
-
-            return next();
+            else
+            {
+                return next();
+            }
         }
     }
 }
