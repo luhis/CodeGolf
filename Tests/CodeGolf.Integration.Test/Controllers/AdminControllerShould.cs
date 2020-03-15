@@ -43,7 +43,6 @@
         public async Task RejectEndHoleFromAnon()
         {
             var response = await this.client.PostAsJsonAsync<object>("/api/admin/endHole", null);
-            var b = await response.Content.ReadAsStringAsync();
             response.StatusCode.Should().Be(HttpStatusCode.Redirect);
         }
 
@@ -51,7 +50,20 @@
         public async Task RejectEndHoleFromNonAdmin()
         {
             var response = await this.authorisedClient.PostAsJsonAsync<object>("/api/admin/endHole", null);
-            var b = await response.Content.ReadAsStringAsync();
+            response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
+        }
+
+        [Fact]
+        public async Task RejectNextHoleFromAnon()
+        {
+            var response = await this.client.PostAsJsonAsync<object>("/api/admin/nextHole", null);
+            response.StatusCode.Should().Be(HttpStatusCode.Redirect);
+        }
+
+        [Fact]
+        public async Task RejectNextHoleFromNonAdmin()
+        {
+            var response = await this.authorisedClient.PostAsJsonAsync<object>("/api/admin/nextHole", null);
             response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
         }
     }
