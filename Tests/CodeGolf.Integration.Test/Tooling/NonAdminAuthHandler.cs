@@ -7,11 +7,11 @@
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
 
-    public class TestAuthHandler : AuthenticationHandler<AuthenticationSchemeOptions>
+    public class NonAdminAuthHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {
-        public const string TestAuthSchemeName = "Test";
+        public const string TestAuthSchemeName = "NonAdminAuth";
 
-        public TestAuthHandler(
+        public NonAdminAuthHandler(
             IOptionsMonitor<AuthenticationSchemeOptions> options,
             ILoggerFactory logger,
             UrlEncoder encoder,
@@ -26,7 +26,7 @@
             {
                 new Claim(ClaimTypes.Name, "Test user"),
                 new Claim(ClaimTypes.NameIdentifier, "123"),
-                new Claim("urn:github:login", "Login Name"),
+                new Claim("urn:github:login", "NotAdmin"),
                 new Claim("urn:github:avatar", "https://avatar.com/img")
             };
             var identity = new ClaimsIdentity(claims, "Test");

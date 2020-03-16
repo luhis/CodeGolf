@@ -37,8 +37,8 @@
                     builder.ConfigureTestServices(services =>
                     {
                         services
-                            .AddAuthentication(TestAuthHandler.TestAuthSchemeName)
-                            .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>(TestAuthHandler.TestAuthSchemeName, options => { });
+                            .AddAuthentication(NonAdminAuthHandler.TestAuthSchemeName)
+                            .AddScheme<AuthenticationSchemeOptions, NonAdminAuthHandler>(NonAdminAuthHandler.TestAuthSchemeName, options => { });
                     });
                 })
                 .CreateClient(new WebApplicationFactoryClientOptions
@@ -46,7 +46,27 @@
                     AllowAutoRedirect = false
                 });
 
-            c.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(TestAuthHandler.TestAuthSchemeName);
+            c.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(NonAdminAuthHandler.TestAuthSchemeName);
+            return c;
+        }
+
+        public HttpClient GetAuthorisedAdmin()
+        {
+            var c = this.WithWebHostBuilder(builder =>
+                {
+                    builder.ConfigureTestServices(services =>
+                    {
+                        services
+                            .AddAuthentication(AdminAuthHandler.TestAuthSchemeName)
+                            .AddScheme<AuthenticationSchemeOptions, AdminAuthHandler>(AdminAuthHandler.TestAuthSchemeName, options => { });
+                    });
+                })
+                .CreateClient(new WebApplicationFactoryClientOptions
+                {
+                    AllowAutoRedirect = false
+                });
+
+            c.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(AdminAuthHandler.TestAuthSchemeName);
             return c;
         }
 

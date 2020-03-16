@@ -12,11 +12,13 @@
     {
         private readonly HttpClient unAuthorisedClient;
         private readonly HttpClient authorisedClient;
+        private readonly HttpClient adminAuthorisedClient;
 
         public AdminControllerShould(CustomWebApplicationFactory<Startup> fixture)
         {
             this.unAuthorisedClient = fixture.GetUnAuthorisedClient();
             this.authorisedClient = fixture.GetAuthorisedNonAdmin();
+            this.adminAuthorisedClient = fixture.GetAuthorisedAdmin();
         }
 
         [Fact]
@@ -45,6 +47,13 @@
         {
             var response = await this.authorisedClient.PostAsJsonAsync<object>("/api/admin/nextHole", null);
             response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
+        }
+
+        [Fact]
+        public async Task AcceptNextHoleFromAdmin()
+        {
+            var response = await this.adminAuthorisedClient.PostAsJsonAsync<object>("/api/admin/nextHole", null);
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
     }
 }
