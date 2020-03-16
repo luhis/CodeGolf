@@ -127,6 +127,7 @@
                     new KeyValuePair<string, string>("GitHub:ClientSecret", "aaa"),
                     new KeyValuePair<string, string>("DbPath", "Data Source=codeGolf.db"),
                     new KeyValuePair<string, string>("Execution:UseRemoteService", "false"),
+                    new KeyValuePair<string, string>("AdminGithubNames:0", "luhis"),
                 }));
         }
     }
