@@ -3,15 +3,14 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
     using CodeGolf.Integration.Test.Tooling;
     using CodeGolf.Persistence;
     using CodeGolf.Recaptcha;
     using CodeGolf.Web.WebServices;
     using Microsoft.AspNetCore.Authentication;
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Authorization;
     using Microsoft.AspNetCore.Mvc.Testing;
     using Microsoft.AspNetCore.TestHost;
     using Microsoft.EntityFrameworkCore;
@@ -26,19 +25,30 @@
         private static readonly IReadOnlyList<Type> ToRemove = new[]
         {
             typeof(DbContextOptions<CodeGolfContext>),
-            ////typeof(IGetIp),
-            ////typeof(IRecaptchaVerifier),
-            ////typeof(IAuthenticationService),
-            ////typeof(IClaimsTransformation),
-            ////typeof(IAuthenticationHandlerProvider),
-            ////typeof(IAuthenticationSchemeProvider),
-            ////////typeof(IAuthorizationService),
-            ////////typeof(IAuthorizationEvaluator),
-            ////typeof(IAuthorizationHandler),
-            ////typeof(IAuthorizationHandlerContextFactory),
-            ////typeof(IAuthorizationHandlerProvider),
-            ////typeof(IAuthorizationPolicyProvider),
         };
+
+        public HttpClient GetUnAuthorisedClient()
+            => this.CreateClient(new WebApplicationFactoryClientOptions() { HandleCookies = false, AllowAutoRedirect = false });
+
+        public HttpClient GetAuthorisedNonAdmin()
+        {
+            var c = this.WithWebHostBuilder(builder =>
+                {
+                    builder.ConfigureTestServices(services =>
+                    {
+                        services
+                            .AddAuthentication(TestAuthHandler.TestAuthSchemeName)
+                            .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>(TestAuthHandler.TestAuthSchemeName, options => { });
+                    });
+                })
+                .CreateClient(new WebApplicationFactoryClientOptions
+                {
+                    AllowAutoRedirect = false
+                });
+
+            c.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(TestAuthHandler.TestAuthSchemeName);
+            return c;
+        }
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {

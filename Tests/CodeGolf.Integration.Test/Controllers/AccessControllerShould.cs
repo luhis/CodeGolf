@@ -1,7 +1,6 @@
 ﻿namespace CodeGolf.Integration.Test.Controllers
 {
     using System.Net.Http;
-    using System.Net.Http.Headers;
     using System.Text.Json;
     using System.Threading.Tasks;
     using CodeGolf.Integration.Test.Fixtures;
@@ -9,41 +8,23 @@
     using CodeGolf.Web;
     using CodeGolf.Web.Models;
     using FluentAssertions;
-    using Microsoft.AspNetCore.Authentication;
-    using Microsoft.AspNetCore.Mvc.Testing;
-    using Microsoft.AspNetCore.TestHost;
-    using Microsoft.Extensions.DependencyInjection;
     using Xunit;
 
     public class AccessControllerShould : IClassFixture<CustomWebApplicationFactory<Startup>>
     {
-        private readonly HttpClient client;
+        private readonly HttpClient unAuthorisedClient;
         private readonly HttpClient authorisedClient;
 
         public AccessControllerShould(CustomWebApplicationFactory<CodeGolf.Web.Startup> fixture)
         {
-            this.client = fixture.CreateClient(new WebApplicationFactoryClientOptions() { AllowAutoRedirect = false, HandleCookies = false });
-            this.authorisedClient = fixture.WithWebHostBuilder(builder =>
-                {
-                    builder.ConfigureTestServices(services =>
-                    {
-                        services
-                            .AddAuthentication(TestAuthHandler.TestAuthSchemeName)
-                            .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>(TestAuthHandler.TestAuthSchemeName, options => { });
-                    });
-                })
-                .CreateClient(new WebApplicationFactoryClientOptions
-                {
-                    AllowAutoRedirect = false
-                });
-
-            this.authorisedClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(TestAuthHandler.TestAuthSchemeName);
+            this.unAuthorisedClient = fixture.GetUnAuthorisedClient();
+            this.authorisedClient = fixture.GetAuthorisedNonAdmin();
         }
 
         [Fact]
         public async Task GetAccess()
         {
-            var response = await this.client.GetAsync("/api/access/getAccess/");
+            using var response = await this.unAuthorisedClient.GetAsync("/api/access/getAccess/");
             response.EnsureSuccessStatusCode();
             var body = await response.Content.ReadAsStringAsync();
             var a = JsonSerializer.Deserialize<AccessDto>(body);
@@ -63,7 +44,7 @@
         [Fact]
         public async Task SignOut()
         {
-            var response = await this.client.PostAsync("/api/access/signOut/", null);
+            var response = await this.unAuthorisedClient.PostAsync("/api/access/signOut/", null);
             response.EnsureSuccessStatusCode();
         }
     }

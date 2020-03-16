@@ -8,17 +8,17 @@
 
     public class CodeControllerShould : IClassFixture<CustomWebApplicationFactory<CodeGolf.Web.Startup>>
     {
-        private readonly HttpClient client;
+        private readonly HttpClient unAuthorisedClient;
 
         public CodeControllerShould(CustomWebApplicationFactory<CodeGolf.Web.Startup> fixture)
         {
-            this.client = fixture.CreateClient();
+            this.unAuthorisedClient = fixture.GetUnAuthorisedClient();
         }
 
         [Fact]
         public async Task GetCodeTemplate()
         {
-            var response = await this.client.PostAsync("/api/code/preview?code=console.log", null);
+            var response = await this.unAuthorisedClient.PostAsync("/api/code/preview?code=console.log", null);
             response.EnsureSuccessStatusCode();
             var body = await response.Content.ReadAsStringAsync();
             body.Should().Contain("console.log");
@@ -27,7 +27,7 @@
         [Fact]
         public async Task GetDebugCode()
         {
-            var response = await this.client.PostAsync("/api/code/debug?code=console.log", null);
+            var response = await this.unAuthorisedClient.PostAsync("/api/code/debug?code=console.log", null);
             response.EnsureSuccessStatusCode();
             var body = await response.Content.ReadAsStringAsync();
             body.Should().Contain("console.log");
@@ -36,7 +36,7 @@
         [Fact]
         public async Task TryCompile()
         {
-            var response = await this.client.PostAsJsonAsync(
+            var response = await this.unAuthorisedClient.PostAsJsonAsync(
                 "/api/code/tryCompile",
                 "console.log");
             response.EnsureSuccessStatusCode();
