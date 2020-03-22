@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading;
 
     using CodeGolf.Domain;
     using CodeGolf.Domain.Repositories;
@@ -28,17 +29,17 @@
                         2),
                 });
 
-        Game IGameRepository.GetGame()
+        Game IGameRepository.GetGame(CancellationToken cancellationToken)
         {
             return Game;
         }
 
-        Option<Hole> IGameRepository.GetByHoleId(Guid holeId)
+        Option<Hole> IGameRepository.GetByHoleId(Guid holeId, CancellationToken cancellationToken)
         {
             return Game.Holes.SingleOrNone(b => b.HoleId.Equals(holeId));
         }
 
-        Option<Hole> IGameRepository.GetAfter(Guid holeId)
+        Option<Hole> IGameRepository.GetAfter(Guid holeId, CancellationToken cancellationToken)
         {
             return GetAfter(Game.Holes, item => item.HoleId.Equals(holeId));
         }

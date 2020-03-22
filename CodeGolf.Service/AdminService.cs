@@ -38,11 +38,11 @@
             this.gameRepository = gameRepository;
         }
 
-        async Task IAdminService.ResetGame()
+        async Task IAdminService.ResetGame(CancellationToken cancellationToken)
         {
-            await this.attemptRepository.ClearAll();
-            await this.holeRepository.ClearAll();
-            await this.userRepository.ClearAll();
+            await this.attemptRepository.ClearAll(cancellationToken);
+            await this.holeRepository.ClearAll(cancellationToken);
+            await this.userRepository.ClearAll(cancellationToken);
             await this.signalRNotifier.NewRound();
         }
 
@@ -53,14 +53,14 @@
 
         Task<IReadOnlyList<IChallengeSet>> IAdminService.GetAllChallenges(CancellationToken cancellationToken)
         {
-            return Task.FromResult(this.challengeRepository.GetAll());
+            return Task.FromResult(this.challengeRepository.GetAll(cancellationToken));
         }
 
         Task<IReadOnlyList<Game>> IAdminService.GetAllGames(CancellationToken cancellationToken)
         {
             return Task.FromResult<IReadOnlyList<Game>>(new[]
             {
-                this.gameRepository.GetGame()
+                this.gameRepository.GetGame(cancellationToken)
             });
         }
     }

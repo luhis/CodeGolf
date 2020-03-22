@@ -9,10 +9,10 @@
     {
         Task<Option<HoleInstance>> GetCurrentHole(CancellationToken cancellationToken);
 
-        Task EndHole(Guid holeId, DateTime closeTime);
+        Task EndHole(Guid holeId, DateTime closeTime, CancellationToken cancellationToken);
 
-        Task AddHole(HoleInstance hole);
+        Task AddHole(HoleInstance hole, CancellationToken cancellationToken);
 
-        Task ClearAll();
+        Task ClearAll(CancellationToken cancellationToken);
     }
 }

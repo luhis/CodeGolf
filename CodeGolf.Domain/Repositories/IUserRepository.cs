@@ -10,6 +10,6 @@
 
         Task AddOrUpdate(User user, CancellationToken cancellationToken);
 
-        Task ClearAll();
+        Task ClearAll(CancellationToken cancellationToken);
     }
 }

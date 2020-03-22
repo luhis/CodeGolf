@@ -15,7 +15,7 @@
 
         Task<Option<Guid>> NextHole(CancellationToken cancellationToken);
 
-        Task EndHole(Guid holeId);
+        Task EndHole(Guid holeId, CancellationToken cancellationToken);
 
         Task<Option<AttemptCodeDto>> GetAttemptById(Guid attemptId, CancellationToken cancellationToken);
 

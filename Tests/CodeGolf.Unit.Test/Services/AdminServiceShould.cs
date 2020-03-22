@@ -1,5 +1,6 @@
 namespace CodeGolf.Unit.Test.Services
 {
+    using System.Threading;
     using System.Threading.Tasks;
     using CodeGolf.Domain.Repositories;
     using CodeGolf.Service;
@@ -45,12 +46,12 @@ namespace CodeGolf.Unit.Test.Services
         [Fact]
         public async Task ResetGame()
         {
-            this.attemptRepository.Setup(a => a.ClearAll()).Returns(Task.CompletedTask);
-            this.holeRepository.Setup(a => a.ClearAll()).Returns(Task.CompletedTask);
-            this.userRepository.Setup(a => a.ClearAll()).Returns(Task.CompletedTask);
+            this.attemptRepository.Setup(a => a.ClearAll(CancellationToken.None)).Returns(Task.CompletedTask);
+            this.holeRepository.Setup(a => a.ClearAll(CancellationToken.None)).Returns(Task.CompletedTask);
+            this.userRepository.Setup(a => a.ClearAll(CancellationToken.None)).Returns(Task.CompletedTask);
             this.signalRNotifier.Setup(a => a.NewRound()).Returns(Task.CompletedTask);
 
-            await this.adminService.ResetGame();
+            await this.adminService.ResetGame(CancellationToken.None);
             this.mockRepository.VerifyAll();
         }
     }

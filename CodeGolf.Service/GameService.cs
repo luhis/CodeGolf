@@ -55,13 +55,13 @@
                     {
                         if (!a.End.HasValue)
                         {
-                            var curr = this.gameRepository.GetByHoleId(a.HoleId);
+                            var curr = this.gameRepository.GetByHoleId(a.HoleId, cancellationToken);
 
                             return curr.Map(
                                 x =>
                                 {
-                                    var chal = this.challengeRepository.GetById(x.ChallengeId).ValueOrFailure();
-                                    var next = this.gameRepository.GetAfter(x.HoleId);
+                                    var chal = this.challengeRepository.GetById(x.ChallengeId, cancellationToken).ValueOrFailure();
+                                    var next = this.gameRepository.GetAfter(x.HoleId, cancellationToken);
                                     return new HoleDto(x, a.Start, a.Start.Add(x.Duration), a.End, next.HasValue, chal);
                                     });
                         }
@@ -89,7 +89,8 @@
                         var newId = Guid.NewGuid();
 
                         await this.attemptRepository.AddAttempt(
-                            new Attempt(newId, user.UserId, holeId, code, score, DateTime.UtcNow));
+                            new Attempt(newId, user.UserId, holeId, code, score, DateTime.UtcNow),
+                            cancellationToken);
                         await this.signalRNotifier.NewAnswer();
                         if (await this.IsBestScore(holeId, newId, cancellationToken))
                         {

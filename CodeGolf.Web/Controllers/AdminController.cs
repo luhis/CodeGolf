@@ -41,7 +41,7 @@
         {
             var curr = await this.dashboardService.GetCurrentHole(cancellationToken);
             await curr.Match(
-                some => this.dashboardService.EndHole(some.Hole.HoleId),
+                some => this.dashboardService.EndHole(some.Hole.HoleId, cancellationToken),
                 () => Task.CompletedTask);
         }
 
@@ -102,7 +102,7 @@
         [HttpPost("[action]/{gameId}")]
         public Task Reset(CancellationToken cancellationToken)
         {
-            return this.adminService.ResetGame();
+            return this.adminService.ResetGame(cancellationToken);
         }
 
         [ServiceFilter(typeof(GameAdminAuthAttribute))]

@@ -36,10 +36,10 @@
             await this.context.SaveChangesAsync(cancellationToken);
         }
 
-        Task IUserRepository.ClearAll()
+        Task IUserRepository.ClearAll(CancellationToken cancellationToken)
         {
             this.context.Users.RemoveRange(this.context.Users);
-            return this.context.SaveChangesAsync();
+            return this.context.SaveChangesAsync(cancellationToken);
         }
     }
 }
