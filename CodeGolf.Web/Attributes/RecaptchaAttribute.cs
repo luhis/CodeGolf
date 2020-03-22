@@ -25,7 +25,7 @@
             {
                 var ip = this.getIp.GetIp(context.HttpContext);
                 var recaptcha = context.HttpContext.Request.Headers["g-recaptcha-response"];
-                if (!await this.recaptchaVerifier.IsValid(recaptcha, ip))
+                if (!await this.recaptchaVerifier.IsValid(recaptcha, ip, context.HttpContext.RequestAborted))
                 {
                     context.Result = new UnauthorizedResult();
                 }

@@ -4,6 +4,7 @@
     using System.Net;
     using System.Net.Http;
     using System.Text.Json;
+    using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.Extensions.Options;
 
@@ -19,7 +20,7 @@
             this.settings = settings.Value;
         }
 
-        async Task<bool> IRecaptchaVerifier.IsValid(string response, IPAddress ip)
+        async Task<bool> IRecaptchaVerifier.IsValid(string response, IPAddress ip, CancellationToken cancellationToken)
         {
             using (var content = new FormUrlEncodedContent(
                 new Dictionary<string, string>()
@@ -28,7 +29,7 @@
                     { "response", response },
                     { "ipaddress", ip.ToString() },
                 }))
-            using (var result = await this.httpClient.PostAsync(Api, content))
+            using (var result = await this.httpClient.PostAsync(Api, content, cancellationToken))
             {
                 var s = await result.Content.ReadAsStringAsync();
                 return JsonSerializer
