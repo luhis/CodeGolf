@@ -36,7 +36,7 @@
     <ProjectReference Include="..\CodeGolf.Domain\CodeGolf.Domain.csproj" />
     <ProjectReference Include="..\CodeGolf.ExecutionServer\CodeGolf.ExecutionServer.csproj" />
     <ProjectReference Include="..\CodeGolf.Persistence\CodeGolf.Persistence.csproj" />
-    <ProjectReference Include="..\CodeGolf.Recapcha\CodeGolf.Recaptcha.csproj" />
+    <ProjectReference Include="..\CodeGolf.Recaptcha\CodeGolf.Recaptcha.csproj" />
     <ProjectReference Include="..\CodeGolf.Service\CodeGolf.Service.csproj" />
   </ItemGroup>
 
