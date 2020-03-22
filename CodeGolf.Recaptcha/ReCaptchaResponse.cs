@@ -1,6 +1,6 @@
 ﻿namespace CodeGolf.Recaptcha
 {
-    public class ReCaptchaResponse
+    public class RecaptchaResponse
     {
         public bool Success { get; set; }
     }

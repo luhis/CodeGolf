@@ -33,7 +33,7 @@
             {
                 var s = await result.Content.ReadAsStringAsync();
                 return JsonSerializer
-                    .Deserialize<ReCaptchaResponse>(s, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true })
+                    .Deserialize<RecaptchaResponse>(s, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true })
                     .Success;
             }
         }
