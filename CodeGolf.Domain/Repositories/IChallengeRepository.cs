@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading;
 
     using CodeGolf.Domain.ChallengeInterfaces;
 
@@ -9,8 +10,8 @@
 
     public interface IChallengeRepository
     {
-        Option<IChallengeSet> GetById(Guid id);
+        Option<IChallengeSet> GetById(Guid id, CancellationToken cancellationToken);
 
-        IReadOnlyList<IChallengeSet> GetAll();
+        IReadOnlyList<IChallengeSet> GetAll(CancellationToken cancellationToken);
     }
 }

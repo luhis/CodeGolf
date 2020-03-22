@@ -55,7 +55,7 @@ namespace CodeGolf.Unit.Test.Services
         [Fact]
         public async Task GetAttemptsNone()
         {
-            var hole = this.gameRepository.GetGame().Holes.First();
+            var hole = this.gameRepository.GetGame(CancellationToken.None).Holes.First();
             this.attemptRepository.Setup(a => a.GetAttempts(It.IsAny<Guid>(), CancellationToken.None))
                 .Returns(Task.FromResult<IReadOnlyList<Attempt>>(new Attempt[] { }));
             var scores = await this.dashboardService.GetAttempts(hole.HoleId, CancellationToken.None);
@@ -68,7 +68,7 @@ namespace CodeGolf.Unit.Test.Services
         public async Task GetAttemptsSome()
         {
             var id = Guid.NewGuid();
-            var hole = this.gameRepository.GetGame().Holes.First();
+            var hole = this.gameRepository.GetGame(CancellationToken.None).Holes.First();
             var date = new DateTime(2010, 1, 1);
             this.attemptRepository.Setup(a => a.GetAttempts(It.IsAny<Guid>(), CancellationToken.None)).Returns(
                 Task.FromResult<IReadOnlyList<Attempt>>(
@@ -88,7 +88,7 @@ namespace CodeGolf.Unit.Test.Services
             var id1 = Guid.NewGuid();
             var id2 = Guid.NewGuid();
             var now = DateTime.UtcNow;
-            var hole = this.gameRepository.GetGame().Holes.First();
+            var hole = this.gameRepository.GetGame(CancellationToken.None).Holes.First();
             this.attemptRepository.Setup(a => a.GetAttempts(It.IsAny<Guid>(), CancellationToken.None)).Returns(
                 Task.FromResult<IReadOnlyList<Attempt>>(
                     new[]
@@ -118,7 +118,7 @@ namespace CodeGolf.Unit.Test.Services
             var id2 = Guid.NewGuid();
             var date1 = new DateTime(2000, 1, 1, 2, 0, 0);
             var date2 = new DateTime(2000, 1, 1, 1, 0, 0);
-            var hole = this.gameRepository.GetGame().Holes.First();
+            var hole = this.gameRepository.GetGame(CancellationToken.None).Holes.First();
             this.attemptRepository.Setup(a => a.GetAttempts(It.IsAny<Guid>(), CancellationToken.None)).Returns(
                 Task.FromResult<IReadOnlyList<Attempt>>(
                     new[]
@@ -147,7 +147,7 @@ namespace CodeGolf.Unit.Test.Services
             var id1 = Guid.NewGuid();
             var date1 = new DateTime(2000, 1, 1, 2, 0, 0);
             var date2 = new DateTime(2000, 1, 1, 1, 0, 0);
-            var hole = this.gameRepository.GetGame().Holes.First();
+            var hole = this.gameRepository.GetGame(CancellationToken.None).Holes.First();
             this.attemptRepository.Setup(a => a.GetAttempts(It.IsAny<Guid>(), CancellationToken.None)).Returns(
                 Task.FromResult<IReadOnlyList<Attempt>>(
                     new[]

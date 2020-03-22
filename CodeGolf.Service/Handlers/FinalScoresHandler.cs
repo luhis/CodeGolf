@@ -27,7 +27,7 @@
         async Task<IReadOnlyList<ResultDto>> IRequestHandler<FinalScores, IReadOnlyList<ResultDto>>.Handle(FinalScores request, CancellationToken cancellationToken)
         {
             var holes = await Task.WhenAll(
-                            this.gameRepository.GetGame().Holes.Select(
+                            this.gameRepository.GetGame(cancellationToken).Holes.Select(
                                 async h => (await this.bestAttemptsService.GetBestAttempts(h.HoleId, cancellationToken))
                                     .Select((a, b) => ValueTuple.Create(b, a))));
             var ranks = holes.SelectMany(a => a);

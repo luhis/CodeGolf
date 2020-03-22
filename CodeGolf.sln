@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGolf.Service", "CodeGol
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGolf.Persistence.Static", "CodeGolf.Persistence.Static\CodeGolf.Persistence.Static.csproj", "{3F80022C-5D46-49DF-A4BE-0D66E75A8ABC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGolf.Recaptcha", "CodeGolf.Recapcha\CodeGolf.Recaptcha.csproj", "{20A8CF2C-BD36-48E0-8C7F-A7DB82ABAEBA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGolf.Recaptcha", "CodeGolf.Recaptcha\CodeGolf.Recaptcha.csproj", "{20A8CF2C-BD36-48E0-8C7F-A7DB82ABAEBA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGolf.Integration.Test", "Tests\CodeGolf.Integration.Test\CodeGolf.Integration.Test.csproj", "{2B99FE0E-EC82-45BB-89A0-45D8A182CCF7}"
 EndProject

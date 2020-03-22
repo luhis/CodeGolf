@@ -18,10 +18,10 @@
             this.context = context;
         }
 
-        Task IAttemptRepository.AddAttempt(Attempt attempt)
+        Task IAttemptRepository.AddAttempt(Attempt attempt, CancellationToken cancellationToken)
         {
             this.context.Attempts.Add(attempt);
-            return this.context.SaveChangesAsync();
+            return this.context.SaveChangesAsync(cancellationToken);
         }
 
         Task<IReadOnlyList<Attempt>> IAttemptRepository.GetAttempts(Guid holeId, CancellationToken cancellationToken)
@@ -29,10 +29,10 @@
             return this.context.Attempts.Where(a => a.HoleId == holeId).ToReadOnlyAsync(cancellationToken);
         }
 
-        Task IAttemptRepository.ClearAll()
+        Task IAttemptRepository.ClearAll(CancellationToken cancellationToken)
         {
             this.context.Attempts.RemoveRange(this.context.Attempts);
-            return this.context.SaveChangesAsync();
+            return this.context.SaveChangesAsync(cancellationToken);
         }
 
         Task<Option<Attempt>> IAttemptRepository.GetAttempt(Guid attemptId, CancellationToken cancellationToken)

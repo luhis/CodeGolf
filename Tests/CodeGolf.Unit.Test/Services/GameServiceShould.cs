@@ -71,10 +71,10 @@ namespace CodeGolf.Unit.Test.Services
             var challengeId = Guid.NewGuid();
             this.holeRepository.Setup(a => a.GetCurrentHole(CancellationToken.None))
                 .Returns(Task.FromResult(Option.Some(new HoleInstance(holeId, DateTime.UtcNow, null))));
-            this.gameRepository.Setup(a => a.GetByHoleId(holeId))
+            this.gameRepository.Setup(a => a.GetByHoleId(holeId, CancellationToken.None))
                 .Returns(Option.Some(new Hole(holeId, challengeId, TimeSpan.FromMinutes(5), 1)));
-            this.challengeRepository.Setup(a => a.GetById(challengeId)).Returns(Option.Some<IChallengeSet>(new ChallengeSet<string>(challengeId, "title", "description", new List<ParamDescription>(), new List<Challenge<string>>())));
-            this.gameRepository.Setup(a => a.GetAfter(holeId))
+            this.challengeRepository.Setup(a => a.GetById(challengeId, CancellationToken.None)).Returns(Option.Some<IChallengeSet>(new ChallengeSet<string>(challengeId, "title", "description", new List<ParamDescription>(), new List<Challenge<string>>())));
+            this.gameRepository.Setup(a => a.GetAfter(holeId, CancellationToken.None))
                 .Returns(Option.None<Hole>());
 
             var r = await this.gameService.GetCurrentHole(CancellationToken.None);

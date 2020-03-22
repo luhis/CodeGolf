@@ -56,16 +56,17 @@
                          async some =>
                              {
                                  await this.holeRepository.AddHole(
-                                     new HoleInstance(some.HoleId, DateTime.UtcNow, null));
+                                     new HoleInstance(some.HoleId, DateTime.UtcNow, null),
+                                     cancellationToken);
                                  return some.HoleId;
                              });
             await this.signalRNotifier.NewRound();
             return id;
         }
 
-        async Task IDashboardService.EndHole(Guid holeId)
+        async Task IDashboardService.EndHole(Guid holeId, CancellationToken cancellationToken)
         {
-            await this.holeRepository.EndHole(holeId, DateTime.UtcNow);
+            await this.holeRepository.EndHole(holeId, DateTime.UtcNow, cancellationToken);
             await this.signalRNotifier.NewRound();
         }
 
@@ -75,9 +76,9 @@
             return hole.Map(
                 a =>
                     {
-                        var curr = this.gameRepository.GetByHoleId(a.HoleId).ValueOrFailure();
-                        var next = this.gameRepository.GetAfter(curr.HoleId);
-                        var chal = this.challengeRepository.GetById(curr.ChallengeId).ValueOrFailure();
+                        var curr = this.gameRepository.GetByHoleId(a.HoleId, cancellationToken).ValueOrFailure();
+                        var next = this.gameRepository.GetAfter(curr.HoleId, cancellationToken);
+                        var chal = this.challengeRepository.GetById(curr.ChallengeId, cancellationToken).ValueOrFailure();
                         return new HoleDto(curr, a.Start, a.Start.Add(curr.Duration), a.End, next.HasValue, chal);
                     });
         }
@@ -104,8 +105,8 @@
         {
             var currentHole = await this.holeRepository.GetCurrentHole(cancellationToken);
             return currentHole.Match(
-                some => this.gameRepository.GetAfter(some.HoleId),
-                () => this.gameRepository.GetGame().Holes.FirstOrNone());
+                some => this.gameRepository.GetAfter(some.HoleId, cancellationToken),
+                () => this.gameRepository.GetGame(cancellationToken).Holes.FirstOrNone());
         }
 
         private async Task<IReadOnlyList<AttemptDto>> GetBestAttemptDtos(

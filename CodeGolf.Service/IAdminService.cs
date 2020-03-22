@@ -9,7 +9,7 @@
 
     public interface IAdminService
     {
-        Task ResetGame();
+        Task ResetGame(CancellationToken cancellationToken);
 
         Task CreateGame(GameDto challenges, string accessKey, User user, CancellationToken cancellationToken);
 

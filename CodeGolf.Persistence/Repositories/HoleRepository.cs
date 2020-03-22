@@ -30,23 +30,23 @@
             }
         }
 
-        async Task IHoleRepository.EndHole(Guid holeId, DateTime closeTime)
+        async Task IHoleRepository.EndHole(Guid holeId, DateTime closeTime, CancellationToken cancellationToken)
         {
             var hole = await this.context.Holes.SingleAsync(a => a.HoleId == holeId);
             this.context.Update(new HoleInstance(hole.HoleId, hole.Start, closeTime));
-            await this.context.SaveChangesAsync();
+            await this.context.SaveChangesAsync(cancellationToken);
         }
 
-        Task IHoleRepository.AddHole(HoleInstance hole)
+        Task IHoleRepository.AddHole(HoleInstance hole, CancellationToken cancellationToken)
         {
             this.context.Holes.Add(hole);
-            return this.context.SaveChangesAsync();
+            return this.context.SaveChangesAsync(cancellationToken);
         }
 
-        Task IHoleRepository.ClearAll()
+        Task IHoleRepository.ClearAll(CancellationToken cancellationToken)
         {
             this.context.Holes.RemoveRange(this.context.Holes);
-            return this.context.SaveChangesAsync();
+            return this.context.SaveChangesAsync(cancellationToken);
         }
     }
 }
