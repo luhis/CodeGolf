@@ -32,6 +32,7 @@ namespace CodeGolf.Web
             CodeGolf.Recaptcha.DiModule.Add,
             Persistence.DiModule.Add,
             Persistence.Static.DiModule.Add,
+            CollectableAssembly.DiModule.Add,
         };
 
         public Startup(IConfiguration configuration)

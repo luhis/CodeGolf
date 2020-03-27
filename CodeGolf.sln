@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGolf.ServiceInterfaces"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGolf.Web", "CodeGolf.Web\CodeGolf.Web.csproj", "{A82107B6-B0F3-476B-A146-446831E4F19D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGolf.CollectableAssembly", "CodeGolf.CollectableAssembly\CodeGolf.CollectableAssembly.csproj", "{C71BBC37-22C5-445F-8244-ABA4C37FD91A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,10 @@ Global
 		{A82107B6-B0F3-476B-A146-446831E4F19D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A82107B6-B0F3-476B-A146-446831E4F19D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A82107B6-B0F3-476B-A146-446831E4F19D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C71BBC37-22C5-445F-8244-ABA4C37FD91A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C71BBC37-22C5-445F-8244-ABA4C37FD91A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C71BBC37-22C5-445F-8244-ABA4C37FD91A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C71BBC37-22C5-445F-8244-ABA4C37FD91A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

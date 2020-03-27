@@ -5,7 +5,7 @@ namespace CodeGolf.Unit.Test.Services
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-
+    using CodeGolf.CollectableAssembly;
     using CodeGolf.Domain;
     using CodeGolf.ExecutionServer;
     using CodeGolf.Service;
@@ -21,11 +21,11 @@ namespace CodeGolf.Unit.Test.Services
     public class CodeGolfServiceShould
     {
         private readonly ICodeGolfService codeGolfService = new CodeGolfService(
-            new Runner(new SyntaxTreeTransformer(), new ExecutionService(), new ErrorMessageTransformer(), new Mock<ILogger<Runner>>().Object),
+            new Runner(new SyntaxTreeTransformer(), new ExecutionService(), new ErrorMessageTransformer(), new Mock<ILogger<Runner>>().Object, new LoadAssembly()),
             new Scorer());
 
         private readonly IReadOnlyList<ParamDescription> noParams =
-            new ParamDescription[] { };
+            Array.Empty<ParamDescription>();
 
         [Fact]
         public async Task ReturnCorrectResultForHelloWorld()
@@ -37,7 +37,7 @@ namespace CodeGolf.Unit.Test.Services
                     "a",
                     "b",
                     this.noParams,
-                    new[] { new Challenge<string>(new object[0], "Hello World") }),
+                    new[] { new Challenge<string>(Array.Empty<object>(), "Hello World") }),
                 CancellationToken.None);
             r.AsT0.Should().Be(33);
         }
@@ -52,7 +52,7 @@ namespace CodeGolf.Unit.Test.Services
                     "a",
                     "b",
                     this.noParams,
-                    new[] { new Challenge<string>(new object[0], "Hello World") }),
+                    new[] { new Challenge<string>(Array.Empty<object>(), "Hello World") }),
                 CancellationToken.None);
             r.AsT2.Should().BeEquivalentTo(new CompileErrorMessage(
                 1, 38, 39, "Invalid token ';' in class, struct, or interface member declaration"));
@@ -68,7 +68,7 @@ namespace CodeGolf.Unit.Test.Services
                     "a",
                     "b",
                     this.noParams,
-                    new[] { new Challenge<string>(new object[0], "Hello World") }),
+                    new[] { new Challenge<string>(Array.Empty<object>(), "Hello World") }),
                 CancellationToken.None);
             r.AsT1.First().Error.Should().BeEquivalentTo(new Error(
                 "Return value incorrect.", "Hello X World"));

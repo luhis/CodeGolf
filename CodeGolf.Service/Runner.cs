@@ -41,16 +41,20 @@
 
         private readonly ILogger logger;
 
+        private readonly ILoadAssembly loadAssembly;
+
         public Runner(
             ISyntaxTreeTransformer syntaxTreeTransformer,
             IExecutionService svc,
             IErrorMessageTransformer errorMessageTransformer,
-            ILogger<Runner> logger)
+            ILogger<Runner> logger,
+            ILoadAssembly loadAssembly)
         {
             this.syntaxTreeTransformer = syntaxTreeTransformer;
             this.svc = svc;
             this.errorMessageTransformer = errorMessageTransformer;
             this.logger = logger;
+            this.loadAssembly = loadAssembly;
             this.functionValidator = new FunctionValidator(FunctionName);
         }
 
@@ -67,12 +71,14 @@
                     {
                         using (var dll = new MemoryStream(success.Dll))
                         {
-                            var ass = AssemblyLoadContext.Default.LoadFromStream(dll);
-                            var type = ass.GetType(ClassName);
-                            var fun = type.GetMethod(
-                                FunctionName,
-                                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                            var validationFailures = this.functionValidator.ValidateCompiledFunction(fun, returnType, paramTypes);
+                            var validationFailures = this.loadAssembly.LoadAndFunc(dll, ass =>
+                            {
+                                var type = ass.GetType(ClassName);
+                                var fun = type.GetMethod(
+                                    FunctionName,
+                                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                                return this.functionValidator.ValidateCompiledFunction(fun, returnType, paramTypes);
+                            });
                             if (validationFailures.Errors.Any())
                             {
                                 return Option.None<CompileRunner, IReadOnlyList<CompileErrorMessage>>(

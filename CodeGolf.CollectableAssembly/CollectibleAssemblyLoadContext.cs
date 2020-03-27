@@ -1,4 +1,4 @@
-﻿namespace CodeGolf.ExecutionServer
+﻿namespace CodeGolf.CollectableAssembly
 {
     using System.Reflection;
     using System.Runtime.Loader;

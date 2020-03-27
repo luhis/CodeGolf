@@ -4,7 +4,7 @@ namespace CodeGolf.Unit.Test.Services
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
-
+    using CodeGolf.CollectableAssembly;
     using CodeGolf.Domain;
     using CodeGolf.ExecutionServer;
     using CodeGolf.Service;
@@ -20,10 +20,10 @@ namespace CodeGolf.Unit.Test.Services
     public class SecurityTests
     {
         private readonly ICodeGolfService codeGolfService = new CodeGolfService(
-            new Runner(new SyntaxTreeTransformer(), new ExecutionService(), new ErrorMessageTransformer(), new Mock<ILogger<Runner>>().Object),
+            new Runner(new SyntaxTreeTransformer(), new ExecutionService(), new ErrorMessageTransformer(), new Mock<ILogger<Runner>>().Object, new LoadAssembly()),
             new Scorer());
 
-        private readonly IReadOnlyList<ParamDescription> noParams = new ParamDescription[] { };
+        private readonly IReadOnlyList<ParamDescription> noParams = Array.Empty<ParamDescription>();
 
         [Fact]
         public async Task NotAllowFileAccess()
@@ -35,7 +35,7 @@ namespace CodeGolf.Unit.Test.Services
                     "a",
                     "b",
                     this.noParams,
-                    new[] { new Challenge<string>(new object[0], "Hello World") }),
+                    new[] { new Challenge<string>(Array.Empty<object>(), "Hello World") }),
                 CancellationToken.None);
             r.AsT2.Should().BeEquivalentTo(new CompileErrorMessage(
                 1, 21, 35, "The type or namespace name 'File' does not exist in the namespace 'System.IO' (are you missing an assembly reference?)"));
@@ -53,7 +53,7 @@ namespace CodeGolf.Unit.Test.Services
                     "a",
                     "b",
                     this.noParams,
-                    new[] { new Challenge<string>(new object[0], "Hello World") }),
+                    new[] { new Challenge<string>(Array.Empty<object>(), "Hello World") }),
                 CancellationToken.None);
             r.AsT2.Should().BeEquivalentTo(
                 new CompileErrorMessage(
@@ -74,7 +74,7 @@ namespace CodeGolf.Unit.Test.Services
                     "a",
                     "b",
                     this.noParams,
-                    new[] { new Challenge<string>(new object[0], "Hello World") }),
+                    new[] { new Challenge<string>(Array.Empty<object>(), "Hello World") }),
                 CancellationToken.None);
             r.AsT2.Should().BeEquivalentTo(
                 new CompileErrorMessage(6, 1, 1, "} expected"),
@@ -96,7 +96,7 @@ namespace CodeGolf.Unit.Test.Services
                     "a",
                     "b",
                     this.noParams,
-                    new[] { new Challenge<string>(new object[0], "Hello World") }),
+                    new[] { new Challenge<string>(Array.Empty<object>(), "Hello World") }),
                 CancellationToken.None);
             r.AsT2.Should().BeEquivalentTo(new CompileErrorMessage(
                 1, 1, 25, "A using clause must precede all other elements defined in the namespace except extern alias declarations"));

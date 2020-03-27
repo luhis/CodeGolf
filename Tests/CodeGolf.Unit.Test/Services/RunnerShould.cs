@@ -3,7 +3,7 @@ namespace CodeGolf.Unit.Test.Services
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-
+    using CodeGolf.CollectableAssembly;
     using CodeGolf.ExecutionServer;
     using CodeGolf.Service;
     using CodeGolf.Service.Dtos;
@@ -21,7 +21,8 @@ namespace CodeGolf.Unit.Test.Services
             new SyntaxTreeTransformer(),
             new ExecutionService(),
             new ErrorMessageTransformer(),
-            new Mock<ILogger<Runner>>().Object);
+            new Mock<ILogger<Runner>>().Object,
+            new LoadAssembly());
 
         [Fact]
         public async Task ReturnHelloWorld()

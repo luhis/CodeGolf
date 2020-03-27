@@ -9,6 +9,7 @@
     using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
+    using CodeGolf.CollectableAssembly;
     using CodeGolf.ServiceInterfaces;
     using Optional;
     using CompileResult = CodeGolf.ServiceInterfaces.CompileResult;
