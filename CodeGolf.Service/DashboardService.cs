@@ -77,7 +77,7 @@
                     {
                         var curr = this.gameRepository.GetByHoleId(a.HoleId, cancellationToken).ValueOrFailure();
                         var next = this.gameRepository.GetAfter(curr.HoleId, cancellationToken);
-                        var chal = this.challengeRepository.GetById(curr.ChallengeId).ValueOrFailure();
+                        var chal = this.challengeRepository.GetById(curr.ChallengeId, cancellationToken).ValueOrFailure();
                         return new HoleDto(curr, a.Start.Value, a.Start.Value.Add(curr.Duration), a.End, next.HasValue, chal);
                     });
         }

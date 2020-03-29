@@ -50,7 +50,7 @@
 
         Task<IReadOnlyList<IChallengeSet>> IAdminService.GetAllChallenges(CancellationToken cancellationToken)
         {
-            return Task.FromResult(this.challengeRepository.GetAll());
+            return Task.FromResult(this.challengeRepository.GetAll(cancellationToken));
         }
 
         Task IAdminService.CreateGame(GameDto challenges, string accessKey, User user, CancellationToken cancellationToken)
