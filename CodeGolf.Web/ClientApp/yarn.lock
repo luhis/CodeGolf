@@ -1151,10 +1151,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
-"@monaco-editor/react@3.2.0":
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/@monaco-editor/react/-/react-3.2.0.tgz#5fcb89c291adb47ee252d43b1dc949921b13a0eb"
-  integrity sha512-Yzf2ItVKEQ25508V7VLOU7L5ST90O/l2hEm9uYYTjI2OxHB09ti+XQJRfIwcdXeNB+YNaoePY87hM6jsF4gBiA==
+"@monaco-editor/react@3.2.1":
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/@monaco-editor/react/-/react-3.2.1.tgz#3482636873c4739a8e7e9a5e09dd0718920f2c6b"
+  integrity sha512-x9ae9fnX9J3zqyB4Df2+hSBzc9xLL6V0LQ6VZP0gqGJw+KnJeNA+/3vHwUGqcVrcKRK3HrEM3TT/tRguJfyjEA==
 
 "@preact/async-loader@^3.0.0-rc.9":
   version "3.0.0-rc.9"
