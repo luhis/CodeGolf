@@ -11,7 +11,7 @@
     {
         public static IApplicationBuilder UseCustomSecurityHeaders(this IApplicationBuilder app, IWebHostEnvironment env)
         {
-            const string monacoHash = "9wP2bPNKcIeKNbFmO1aoznAM2cev6QcApKNveuxCw9A=";
+            const string monacoHash = "0nd4IyChWgBsPdSf1EGtX/c5G86cDhXHm9i+sGFHGbc=";
             const string swaggerHash = "hQoyAYxxdlQX6mYg//3SgDUdhiDx4sZq5ThHlCL8Ssg=";
             const string swagger2Hash = "ip2mafwm8g4hzTmJd0ltVOzuizPeY1roJ3pkMwGXm8E=";
             const string googleCom = "https://www.google.com";
