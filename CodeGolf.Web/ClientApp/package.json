@@ -65,7 +65,7 @@
     "eslint-plugin-prettier": "3.1.2",
     "eslint-plugin-react": "7.19.0",
     "identity-obj-proxy": "3.0.0",
-    "jest": "25.2.4",
+    "jest": "25.2.6",
     "lodash.debounce": "4.0.8",
     "markdown-to-jsx": "6.11.0",
     "node-sass": "4.13.1",
