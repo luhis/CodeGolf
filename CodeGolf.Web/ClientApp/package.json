@@ -37,7 +37,7 @@
     "enzyme-adapter-preact-pure": "2.2.0",
     "husky": "4.2.5",
     "jest-preset-preact": "1.0.0",
-    "lint-staged": "10.1.7",
+    "lint-staged": "10.2.0",
     "prettier": "2.0.5",
     "ts-jest": "25.4.0"
   },
