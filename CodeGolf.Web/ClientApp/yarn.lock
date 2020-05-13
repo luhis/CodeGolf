@@ -10883,10 +10883,10 @@ tryer@^1.0.1:
   resolved "https://registry.yarnpkg.com/tryer/-/tryer-1.0.1.tgz#f2c85406800b9b0f74c9f7465b81eaad241252f8"
   integrity sha512-c3zayb8/kWWpycWYg87P71E1S1ZL6b6IJxfb5fvsUgsf0S2MVGaDhDXXjDMpdCpfWXqptc+4mXwmiy1ypXqRAA==
 
-ts-date@3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/ts-date/-/ts-date-3.0.0.tgz#8cc8bbcd8080ae5e4eaeba102d374586249e7ed0"
-  integrity sha512-CfWGO9kw7ZIV8pH2dDuuOPodf/SMc63r15GJaAMvjMk8V6LkZvwKLaohVocAGEsh5Be/Pxf7fCvvnRtjxL7NUg==
+ts-date@3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/ts-date/-/ts-date-3.0.1.tgz#8b2ce82a7b6229cb33d4c61fe34a334e763add16"
+  integrity sha512-dUHzLxolN0s7BqQsWItm+l1RptNRNop5MVHAHil+cI5seMEeRPJYOWjOjJuypAhakLQOsW3if+GyDDeVWvpZxw==
 
 ts-jest@25.4.0:
   version "25.4.0"

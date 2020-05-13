@@ -79,7 +79,7 @@
     "react-ga": "2.7.0",
     "react-google-recaptcha": "2.0.1",
     "sass-loader": "7.3.1",
-    "ts-date": "3.0.0",
+    "ts-date": "3.0.1",
     "ts-loader": "7.0.4",
     "typescript": "3.9.2",
     "typings-for-css-modules-loader": "1.7.0"
