@@ -39,7 +39,7 @@
     "jest-preset-preact": "1.0.0",
     "lint-staged": "10.2.2",
     "prettier": "2.0.5",
-    "ts-jest": "25.4.0"
+    "ts-jest": "25.5.1"
   },
   "dependencies": {
     "@aspnet/signalr": "1.1.4",
