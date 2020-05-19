@@ -2,7 +2,7 @@ version: 2
 jobs:
   dotnetunittest:
     docker:
-      - image: mcr.microsoft.com/dotnet/core/sdk:3.1.202-alpine
+      - image: mcr.microsoft.com/dotnet/core/sdk:3.1.300-alpine
     working_directory: /build/
     steps:
       - checkout
@@ -19,7 +19,7 @@ jobs:
 
   dotnetintegrationtest:
     docker:
-      - image: mcr.microsoft.com/dotnet/core/sdk:3.1.202-alpine
+      - image: mcr.microsoft.com/dotnet/core/sdk:3.1.300-alpine
     working_directory: /build/
     steps:
       - checkout
