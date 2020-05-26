@@ -77,7 +77,7 @@
     "react-google-recaptcha": "2.0.1",
     "sass-loader": "7.3.1",
     "ts-date": "3.0.1",
-    "typescript": "3.9.2",
+    "typescript": "3.9.3",
     "typings-for-css-modules-loader": "1.7.0"
   },
   "peerDependencies": {
