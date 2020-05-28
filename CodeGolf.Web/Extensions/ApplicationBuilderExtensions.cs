@@ -11,9 +11,9 @@
     {
         public static IApplicationBuilder UseCustomSecurityHeaders(this IApplicationBuilder app, IWebHostEnvironment env)
         {
-            const string monacoHash = "VK+pKL3MRvBY2BmWZQQrf4dm90dj3F2xZ7/V3Zs07ko=";
-            const string swaggerHash = "hQoyAYxxdlQX6mYg//3SgDUdhiDx4sZq5ThHlCL8Ssg=";
-            const string swagger2Hash = "ip2mafwm8g4hzTmJd0ltVOzuizPeY1roJ3pkMwGXm8E=";
+            ////const string monacoHash = "VK+pKL3MRvBY2BmWZQQrf4dm90dj3F2xZ7/V3Zs07ko=";
+            ////const string swaggerHash = "hQoyAYxxdlQX6mYg//3SgDUdhiDx4sZq5ThHlCL8Ssg=";
+            ////const string swagger2Hash = "ip2mafwm8g4hzTmJd0ltVOzuizPeY1roJ3pkMwGXm8E=";
             const string googleCom = "https://www.google.com";
             const string googleAnal = "https://www.google-analytics.com";
             const string jsDelivr = "https://cdn.jsdelivr.net";
@@ -30,9 +30,10 @@
                                 .From("https://www.gstatic.com")
                                 .From(googleAnal)
                                 .From(jsDelivr)
-                                .WithHash256(monacoHash)
-                                .WithHash256(swaggerHash)
-                                .WithHash256(swagger2Hash).UnsafeInline();
+                                ////.WithHash256(monacoHash)
+                                ////.WithHash256(swaggerHash)
+                                ////.WithHash256(swagger2Hash)
+                                .UnsafeInline();
                             if (env.IsDevelopment())
                             {
                                 scripts.UnsafeEval();
