@@ -14,7 +14,6 @@
             const string monacoHash = "VK+pKL3MRvBY2BmWZQQrf4dm90dj3F2xZ7/V3Zs07ko=";
             const string swaggerHash = "hQoyAYxxdlQX6mYg//3SgDUdhiDx4sZq5ThHlCL8Ssg=";
             const string swagger2Hash = "ip2mafwm8g4hzTmJd0ltVOzuizPeY1roJ3pkMwGXm8E=";
-            const string styleBootstrap = "F1noxsLOnJhyRSgc0zu5JgzoLjG2BBMaXaSG24k2mRM=";
             const string googleCom = "https://www.google.com";
             const string googleAnal = "https://www.google-analytics.com";
             const string jsDelivr = "https://cdn.jsdelivr.net";
@@ -33,8 +32,7 @@
                                 .From(jsDelivr)
                                 .WithHash256(monacoHash)
                                 .WithHash256(swaggerHash)
-                                .WithHash256(swagger2Hash)
-                                .WithHash256(styleBootstrap);
+                                .WithHash256(swagger2Hash);
                             if (env.IsDevelopment())
                             {
                                 scripts.UnsafeEval();
