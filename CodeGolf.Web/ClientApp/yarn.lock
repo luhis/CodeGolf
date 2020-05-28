@@ -7730,6 +7730,13 @@ nanomatch@^1.2.9:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
+native-url@0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/native-url/-/native-url-0.3.1.tgz#5045c65d0eb4c3ee548d48e3cb50797eec5a3c54"
+  integrity sha512-VL0XRW8nNBdSpxqZCbLJKrLHmIMn82FZ8pJzriJgyBmErjdEtrUX6eZAJbtHjlkMooEWUV+EtJ0D5tOP3+1Piw==
+  dependencies:
+    querystring "^0.2.0"
+
 natural-compare@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
@@ -9012,10 +9019,10 @@ preact-cli-plugin-env-vars@1.2.1:
     dotenv "^4.0.0"
     resolve-env-vars "^1.0.0"
 
-preact-cli@3.0.0-rc.13:
-  version "3.0.0-rc.13"
-  resolved "https://registry.yarnpkg.com/preact-cli/-/preact-cli-3.0.0-rc.13.tgz#1a9f93f501c11fbcd4d508e8d75b1da5d72faab5"
-  integrity sha512-UOyZkKoZ9havnSQuGRl9HZTvSALQYenkHLpFTlUKNME/5g2C9cfljklsOXfXNxe7swsMom3iyUv5IYQciqrUpA==
+preact-cli@3.0.0-rc.14:
+  version "3.0.0-rc.14"
+  resolved "https://registry.yarnpkg.com/preact-cli/-/preact-cli-3.0.0-rc.14.tgz#79d3738fc36b0b6bea92f7a432fbf24880d69b7c"
+  integrity sha512-HDhG0zklaxro10U5Kmy5vNmibpXNv4WpdnA/oRZ4T+MhvU29iuEBRW7n1jLcmumK32wWMd0Mg7i2e0HgbJkRJg==
   dependencies:
     "@babel/core" "^7.9.0"
     "@babel/plugin-proposal-class-properties" "^7.8.3"
@@ -9057,6 +9064,7 @@ preact-cli@3.0.0-rc.13:
     loader-utils "^2.0.0"
     mini-css-extract-plugin "^0.9.0"
     minimatch "^3.0.3"
+    native-url "0.3.1"
     optimize-css-assets-webpack-plugin "^5.0.1"
     ora "^4.0.3"
     postcss-load-config "^2.1.0"
@@ -9066,6 +9074,7 @@ preact-cli@3.0.0-rc.13:
     prompts "^2.2.1"
     raw-loader "^4.0.0"
     react-hot-loader "^4.12.9"
+    react-refresh "0.8.2"
     require-relative "^0.8.7"
     rimraf "^3.0.2"
     sade "^1.4.1"
@@ -9356,7 +9365,7 @@ querystring-es3@^0.2.0:
   resolved "https://registry.yarnpkg.com/querystring-es3/-/querystring-es3-0.2.1.tgz#9ec61f79049875707d69414596fd907a4d711e73"
   integrity sha1-nsYfeQSYdXB9aUFFlv2Qek1xHnM=
 
-querystring@0.2.0:
+querystring@0.2.0, querystring@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/querystring/-/querystring-0.2.0.tgz#b209849203bb25df820da756e747005878521620"
   integrity sha1-sgmEkgO7Jd+CDadW50cAWHhSFiA=
@@ -9478,6 +9487,11 @@ react-lifecycles-compat@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
+
+react-refresh@0.8.2:
+  version "0.8.2"
+  resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.8.2.tgz#24bb0858eac92b0d7b0dd561747f0c9fd6c60327"
+  integrity sha512-n8GXxo3DwM2KtFEL69DAVhGc4A1THn2qjmfvSo3nze0NLCoPbywazeJPqdp0RdSGLmyhQzeyA+XPXOobbYlkzg==
 
 read-pkg-up@^1.0.1:
   version "1.0.1"
