@@ -32,7 +32,7 @@
                                 .From(jsDelivr)
                                 .WithHash256(monacoHash)
                                 .WithHash256(swaggerHash)
-                                .WithHash256(swagger2Hash);
+                                .WithHash256(swagger2Hash).UnsafeInline();
                             if (env.IsDevelopment())
                             {
                                 scripts.UnsafeEval();
