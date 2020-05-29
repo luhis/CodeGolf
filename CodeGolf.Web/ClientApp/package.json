@@ -71,7 +71,7 @@
     "preact": "10.4.4",
     "preact-cli": "3.0.0-rc.14",
     "preact-cli-plugin-env-vars": "1.2.1",
-    "preact-render-to-string": "5.1.8",
+    "preact-render-to-string": "5.1.9",
     "preact-router": "3.2.1",
     "react-ga": "2.7.0",
     "react-google-recaptcha": "2.0.1",
