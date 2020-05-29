@@ -34,6 +34,14 @@ export default function(config, env, helpers) {
     config.resolve.alias["create-react-class"] =
         "preact-compat/lib/create-react-class";
 
+    const critters = helpers.getPluginsByName(config, 'Critters')[0];
+    if (critters) {
+        // The default strategy in Preact CLI is "media",
+        // but there are 6 different loading techniques:
+        // https://github.com/GoogleChromeLabs/critters#preloadstrategy
+        critters.plugin.options.preload = 'default';
+    }
+
     envVars(config, env, helpers);
     return config;
 }
