@@ -73,7 +73,7 @@
     "preact-cli-plugin-env-vars": "1.2.1",
     "preact-render-to-string": "5.1.9",
     "preact-router": "3.2.1",
-    "react-ga": "2.7.0",
+    "react-ga": "3.0.0",
     "react-google-recaptcha": "2.0.1",
     "sass-loader": "7.3.1",
     "ts-date": "3.0.1",
