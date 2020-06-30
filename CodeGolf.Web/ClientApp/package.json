@@ -68,7 +68,7 @@
     "markdown-to-jsx": "6.11.4",
     "node-sass": "4.14.1",
     "per-env": "1.0.2",
-    "preact": "10.4.4",
+    "preact": "10.4.5",
     "preact-cli": "3.0.0-rc.14",
     "preact-cli-plugin-env-vars": "1.2.1",
     "preact-render-to-string": "5.1.9",
