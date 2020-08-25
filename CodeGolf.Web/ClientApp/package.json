@@ -70,7 +70,7 @@
     "node-sass": "4.14.1",
     "per-env": "1.0.2",
     "preact": "10.4.7",
-    "preact-cli": "3.0.0-rc.14",
+    "preact-cli": "3.0.1",
     "preact-cli-plugin-env-vars": "1.2.1",
     "preact-render-to-string": "5.1.10",
     "preact-router": "3.2.1",
