@@ -5,7 +5,7 @@ import { ChallengeSet, Hole, HoleId } from "../types/types";
 
 export const utzParse = (date: string) => newValidDate(date + "z");
 
-const nullToUndef = <T extends {}>(t: T | null) => t == null ? undefined : t;
+const nullToUndef = <T extends unknown>(t: T | null) => t == null ? undefined : t;
 
 export const mapHole = (h?: HoleInt) => {
   if (h) {
