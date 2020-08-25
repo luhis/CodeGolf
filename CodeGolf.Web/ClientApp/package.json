@@ -75,7 +75,7 @@
     "preact-router": "3.2.1",
     "react-ga": "3.1.2",
     "react-google-recaptcha": "2.1.0",
-    "sass-loader": "9.0.2",
+    "sass-loader": "9.0.3",
     "ts-date": "3.0.2",
     "typescript": "3.9.7",
     "typings-for-css-modules-loader": "1.7.0"
