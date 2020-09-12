@@ -35,7 +35,7 @@
     "@types/webpack-env": "1.15.2",
     "enzyme": "3.11.0",
     "enzyme-adapter-preact-pure": "2.2.3",
-    "husky": "4.2.5",
+    "husky": "4.3.0",
     "jest-preset-preact": "4.0.2",
     "lint-staged": "10.2.13",
     "prettier": "2.1.1"
