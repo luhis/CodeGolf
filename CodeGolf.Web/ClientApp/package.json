@@ -66,7 +66,7 @@
     "eslint-plugin-react": "7.20.6",
     "jest": "26.4.2",
     "lodash.debounce": "4.0.8",
-    "markdown-to-jsx": "6.11.4",
+    "markdown-to-jsx": "7.0.0",
     "node-sass": "4.14.1",
     "per-env": "1.0.2",
     "preact": "10.4.8",
