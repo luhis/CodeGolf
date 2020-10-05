@@ -64,7 +64,7 @@
     "eslint-plugin-prefer-arrow-functions": "3.0.1",
     "eslint-plugin-prettier": "3.1.4",
     "eslint-plugin-react": "7.21.3",
-    "jest": "26.4.2",
+    "jest": "26.5.0",
     "lodash.debounce": "4.0.8",
     "markdown-to-jsx": "7.0.0",
     "node-sass": "4.14.1",
