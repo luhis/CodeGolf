@@ -2630,10 +2630,10 @@ builtins@^1.0.3:
   resolved "https://registry.yarnpkg.com/builtins/-/builtins-1.0.3.tgz#cb94faeb61c8696451db36534e1422f94f0aee88"
   integrity sha1-y5T662HIaWRR2zZTThQi+U8K7og=
 
-bulma-toast@2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/bulma-toast/-/bulma-toast-2.0.3.tgz#925e8d35af9829eed8b8b5d64a57cf6164bba06b"
-  integrity sha512-zGsu+ObMXSky7+e+OZACJiNznhRHm87He430M2cFQtWE+dsJcBJWMD22twIlVTl7G8ySMLcsUh1A908eaxDk/Q==
+bulma-toast@2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/bulma-toast/-/bulma-toast-2.3.0.tgz#43062de85104ee66719b723c5d1691d9e46954d6"
+  integrity sha512-HfMITkQv4GnrrvwMnpxtNlfdQcmVdl09wGqboqMzLuRWSDDM9EBghfuAeh6jPCKJpFvAeadw7N12XRY1AAJgyw==
 
 bulma@0.9.1:
   version "0.9.1"
