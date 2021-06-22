@@ -46,7 +46,7 @@
     "@fortawesome/free-solid-svg-icons": "5.15.1",
     "@fortawesome/react-fontawesome": "0.1.12",
     "@monaco-editor/react": "3.6.3",
-    "@teamsupercell/typings-for-css-modules-loader": "2.4.0",
+    "@teamsupercell/typings-for-css-modules-loader": "2.5.1",
     "@types/classnames": "2.2.11",
     "@types/lodash.debounce": "4.0.6",
     "@typescript-eslint/eslint-plugin": "4.8.1",
