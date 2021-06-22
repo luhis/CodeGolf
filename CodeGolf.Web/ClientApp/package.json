@@ -52,7 +52,7 @@
     "@typescript-eslint/eslint-plugin": "4.8.1",
     "@typescript-eslint/eslint-plugin-tslint": "4.8.1",
     "@typescript-eslint/parser": "4.8.1",
-    "axios": "0.21.0",
+    "axios": "0.21.1",
     "bulma": "0.9.1",
     "bulma-toast": "2.3.0",
     "classnames": "2.2.6",
