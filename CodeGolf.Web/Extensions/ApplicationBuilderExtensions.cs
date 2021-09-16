@@ -40,7 +40,7 @@
 
                             b.AddImgSrc().Self().From(googleAnal)
                                 .From("https://*.githubusercontent.com").From("data:");
-                            b.AddFrameSource().Self().From(googleCom);
+                            b.AddFrameSrc().Self().From(googleCom);
                             b.AddStyleSrc().Self().UnsafeInline().Blob().From(jsDelivr);
                             var connect = b.AddConnectSrc().Self().From("https://github.com");
                             if (env.IsDevelopment())
