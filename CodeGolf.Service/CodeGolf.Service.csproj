@@ -18,7 +18,7 @@
     <PackageReference Include="MediatR" Version="9.0.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.6.0" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.19" />
-    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="16.8.55" />
+    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="16.10.56" />
     <PackageReference Include="OneOf" Version="2.1.155" />
     <PackageReference Include="Optional" Version="5.0.0-alpha" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
