@@ -892,7 +892,7 @@
     "@babel/helper-plugin-utils" "^7.10.4"
     "@babel/plugin-transform-typescript" "^7.10.4"
 
-"@babel/runtime@^7.11.0", "@babel/runtime@^7.5.5", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4":
+"@babel/runtime@^7.5.5", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4":
   version "7.11.2"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.11.2.tgz#f549c13c754cc40b87644b9fa9f09a6a95fe0736"
   integrity sha512-TeWkU52so0mPtDcaCTxNBI/IHiz0pZgr8VEFqXFtZWpYD08ZB6FaSwVAS8MKRQAP3bYKiVjwysOJgMFY28o6Tw==
@@ -1205,13 +1205,19 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@monaco-editor/react@3.6.3":
-  version "3.6.3"
-  resolved "https://registry.yarnpkg.com/@monaco-editor/react/-/react-3.6.3.tgz#62b9af6c437d4035c901c2ce27122d4c3147f10d"
-  integrity sha512-HjDIhoGuLKWeGxvyaQ9eyIBUXrnEdqGxm74u84qnmtfurLSkUACC0+GL0hD3V0PrL2ebkH16u6ZPjQweSIinWw==
+"@monaco-editor/loader@^0.1.2":
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/@monaco-editor/loader/-/loader-0.1.3.tgz#f8830ef2a5b826bc3452afa8ddb8b83b00ff54e9"
+  integrity sha512-AO5ERu/RV4B0Va3ymI4TYp/KeIUSPHQueE51jRjVcCsW72btEPUxCgnHTdBxpAvsfNEF1sLILtt1QOZqce3SWw==
   dependencies:
-    "@babel/runtime" "^7.11.0"
-    state-local "^1.0.1"
+    state-local "^1.0.6"
+
+"@monaco-editor/react@3.8.3":
+  version "3.8.3"
+  resolved "https://registry.yarnpkg.com/@monaco-editor/react/-/react-3.8.3.tgz#36d19278fdee2a7f97fd193c0596df531b183a5e"
+  integrity sha512-wd+XzqATnUoODHSm2JMZi5OV9qeC8hdoSgoZHsTceXyH3Z/oktUtFbjaYeK0XL/lnXAScSYue81GA2UsiAx0sQ==
+  dependencies:
+    "@monaco-editor/loader" "^0.1.2"
 
 "@nodelib/fs.scandir@2.1.3":
   version "2.1.3"
@@ -10331,10 +10337,10 @@ stack-utils@^2.0.2:
   dependencies:
     escape-string-regexp "^2.0.0"
 
-state-local@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/state-local/-/state-local-1.0.1.tgz#0d3c0a2bb610d3b81699b30e98fafa00bcf4ac9c"
-  integrity sha512-CkiwT61ZhZd0/z183fcceu7+RSws/Sq5BT3RNQ2xK/Se9A/jn/4Z/eIe1bawoI9wNYC9wrcG2Drz+6GnjtKynA==
+state-local@^1.0.6:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/state-local/-/state-local-1.0.7.tgz#da50211d07f05748d53009bee46307a37db386d5"
+  integrity sha512-HTEHMNieakEnoe33shBYcZ7NX83ACUjCu8c40iOGEZsngj9zRnkqS9j1pqQPXwobB0ZcVTk27REb7COQ0UR59w==
 
 static-extend@^0.1.1:
   version "0.1.2"
