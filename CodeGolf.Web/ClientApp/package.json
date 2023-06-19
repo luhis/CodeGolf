@@ -42,9 +42,9 @@
   },
   "dependencies": {
     "@aspnet/signalr": "1.1.4",
-    "@fortawesome/fontawesome-svg-core": "1.2.32",
-    "@fortawesome/free-solid-svg-icons": "5.15.1",
-    "@fortawesome/react-fontawesome": "0.1.12",
+    "@fortawesome/fontawesome-svg-core": "1.2.36",
+    "@fortawesome/free-solid-svg-icons": "5.15.4",
+    "@fortawesome/react-fontawesome": "0.2.0",
     "@monaco-editor/react": "3.6.3",
     "@teamsupercell/typings-for-css-modules-loader": "2.5.1",
     "@types/classnames": "2.2.11",
